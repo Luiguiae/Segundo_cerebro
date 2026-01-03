@@ -1,10 +1,7 @@
 # Segundo Cerebro
 
-Repositorio personal de conocimiento para:
-- PRDs
-- Research
-- Benchmarks
-- Flujos
-- Decisiones
+Repositorio personal de conocimiento versionado para trabajar con LLMs.
 
-Este repositorio es la fuente de verdad versionada para trabajar con LLMs.
+La estructura oficial del repositorio y sus reglas de uso se encuentran en:
+
+📁 Documentos/00-start-here/README.md
