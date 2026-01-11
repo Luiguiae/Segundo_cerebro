@@ -3,17 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Presentación</title>
+    <title>Segundo Cerebro: de notas sueltas a sistema de pensamiento con IA</title>
 
+    <!-- Reveal.js Core -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
-
-    <style>
-      /* Ajustes para look "moderno" */
-      .reveal { font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Arial, sans-serif; }
-      .reveal h1, .reveal h2 { letter-spacing: -0.02em; }
-      .reveal section { text-align: left; }
-    </style>
+    
+    <!-- Custom Glassmorphism Theme -->
+    <link rel="stylesheet" href="assets/css/theme.css">
   </head>
 
   <body>
@@ -27,6 +24,10 @@
       </div>
     </div>
 
+    <!-- Navigation Dots Container -->
+    <div class="nav-dots" id="navDots"></div>
+
+    <!-- Reveal.js Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/markdown/markdown.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
@@ -34,10 +35,60 @@
     <script>
       Reveal.initialize({
         hash: true,
-        plugins: [ RevealMarkdown, RevealNotes ],
+        controls: false,
+        progress: false,
         slideNumber: true,
-        transition: "fade"
+        center: true,
+        margin: 0.05,
+        transition: 'fade',
+        backgroundTransition: 'fade',
+        width: '100%',
+        height: '100%',
+        
+        // Markdown separators
+        plugins: [ RevealMarkdown, RevealNotes ],
+        markdown: {
+          separator: '^---$',
+          separatorVertical: '^--$',
+          smartypants: true
+        }
       });
+
+      // Navigation Dots - Vertical
+      function initNavDots() {
+        const navDotsContainer = document.getElementById('navDots');
+        const slides = Reveal.getSlides();
+        
+        // Create dots
+        slides.forEach((slide, index) => {
+          const dot = document.createElement('div');
+          dot.className = 'nav-dot';
+          dot.setAttribute('data-slide-index', index);
+          dot.addEventListener('click', () => {
+            Reveal.slide(index);
+          });
+          navDotsContainer.appendChild(dot);
+        });
+        
+        // Update active dot on slide change
+        function updateActiveDot() {
+          const currentIndex = Reveal.getIndices().h;
+          const dots = navDotsContainer.querySelectorAll('.nav-dot');
+          dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+              dot.classList.add('active');
+            } else {
+              dot.classList.remove('active');
+            }
+          });
+        }
+        
+        Reveal.on('slidechanged', updateActiveDot);
+        updateActiveDot(); // Initial state
+      }
+      
+      // Initialize dots after Reveal is ready
+      Reveal.on('ready', initNavDots);
     </script>
   </body>
 </html>
