@@ -1,14 +1,19 @@
 ---
-# ADR-005: Adoptar Synthetic Reconstruction (SR) como método de estimación agregada
+titulo: "ADR-005: Adoptar Synthetic Reconstruction (SR) como método de estimación agregada"
+tipo: adr
+estado: aceptado
+autor: Luigui Avila
+fecha: 2026-01-16
+updated: 2026-02-10
+tags: [synthetic-reconstruction, estimacion, metodologia, poblaciones-sinteticas]
+fuentes:
+  - Documentos/Estudios/poblaciones-sinteticas-sr.md
+  - Documentos/Decisiones/ADRs/ADR-001-usuarios-sinteticos.md
+  - Documentos/00-start-here/README.md
+  - Plantillas/adr-plantilla.md
+---
 
-Fecha: 2026-01-XX
-Estado: Propuesto
-Decisor(es): Luigui Avila
-Contexto relacionado:
-- Documentos/Estudios/poblaciones-sinteticas-sr.md
-- Documentos/Decisiones/ADRs/ADR-001-usuarios-sinteticos.md
-- Documentos/00-start-here/README.md
-- Plantillas/Adr_plantilla.md
+# ADR-005: Adoptar Synthetic Reconstruction (SR) como método de estimación agregada
 
 ## Contexto
 
@@ -101,4 +106,4 @@ Adoptar **Synthetic Reconstruction (SR)** como método de estimación agregada e
 - `Documentos/Estudios/poblaciones-sinteticas-sr.md` - Estudio metodológico base
 - `Documentos/Decisiones/ADRs/ADR-001-usuarios-sinteticos.md` - Método complementario a nivel micro
 - `Documentos/00-start-here/README.md` - Estructura del repositorio
-- `Plantillas/Adr_plantilla.md` - Plantilla para ADRs
+- `Plantillas/adr-plantilla.md` - Plantilla para ADRs

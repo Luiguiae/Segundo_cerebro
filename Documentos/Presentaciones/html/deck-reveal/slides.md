@@ -63,14 +63,14 @@ Note:
   </div>
   <h4 class="h4">Plantillas/ (reutilizables obligatorias)</h4>
   <ul class="ul">
-    <li><code>PRD_plantilla.md</code> → para nuevos PRDs</li>
-    <li><code>Adr_plantilla.md</code> → para decisiones (ADR)</li>
-    <li><code>Bench_plantilla.md</code> → para benchmarks comparativos</li>
+    <li><code>prd-plantilla.md</code> → para nuevos PRDs</li>
+    <li><code>adr-plantilla.md</code> → para decisiones (ADR)</li>
+    <li><code>bench-plantilla.md</code> → para benchmarks comparativos</li>
   </ul>
   <h4 class="h4">Documentos/ (conocimiento estable y reusable)</h4>
   <ul class="ul">
     <li><code>00-start-here/</code> → guías, reglas y mapa del repo</li>
-    <li><code>PRDS/</code> → PRDs creados a partir de <code>PRD_plantilla.md</code></li>
+    <li><code>PRDS/</code> → PRDs creados a partir de <code>prd-plantilla.md</code></li>
     <li><code>Research/</code> → investigación, hallazgos, insights</li>
     <li><code>Benchmarks/</code> → comparativas y evaluaciones</li>
     <li><code>Procesos/</code> → flujos, procesos, BPMN, Mermaid</li>
@@ -113,7 +113,7 @@ Note:
   <p>Adoptar un <strong>Segundo Cerebro</strong> como sistema de pensamiento estructurado:</p>
   <ul class="ul">
     <li><strong>Repositorio versionado</strong> como fuente de verdad única</li>
-    <li><strong>Plantillas obligatorias</strong> para garantizar consistencia (<code>Plantillas/PRD_plantilla.md</code>, <code>Plantillas/Adr_plantilla.md</code>, <code>Plantillas/Bench_plantilla.md</code>)</li>
+    <li><strong>Plantillas obligatorias</strong> para garantizar consistencia (<code>Plantillas/prd-plantilla.md</code>, <code>Plantillas/adr-plantilla.md</code>, <code>Plantillas/bench-plantilla.md</code>)</li>
     <li><strong>Separación clara</strong> entre conocimiento estable (<code>Documentos/</code>) y trabajo activo (<code>Iniciativas/</code>)</li>
     <li><strong>Reglas explícitas</strong> para colaboración con LLMs que evitan inventar contenido</li>
   </ul>
@@ -121,9 +121,9 @@ Note:
     <p><strong>Fuentes:</strong></p>
     <ul class="ul">
       <li><code>Documentos/00-start-here/README.md</code> - Estructura oficial del repositorio</li>
-      <li><code>Plantillas/PRD_plantilla.md</code> - Estructura para PRDs</li>
-      <li><code>Plantillas/Adr_plantilla.md</code> - Estructura para decisiones</li>
-      <li><code>Plantillas/Bench_plantilla.md</code> - Estructura para benchmarks</li>
+      <li><code>Plantillas/prd-plantilla.md</code> - Estructura para PRDs</li>
+      <li><code>Plantillas/adr-plantilla.md</code> - Estructura para decisiones</li>
+      <li><code>Plantillas/bench-plantilla.md</code> - Estructura para benchmarks</li>
     </ul>
   </div>
 </div>
@@ -140,8 +140,8 @@ Note:
   <h3 class="h3">Para el negocio</h3>
   <ul class="ul">
     <li>Conocimiento versionado y recuperable</li>
-    <li>Decisiones documentadas con contexto (<code>Plantillas/Adr_plantilla.md</code>)</li>
-    <li>Productos definidos con estructura clara (<code>Plantillas/PRD_plantilla.md</code>)</li>
+    <li>Decisiones documentadas con contexto (<code>Plantillas/adr-plantilla.md</code>)</li>
+    <li>Productos definidos con estructura clara (<code>Plantillas/prd-plantilla.md</code>)</li>
   </ul>
   <h3 class="h3">Para usuarios/equipo</h3>
   <ul class="ul">

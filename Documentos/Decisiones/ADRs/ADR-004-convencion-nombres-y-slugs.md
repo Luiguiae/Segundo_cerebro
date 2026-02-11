@@ -1,18 +1,23 @@
 ---
-# ADR-004: Convención de nombres, slugs y numeración para el Segundo Cerebro
+titulo: "ADR-004: Convención de nombres, slugs y numeración"
+tipo: adr
+estado: aceptado
+autor: Luigui Avila
+fecha: 2026-01-11
+updated: 2026-02-10
+tags: [convencion, nombres, slugs, organizacion]
+fuentes:
+  - Documentos/Decisiones/ADRs/
+  - Documentos/00-start-here/README.md
+  - Documentos/Estudios/
+  - Documentos/Research/
+  - Documentos/PRDS/
+  - Documentos/Benchmarks/
+  - Documentos/Procesos/
+  - Documentos/Presentaciones/
+---
 
-Fecha: 2026-01-XX
-Estado: Propuesto
-Decisor(es): Luigui Avila
-Contexto relacionado:
-- Documentos/Decisiones/ADRs/
-- Documentos/00-start-here/README.md
-- Documentos/Estudios/
-- Documentos/Research/
-- Documentos/PRDS/
-- Documentos/Benchmarks/
-- Documentos/Procesos/
-- Documentos/Presentaciones/
+# ADR-004: Convención de nombres, slugs y numeración para el Segundo Cerebro
 
 ## Contexto
 

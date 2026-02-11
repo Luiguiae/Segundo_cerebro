@@ -1,14 +1,17 @@
 ---
-# ADR-003: Markdown + Frontmatter como formato estándar LLM-friendly
-
-Fecha: 2026-01-XX
-Estado: Propuesto
-Decisor(es): Luigui Avila
-Contexto relacionado:
-- Documentos/00-start-here/README.md
-- Plantillas/PRD_plantilla.md
-- Plantillas/Adr_plantilla.md
-- Plantillas/Bench_plantilla.md
+titulo: "ADR-003: Markdown + Frontmatter como formato estándar LLM-friendly"
+tipo: adr
+estado: aceptado
+autor: Luigui Avila
+fecha: 2026-01-11
+updated: 2026-02-10
+tags: [formato, markdown, frontmatter, estandar]
+fuentes:
+  - Documentos/00-start-here/README.md
+  - Plantillas/prd-plantilla.md
+  - Plantillas/adr-plantilla.md
+  - Plantillas/bench-plantilla.md
+---
 
 ## Contexto
 
@@ -31,7 +34,7 @@ Además, sin metadatos consistentes es difícil:
 - Filtrar por autor, fecha, estado o tags
 - Identificar tipo de documento
 - Establecer trazabilidad entre documentos relacionados
-- Mantener consistencia en plantillas (como `Plantillas/PRD_plantilla.md`, `Plantillas/Adr_plantilla.md`, `Plantillas/Bench_plantilla.md`)
+- Mantener consistencia en plantillas (como `Plantillas/prd-plantilla.md`, `Plantillas/adr-plantilla.md`, `Plantillas/bench-plantilla.md`)
 
 ## Decisión
 
@@ -80,7 +83,7 @@ Se adopta **Markdown (.md)** como formato primario para todo contenido del repos
 - **Descartada porque:** Aunque estructurados, no son tan legibles para humanos como Markdown. Requieren herramientas especializadas para edición. Markdown es más accesible y ampliamente soportado por LLMs.
 
 **4. Usar Markdown sin frontmatter, solo estructura de headings**
-- **Descartada porque:** Aunque mejora búsqueda y chunking, no permite filtrado por metadatos. No facilita trazabilidad ni identificación de tipo de documento. Las plantillas existentes (`Plantillas/PRD_plantilla.md`, `Plantillas/Adr_plantilla.md`) ya usan frontmatter.
+- **Descartada porque:** Aunque mejora búsqueda y chunking, no permite filtrado por metadatos. No facilita trazabilidad ni identificación de tipo de documento. Las plantillas existentes (`Plantillas/prd-plantilla.md`, `Plantillas/adr-plantilla.md`) ya usan frontmatter.
 
 **5. Adoptar Markdown + Frontmatter como formato estándar**
 - **Seleccionada porque:** Maximiza recuperación de contexto, trazabilidad y versionado. Permite búsqueda eficiente, chunking útil y reutilización por agentes. Facilita filtrado por metadatos y mantiene legibilidad para humanos. Es consistente con plantillas existentes.
@@ -110,7 +113,7 @@ Se adopta **Markdown (.md)** como formato primario para todo contenido del repos
 
 - Esta decisión establece el formato estándar para todo contenido nuevo en el Segundo Cerebro
 - Los documentos existentes en otros formatos deben migrarse gradualmente a Markdown con metadatos estándar
-- Las plantillas existentes (`Plantillas/PRD_plantilla.md`, `Plantillas/Adr_plantilla.md`, `Plantillas/Bench_plantilla.md`) ya siguen este patrón y deben usarse como referencia
+- Las plantillas existentes (`Plantillas/prd-plantilla.md`, `Plantillas/adr-plantilla.md`, `Plantillas/bench-plantilla.md`) ya siguen este patrón y deben usarse como referencia
 - Los LLMs que trabajen con el repositorio deben ser instruidos a crear documentos en Markdown con frontmatter estándar
 - El frontmatter puede usar YAML (entre `---`) o formato Markdown consistente, pero debe ser parseable y estructurado
 - Los metadatos mínimos son obligatorios; campos adicionales pueden agregarse según necesidad del tipo de documento
@@ -119,7 +122,7 @@ Se adopta **Markdown (.md)** como formato primario para todo contenido del repos
 
 **Referencias:**
 - `Documentos/00-start-here/README.md` - Estructura oficial del repositorio
-- `Plantillas/PRD_plantilla.md` - Plantilla para PRDs con frontmatter
-- `Plantillas/Adr_plantilla.md` - Plantilla para ADRs con frontmatter
-- `Plantillas/Bench_plantilla.md` - Plantilla para benchmarks
+- `Plantillas/prd-plantilla.md` - Plantilla para PRDs con frontmatter
+- `Plantillas/adr-plantilla.md` - Plantilla para ADRs con frontmatter
+- `Plantillas/bench-plantilla.md` - Plantilla para benchmarks
 - `Documentos/Decisiones/ADRs/ADR-002-separacion-research-estudios-decisiones.md` - Separación de carpetas

@@ -4,7 +4,7 @@ Tu tarea es VALIDAR un PRD existente, no modificarlo ni reescribirlo.
 
 Contexto del sistema:
 - El repositorio sigue una estructura explícita de Segundo Cerebro
-- Los PRDs deben seguir la plantilla Plantillas/PRD_plantilla.md
+- Los PRDs deben seguir la plantilla Plantillas/prd-plantilla.md
 - Las decisiones se documentan en Documentos/Decisiones/ADRs/
 - La evidencia vive en Documentos/Estudios y Documentos/Research
 
@@ -21,7 +21,7 @@ Reglas estrictas:
 Evalúa el PRD en las siguientes dimensiones:
 
 1. Estructura
-- ¿Sigue exactamente la estructura definida en Plantillas/PRD_plantilla.md?
+- ¿Sigue exactamente la estructura definida en Plantillas/prd-plantilla.md?
 - ¿Faltan secciones obligatorias?
 
 2. Evidencia

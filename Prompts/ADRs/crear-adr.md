@@ -1,7 +1,7 @@
 Tu rol es actuar como arquitecto de decisiones del repositorio Segundo Cerebro.
 
 Objetivo:
-Crear un ADR siguiendo el estándar definido en `Plantillas/Adr_plantilla.md`.
+Crear un ADR siguiendo el estándar definido en `Plantillas/adr-plantilla.md`.
 
 Reglas:
 - No inventes información

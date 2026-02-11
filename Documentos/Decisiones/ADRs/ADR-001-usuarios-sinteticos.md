@@ -1,13 +1,18 @@
 ---
-# ADR-001: Adoptar usuarios sintéticos como método complementario de investigación
+titulo: "ADR-001: Adoptar usuarios sintéticos como método complementario de investigación"
+tipo: adr
+estado: aceptado
+autor: Luigui Avila
+fecha: 2026-01-11
+updated: 2026-02-10
+tags: [usuarios-sinteticos, investigacion, metodologia]
+fuentes:
+  - Documentos/Estudios/usuarios-sinteticos.md
+  - Documentos/00-start-here/README.md
+  - Plantillas/adr-plantilla.md
+---
 
-Fecha: 2026-01-XX
-Estado: Propuesto
-Decisor(es): Luigui Avila
-Contexto relacionado:
-- Documentos/Estudios/usuarios-sinteticos.md
-- Documentos/00-start-here/README.md
-- Plantillas/Adr_plantilla.md
+# ADR-001: Adoptar usuarios sintéticos como método complementario de investigación
 
 ## Contexto
 
@@ -86,4 +91,4 @@ Adoptar **usuarios sintéticos** como método complementario de investigación e
 **Referencias:**
 - `Documentos/Estudios/usuarios-sinteticos.md` - Marco conceptual base
 - `Documentos/00-start-here/README.md` - Estructura del repositorio
-- `Plantillas/Adr_plantilla.md` - Plantilla para ADRs
+- `Plantillas/adr-plantilla.md` - Plantilla para ADRs

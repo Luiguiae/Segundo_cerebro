@@ -8,9 +8,9 @@ fecha: ""
 fuentes:
   - Documentos/00-start-here/README.md
   - README.md
-  - Plantillas/PRD_plantilla.md
-  - Plantillas/Adr_plantilla.md
-  - Plantillas/Bench_plantilla.md
+  - Plantillas/prd-plantilla.md
+  - Plantillas/adr-plantilla.md
+  - Plantillas/bench-plantilla.md
 ---
 
 # 1. Apertura
@@ -40,13 +40,13 @@ La solución no es más herramientas, sino **estructura y disciplina**. Un repos
 **Fuente:** `Documentos/00-start-here/README.md`
 
 ### Plantillas/ (reutilizables obligatorias)
-- `PRD_plantilla.md` → para nuevos PRDs
-- `Adr_plantilla.md` → para decisiones (ADR)
-- `Bench_plantilla.md` → para benchmarks comparativos
+- `prd-plantilla.md` → para nuevos PRDs
+- `adr-plantilla.md` → para decisiones (ADR)
+- `bench-plantilla.md` → para benchmarks comparativos
 
 ### Documentos/ (conocimiento estable y reusable)
 - `00-start-here/` → guías, reglas y mapa del repo
-- `PRDS/` → PRDs creados a partir de `PRD_plantilla.md`
+- `PRDS/` → PRDs creados a partir de `prd-plantilla.md`
 - `Research/` → investigación, hallazgos, insights
 - `Benchmarks/` → comparativas y evaluaciones
 - `Procesos/` → flujos, procesos, BPMN, Mermaid
@@ -70,22 +70,22 @@ Trabajo activo por iniciativa o proyecto. Cada iniciativa puede referenciar docu
 Adoptar un **Segundo Cerebro** como sistema de pensamiento estructurado:
 
 1. **Repositorio versionado** como fuente de verdad única
-2. **Plantillas obligatorias** para garantizar consistencia (`Plantillas/PRD_plantilla.md`, `Plantillas/Adr_plantilla.md`, `Plantillas/Bench_plantilla.md`)
+2. **Plantillas obligatorias** para garantizar consistencia (`Plantillas/prd-plantilla.md`, `Plantillas/adr-plantilla.md`, `Plantillas/bench-plantilla.md`)
 3. **Separación clara** entre conocimiento estable (`Documentos/`) y trabajo activo (`Iniciativas/`)
 4. **Reglas explícitas** para colaboración con LLMs que evitan inventar contenido
 
 **Fuentes:**
 - `Documentos/00-start-here/README.md` - Estructura oficial del repositorio
-- `Plantillas/PRD_plantilla.md` - Estructura para PRDs
-- `Plantillas/Adr_plantilla.md` - Estructura para decisiones
-- `Plantillas/Bench_plantilla.md` - Estructura para benchmarks
+- `Plantillas/prd-plantilla.md` - Estructura para PRDs
+- `Plantillas/adr-plantilla.md` - Estructura para decisiones
+- `Plantillas/bench-plantilla.md` - Estructura para benchmarks
 
 # 6. Impacto
 
 ## Para el negocio
 - Conocimiento versionado y recuperable
-- Decisiones documentadas con contexto (`Plantillas/Adr_plantilla.md`)
-- Productos definidos con estructura clara (`Plantillas/PRD_plantilla.md`)
+- Decisiones documentadas con contexto (`Plantillas/adr-plantilla.md`)
+- Productos definidos con estructura clara (`Plantillas/prd-plantilla.md`)
 
 ## Para usuarios/equipo
 - Onboarding más rápido con `Documentos/00-start-here/README.md` como punto de entrada

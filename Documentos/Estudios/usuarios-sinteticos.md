@@ -1,9 +1,15 @@
-# Usuarios Sintéticos: Marco Conceptual
+---
+titulo: "Usuarios Sintéticos: Marco Conceptual"
+tipo: estudio
+estado: estable
+autor: Luigui Avila
+fecha: 2026-01-11
+updated: 2026-02-10
+tags: [usuarios-sinteticos, marco-conceptual, investigacion]
+fuentes: []
+---
 
-**Autor:** Luigui Avila  
-**Fecha:** 2026  
-**Estado:** Documento base conceptual  
-**Ubicación:** `Documentos/Research/usuarios-sinteticos.md`
+# Usuarios Sintéticos: Marco Conceptual
 
 ---
 
@@ -206,7 +212,7 @@ Los usuarios sintéticos no reemplazan usuarios reales; complementan la investig
 - Documentar limitaciones de simulación
 
 **Reutilización en Segundo Cerebro:**
-- Documentar usuarios sintéticos usados en `Documentos/Research/`
+- Documentar usuarios sintéticos usados en `Documentos/Estudios/`
 - Referenciar desde PRDs y decisiones (ADRs)
 - Mantener trazabilidad entre exploración sintética y validación real
 
@@ -214,7 +220,7 @@ Los usuarios sintéticos no reemplazan usuarios reales; complementan la investig
 
 ## Referencias y estructura del repositorio
 
-Este documento se ubica en `Documentos/Research/` como conocimiento estable y reusable.
+Este documento se ubica en `Documentos/Estudios/` como conocimiento estable y reusable.
 
 **Puede ser referenciado desde:**
 - `Documentos/PRDS/` - En secciones de Usuario/Segmento y Supuestos
@@ -230,5 +236,5 @@ Este documento se ubica en `Documentos/Research/` como conocimiento estable y re
 ---
 
 **Fuente:** Este documento es conocimiento base del repositorio.  
-**Última actualización:** 2024  
+**Última actualización:** 2026  
 **Estado:** Estable - Marco conceptual base

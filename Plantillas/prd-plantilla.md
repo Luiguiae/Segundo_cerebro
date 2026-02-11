@@ -1,9 +1,12 @@
 ---
-title: ""
-owner: "Luigui Avila"
-status: draft
+titulo: ""
+tipo: prd
+estado: borrador
+autor: "Luigui Avila"
+fecha: ""
 updated: ""
 tags: []
+fuentes: []
 ---
 
 # Contexto

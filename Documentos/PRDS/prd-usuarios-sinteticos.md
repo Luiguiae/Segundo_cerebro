@@ -1,9 +1,11 @@
 ---
-title: "Usuarios Sintéticos: Capacidad de Investigación"
-owner: "Luigui Avila"
-status: draft
-updated: "2026-01-XX"
-tags: ["investigación", "usuarios-sintéticos", "IA", "research", "capacidad"]
+titulo: "Usuarios Sintéticos: Capacidad de Investigación"
+tipo: prd
+estado: borrador
+autor: Luigui Avila
+fecha: 2026-01-15
+updated: 2026-02-10
+tags: [investigacion, usuarios-sinteticos, ia, research, capacidad]
 fuentes:
   - Documentos/Estudios/usuarios-sinteticos.md
   - Documentos/Decisiones/ADRs/ADR-001-usuarios-sinteticos.md
@@ -251,4 +253,4 @@ Para agentes LLMs que usen usuarios sintéticos:
 - `Documentos/Estudios/usuarios-sinteticos.md` - Marco conceptual base
 - `Documentos/Decisiones/ADRs/ADR-001-usuarios-sinteticos.md` - Decisión arquitectónica
 - `Documentos/00-start-here/README.md` - Estructura del repositorio
-- `Plantillas/PRD_plantilla.md` - Plantilla para PRDs
+- `Plantillas/prd-plantilla.md` - Plantilla para PRDs

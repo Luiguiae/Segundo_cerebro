@@ -1,15 +1,20 @@
 ---
-# ADR-002: Separación entre Research, Estudios y Decisiones en el Segundo Cerebro
+titulo: "ADR-002: Separación entre Research, Estudios y Decisiones"
+tipo: adr
+estado: aceptado
+autor: Luigui Avila
+fecha: 2026-01-11
+updated: 2026-02-10
+tags: [estructura, organizacion, conocimiento]
+fuentes:
+  - Documentos/Research/
+  - Documentos/Estudios/
+  - Documentos/Decisiones/ADRs/
+  - Documentos/00-start-here/README.md
+  - Plantillas/adr-plantilla.md
+---
 
-Fecha: 2026-01-XX
-Estado: Propuesto
-Decisor(es): Luigui Avila
-Contexto relacionado:
-- Documentos/Research/
-- Documentos/Estudios/
-- Documentos/Decisiones/ADRs/
-- Documentos/00-start-here/README.md
-- Plantillas/Adr_plantilla.md
+# ADR-002: Separación entre Research, Estudios y Decisiones en el Segundo Cerebro
 
 ## Contexto
 
@@ -102,4 +107,4 @@ La carpeta `Decisiones/ADRs/` será la única fuente de verdad para decisiones a
 - `Documentos/Research/` - Carpeta para exploración temprana
 - `Documentos/Estudios/` - Carpeta para análisis estructurados
 - `Documentos/Decisiones/ADRs/` - Carpeta para decisiones arquitectónicas
-- `Plantillas/Adr_plantilla.md` - Plantilla para ADRs
+- `Plantillas/adr-plantilla.md` - Plantilla para ADRs

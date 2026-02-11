@@ -1,9 +1,13 @@
 ---
 titulo: "Poblaciones sintéticas y Synthetic Reconstruction (SR)"
+tipo: estudio
 estado: borrador
 autor: Luigui Avila
-updated: 2026-01-XX
+fecha: 2026-01-16
+updated: 2026-02-10
 tags: [poblaciones-sinteticas, synthetic-reconstruction, usuarios-sinteticos]
+fuentes:
+  - Documentos/Decisiones/ADRs/ADR-005-adopcion-synthetic-reconstruction.md
 ---
 
 # Contexto
