@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>De Diseñador a Constructor — v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css">
+<style>
+:root {
+  --bl:  #0B33C2;
+  --or:  #FF6B13;
+  --pk:  #CC007A;
+  --tx:  #ffffff;
+  --mu:  rgba(255,255,255,.72);
+  --dm:  rgba(255,255,255,.36);
+  --dk:  #0a0f2e;
+  --gr:  #4a4e6a;
+  --r:   16px;
+}
+
+/* ── BASE ── */
+.reveal { font-family:'Poppins',sans-serif; }
+.reveal-viewport { background: var(--bl); }
+.reveal .slides section { display:block; width:100%; height:100%; padding:0; top:0; left:0; }
+.reveal .progress, .reveal .controls { display:none; }
+.reveal .slide-number { display:none; }
+
+/* ── SLIDE SHELL ── */
+.sl {
+  width:100%; height:100%; min-height:100vh;
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+  padding:32px 52px 68px; box-sizing:border-box;
+  background:var(--bl);
+}
+.sl.lt { background:#eef1fb; }
+
+/* ── BG BLOBS ── */
+.b { position:absolute; border-radius:50%; pointer-events:none; z-index:0; }
+.b1 { width:520px; height:520px; bottom:-180px; right:-120px; background:rgba(255,255,255,.05); }
+.b2 { width:320px; height:320px; top:-120px; left:180px;    background:rgba(255,255,255,.04); }
+.b3 { width:200px; height:200px; top:42%;   left:-60px;     background:rgba(255,255,255,.03); }
+.b4 { width:420px; height:420px; bottom:-160px; left:50%;   background:rgba(255,255,255,.04); }
+
+/* ── HEADER BAR ── */
+.hb { display:flex; align-items:center; gap:14px; margin-bottom:28px; flex-shrink:0; position:relative; z-index:1; }
+.hm { display:flex; align-items:center; gap:8px; }
+.hm-n { font-size:15px; font-weight:800; color:var(--tx); letter-spacing:.01em; white-space:nowrap; }
+.hm-n .o { color:var(--or); }
+.hd { width:1px; height:20px; background:rgba(255,255,255,.28); }
+.hl { font-size:13px; font-weight:500; color:rgba(255,255,255,.55); }
+.sl.lt .hm-n { color:var(--bl); }
+.sl.lt .hm-n .o { color:var(--or); }
+.sl.lt .hd { background:rgba(11,51,194,.22); }
+.sl.lt .hl { color:var(--gr); }
+
+/* ── BRAND FOOTER ── */
+.bf { position:absolute; bottom:24px; right:48px; text-align:right; z-index:1; }
+.bf .pw { font-size:11px; font-weight:500; color:rgba(255,255,255,.40); display:block; line-height:1.2; }
+.bf .bd { font-family:'Dancing Script',cursive; font-size:21px; color:var(--or); line-height:1; display:block; }
+.sl.lt .bf .pw { color:rgba(0,0,0,.30); }
+
+/* ── MAIN CONTENT ── */
+.mc { flex:1; display:flex; flex-direction:column; position:relative; z-index:1; }
+
+/* ── TYPOGRAPHY ── */
+.dp { font-size:clamp(42px,5.8vw,82px); font-weight:800; line-height:1.05; letter-spacing:-.03em; color:var(--tx); margin:0; }
+.dp .o { color:var(--or); }
+
+.ttl { font-size:clamp(24px,3.2vw,46px); font-weight:700; line-height:1.15; letter-spacing:-.02em; color:var(--tx); margin:0 0 16px; }
+.ttl .o { color:var(--or); }
+.ttl-c { font-size:clamp(26px,3.6vw,50px); font-weight:700; line-height:1.1; letter-spacing:-.02em; color:var(--tx); margin:0 0 14px; text-align:center; }
+.ttl-c .o { color:var(--or); }
+
+.reveal p { font-size:clamp(13px,1.32vw,16px); line-height:1.65; color:var(--mu); margin:0 0 8px; }
+.reveal p:last-child { margin:0; }
+.reveal strong { color:var(--tx); }
+.sl.lt .reveal p { color:var(--gr); }
+.sl.lt .reveal strong { color:var(--dk); }
+
+/* ── COVER LAYOUT ── */
+.sl.cover { justify-content:space-between; }
+.sl.cover .mc { justify-content:center; align-items:center; text-align:center; }
+.cover-dp {
+  font-size: 150px;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -.04em;
+  color: rgba(255,255,255,.88);
+  margin: 0;
+  text-align: center;
+}
+.cover-dp .o { color: var(--or); }
+
+/* ── BOUNCE ARROW ── */
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateY(0) rotate(45deg); opacity:.55; }
+  50%       { transform: translateY(9px) rotate(45deg); opacity:.85; }
+}
+.arrow-down {
+  width: 22px; height: 22px;
+  border-right: 3px solid rgba(255,255,255,.55);
+  border-bottom: 3px solid rgba(255,255,255,.55);
+  transform: rotate(45deg);
+  animation: bounce-arrow 1.7s ease-in-out infinite;
+  margin: 28px auto 0;
+  display: block;
+}
+
+/* ── ROLE ANIMATION ── */
+.role-wrap { position:relative; display:inline-block; }
+#role-word { display:inline-block; color:var(--or); transition:opacity .28s ease, transform .28s ease; }
+.ast-sup { color:var(--or); font-size:.45em; vertical-align:super; font-weight:900; margin-left:1px; }
+.ast-note {
+  font-size:clamp(11px,1.05vw,13px) !important;
+  color:var(--dm) !important; margin-top:14px !important;
+  font-weight:500 !important; letter-spacing:.02em;
+}
+.ast-note span { color:rgba(255,255,255,.50); }
+
+/* ── CARDS ── */
+.c { background:rgba(255,255,255,.10); border-radius:var(--r); padding:16px 20px; }
+.c.or { background:rgba(255,107,19,.14); border:1px solid rgba(255,107,19,.30); }
+.c.lt { background:#fff; border-radius:var(--r); padding:16px 20px; box-shadow:0 2px 14px rgba(11,51,194,.09); }
+.cl { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; display:block; color:var(--or); margin-bottom:8px; }
+.cl.w { color:rgba(255,255,255,.42); }
+.cl.pk { color:var(--pk); }
+
+/* ── QUOTE ── */
+.q { border-left:3px solid var(--or); padding:12px 18px; background:rgba(255,255,255,.07); border-radius:0 12px 12px 0; }
+.q p { font-style:italic; font-size:clamp(12px,1.2vw,15px) !important; color:rgba(255,255,255,.82) !important; }
+.qby { font-size:10px !important; font-weight:700 !important; color:var(--or) !important; font-style:normal !important; text-transform:uppercase; letter-spacing:.08em; display:block; margin-top:5px; }
+
+/* ── STAT NUMBERS (light bg) ── */
+.stn { font-size:clamp(42px,5.2vw,68px); font-weight:900; font-style:italic; color:var(--dk); letter-spacing:-.04em; line-height:1; display:block; margin-bottom:5px; }
+.stn.o { color:var(--or); }
+.src { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--pk); display:block; margin-bottom:4px; }
+.sdsc { font-size:clamp(12px,1.1vw,14px); color:var(--gr); line-height:1.45; }
+
+/* ── STAT NUMBERS (blue bg) ── */
+.stn-b { font-size:clamp(26px,3.4vw,46px); font-weight:900; letter-spacing:-.03em; line-height:1; display:block; margin-bottom:4px; color:var(--or); }
+.stn-b.w { color:var(--tx); }
+.ndsc { font-size:clamp(11px,1.05vw,13px); color:var(--mu); line-height:1.38; }
+
+/* ── CONTRAST GRID ── */
+.ct { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.cc { padding:15px 18px; border-radius:13px; background:rgba(255,255,255,.08); }
+.cc.on { background:rgba(255,107,19,.12); border:1px solid rgba(255,107,19,.28); }
+.cc .ccl { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:8px; }
+.cc.on .ccl { color:var(--or); }
+.cc p { font-size:clamp(12px,1.18vw,14px) !important; margin:0 0 4px !important; }
+
+/* ── CODE FLOW ── */
+.cf { font-family:"SF Mono","Fira Code",monospace; font-size:12px; color:var(--or); display:block; margin:4px 0; opacity:.9; }
+
+/* ── SYSTEM COMPONENTS ── */
+.sys { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:14px 0; }
+.sys-block {
+  background:rgba(255,255,255,.10);
+  border-radius:10px; padding:10px 18px;
+  font-size:clamp(13px,1.4vw,17px); font-weight:600;
+  color:var(--tx); flex:1; text-align:center;
+  white-space:nowrap;
+}
+.sys-block.on { background:rgba(255,107,19,.15); border:1px solid rgba(255,107,19,.28); color:var(--or); }
+.sys-plus { color:var(--dm); font-size:18px; font-weight:300; flex-shrink:0; }
+.sys-tag {
+  background:rgba(255,107,19,.10);
+  border:1px solid rgba(255,107,19,.25);
+  border-radius:10px; padding:10px 20px;
+  font-size:clamp(13px,1.4vw,17px); font-weight:700;
+  color:var(--or); text-align:center; width:100%;
+  margin-top:8px;
+}
+
+/* ── PROCESS STAGES with TOOLTIP ── */
+.stages { display:flex; align-items:stretch; gap:8px; }
+.stg { flex:1; padding:14px 12px; border-radius:13px; background:rgba(255,255,255,.08); text-align:center; position:relative; }
+.stg.on { background:rgba(255,107,19,.14); border:1px solid rgba(255,107,19,.32); }
+.stg.has-tip { cursor:default; }
+.stg .sn { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:4px; }
+.stg .st { font-size:clamp(12px,1.3vw,16px); font-weight:700; color:var(--tx); display:block; margin-bottom:3px; }
+.stg.on .st { color:var(--or); }
+.stg .ss { font-size:11px; color:var(--or); font-weight:600; display:block; margin-bottom:4px; }
+.stg .sd { font-size:11px; color:var(--mu); line-height:1.35; }
+.sarr { display:flex; align-items:center; color:var(--dm); font-size:14px; flex-shrink:0; }
+
+/* TOOLTIP */
+.tip {
+  position:absolute; bottom:calc(100% + 12px); left:50%;
+  transform:translateX(-50%) translateY(4px);
+  width:250px;
+  background:rgba(8,12,42,.97);
+  border:1px solid rgba(255,107,19,.35);
+  border-radius:12px; padding:13px 15px;
+  font-size:12px; line-height:1.55; color:rgba(255,255,255,.85);
+  text-align:left; white-space:normal;
+  opacity:0; pointer-events:none;
+  transition:opacity .22s, transform .22s;
+  z-index:200;
+}
+.tip em { color:var(--or); font-style:normal; font-weight:600; }
+.tip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:8px solid transparent; border-top-color:rgba(255,107,19,.35); }
+.stg.has-tip:hover .tip { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ── EQUATION (used in El Reto for old comparison, now removed) ── */
+
+/* ── COST COMPARE ── */
+.cost { display:grid; grid-template-columns:1fr auto 1fr; gap:10px; align-items:center; }
+.cb { padding:12px 14px; border-radius:12px; text-align:center; background:rgba(255,255,255,.08); }
+.cb.on { background:rgba(255,107,19,.12); border:1px solid rgba(255,107,19,.28); }
+.clb { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:3px; }
+.cb.on .clb { color:var(--or); }
+.cn { font-size:clamp(18px,2vw,26px); font-weight:900; color:var(--or); display:block; margin-bottom:2px; }
+.cd { font-size:11px; color:var(--mu); }
+.cvs { color:var(--dm); font-size:16px; text-align:center; }
+
+/* ── LIST ── */
+.ul { list-style:none; padding:0; margin:8px 0; }
+.ul li { display:flex; gap:10px; align-items:flex-start; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.07); font-size:clamp(13px,1.3vw,16px); color:var(--mu); line-height:1.5; }
+.ul li:last-child { border-bottom:none; }
+.ul li::before { content:"→"; color:var(--or); font-weight:700; flex-shrink:0; margin-top:2px; }
+.ul li strong { color:var(--tx); }
+
+/* ── CHART (slide 8) ── */
+.chart { display:flex; flex-direction:column; gap:18px; }
+.chart-row { display:grid; grid-template-columns:200px 1fr 72px; gap:16px; align-items:center; }
+.chart-lbl { font-size:clamp(12px,1.2vw,14px); font-weight:600; color:var(--gr); text-align:right; line-height:1.3; }
+.chart-track { background:rgba(11,51,194,.08); border-radius:50px; height:28px; overflow:hidden; }
+.chart-fill { height:100%; border-radius:50px; transition:width 1s ease; }
+.chart-fill.f0 { background:rgba(100,110,140,.35); }
+.chart-fill.f1 { background:rgba(11,51,194,.45); }
+.chart-fill.f2 { background:var(--or); }
+.chart-fill.f3 { background:linear-gradient(90deg,var(--or),#ff9a50); }
+.chart-pct { font-size:clamp(18px,2.4vw,30px); font-weight:900; color:var(--dk); font-style:italic; letter-spacing:-.03em; text-align:right; }
+.chart-pct.hi { color:var(--or); }
+.chart-desc { font-size:12px; color:var(--gr); line-height:1.35; grid-column:2 / span 2; margin-top:-10px; padding-left:4px; }
+.chart-row.full { grid-template-columns:200px 1fr 72px; }
+
+/* ── SLIDE 2 — DOS ESTADOS ── */
+/* Estado 1: Solo pregunta, centrada */
+.s2-q1 {
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; flex: 1;
+}
+.s2-big-q {
+  font-size: 28px;
+  font-weight: 800; line-height: 1.2;
+  letter-spacing: -.025em;
+  color: rgba(255,255,255,.88);
+  max-width: 880px;
+}
+
+/* Estado 2: Pregunta pequeña + respuesta */
+.s2-q2 { display: none; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
+.s2-small-q {
+  font-size: clamp(13px,1.4vw,16px) !important;
+  font-weight: 500 !important; color: rgba(255,255,255,.45) !important;
+  text-align: center; line-height: 1.4 !important; margin: 0 !important;
+}
+.s2-card {
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: var(--r);
+  padding: 28px 40px;
+  text-align: center;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+.s2-card .s2-titulo {
+  font-size: clamp(48px,7vw,96px);
+  font-weight: 900; color: var(--or);
+  letter-spacing: -.035em; line-height: 1;
+  margin: 4px 0 12px; display: block;
+}
+.s2-card .s2-body {
+  font-size: clamp(14px,1.5vw,18px) !important;
+  color: rgba(255,255,255,.70) !important;
+  margin: 0 !important; line-height: 1.5 !important;
+}
+.s2-quote {
+  max-width: 860px; width: 100%; margin: 0 auto;
+}
+
+
+/* ── GRIDS ── */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.mt { margin-top:12px; }
+.mt2 { margin-top:20px; }
+
+/* ── NAV DOTS ── */
+.nav-dots { position:fixed; right:18px; top:50%; transform:translateY(-50%); z-index:1000; display:flex; flex-direction:column; gap:7px; }
+.nav-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.20); cursor:pointer; transition:all .3s; }
+.nav-dot:hover { background:rgba(255,255,255,.40); }
+.nav-dot.active { background:var(--or); box-shadow:0 0 8px rgba(255,107,19,.55); }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ══════════════════════════
+     SLIDE 1 — COVER
+══════════════════════════ -->
+<section>
+<div class="sl cover">
+  <!-- blobs más grandes para la portada -->
+  <div class="b" style="width:460px;height:460px;top:-140px;left:60px;background:rgba(255,255,255,.05);"></div>
+  <div class="b" style="width:380px;height:380px;bottom:-100px;right:-80px;background:rgba(255,255,255,.06);"></div>
+  <div class="b" style="width:200px;height:200px;bottom:80px;left:-60px;background:rgba(255,255,255,.04);"></div>
+
+  <!-- Header -->
+  <div class="hb" style="margin-bottom:0;">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Charla · 10 min</span>
+  </div>
+
+  <!-- Contenido central -->
+  <div class="mc">
+    <!-- Título principal -->
+    <div class="cover-dp">
+      De <span class="role-wrap"><span id="role-word">Diseñador</span><sup class="ast-sup">*</sup></span><br>a Constructor
+    </div>
+
+    <!-- Subtítulo -->
+    <div style="font-size:clamp(14px,1.6vw,20px); color:rgba(255,255,255,.60); margin-top:20px; font-weight:500; line-height:1.5; text-align:center;">
+      Entre usuarios sintéticos, vibe coding y equipos de agentes
+    </div>
+
+
+    <!-- Autor -->
+    <div style="font-size:12px; color:rgba(255,255,255,.38); margin-top:28px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; text-align:center;">Luigui Avila</div>
+
+    <!-- Flecha de inicio -->
+    <span class="arrow-down"></span>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">La animación del rol establece desde el inicio que esto no es solo para diseñadores. El asterisco es una señal visual de que esa palabra es dinámica. La flecha indica que hay más contenido al avanzar.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 2 — EL CÓDIGO
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b4"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Introducción</span>
+  </div>
+
+  <div class="mc">
+    <div class="s2-q1">
+      <div class="s2-big-q">¿Cuál es un elemento en común con el que conviven todos los roles que construyen productos o servicios?</div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">Hacer la pregunta en voz alta. Esperar 3 segundos. Avanzar al siguiente slide.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 3 — LA RESPUESTA
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b4"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Introducción</span>
+  </div>
+
+  <div class="mc">
+    <div class="s2-q2" style="display:flex;">
+      <p class="s2-small-q">¿Cuál es un elemento en común con el que conviven todos los roles que construyen productos o servicios?</p>
+
+      <div class="s2-card">
+        <span class="cl" style="text-align:center; margin-bottom:6px;">La Respuesta</span>
+        <span class="s2-titulo">El Código.</span>
+        <p class="s2-body">Hasta hace poco resultaba ajeno a los roles no técnicos. <strong>Eso ya cambió.</strong></p>
+      </div>
+
+      <div class="s2-quote q">
+        <p>"El riesgo de hoy ya no es construir algo que nadie quiere. El riesgo está en quedarte analizando mientras alguien ya está iterando."</p>
+        <span class="qby">— Garry Tan · CEO, Y Combinator</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">El código como denominador común. El riesgo desplazado es la tensión que abre la charla.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 3 — EL RETO
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b2"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">El Reto</span>
+  </div>
+
+  <div class="mc">
+    <p class="ttl" style="margin-bottom:8px;">
+      El reto ya no es solo preguntarnos<br><span class="o">¿qué necesita el cliente?</span>
+    </p>
+    <div class="c or" style="padding:16px 22px; margin-bottom:16px;">
+      <span class="cl">La pregunta que debemos integrar al proceso</span>
+      <p style="font-size:clamp(16px,1.8vw,22px); font-weight:700; color:var(--tx); margin:0; line-height:1.3;">
+        ¿Cómo orquestamos todos los sistemas<br>apoyándonos con IA?
+      </p>
+    </div>
+    <div class="sys">
+      <div class="sys-block">Humanos</div>
+      <span class="sys-plus">+</span>
+      <div class="sys-block">Agentes</div>
+      <span class="sys-plus">+</span>
+      <div class="sys-block on">Decisiones de negocio</div>
+      <span class="sys-plus">+</span>
+      <div class="sys-block">Datos</div>
+    </div>
+    <div class="sys-tag">→ Todo en un sistema vivo</div>
+    <div class="g2 mt">
+      <div class="c">
+        <span class="cl w">Lo que nos daban las metodologías clásicas</span>
+        <p>Procesos lineales para problemas definidos. Investigación antes de construcción. Un rol, una responsabilidad.</p>
+      </div>
+      <div class="c">
+        <span class="cl" style="color:var(--or);">Lo que requiere el contexto actual</span>
+        <p>Equipos capaces de <strong>hacer más en menos tiempo</strong>, coordinando humanos e IA como un sistema integrado.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">El énfasis es en la capacidad ampliada del equipo, no en la reducción. Un equipo de 5 que actúa como uno de 50.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 4 — EL PROCESO
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b3"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">El Proceso</span>
+  </div>
+
+  <div class="mc">
+    <p class="ttl" style="margin-bottom:12px;">
+      El proceso que nos enseñaron<br><span class="o">ya ha cambiado.</span>
+    </p>
+    <div class="q" style="margin-bottom:13px;">
+      <p>"El proceso de diseño que nos enseñaron — lo tratamos como si fuera el evangelio. Básicamente ya está muerto."</p>
+      <span class="qby">— Jenny Wen · Head of Design, Anthropic · ex Directora de Diseño, Figma</span>
+    </div>
+    <div class="ct" style="margin-bottom:11px;">
+      <div class="cc">
+        <span class="ccl">Doble Diamante · 20 años</span>
+        <span class="cf">Descubrir → Definir → Desarrollar → Entregar</span>
+        <p style="font-size:12px; margin-top:6px;">Secuencial. Primero el problema, luego la solución. Diseñado para cuando construir era caro.</p>
+      </div>
+      <div class="cc on">
+        <span class="ccl">Stingray · Board of Innovation</span>
+        <span class="cf">Entrenar → Desarrollar → Iterar</span>
+        <p style="font-size:12px; color:rgba(255,255,255,.75); margin-top:6px;">Paralelo — problemas y soluciones <strong>simultáneamente.</strong> IA como copiloto en cada fase.</p>
+      </div>
+    </div>
+    <p style="font-size:10px; color:var(--dm); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:8px;">Cómo cambió la distribución del tiempo del diseñador — Jenny Wen, Anthropic 2026</p>
+    <div class="g4">
+      <div class="c"><span class="stn-b w">60–70%</span><span class="ndsc">antes en maquetación y prototipado</span></div>
+      <div class="c"><span class="stn-b">30–40%</span><span class="ndsc">hoy en maquetación y prototipado</span></div>
+      <div class="c"><span class="stn-b">30–40%</span><span class="ndsc">ahora en colaboración directa con ingeniería</span></div>
+      <div class="c"><span class="stn-b">+nuevo</span><span class="ndsc">espacio de implementación real de código</span></div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">Stingray (Board of Innovation): Train=IA sintetiza datos existentes, Develop=problemas y soluciones en paralelo, Iterate=validación híbrida con usuarios reales. La IA no reemplaza la empatía — acelera lo que la rodea.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 5 — GRAN IDEA
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b2"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Gran Idea</span>
+  </div>
+
+  <div class="mc">
+    <p class="ttl" style="margin-bottom:14px;">
+      Del clásico pensamiento de diseño<br>a una alternativa pensada en <span class="o">velocidad = aprendizaje</span>
+    </p>
+    <div class="stages" style="margin-bottom:14px;">
+      <!-- 01 Hipótesis -->
+      <div class="stg">
+        <span class="sn">01</span>
+        <span class="st">Hipótesis</span>
+        <span class="ss">Pregunta acotada</span>
+        <span class="sd">¿Qué problema real resolvemos? Definir antes de construir.</span>
+      </div>
+      <span class="sarr">→</span>
+      <!-- 02 Simulación — tiene tooltip -->
+      <div class="stg on has-tip">
+        <span class="sn">02</span>
+        <span class="st">Simulación</span>
+        <span class="ss">Usuarios · Agentes</span>
+        <span class="sd">Validar con perfiles IA. Cientos de escenarios en minutos.</span>
+        <div class="tip">
+          Simulación es una etapa nueva que se introduce para complementar, refinar e intentar predecir posibles escenarios.<br><br>
+          <em>Por ejemplo:</em> Usuarios sintéticos · Poblaciones sintéticas · Agentes especialistas en un rol.
+        </div>
+      </div>
+      <span class="sarr">→</span>
+      <!-- 03 Construcción — tiene tooltip -->
+      <div class="stg has-tip">
+        <span class="sn">03</span>
+        <span class="st">Construcción</span>
+        <span class="ss">Vibe coding · Agentes</span>
+        <span class="sd">Prototipo funcional en días. La deuda técnica es temporal por diseño.</span>
+        <div class="tip">
+          El tiempo de construcción deja de ser una variable crítica, siendo reemplazada por el tiempo que <em>tangibilizas</em> un producto o funcionalidad y con qué velocidad aprendes y actúas sobre ese aprendizaje.
+        </div>
+      </div>
+      <span class="sarr">→</span>
+      <!-- 04 Ajuste continuo -->
+      <div class="stg">
+        <span class="sn">04</span>
+        <span class="st">Ajuste continuo</span>
+        <span class="ss">Build → medir → rebuild</span>
+        <span class="sd">No existe diseño final. El loop importa más que el producto.</span>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="c or">
+        <p><strong>Simulación</strong> introduce una capa de predicción antes de comprometer recursos. No reemplaza la investigación con usuarios reales — la complementa y la hace más precisa.</p>
+      </div>
+      <div class="c">
+        <p>La <strong>variable crítica</strong> ya no es cuánto tarda la construcción. Es <strong>con qué velocidad aprendés y actuás</strong> sobre ese aprendizaje en cada loop.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">Los tooltips funcionan en la presentación web. Mencionar en voz alta: "Si pasan el cursor por Simulación o Construcción van a ver la definición expandida." Para presencial, leer los tooltips en voz alta.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 6 — ESTRATEGIA
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b3"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Estrategia</span>
+  </div>
+
+  <div class="mc">
+    <p class="ttl" style="margin-bottom:14px;">
+      Comenzar pequeño<br><span class="o">y continuar incremental.</span>
+    </p>
+    <div class="g2">
+      <div>
+        <ul class="ul">
+          <li>El sistema siempre está en construcción — <strong>no existe diseño final ni producto completo</strong></li>
+          <li>No es un equipo al que le faltan recursos — <strong>es un equipo que ya no los necesita de la misma manera</strong></li>
+          <li>Si el loop de construir → medir → aprender tarda semanas, <strong>el modelo mental sigue roto</strong></li>
+        </ul>
+        <div class="cost mt">
+          <div class="cb">
+            <span class="clb">Antes</span>
+            <span class="cn">$50–100k</span>
+            <span class="cd">contratar un desarrollador junior</span>
+          </div>
+          <span class="cvs">→</span>
+          <div class="cb on">
+            <span class="clb">Ahora</span>
+            <span class="cn">$20/mes</span>
+            <span class="cd">herramientas que multiplican la capacidad del equipo</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="c" style="margin-bottom:12px;">
+          <span class="cl w">La paradoja del momento</span>
+          <p>La IA <strong>acelera dramáticamente</strong> la construcción. Sin embargo, el <strong>juicio, el criterio y la capacidad de discernimiento</strong> pasan a ser aún más valiosos — no menos.</p>
+          <p style="margin-top:5px; font-size:12px; color:var(--dm);">IA amplifica lo que le traés. Si traés poco criterio, amplifica el error.</p>
+        </div>
+        <div class="c or">
+          <span class="cl">Y Combinator · 2025</span>
+          <p>Por primera vez en la historia de YC, están apareciendo startups que levantan <strong>$10 millones de dólares</strong> con equipos de entre <strong>5 y 10 personas</strong>, amplificados por agentes de IA.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">"No le faltan recursos, ya no los necesita de la misma manera" — distinción crítica. YC 2025: equipos de 5-10 personas alcanzando $10M. El dato valida que no es hipotético.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 7 — EVIDENCIAS (light)
+══════════════════════════ -->
+<section>
+<div class="sl lt">
+  <div class="b b1" style="background:rgba(11,51,194,.05);"></div>
+  <div class="b b2" style="background:rgba(11,51,194,.04);"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Evidencias</span>
+  </div>
+
+  <div class="mc">
+    <div style="display:grid; grid-template-columns:200px 1fr; gap:22px; align-items:start; flex:1;">
+      <!-- Panel izquierdo -->
+      <div style="background:var(--bl); border-radius:var(--r); padding:22px 18px; display:flex; flex-direction:column; justify-content:flex-end; height:100%; min-height:320px; position:relative; overflow:hidden;">
+        <div class="b" style="width:240px;height:240px;top:-80px;right:-80px;background:rgba(255,255,255,.06);"></div>
+        <p style="font-size:10px; color:rgba(255,255,255,.42); text-transform:uppercase; letter-spacing:.14em; font-weight:700; margin-bottom:6px; position:relative; z-index:1;">No es especulación</p>
+        <p style="font-size:clamp(22px,2.8vw,34px); font-weight:900; color:#fff; line-height:1.1; letter-spacing:-.02em; margin:0; position:relative; z-index:1;">Son los<br>números<br><span style="color:var(--or);">de hoy.</span></p>
+      </div>
+      <!-- Panel derecho: stats + quotes -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px;">
+          <div class="c lt">
+            <span class="src">YC W25</span>
+            <span class="stn">25%</span>
+            <span class="sdsc">de startups con 95% de su código creado con IA</span>
+          </div>
+          <div class="c lt">
+            <span class="src">Cursor · 2025</span>
+            <span class="stn o">$29B</span>
+            <span class="sdsc">sin PMs de tiempo completo. Roles difusos + agentes como pegamento</span>
+          </div>
+          <div class="c lt">
+            <span class="src">Google · 2024</span>
+            <span class="stn">25%</span>
+            <span class="sdsc">del código asistido por IA · +10% en velocidad de producción</span>
+          </div>
+          <div class="c lt">
+            <span class="src">LATAM · Vibe Coding</span>
+            <span class="stn o">0.06%</span>
+            <span class="sdsc">solo el 0.06% en Latinoamérica usa vibe coding activamente</span>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="c lt" style="padding:13px 16px; border-left:3px solid var(--or);">
+            <p style="font-style:italic; font-size:clamp(12px,1.15vw,14px) !important; color:var(--gr) !important; margin-bottom:6px !important;">"Esto no es una moda. Es la forma dominante de programar. Si no lo estás haciendo, podrías quedarte atrás."</p>
+            <span style="font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--or);">— Garry Tan · CEO, Y Combinator</span>
+          </div>
+          <div class="c lt" style="padding:13px 16px; border-left:3px solid var(--or);">
+            <p style="font-style:italic; font-size:clamp(12px,1.15vw,14px) !important; color:var(--gr) !important; margin-bottom:6px !important;">"No solo los diseñadores sienten que deben mantenerse al nivel de los ingenieros. Incluso los ingenieros se preguntan: ¿cómo nos mantenemos al nivel de nosotros mismos?"</p>
+            <span style="font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--or);">— Jenny Wen · Head of Design, Anthropic</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">El 0.06% es el dato más contraintuitivo. Todo el mundo habla de IA, casi nadie la usa en producción en LATAM. Cursor $29B sin PMs es el caso más impactante para esta audiencia.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 8 — ADOPCIÓN IA / DOT MATRIX
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Adopción de IA · 2026</span>
+  </div>
+
+  <div class="mc" style="gap:14px; justify-content:center;">
+
+    <!-- Título -->
+    <div style="text-align:center;">
+      <div style="font-size:clamp(26px,3.2vw,44px); font-weight:900; color:#fff; line-height:1.1; margin-bottom:6px;">¿Cuánta gente usa la IA?</div>
+      <div style="font-size:10px; color:rgba(255,255,255,.40); letter-spacing:.05em;">Cada punto ≈ 3.2 millones de personas &nbsp;·&nbsp; 2,500 puntos = 8.1B humanos &nbsp;·&nbsp; Color = nivel más avanzado de interacción con IA · Feb 2026</div>
+    </div>
+
+    <!-- Dot grid -->
+    <div id="dotGrid" style="display:grid; grid-template-columns:repeat(50,10px); grid-template-rows:repeat(50,10px); gap:3px; margin:0 auto;"></div>
+
+    <!-- Leyenda -->
+    <div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:7px;">
+        <div style="width:10px;height:10px;border-radius:2px;background:#7A82A0;flex-shrink:0;"></div>
+        <span style="font-size:11px;color:rgba(255,255,255,.55);">Nunca usó IA &nbsp;·&nbsp; ~6.8B <span style="color:rgba(255,255,255,.35);">(84%)</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <div style="width:10px;height:10px;border-radius:2px;background:#4CAF50;flex-shrink:0;"></div>
+        <span style="font-size:11px;color:rgba(255,255,255,.55);">Chatbot gratuito &nbsp;·&nbsp; ~1.3B <span style="color:rgba(255,255,255,.35);">(16%)</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <div style="width:10px;height:10px;border-radius:2px;background:#FFC107;flex-shrink:0;"></div>
+        <span style="font-size:11px;color:rgba(255,255,255,.55);">Paga $20/mes &nbsp;·&nbsp; ~15-25M <span style="color:rgba(255,255,255,.35);">(~0.3%)</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <div style="width:10px;height:10px;border-radius:2px;background:#EF5350;flex-shrink:0;"></div>
+        <span style="font-size:11px;color:rgba(255,255,255,.55);">Usa IA para código &nbsp;·&nbsp; ~2-5M <span style="color:rgba(255,255,255,.35);">(~0.04%)</span></span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">El mensaje clave: la inmensa mayoría todavía no usa IA. Hay una ventana enorme de diferenciación para quien actúa hoy. Fuente: estimados basados en datos públicos Feb 2026.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 9 — CIERRE
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b2"></div><div class="b b4"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+    <div class="hd"></div>
+    <span class="hl">Cierre</span>
+  </div>
+
+  <div class="mc" style="justify-content:center; align-items:center; text-align:center; padding:20px 0;">
+    <p style="font-size:clamp(16px,1.9vw,24px); font-weight:500; color:var(--mu); line-height:1.4; margin:0 auto 24px; max-width:680px;">
+      La pregunta no es si deberíamos pasar a construir.
+    </p>
+    <p style="font-size:clamp(26px,3.4vw,50px); font-weight:800; line-height:1.2; margin:0 auto 24px; max-width:820px; color:var(--tx); letter-spacing:-.025em;">
+      La pregunta es si, como profesionales<br>o como empresa,
+      <span style="color:var(--or);">nos podemos permitirnos no hacerlo…</span>
+    </p>
+    <p style="font-size:clamp(16px,1.9vw,24px); font-weight:500; color:var(--mu); line-height:1.4; margin:0 auto; max-width:680px;">
+      y sobre todo — <strong style="color:var(--tx);">¿hasta cuándo?</strong>
+    </p>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">Cerrar con silencio después de "¿hasta cuándo?". Sin agregar más.</aside>
+</section>
+
+<!-- ══════════════════════════
+     SLIDE 10 — GRACIAS
+══════════════════════════ -->
+<section>
+<div class="sl">
+  <div class="b b1"></div><div class="b b2"></div><div class="b b3"></div>
+
+  <div class="hb">
+    <div class="hm">
+      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
+        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
+        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
+      </svg>
+      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+    </div>
+  </div>
+
+  <div class="mc" style="justify-content:center; align-items:center; text-align:center; padding:20px 0;">
+    <p style="font-size:clamp(60px,9vw,120px); font-weight:900; letter-spacing:-.04em; color:var(--tx); margin:0 0 10px; line-height:1;">
+      Gracias.
+    </p>
+    <p style="font-size:clamp(20px,2.4vw,32px); font-weight:600; color:var(--or); margin:0 0 36px; letter-spacing:-.01em;">
+      Sigamos conversando.
+    </p>
+    <div style="display:flex; align-items:center; gap:20px; justify-content:center; flex-wrap:wrap;">
+      <div style="background:rgba(255,255,255,.08); border-radius:12px; padding:12px 22px;">
+        <p style="font-size:12px; color:var(--dm); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:4px;">Luigui Avila</p>
+        <p style="font-size:14px; color:var(--mu); margin:0; font-weight:500;">Diseño Estratégico</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
+</div>
+<aside class="notes">Dejar el slide visible mientras fluye la conversación. No cerrar la presentación.</aside>
+</section>
+
+</div>
+</div>
+
+<div class="nav-dots" id="navDots"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+<script>
+// ── ROLE ANIMATION ──
+const roles = ['Diseñador','PO','PM','BA','QE','Marketing','Writer','Investigador'];
+let ri = 0;
+const roleEl = document.getElementById('role-word');
+if (roleEl) {
+  setInterval(() => {
+    roleEl.style.opacity = '0';
+    roleEl.style.transform = 'translateY(-10px)';
+    setTimeout(() => {
+      ri = (ri + 1) % roles.length;
+      roleEl.textContent = roles[ri];
+      roleEl.style.opacity = '1';
+      roleEl.style.transform = 'translateY(0)';
+    }, 280);
+  }, 2200);
+}
+
+// ── REVEAL INIT ──
+Reveal.initialize({
+  hash: true,
+  controls: false,
+  progress: false,
+  slideNumber: false,
+  center: false,
+  margin: 0,
+  transition: 'fade',
+  backgroundTransition: 'fade',
+  width: '100%',
+  height: '100%',
+  plugins: [RevealNotes]
+});
+
+// ── DOT MATRIX (slide 8) ──
+(function() {
+  const grid = document.getElementById('dotGrid');
+  if (!grid) return;
+  // 50×50 = 2500 dots
+  // gray=2100 (84%), green=393 (15.7%), orange=6 (0.24%), red=1 (0.04%)
+  const colors = [
+    { c: '#7A82A0', n: 2100 },
+    { c: '#4CAF50', n: 393 },
+    { c: '#FFC107', n: 6 },
+    { c: '#EF5350', n: 1 }
+  ];
+  const seq = [];
+  colors.forEach(({ c, n }) => { for (let i = 0; i < n; i++) seq.push(c); });
+  seq.forEach(c => {
+    const d = document.createElement('div');
+    d.style.cssText = `width:10px;height:10px;border-radius:2px;background:${c};`;
+    grid.appendChild(d);
+  });
+})();
+
+// ── NAV DOTS ──
+Reveal.on('ready', () => {
+  const container = document.getElementById('navDots');
+  Reveal.getSlides().forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot';
+    dot.addEventListener('click', () => Reveal.slide(i));
+    container.appendChild(dot);
+  });
+  const update = () => {
+    const idx = Reveal.getIndices().h;
+    container.querySelectorAll('.nav-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === idx)
+    );
+  };
+  Reveal.on('slidechanged', update);
+  update();
+});
+</script>
+</body>
+</html>
