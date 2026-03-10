@@ -64,18 +64,25 @@
 .sl.lt .bf .pw { color:rgba(0,0,0,.30); }
 
 /* ── MAIN CONTENT ── */
-.mc { flex:1; display:flex; flex-direction:column; position:relative; z-index:1; }
+.mc {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  z-index:1;
+  justify-content:center; /* centra verticalmente el contenido por defecto */
+}
 
 /* ── TYPOGRAPHY ── */
 .dp { font-size:clamp(42px,5.8vw,82px); font-weight:800; line-height:1.05; letter-spacing:-.03em; color:var(--tx); margin:0; }
 .dp .o { color:var(--or); }
 
-.ttl { font-size:clamp(24px,3.2vw,46px); font-weight:700; line-height:1.15; letter-spacing:-.02em; color:var(--tx); margin:0 0 16px; }
+.ttl { font-size:clamp(26px,3.4vw,50px); font-weight:700; line-height:1.15; letter-spacing:-.02em; color:var(--tx); margin:0 0 18px; }
 .ttl .o { color:var(--or); }
-.ttl-c { font-size:clamp(26px,3.6vw,50px); font-weight:700; line-height:1.1; letter-spacing:-.02em; color:var(--tx); margin:0 0 14px; text-align:center; }
+.ttl-c { font-size:clamp(28px,3.8vw,54px); font-weight:700; line-height:1.1; letter-spacing:-.02em; color:var(--tx); margin:0 0 16px; text-align:center; }
 .ttl-c .o { color:var(--or); }
 
-.reveal p { font-size:clamp(13px,1.32vw,16px); line-height:1.65; color:var(--mu); margin:0 0 8px; }
+.reveal p { font-size:clamp(15px,1.6vw,19px); line-height:1.7; color:var(--mu); margin:0 0 10px; }
 .reveal p:last-child { margin:0; }
 .reveal strong { color:var(--tx); }
 .sl.lt .reveal p { color:var(--gr); }
@@ -604,6 +611,10 @@
         <p>La <strong>variable crítica</strong> ya no es cuánto tarda la construcción. Es <strong>con qué velocidad aprendés y actuás</strong> sobre ese aprendizaje en cada loop.</p>
       </div>
     </div>
+    <div class="q mt2">
+      <p>"La IA es materia prima, no producto terminado. La mayoría se queda en la primera salida en vez de usarla como punto de partida."</p>
+      <span class="qby">— Ryo Lu · Head of Design, Cursor</span>
+    </div>
   </div>
 
   <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
@@ -667,6 +678,10 @@
         </div>
       </div>
     </div>
+    <div class="q mt2">
+      <p>"Construí para generar impacto, no solo crecimiento. Cuando resolvés problemas reales para personas reales, todo lo demás llega solo."</p>
+      <span class="qby">— Felix Lee · Co-Founder &amp; CEO, ADPList</span>
+    </div>
   </div>
 
   <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
@@ -729,11 +744,11 @@
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
           <div class="c lt" style="padding:13px 16px; border-left:3px solid var(--or);">
             <p style="font-style:italic; font-size:clamp(12px,1.15vw,14px) !important; color:var(--gr) !important; margin-bottom:6px !important;">"Esto no es una moda. Es la forma dominante de programar. Si no lo estás haciendo, podrías quedarte atrás."</p>
-            <span style="font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--or);">— Garry Tan · CEO, Y Combinator</span>
+          <span class="qby">— Garry Tan · CEO, Y Combinator</span>
           </div>
           <div class="c lt" style="padding:13px 16px; border-left:3px solid var(--or);">
             <p style="font-style:italic; font-size:clamp(12px,1.15vw,14px) !important; color:var(--gr) !important; margin-bottom:6px !important;">"No solo los diseñadores sienten que deben mantenerse al nivel de los ingenieros. Incluso los ingenieros se preguntan: ¿cómo nos mantenemos al nivel de nosotros mismos?"</p>
-            <span style="font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--or);">— Jenny Wen · Head of Design, Anthropic</span>
+          <span class="qby">— Jenny Wen · Head of Design, Anthropic</span>
           </div>
         </div>
       </div>

@@ -19,6 +19,11 @@ Vibe coding es un modo de construir software donde el punto de partida no es la 
 ## ¿Por qué importa?
 El cuello de botella de la construcción de software siempre fue técnico. Vibe coding lo elimina. Un diseñador sin experiencia en código puede tener un producto funcional en horas. El 25% de las startups de Y Combinator Winter 2025 tienen el 95% de su código generado por IA — no es futuro, es presente.
 
+Además, corrige una limitación de muchas herramientas “no-code con IA”: en productos como Lovable o v0 es fácil empezar, pero es difícil **graduarse** hacia arquitecturas más complejas. Con Cursor, el mismo entorno sirve tanto para:
+
+- Primeros experimentos simples.
+- Como para un codebase serio mantenido por un equipo experto.
+
 ## ¿Cómo funciona?
 Existen tres capas de madurez:
 
@@ -27,6 +32,19 @@ Existen tres capas de madurez:
 3. **Layer 3 - Engineering**: Calidad, consistencia, componentes apropiados, Git. Production-ready. Herramientas: Cursor, Claude Code.
 
 El error más común es quedarse en Layer 1 y llamarlo "producto".
+
+### Dos estilos de trabajo con agentes
+
+Ryo Lu describe dos rutas sanas para trabajar con modelos/agentes al construir:
+
+1. **Slop → oro**  
+   - Dejar que el agente genere una primera versión “sloppy”.  
+   - Usar esa estructura general como andamiaje y luego refinar a mano.
+2. **Planear primero**  
+   - Pensar el flujo, hacer mocks claros y detallar la intención.  
+   - Dejar que el agente ejecute ese plan con mucha más precisión.
+
+Ambos caminos son válidos — lo importante es que el **criterio y refinamiento siguen siendo humanos**, especialmente en detalles visuales (espaciados, alineaciones) donde los modelos todavía fallan.
 
 ## Ejemplos concretos
 - Ryo Lu (Head of Design en Cursor) construyó ryOS — un sistema operativo retro completo — enteramente con vibe coding en Cursor.
@@ -38,6 +56,7 @@ El error más común es quedarse en Layer 1 y llamarlo "producto".
 - Genera vulnerabilidades de seguridad si no se entiende el código generado.
 - "Deuda técnica se compone exponencialmente cuando no entiendes tu código" — crítica válida para uso sin fundamentos.
 - La paradoja: necesitas MÁS conocimiento técnico para usar IA bien, no menos. IA amplifica lo que le traes.
+- La IA es mala inventando sistemas completos desde cero, pero muy buena **componiendo cosas que ya existen** (design systems, librerías, patrones). De ahí la importancia de “construir ladrillos”, no piezas sueltas.
 
 ## Se conecta con...
 - [[disenador-a-constructor]] → vibe coding es el habilitador técnico principal de esta evolución

@@ -17,7 +17,13 @@ estado: consolidado
 La evolución del rol del diseñador desde un perfil que entrega especificaciones hacia uno que construye directamente el producto. Las herramientas de IA eliminaron la fricción técnica que separaba la idea de su materialización, convirtiendo al diseñador en un perfil híbrido capaz de diseñar y construir en el mismo flujo.
 
 ## ¿Por qué importa?
-Históricamente, el diseñador dependía del desarrollador para que su visión cobrara vida. Ese handoff generaba pérdida de intención, ciclos largos y distancia entre quien imagina y quien construye. Hoy esa barrera desapareció. El diseñador que construye comprime el ciclo de idea → producto de semanas a horas, y lo hace con plena fidelidad a su visión original.
+Históricamente, el diseñador dependía del desarrollador para que su visión cobrara vida. Ese handoff generaba pérdida de intención, ciclos largos y distancia entre quien imagina y quien construye. Hoy esa barrera desapareció. El diseñador que construye comprime el ciclo de idea → producto de semanas a horas, y lo hace con mucha más fidelidad a su visión original.
+
+Si miramos hacia atrás, los primeros constructores de software (Bill Atkinson en Macintosh, Alan Kay en Xerox PARC) no separaban diseño y código: **pensar y construir eran el mismo gesto**. La especialización posterior (diseñador → mocks, PM → doc, engineer → ticket) prometió velocidad, pero en la práctica:
+
+- **Se coordinó más y se construyó menos.**
+- El objetivo se volvió “hacer match con Figma”, no explorar qué sistema funciona mejor.
+- Casi nadie veía el sistema completo en su cabeza.
 
 ## ¿Cómo funciona?
 El cambio ocurre en tres dimensiones:
@@ -47,7 +53,10 @@ El cambio ocurre en tres dimensiones:
 
 > "El handoff siempre fue la principal fuente de pérdida de intención en producto."
 
+> "La mejor forma de predecir el futuro es inventarlo." — Alan Kay
+
 ## Mis notas
 - Este concepto es central en la narrativa de Wayta_IA — el equipo es pequeño precisamente porque cada persona es diseñador-constructor.
 - Vale la pena explorar si esto aplica también al rol del PM: ¿el PM que puede construir es el siguiente paso?
 - La pregunta clave no es si el diseñador puede construir, sino qué tan rápido puede iterar lo que construye.
+- El **gap diseño-realidad** (lo que está en la cabeza/mocks vs. lo que llega al producto) históricamente se quedaba en ~50%. Que el diseñador entre al código reduce este gap: más ideas extremas llegan a código real y se pueden sentir con clicks, no solo imaginar en la cabeza.

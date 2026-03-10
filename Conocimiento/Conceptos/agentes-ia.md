@@ -56,3 +56,9 @@ En Cursor, Ryo Lu describe que "los roles entre diseñadores, PMs e ingenieros s
 - La escalera de la charla: Usuarios Sintéticos (validar) → Vibe Coding (construir) → Agentes (escalar).
 - Dato clave: 90% de equipos de ingeniería usan herramientas IA (Jellyfish 2025), subió de 61% en un año.
 - Ryo Lu en Cursor es el ejemplo vivo: roles difusos + agentes como pegamento.
+- Cuando un agente “se pierde” (loops, resultados que no llegan a donde querés), suelen pasar dos cosas:
+  - El modelo no tiene suficiente contexto (no ve el código, los mocks o los datos relevantes).
+  - La intención está expresada de forma ambigua (“hazlo mejor”, “arregla esto”).
+- Dos estrategias prácticas:
+  - Aceptar una primera pasada “sloppy” y luego refinar tú mismo sobre la estructura que dejó.
+  - Planear más antes: dividir la tarea, explicitar pasos y criterios de éxito, y dejar al agente ejecutar ese plan.
