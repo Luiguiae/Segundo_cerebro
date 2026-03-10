@@ -190,16 +190,19 @@
 }
 
 /* ── PROCESS STAGES with TOOLTIP ── */
-.stages { display:flex; align-items:stretch; gap:8px; }
-.stg { flex:1; padding:14px 12px; border-radius:13px; background:rgba(255,255,255,.08); text-align:center; position:relative; transition:flex-grow 0.32s ease; overflow:hidden; }
+.stages { display:flex; align-items:stretch; gap:8px; height:158px; }
+.stg { flex:1; padding:14px 12px; border-radius:13px; background:rgba(255,255,255,.08); text-align:center; position:relative; transition:flex-grow 0.32s ease; }
 .stg.on { background:rgba(255,107,19,.14); border:1px solid rgba(255,107,19,.32); }
 .stg.has-tip { cursor:default; }
 .stg.has-tip:hover { flex-grow: 2.8; }
 .stg .sn { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:4px; }
-.stg .st { font-size:clamp(12px,1.3vw,16px); font-weight:700; color:var(--tx); display:block; margin-bottom:3px; }
+.stg .st { font-size:clamp(12px,1.3vw,15px); font-weight:700; color:var(--tx); display:block; margin-bottom:3px; transition: font-size 0.28s ease; }
 .stg.on .st { color:var(--or); }
-.stg .ss { font-size:11px; color:var(--or); font-weight:600; display:block; margin-bottom:4px; }
-.stg .sd { font-size:11px; color:var(--mu); line-height:1.35; }
+.stg .ss { font-size:10px; color:var(--or); font-weight:600; display:block; margin-bottom:4px; transition: font-size 0.28s ease; }
+.stg .sd { font-size:10px; color:var(--mu); line-height:1.35; transition: font-size 0.28s ease; }
+.stg.has-tip:hover .st { font-size: clamp(15px,1.9vw,21px); }
+.stg.has-tip:hover .ss { font-size: 12.5px; }
+.stg.has-tip:hover .sd { font-size: 12px; }
 .sarr { display:flex; align-items:center; color:var(--dm); font-size:14px; flex-shrink:0; }
 
 /* TOOLTIP */
