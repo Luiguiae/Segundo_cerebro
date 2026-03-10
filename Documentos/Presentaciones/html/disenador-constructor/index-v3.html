@@ -191,9 +191,10 @@
 
 /* ── PROCESS STAGES with TOOLTIP ── */
 .stages { display:flex; align-items:stretch; gap:8px; }
-.stg { flex:1; padding:14px 12px; border-radius:13px; background:rgba(255,255,255,.08); text-align:center; position:relative; }
+.stg { flex:1; padding:14px 12px; border-radius:13px; background:rgba(255,255,255,.08); text-align:center; position:relative; transition:flex-grow 0.32s ease; overflow:hidden; }
 .stg.on { background:rgba(255,107,19,.14); border:1px solid rgba(255,107,19,.32); }
 .stg.has-tip { cursor:default; }
+.stg.has-tip:hover { flex-grow: 2.8; }
 .stg .sn { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:4px; }
 .stg .st { font-size:clamp(12px,1.3vw,16px); font-weight:700; color:var(--tx); display:block; margin-bottom:3px; }
 .stg.on .st { color:var(--or); }
@@ -562,39 +563,39 @@
       Del clásico pensamiento de diseño<br>a una alternativa pensada en <span class="o">velocidad = aprendizaje</span>
     </p>
     <div class="stages" style="margin-bottom:14px; align-items:stretch;">
-      <!-- 01 Hipótesis — estrecho -->
-      <div class="stg" style="flex:0.7;">
+      <!-- 01 Hipótesis -->
+      <div class="stg">
         <span class="sn">01</span>
         <span class="st">Hipótesis</span>
         <span class="ss">Pregunta acotada</span>
         <span class="sd">¿Qué problema real resolvemos? Definir antes de construir.</span>
       </div>
       <span class="sarr">→</span>
-      <!-- 02 Simulación — GRANDE, tiene tooltip -->
-      <div class="stg on has-tip" style="flex:2.2;">
-        <span class="sn" style="font-size:11px;">02</span>
-        <span class="st" style="font-size:clamp(16px,2vw,26px); margin-bottom:6px;">Simulación</span>
-        <span class="ss" style="font-size:13px;">Usuarios · Agentes</span>
-        <span class="sd" style="font-size:12.5px;">Validar con perfiles IA. Cientos de escenarios en minutos.</span>
+      <!-- 02 Simulación — expande en hover -->
+      <div class="stg on has-tip">
+        <span class="sn">02</span>
+        <span class="st">Simulación</span>
+        <span class="ss">Usuarios · Agentes</span>
+        <span class="sd">Validar con perfiles IA. Cientos de escenarios en minutos.</span>
         <div class="tip">
           Simulación es una etapa nueva que se introduce para complementar, refinar e intentar predecir posibles escenarios.<br><br>
           <em>Por ejemplo:</em> Usuarios sintéticos · Poblaciones sintéticas · Agentes especialistas en un rol.
         </div>
       </div>
       <span class="sarr">→</span>
-      <!-- 03 Construcción — GRANDE, tiene tooltip -->
-      <div class="stg has-tip" style="flex:2.2;">
-        <span class="sn" style="font-size:11px;">03</span>
-        <span class="st" style="font-size:clamp(16px,2vw,26px); margin-bottom:6px;">Construcción</span>
-        <span class="ss" style="font-size:13px;">Vibe coding · Agentes</span>
-        <span class="sd" style="font-size:12.5px;">Prototipo funcional en días. La deuda técnica es temporal por diseño.</span>
+      <!-- 03 Construcción — expande en hover -->
+      <div class="stg has-tip">
+        <span class="sn">03</span>
+        <span class="st">Construcción</span>
+        <span class="ss">Vibe coding · Agentes</span>
+        <span class="sd">Prototipo funcional en días. La deuda técnica es temporal por diseño.</span>
         <div class="tip">
           El tiempo de construcción deja de ser una variable crítica, siendo reemplazada por el tiempo que <em>tangibilizas</em> un producto o funcionalidad y con qué velocidad aprendes y actúas sobre ese aprendizaje.
         </div>
       </div>
       <span class="sarr">→</span>
-      <!-- 04 Ajuste continuo — estrecho -->
-      <div class="stg" style="flex:0.7;">
+      <!-- 04 Ajuste continuo -->
+      <div class="stg">
         <span class="sn">04</span>
         <span class="st">Ajuste continuo</span>
         <span class="ss">Build → medir → rebuild</span>
