@@ -4,8 +4,14 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>De Diseñador a Constructor — v3</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family:'Flexo'; src:url('assets/fonts/Flexo-Regular.otf') format('opentype'); font-weight:400; font-style:normal; }
+@font-face { font-family:'Flexo'; src:url('assets/fonts/Flexo-Medium.otf')  format('opentype'); font-weight:500; font-style:normal; }
+@font-face { font-family:'Flexo'; src:url('assets/fonts/Flexo-Demi.otf')    format('opentype'); font-weight:600; font-style:normal; }
+@font-face { font-family:'Flexo'; src:url('assets/fonts/Flexo-Bold.otf')    format('opentype'); font-weight:700; font-style:normal; }
+@font-face { font-family:'Flexo'; src:url('assets/fonts/Flexo-Heavy.otf')   format('opentype'); font-weight:800; font-style:normal; }
+@font-face { font-family:'Flexo'; src:url('assets/fonts/Flexo-Black.otf')   format('opentype'); font-weight:900; font-style:normal; }
+</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css">
 <style>
@@ -22,7 +28,7 @@
 }
 
 /* ── BASE ── */
-.reveal { font-family:'Poppins',sans-serif; }
+.reveal { font-family:'Flexo',sans-serif; }
 .reveal-viewport { background: var(--bl); }
 .reveal .slides section { display:block; width:100%; height:100%; padding:0; top:0; left:0; }
 .reveal .progress, .reveal .controls { display:none; }
@@ -60,7 +66,7 @@
 /* ── BRAND FOOTER ── */
 .bf { position:absolute; bottom:24px; right:48px; text-align:right; z-index:1; }
 .bf .pw { font-size:11px; font-weight:500; color:rgba(255,255,255,.40); display:block; line-height:1.2; }
-.bf .bd { font-family:'Dancing Script',cursive; font-size:21px; color:var(--or); line-height:1; display:block; }
+.bf .bd { font-family:'Flexo',sans-serif; font-size:21px; font-weight:700; color:var(--or); line-height:1; display:block; }
 .sl.lt .bf .pw { color:rgba(0,0,0,.30); }
 
 /* ── MAIN CONTENT ── */
@@ -306,6 +312,22 @@
 .nav-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.20); cursor:pointer; transition:all .3s; }
 .nav-dot:hover { background:rgba(255,255,255,.40); }
 .nav-dot.active { background:var(--or); box-shadow:0 0 8px rgba(255,107,19,.55); }
+
+/* ── DINO ── */
+#dino-wrap { position:fixed; bottom:18px; left:48px; z-index:1000; pointer-events:none; }
+@keyframes dino-jaw-anim {
+  0%, 25%, 100% { transform:translateY(0); }
+  55%, 80%      { transform:translateY(5px); }
+}
+#dino-wrap .jaw {
+  transform-box: fill-box;
+  transform-origin: left top;
+  animation: dino-jaw-anim 0.65s ease-in-out infinite;
+}
+
+/* ── SLIDE ICONS ── */
+.si { display:block; margin-bottom:10px; }
+.si.c { margin-left:auto; margin-right:auto; display:block; }
 </style>
 </head>
 <body>
@@ -325,11 +347,7 @@
   <!-- Header -->
   <div class="hb" style="margin-bottom:0;">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Charla · 10 min</span>
@@ -369,18 +387,15 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Introducción</span>
   </div>
 
   <div class="mc">
-    <div class="s2-q1">
+    <div class="s2-q1" style="flex-direction:column;">
+      <svg class="si c" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
       <div class="s2-big-q">¿Cuál es un elemento en común con el que conviven todos los roles que construyen productos o servicios?</div>
     </div>
   </div>
@@ -399,11 +414,7 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Introducción</span>
@@ -414,6 +425,7 @@
       <p class="s2-small-q">¿Cuál es un elemento en común con el que conviven todos los roles que construyen productos o servicios?</p>
 
       <div class="s2-card">
+        <svg class="si c" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="rgba(255,107,19,0.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         <span class="cl" style="text-align:center; margin-bottom:6px;">La Respuesta</span>
         <span class="s2-titulo">El Código.</span>
         <p class="s2-body">Hasta hace poco resultaba ajeno a los roles no técnicos. <strong>Eso ya cambió.</strong></p>
@@ -440,17 +452,14 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">El Reto</span>
   </div>
 
   <div class="mc">
+    <svg class="si" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="rgba(255,107,19,0.7)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
     <p class="ttl" style="margin-bottom:8px;">
       El reto ya no es solo preguntarnos<br><span class="o">¿qué necesita el cliente?</span>
     </p>
@@ -496,17 +505,14 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">El Proceso</span>
   </div>
 
   <div class="mc">
+    <svg class="si" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="rgba(255,107,19,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>
     <p class="ttl" style="margin-bottom:12px;">
       El proceso que nos enseñaron<br><span class="o">ya ha cambiado.</span>
     </p>
@@ -549,17 +555,14 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Gran Idea</span>
   </div>
 
   <div class="mc">
+    <svg class="si" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="rgba(255,107,19,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17H8v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7z"/></svg>
     <p class="ttl" style="margin-bottom:14px;">
       Del clásico pensamiento de diseño<br>a una alternativa pensada en <span class="o">velocidad = aprendizaje</span>
     </p>
@@ -631,57 +634,39 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Estrategia</span>
   </div>
 
-  <div class="mc">
-    <p class="ttl" style="margin-bottom:14px;">
+  <div class="mc" style="justify-content:center; max-width:860px; margin:0 auto; width:100%;">
+
+    <!-- Título centrado -->
+    <svg class="si c" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="rgba(255,107,19,0.7)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    <p class="ttl-c" style="margin-bottom:28px;">
       Comenzar pequeño<br><span class="o">y continuar incremental.</span>
     </p>
-    <div class="g2">
-      <div>
-        <ul class="ul">
-          <li>El sistema siempre está en construcción — <strong>no existe diseño final ni producto completo</strong></li>
-          <li>No es un equipo al que le faltan recursos — <strong>es un equipo que ya no los necesita de la misma manera</strong></li>
-          <li>Si el loop de construir → medir → aprender tarda semanas, <strong>el modelo mental sigue roto</strong></li>
-        </ul>
-        <div class="cost mt">
-          <div class="cb">
-            <span class="clb">Antes</span>
-            <span class="cn">$50–100k</span>
-            <span class="cd">contratar un desarrollador junior</span>
-          </div>
-          <span class="cvs">→</span>
-          <div class="cb on">
-            <span class="clb">Ahora</span>
-            <span class="cn">$20/mes</span>
-            <span class="cd">herramientas que multiplican la capacidad del equipo</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="c" style="margin-bottom:12px;">
-          <span class="cl w">La paradoja del momento</span>
-          <p>La IA <strong>acelera dramáticamente</strong> la construcción. Sin embargo, el <strong>juicio, el criterio y la capacidad de discernimiento</strong> pasan a ser aún más valiosos — no menos.</p>
-          <p style="margin-top:5px; font-size:12px; color:var(--dm);">IA amplifica lo que le traés. Si traés poco criterio, amplifica el error.</p>
-        </div>
-        <div class="c or">
-          <span class="cl">Y Combinator · 2025</span>
-          <p>Por primera vez en la historia de YC, están apareciendo startups que levantan <strong>$10 millones de dólares</strong> con equipos de entre <strong>5 y 10 personas</strong>, amplificados por agentes de IA.</p>
-        </div>
-      </div>
+
+    <!-- Card 1: La paradoja -->
+    <div class="c" style="margin-bottom:14px; padding:26px 32px; text-align:center;">
+      <span class="cl w" style="margin-bottom:12px;">La paradoja del momento</span>
+      <p style="font-size:clamp(15px,1.6vw,20px); color:var(--tx); line-height:1.6; margin-bottom:8px;">La IA <strong>acelera dramáticamente</strong> la construcción. Sin embargo, el <strong>juicio, el criterio y la capacidad de discernimiento</strong> pasan a ser aún más valiosos — no menos.</p>
+      <p style="font-size:clamp(12px,1.1vw,14px); color:var(--dm); margin:0;">IA amplifica lo que le traés. Si traés poco criterio, amplifica el error.</p>
     </div>
-    <div class="q mt2">
-      <p>"Construí para generar impacto, no solo crecimiento. Cuando resolvés problemas reales para personas reales, todo lo demás llega solo."</p>
+
+    <!-- Card 2: YC 2025 -->
+    <div class="c or" style="margin-bottom:20px; padding:26px 32px; text-align:center;">
+      <span class="cl" style="margin-bottom:12px;">Y Combinator · 2025</span>
+      <p style="font-size:clamp(15px,1.6vw,20px); color:var(--tx); line-height:1.6; margin:0;">Por primera vez en la historia de YC, están apareciendo startups que levantan <strong>$10 millones de dólares</strong> con equipos de entre <strong>5 y 10 personas</strong>, amplificados por agentes de IA.</p>
+    </div>
+
+    <!-- Quote -->
+    <div class="q">
+      <p style="font-style:italic; font-size:clamp(12px,1.15vw,15px) !important; color:var(--mu) !important; margin-bottom:6px !important;">"Construí para generar impacto, no solo crecimiento. Cuando resolvés problemas reales para personas reales, todo lo demás llega solo."</p>
       <span class="qby">— Felix Lee · Co-Founder &amp; CEO, ADPList</span>
     </div>
+
   </div>
 
   <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
@@ -699,65 +684,54 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Evidencias</span>
   </div>
 
-  <div class="mc">
-    <div style="display:grid; grid-template-columns:200px 1fr; gap:22px; align-items:start; flex:1;">
-      <!-- Panel izquierdo -->
-      <div style="background:var(--bl); border-radius:var(--r); padding:22px 18px; display:flex; flex-direction:column; justify-content:flex-end; height:100%; min-height:320px; position:relative; overflow:hidden;">
-        <div class="b" style="width:240px;height:240px;top:-80px;right:-80px;background:rgba(255,255,255,.06);"></div>
-        <p style="font-size:10px; color:rgba(255,255,255,.42); text-transform:uppercase; letter-spacing:.14em; font-weight:700; margin-bottom:6px; position:relative; z-index:1;">No es especulación</p>
-        <p style="font-size:clamp(22px,2.8vw,34px); font-weight:900; color:#fff; line-height:1.1; letter-spacing:-.02em; margin:0; position:relative; z-index:1;">Son los<br>números<br><span style="color:var(--or);">de hoy.</span></p>
+  <div class="mc" style="flex:1;">
+    <div style="display:grid; grid-template-columns:240px 1fr; gap:20px; height:100%;">
+
+      <!-- Panel izquierdo: tarjeta azul altura completa -->
+      <div style="background:var(--bl); border-radius:var(--r); padding:28px 22px; display:flex; flex-direction:column; justify-content:flex-end; position:relative; overflow:hidden;">
+        <div class="b" style="width:260px;height:260px;top:-90px;right:-90px;background:rgba(255,255,255,.07);"></div>
+        <div class="b" style="width:160px;height:160px;bottom:-60px;left:-60px;background:rgba(255,255,255,.04);"></div>
+        <svg style="display:block; margin-bottom:14px; position:relative; z-index:1;" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <p style="font-size:10px; color:rgba(255,255,255,.42); text-transform:uppercase; letter-spacing:.15em; font-weight:700; margin-bottom:10px; position:relative; z-index:1;">No es especulación</p>
+        <p style="font-size:clamp(26px,3.2vw,42px); font-weight:900; color:#fff; line-height:1.08; letter-spacing:-.03em; margin:0; position:relative; z-index:1;">Son los<br>números<br><span style="color:var(--or);">de hoy.</span></p>
       </div>
-      <!-- Panel derecho: stats + quotes -->
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px;">
-          <div class="c lt">
-            <span class="src">YC W25</span>
-            <span class="stn">25%</span>
-            <span class="sdsc">de startups con 95% de su código creado con IA</span>
-          </div>
-          <div class="c lt">
-            <span class="src">Cursor · 2025</span>
-            <span class="stn o">$29B</span>
-            <span class="sdsc">sin PMs de tiempo completo. Roles difusos + agentes como pegamento</span>
-          </div>
-          <div class="c lt">
-            <span class="src">Google · 2024</span>
-            <span class="stn">25%</span>
-            <span class="sdsc">del código asistido por IA · +10% en velocidad de producción</span>
-          </div>
-          <div class="c lt">
-            <span class="src">LATAM · Vibe Coding</span>
-            <span class="stn o">0.06%</span>
-            <span class="sdsc">solo el 0.06% en Latinoamérica usa vibe coding activamente</span>
-          </div>
+
+      <!-- Panel derecho: 2×2 stats -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:16px;">
+        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
+          <span class="src">YC W25</span>
+          <span class="stn" style="font-size:clamp(72px,9vw,124px); line-height:1;">25%</span>
+          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">de startups con 95% de su código creado con IA</span>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div class="c lt" style="padding:13px 16px; border-left:3px solid var(--or);">
-            <p style="font-style:italic; font-size:clamp(12px,1.15vw,14px) !important; color:var(--gr) !important; margin-bottom:6px !important;">"Esto no es una moda. Es la forma dominante de programar. Si no lo estás haciendo, podrías quedarte atrás."</p>
-          <span class="qby">— Garry Tan · CEO, Y Combinator</span>
-          </div>
-          <div class="c lt" style="padding:13px 16px; border-left:3px solid var(--or);">
-            <p style="font-style:italic; font-size:clamp(12px,1.15vw,14px) !important; color:var(--gr) !important; margin-bottom:6px !important;">"No solo los diseñadores sienten que deben mantenerse al nivel de los ingenieros. Incluso los ingenieros se preguntan: ¿cómo nos mantenemos al nivel de nosotros mismos?"</p>
-          <span class="qby">— Jenny Wen · Head of Design, Anthropic</span>
-          </div>
+        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
+          <span class="src">Cursor · 2025</span>
+          <span class="stn o" style="font-size:clamp(72px,9vw,124px); line-height:1;">$29B</span>
+          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">sin PMs de tiempo completo. Roles difusos + agentes como pegamento</span>
+        </div>
+        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
+          <span class="src">Google · 2024</span>
+          <span class="stn" style="font-size:clamp(72px,9vw,124px); line-height:1;">25%</span>
+          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">del código asistido por IA · +10% en velocidad de producción</span>
+        </div>
+        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
+          <span class="src">Global · Vibe Coding</span>
+          <span class="stn o" style="font-size:clamp(72px,9vw,124px); line-height:1;">0.04%</span>
+          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">a nivel global usa vibe coding para construir productos o servicios</span>
         </div>
       </div>
+
     </div>
   </div>
 
   <div class="bf"><span class="pw">Powered</span><span class="bd">by design</span></div>
 </div>
-<aside class="notes">El 0.06% es el dato más contraintuitivo. Todo el mundo habla de IA, casi nadie la usa en producción en LATAM. Cursor $29B sin PMs es el caso más impactante para esta audiencia.</aside>
+<aside class="notes">El 0.04% es el dato más contraintuitivo. Todo el mundo habla de IA, casi nadie la usa en producción globalmente. Cursor $29B sin PMs es el caso más impactante para esta audiencia.</aside>
 </section>
 
 <!-- ══════════════════════════
@@ -769,11 +743,7 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Adopción de IA · 2026</span>
@@ -783,6 +753,7 @@
 
     <!-- Título -->
     <div style="text-align:center;">
+      <svg class="si c" viewBox="0 0 24 24" width="28" height="28" fill="rgba(255,255,255,0.35)"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/></svg>
       <div style="font-size:clamp(26px,3.2vw,44px); font-weight:900; color:#fff; line-height:1.1; margin-bottom:6px;">¿Cuánta gente usa la IA?</div>
       <div style="font-size:10px; color:rgba(255,255,255,.40); letter-spacing:.05em;">Cada punto ≈ 3.2 millones de personas &nbsp;·&nbsp; 2,500 puntos = 8.1B humanos &nbsp;·&nbsp; Color = nivel más avanzado de interacción con IA · Feb 2026</div>
     </div>
@@ -826,17 +797,14 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
     <div class="hd"></div>
     <span class="hl">Cierre</span>
   </div>
 
   <div class="mc" style="justify-content:center; align-items:center; text-align:center; padding:20px 0;">
+    <svg class="si c" style="margin-bottom:20px;" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="rgba(255,107,19,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     <p style="font-size:clamp(16px,1.9vw,24px); font-weight:500; color:var(--mu); line-height:1.4; margin:0 auto 24px; max-width:680px;">
       La pregunta no es si deberíamos pasar a construir.
     </p>
@@ -863,15 +831,12 @@
 
   <div class="hb">
     <div class="hm">
-      <svg width="26" height="18" viewBox="0 0 26 18" fill="none">
-        <path d="M0 9L7 0L14 9L7 18Z" fill="#FF6B13"/>
-        <path d="M11 9L18 0L25 9L18 18Z" fill="#FF6B13" opacity=".55"/>
-      </svg>
-      <span class="hm-n">Diseño<span class="o"> Estratégico</span></span>
+      <img src="assets/logo_presentación.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
   </div>
 
   <div class="mc" style="justify-content:center; align-items:center; text-align:center; padding:20px 0;">
+    <svg class="si c" style="margin-bottom:18px;" viewBox="0 0 24 24" width="34" height="34" fill="rgba(255,107,19,0.7)" stroke="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
     <p style="font-size:clamp(60px,9vw,120px); font-weight:900; letter-spacing:-.04em; color:var(--tx); margin:0 0 10px; line-height:1;">
       Gracias.
     </p>
@@ -895,6 +860,30 @@
 </div>
 
 <div class="nav-dots" id="navDots"></div>
+
+<!-- ── DINO (talking, bottom-left) ── -->
+<div id="dino-wrap">
+  <svg viewBox="0 0 48 52" width="46" height="50" xmlns="http://www.w3.org/2000/svg">
+    <!-- Body -->
+    <path d="M6 28 C4 14 10 3 24 2 C37 1 44 13 44 27 C44 41 36 52 22 52 C9 52 8 40 6 28Z" fill="#27A829"/>
+    <!-- Right-side depth -->
+    <path d="M30 5 C38 9 44 18 44 28 C44 39 38 48 30 52 C36 46 38 36 36 24 C34 14 32 8 30 5Z" fill="#1e8c1e" opacity="0.45"/>
+    <!-- Eye socket -->
+    <circle cx="16" cy="17" r="6.5" fill="#1a5e1a"/>
+    <!-- Eye iris -->
+    <circle cx="15" cy="16" r="3.8" fill="#FFC107"/>
+    <!-- Eye shine -->
+    <circle cx="13.8" cy="14.8" r="1.3" fill="rgba(255,255,255,0.7)"/>
+    <!-- Nostril -->
+    <circle cx="25" cy="26" r="1.8" fill="#1a5e1a"/>
+    <!-- Upper lip (fixed) -->
+    <path d="M9 33 Q24 30 39 33" stroke="#1a5e1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <!-- Lower jaw (animated) -->
+    <path class="jaw" d="M10 37 Q24 34 38 37" stroke="#1a5e1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Tiny arm -->
+    <path d="M37 31 Q44 28 42 36 L37 36Z" fill="#1e8c1e"/>
+  </svg>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
