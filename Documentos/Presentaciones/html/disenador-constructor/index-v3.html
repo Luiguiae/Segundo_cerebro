@@ -327,6 +327,37 @@
 
 /* ── SLIDE EMOJIS ── */
 .se { font-size:30px; text-align:center; margin-bottom:10px; display:block; line-height:1; }
+
+/* ── SLIDE 8 · STAT CARDS HOVER ── */
+.stat-card {
+  position: relative;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+  cursor: default;
+  will-change: transform;
+}
+.stat-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 48px rgba(11,51,194,.20);
+  z-index: 2;
+}
+.stat-card .stat-icon {
+  font-size: 36px;
+  display: block;
+  line-height: 1;
+  margin-bottom: 10px;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+  transform-origin: center;
+}
+.stat-card:hover .stat-icon {
+  transform: scale(1.45) rotate(-10deg);
+}
+@keyframes stat-icon-pulse {
+  0%, 100% { transform: scale(1.45) rotate(-10deg); }
+  50%       { transform: scale(1.55) rotate(-6deg); }
+}
+.stat-card:hover .stat-icon {
+  animation: stat-icon-pulse .9s ease-in-out infinite;
+}
 </style>
 </head>
 <body>
@@ -639,7 +670,7 @@
     <span class="hl">Estrategia</span>
   </div>
 
-  <div class="mc" style="justify-content:center; max-width:920px; margin:0 auto; width:100%; gap:16px;">
+  <div class="mc" style="justify-content:center; width:100%; gap:16px;">
 
     <!-- Título centrado -->
     <span class="se">📈</span>
@@ -648,7 +679,7 @@
     </p>
 
     <!-- Card principal: La paradoja — foco central -->
-    <div class="c" style="padding:24px 36px; text-align:center; width:100%;">
+    <div class="c" style="padding:24px 36px; text-align:center;">
       <span class="cl w" style="margin-bottom:10px;">La paradoja del momento</span>
       <p style="font-size:clamp(14px,1.5vw,19px); color:var(--tx); line-height:1.6; margin-bottom:6px;">La IA <strong>acelera dramáticamente</strong> la construcción. Sin embargo, el <strong>juicio, el criterio y la capacidad de discernimiento</strong> pasan a ser aún más valiosos — no menos.</p>
       <p style="font-size:clamp(11px,1vw,13px); color:var(--dm); margin:0;">IA amplifica lo que le traés. Si traés poco criterio, amplifica el error.</p>
@@ -675,8 +706,8 @@
       </div>
 
       <!-- Quote: Felix Lee — centrado vertical y horizontal -->
-      <div class="q" style="margin:0; padding:22px 28px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-        <p style="font-style:italic; font-size:clamp(12px,1.1vw,14px) !important; color:rgba(255,255,255,.8) !important; margin-bottom:10px !important; line-height:1.6 !important;">"Construí para generar impacto, no solo crecimiento. Cuando resolvés problemas reales para personas reales, todo lo demás llega solo."</p>
+      <div class="q" style="margin:0; padding:22px 28px; background:rgba(255,255,255,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <p style="font-style:italic; font-size:clamp(12px,1.1vw,14px) !important; color:rgba(255,255,255,.8) !important; margin-bottom:10px !important; line-height:1.6 !important;">"La mayoría espera tener el plan perfecto. Los que avanzan aprenden que el plan llega construyendo."</p>
         <span class="qby">— Felix Lee · Co-Founder &amp; CEO, ADPList</span>
       </div>
 
@@ -719,44 +750,44 @@
       </div>
 
       <!-- Panel derecho: grid de artefactos construidos -->
-      <div style="display:flex; flex-direction:column; gap:12px; justify-content:center;">
-        <p style="font-size:11px; color:rgba(0,0,0,.38); text-transform:uppercase; letter-spacing:.14em; font-weight:700; margin:0 0 4px 0;">Artefactos construidos en 3 semanas</p>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+      <div style="display:flex; flex-direction:column; gap:12px; height:100%;">
+        <p style="font-size:11px; color:rgba(0,0,0,.38); text-transform:uppercase; letter-spacing:.14em; font-weight:700; margin:0; flex-shrink:0;">Artefactos construidos en 3 semanas</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr; gap:10px; flex:1;">
 
-          <div class="c lt" style="padding:18px 16px; display:flex; flex-direction:column; gap:6px;">
-            <span style="font-size:22px; line-height:1;">🧠</span>
-            <span style="font-size:clamp(13px,1.3vw,15px); font-weight:700; color:var(--dk);">Segundo Cerebro</span>
-            <span style="font-size:10px; color:rgba(0,0,0,.45); line-height:1.4;">Base de conocimiento versionada con IA integrada</span>
+          <div class="c lt stat-card" style="padding:22px 18px; display:flex; flex-direction:column; gap:10px;">
+            <span class="stat-icon" style="font-size:32px; margin-top:80px;">🧠</span>
+            <span style="font-size:30px; font-weight:700; color:var(--dk); line-height:1.2;">Segundo Cerebro</span>
+            <span style="font-size:18px; color:rgba(0,0,0,.50); line-height:1.5;">Base de conocimiento versionada con IA integrada</span>
           </div>
 
-          <div class="c lt" style="padding:18px 16px; display:flex; flex-direction:column; gap:6px;">
-            <span style="font-size:22px; line-height:1;">🤖</span>
-            <span style="font-size:clamp(13px,1.3vw,15px); font-weight:700; color:var(--dk);">Agentes IA</span>
-            <span style="font-size:10px; color:rgba(0,0,0,.45); line-height:1.4;">Equipos de agentes para investigación y análisis autónomo</span>
+          <div class="c lt stat-card" style="padding:22px 18px; display:flex; flex-direction:column; gap:10px;">
+            <span class="stat-icon" style="font-size:32px; margin-top:80px;">🤖</span>
+            <span style="font-size:30px; font-weight:700; color:var(--dk); line-height:1.2;">Agentes IA</span>
+            <span style="font-size:18px; color:rgba(0,0,0,.50); line-height:1.5;">Equipos de agentes para investigación y análisis autónomo</span>
           </div>
 
-          <div class="c lt" style="padding:18px 16px; display:flex; flex-direction:column; gap:6px;">
-            <span style="font-size:22px; line-height:1;">🎨</span>
-            <span style="font-size:clamp(13px,1.3vw,15px); font-weight:700; color:var(--dk);">Plugin Figma</span>
-            <span style="font-size:10px; color:rgba(0,0,0,.45); line-height:1.4;">Plugin custom de Figma con lógica propia</span>
+          <div class="c lt stat-card" style="padding:22px 18px; display:flex; flex-direction:column; gap:10px;">
+            <span class="stat-icon" style="font-size:32px; margin-top:80px;">🎨</span>
+            <span style="font-size:30px; font-weight:700; color:var(--dk); line-height:1.2;">Plugin Figma</span>
+            <span style="font-size:18px; color:rgba(0,0,0,.50); line-height:1.5;">Plugin custom de Figma con lógica propia</span>
           </div>
 
-          <div class="c lt" style="padding:18px 16px; display:flex; flex-direction:column; gap:6px;">
-            <span style="font-size:22px; line-height:1;">🕷️</span>
-            <span style="font-size:clamp(13px,1.3vw,15px); font-weight:700; color:var(--dk);">Agente Scraping</span>
-            <span style="font-size:10px; color:rgba(0,0,0,.45); line-height:1.4;">Recolección automatizada de datos y señales del mercado</span>
+          <div class="c lt stat-card" style="padding:22px 18px; display:flex; flex-direction:column; gap:10px;">
+            <span class="stat-icon" style="font-size:32px; margin-top:80px;">🕷️</span>
+            <span style="font-size:30px; font-weight:700; color:var(--dk); line-height:1.2;">Agente Scraping</span>
+            <span style="font-size:18px; color:rgba(0,0,0,.50); line-height:1.5;">Recolección automatizada de datos y señales del mercado</span>
           </div>
 
-          <div class="c lt" style="padding:18px 16px; display:flex; flex-direction:column; gap:6px;">
-            <span style="font-size:22px; line-height:1;">⚖️</span>
-            <span style="font-size:clamp(13px,1.3vw,15px); font-weight:700; color:var(--dk);">Evaluadores</span>
-            <span style="font-size:10px; color:rgba(0,0,0,.45); line-height:1.4;">Sistemas para medir y validar outputs de agentes</span>
+          <div class="c lt stat-card" style="padding:22px 18px; display:flex; flex-direction:column; gap:10px;">
+            <span class="stat-icon" style="font-size:32px; margin-top:80px;">⚖️</span>
+            <span style="font-size:30px; font-weight:700; color:var(--dk); line-height:1.2;">Evaluadores</span>
+            <span style="font-size:18px; color:rgba(0,0,0,.50); line-height:1.5;">Sistemas para medir y validar outputs de agentes</span>
           </div>
 
-          <div class="c lt" style="padding:18px 16px; display:flex; flex-direction:column; gap:6px;">
-            <span style="font-size:22px; line-height:1;">👤</span>
-            <span style="font-size:clamp(13px,1.3vw,15px); font-weight:700; color:var(--dk);">Usuarios Sintéticos</span>
-            <span style="font-size:10px; color:rgba(0,0,0,.45); line-height:1.4;">Simulación de perfiles reales para validar decisiones de diseño</span>
+          <div class="c lt stat-card" style="padding:22px 18px; display:flex; flex-direction:column; gap:10px;">
+            <span class="stat-icon" style="font-size:32px; margin-top:80px;">👤</span>
+            <span style="font-size:30px; font-weight:700; color:var(--dk); line-height:1.2;">Usuarios Sintéticos</span>
+            <span style="font-size:18px; color:rgba(0,0,0,.50); line-height:1.5;">Simulación de perfiles reales para validar decisiones de diseño</span>
           </div>
 
         </div>
@@ -799,26 +830,38 @@
       </div>
 
       <!-- Panel derecho: 2×2 stats -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:16px;">
-        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
-          <span class="src">YC W25</span>
-          <span class="stn" style="font-size:clamp(72px,9vw,124px); line-height:1;">25%</span>
-          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">de startups con 95% de su código creado con IA</span>
+      <div style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:16px; height:100%;">
+        <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
+          <span class="src" style="font-size:12px; letter-spacing:.14em;">YC W25</span>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+            <span class="stat-icon">🚀</span>
+            <span class="stn" style="font-size:clamp(80px,10vw,136px); line-height:1;">25%</span>
+          </div>
+          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">de startups con 95% de su código creado con IA</span>
         </div>
-        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
-          <span class="src">Cursor · 2025</span>
-          <span class="stn o" style="font-size:clamp(72px,9vw,124px); line-height:1;">$29B</span>
-          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">sin PMs de tiempo completo. Roles difusos + agentes como pegamento</span>
+        <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
+          <span class="src" style="font-size:12px; letter-spacing:.14em;">Cursor · 2025</span>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+            <span class="stat-icon">💰</span>
+            <span class="stn o" style="font-size:clamp(80px,10vw,136px); line-height:1;">$29B</span>
+          </div>
+          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">sin PMs de tiempo completo. Roles difusos + agentes como pegamento</span>
         </div>
-        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
-          <span class="src">Google · 2024</span>
-          <span class="stn" style="font-size:clamp(72px,9vw,124px); line-height:1;">25%</span>
-          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">del código asistido por IA · +10% en velocidad de producción</span>
+        <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
+          <span class="src" style="font-size:12px; letter-spacing:.14em;">Google · 2024</span>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+            <span class="stat-icon">⚙️</span>
+            <span class="stn" style="font-size:clamp(80px,10vw,136px); line-height:1;">25%</span>
+          </div>
+          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">del código asistido por IA · +10% en velocidad de producción</span>
         </div>
-        <div class="c lt" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:28px 24px;">
-          <span class="src">Global · Vibe Coding</span>
-          <span class="stn o" style="font-size:clamp(72px,9vw,124px); line-height:1;">0.04%</span>
-          <span class="sdsc" style="font-size:clamp(13px,1.3vw,16px);">a nivel global usa vibe coding para construir productos o servicios</span>
+        <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
+          <span class="src" style="font-size:12px; letter-spacing:.14em;">Global · Vibe Coding</span>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+            <span class="stat-icon">🌍</span>
+            <span class="stn o" style="font-size:clamp(80px,10vw,136px); line-height:1;">0.04%</span>
+          </div>
+          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">a nivel global usa vibe coding para construir productos o servicios</span>
         </div>
       </div>
 
@@ -845,35 +888,60 @@
     <span class="hl">Adopción de IA · 2026</span>
   </div>
 
-  <div class="mc" style="gap:14px; justify-content:center;">
+  <div class="mc" style="gap:16px; justify-content:flex-start;">
 
     <!-- Título -->
-    <div style="text-align:center;">
-      <span class="se">🌍</span>
-      <div style="font-size:clamp(26px,3.2vw,44px); font-weight:900; color:#fff; line-height:1.1; margin-bottom:6px;">¿Cuánta gente usa la IA?</div>
-      <div style="font-size:10px; color:rgba(255,255,255,.40); letter-spacing:.05em;">Cada punto ≈ 3.2 millones de personas &nbsp;·&nbsp; 2,500 puntos = 8.1B humanos &nbsp;·&nbsp; Color = nivel más avanzado de interacción con IA · Feb 2026</div>
+    <div style="width:100%;">
+      <span class="se" style="text-align:center; margin-bottom:4px;">🌍</span>
+      <div style="font-size:clamp(26px,3.2vw,44px); font-weight:900; color:#fff; line-height:1.1; margin-bottom:4px;">¿Cuánta gente usa la IA?</div>
+      <div style="font-size:10px; color:rgba(255,255,255,.35); letter-spacing:.05em;">Cada punto ≈ 3.2 millones de personas · 2,500 puntos = 8.1B humanos · Color = nivel más avanzado de interacción con IA · Feb 2026</div>
     </div>
 
-    <!-- Dot grid -->
-    <div id="dotGrid" style="display:grid; grid-template-columns:repeat(50,10px); grid-template-rows:repeat(50,10px); gap:3px; margin:0 auto;"></div>
+    <!-- Layout dos columnas -->
+    <div style="display:grid; grid-template-columns:auto 1fr; gap:36px; align-items:center; flex:1;">
 
-    <!-- Leyenda -->
-    <div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">
-      <div style="display:flex;align-items:center;gap:7px;">
-        <div style="width:10px;height:10px;border-radius:2px;background:#7A82A0;flex-shrink:0;"></div>
-        <span style="font-size:11px;color:rgba(255,255,255,.55);">Nunca usó IA &nbsp;·&nbsp; ~6.8B <span style="color:rgba(255,255,255,.35);">(84%)</span></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:7px;">
-        <div style="width:10px;height:10px;border-radius:2px;background:#4CAF50;flex-shrink:0;"></div>
-        <span style="font-size:11px;color:rgba(255,255,255,.55);">Chatbot gratuito &nbsp;·&nbsp; ~1.3B <span style="color:rgba(255,255,255,.35);">(16%)</span></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:7px;">
-        <div style="width:10px;height:10px;border-radius:2px;background:#FFC107;flex-shrink:0;"></div>
-        <span style="font-size:11px;color:rgba(255,255,255,.55);">Paga $20/mes &nbsp;·&nbsp; ~15-25M <span style="color:rgba(255,255,255,.35);">(~0.3%)</span></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:7px;">
-        <div style="width:10px;height:10px;border-radius:2px;background:#EF5350;flex-shrink:0;"></div>
-        <span style="font-size:11px;color:rgba(255,255,255,.55);">Usa IA para código &nbsp;·&nbsp; ~2-5M <span style="color:rgba(255,255,255,.35);">(~0.04%)</span></span>
+      <!-- Izquierda: dot grid -->
+      <div id="dotGrid" style="display:grid; grid-template-columns:repeat(50,8px); grid-template-rows:repeat(50,8px); gap:5px; flex-shrink:0; margin-left:235px;"></div>
+
+      <!-- Derecha: leyenda como cards verticales -->
+      <div style="display:flex; flex-direction:column; gap:14px; justify-content:center; max-width:500px;">
+
+        <div style="display:flex; align-items:center; gap:18px; background:rgba(255,255,255,.07); border-radius:14px; padding:18px 22px;">
+          <div style="width:28px; height:28px; border-radius:6px; background:#7A82A0; flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:clamp(11px,1vw,13px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Nunca usó IA</div>
+            <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#7A82A0; letter-spacing:-.03em; line-height:1;">~6.8B</div>
+            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.50); margin-top:2px;">84% de la humanidad — sin ningún contacto con IA</div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:18px; background:rgba(255,255,255,.07); border-radius:14px; padding:18px 22px;">
+          <div style="width:28px; height:28px; border-radius:6px; background:#4CAF50; flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:clamp(11px,1vw,13px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Chatbot gratuito</div>
+            <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#4CAF50; letter-spacing:-.03em; line-height:1;">~1.3B</div>
+            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.50); margin-top:2px;">16% — usaron ChatGPT o similar al menos una vez</div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:18px; background:rgba(255,255,255,.07); border-radius:14px; padding:18px 22px;">
+          <div style="width:28px; height:28px; border-radius:6px; background:#FFC107; flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:clamp(11px,1vw,13px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Paga $20/mes</div>
+            <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#FFC107; letter-spacing:-.03em; line-height:1;">~20M</div>
+            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.50); margin-top:2px;">~0.3% — suscriptores activos de herramientas premium</div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:18px; background:rgba(255,107,19,.10); border:1px solid rgba(255,107,19,.25); border-radius:14px; padding:18px 22px;">
+          <div style="width:28px; height:28px; border-radius:6px; background:#EF5350; flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:clamp(11px,1vw,13px); color:var(--or); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Usa IA para construir</div>
+            <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#EF5350; letter-spacing:-.03em; line-height:1;">~3M</div>
+            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.65); margin-top:2px;"><strong style="color:#fff;">0.04%</strong> — vibe coding, productos y servicios reales con IA</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
