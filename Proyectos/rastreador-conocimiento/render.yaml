@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: rastreador-conocimiento
+    runtime: python
+    rootDir: servidor
+    buildCommand: pip install -r requirements.txt && cd ../interfaz && npm install && npm run build
+    startCommand: uvicorn principal:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: JINA_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:///./rastreador.db
+      - key: RUTA_INDEX_MD
+        sync: false

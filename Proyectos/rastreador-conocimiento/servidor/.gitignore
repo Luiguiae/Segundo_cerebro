@@ -1,0 +1,6 @@
+.env
+rastreador.db
+.venv/
+__pycache__/
+*.pyc
+estaticos/
