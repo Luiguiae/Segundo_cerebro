@@ -203,7 +203,8 @@ FUENTES_INICIALES = [
     {"url": "newsletter.uxuniversity.io", "descripcion": "UX University newsletter"},
     {"url": "blog.cursor.sh", "descripcion": "Blog oficial de Cursor IDE"},
     {"url": "ycombinator.com/blog", "descripcion": "Blog de Y Combinator"},
-    {"url": "arxiv.org", "descripcion": "Repositorio de papers científicos"},
+    {"url": "arxiv.org",    "descripcion": "Repositorio de papers científicos"},
+    {"url": "linkedin.com", "descripcion": "LinkedIn — artículos y publicaciones profesionales"},
 ]
 
 

@@ -2,11 +2,13 @@
 titulo: El momento liminal
 slug: momento-liminal
 tipo: concepto
+familia: transicion-ia
 fecha: 2026-04-05
 fuente: "Finding Our Way, LIMINAL-1 y LIMINAL-2 — Jesse James Garrett y Peter Merholz"
 fuente_url: "https://findingourway.design/2026/02/27/liminal-2-liminal-mindset-skillset-and-leadership/"
-relacionado: [disenador-a-constructor, claridad-antes-de-velocidad, arquitectura-de-inteligencia]
-tags: [liderazgo, cambio, incertidumbre, transicion, ia, diseño]
+relacionado: [disenador-a-constructor]
+tags: [liderazgo, cambio, incertidumbre, transicion, diseño]
+estado: activo
 ---
 
 # El momento liminal

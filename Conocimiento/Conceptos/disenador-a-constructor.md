@@ -1,16 +1,17 @@
 ---
 titulo: "Del Diseñador al Constructor"
 alias: ["diseñador-constructor", "designer-builder", "perfil híbrido"]
-tags: [diseño, construccion, ia, roles, producto, transformacion]
+tags: [diseño, construccion, roles, producto, transformacion]
 tipo: concepto
+familia: transicion-ia
 fecha: 2026-03-04
 fuente:
   tipo: experimento
   referencia: "Experiencia propia / observación de industria"
   autor: "Luigui Avila"
-relacionado: [vibe-coding, agentes-ia, usuarios-sinteticos, equipos-pequeños-alto-impacto]
+relacionado: [vibe-coding, agentes-ia, usuarios-sinteticos]
 proyectos: []
-estado: consolidado
+estado: activo
 ---
 
 ## ¿Qué es?
@@ -46,7 +47,7 @@ El cambio ocurre en tres dimensiones:
 - [[vibe-coding]] → es el habilitador técnico principal de esta evolución
 - [[agentes-ia]] → amplifica la capacidad constructiva del diseñador sin necesidad de más personas
 - [[usuarios-sinteticos]] → permite al diseñador-constructor validar lo que construye sin depender de research externo
-- [[equipos-pequeños-alto-impacto]] → este perfil es el que hace posible que equipos pequeños compitan con grandes organizaciones
+- [[equipos-pequenos-alto-impacto]] → este perfil es el que hace posible que equipos pequeños compitan con grandes organizaciones
 
 ## Citas o fragmentos clave
 > "El mejor diseñador es el que puede construir lo que imagina."

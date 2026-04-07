@@ -3,6 +3,7 @@ tipo: correlacion
 conceptos: [vibe-coding, spec-driven-development]
 fecha: 2026-04-03
 tags: [construccion, agentes-ia, proceso, velocidad, intencion]
+estado: activo
 ---
 
 # La trampa de construir sin saber qué estás construyendo

@@ -2,11 +2,13 @@
 titulo: Fundamentales vs. flux
 slug: fundamentales-vs-flux
 tipo: concepto
+familia: transicion-ia
 fecha: 2026-04-05
 fuente: "Finding Our Way, ep. 68 — Dan Saffer, Jesse James Garrett, Peter Merholz"
 fuente_url: "https://findingourway.design/2026/03/14/68-ai-and-design-fundamentals-and-the-future-ft-dan-saffer/"
-relacionado: [disenador-a-constructor, claridad-antes-de-velocidad, momento-liminal, vibe-coding]
-tags: [diseño, educacion, ia, habilidades, fundamentos, cambio, criterio]
+relacionado: [disenador-a-constructor, momento-liminal, vibe-coding]
+tags: [diseño, educacion, habilidades, fundamentos, criterio]
+estado: activo
 ---
 
 # Fundamentales vs. flux

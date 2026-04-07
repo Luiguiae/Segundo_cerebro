@@ -1,16 +1,17 @@
 ---
 titulo: "Equipos Pequeños de Alto Impacto"
 alias: ["small teams", "equipos minimos", "lean ai teams"]
-tags: [equipos, producto, ia, velocidad, organizacion, startups]
+tags: [equipos, producto, velocidad, organizacion, startups]
 tipo: concepto
+familia: equipos-impacto
 fecha: 2026-03-04
 fuente:
   tipo: articulo
   referencia: "YC Winter 2025 data, Menlo Ventures State of GenAI 2025, Cursor model"
   autor: "Investigación acumulada"
-relacionado: [disenador-a-constructor, vibe-coding, agentes-ia, mvp-a-prototipo-en-produccion]
+relacionado: [disenador-a-constructor, vibe-coding, agentes-ia]
 proyectos: [Wayta_IA]
-estado: consolidado
+estado: activo
 ---
 
 ## ¿Qué es?

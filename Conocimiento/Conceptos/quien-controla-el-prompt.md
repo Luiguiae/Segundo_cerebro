@@ -2,11 +2,13 @@
 titulo: Quien controla el prompt controla el producto
 slug: quien-controla-el-prompt
 tipo: concepto
+familia: velocidad-output
 fecha: 2026-04-05
 fuente: "Finding Our Way, ep. 58 — Jesse James Garrett y Peter Merholz"
 fuente_url: "https://findingourway.design/2025/05/02/58-ai-is-a-stress-test-for-your-ux-what-cracks-will-it-show/"
-relacionado: [arquitectura-de-inteligencia, claridad-antes-de-velocidad, agentes-ia, disenador-a-constructor]
-tags: [ia, diseño, producto, estrategia, organizaciones, poder, prompts]
+relacionado: [agentes-ia, disenador-a-constructor]
+tags: [diseño, estrategia, organizacion, poder, prompts]
+estado: activo
 ---
 
 # Quien controla el prompt controla el producto

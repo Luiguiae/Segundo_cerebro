@@ -37,7 +37,7 @@ PLANTILLA_EJEMPLO = """\
 ---
 titulo: ""
 alias: []
-tags: []
+tags: [ia, diseño, agentes]
 tipo: concepto
 fecha: YYYY-MM-DD
 fuente:
@@ -97,7 +97,11 @@ PLANTILLA OBLIGATORIA (respeta exactamente este formato):
 REGLAS DEL FRONTMATTER:
 - titulo: título conciso en español (máx. 80 caracteres)
 - alias: lista de términos alternativos o sinónimos en español
-- tags: lista de 3-6 etiquetas temáticas en minúsculas
+- tags: lista de 3-6 etiquetas temáticas. Reglas estrictas:
+  * Una sola palabra por tag (no frases)
+  * Minúsculas, sin acentos, sin guiones
+  * Ejemplos correctos: [ia, diseño, agentes, producto, velocidad]
+  * Ejemplos INCORRECTOS: ["inteligencia artificial", "diseño-ux", "Producto"]
 - tipo: siempre "concepto"
 - fecha: la fecha de hoy en formato YYYY-MM-DD
 - fuente.tipo: uno de [articulo, video, reunion, experimento, podcast]

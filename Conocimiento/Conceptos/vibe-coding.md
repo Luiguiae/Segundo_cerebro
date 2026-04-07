@@ -1,16 +1,17 @@
 ---
 titulo: "Vibe Coding"
 alias: ["vibecoding", "coding por intención", "ai-assisted coding"]
-tags: [construccion, ia, herramientas, desarrollo, producto, velocidad]
+tags: [construccion, herramientas, desarrollo, producto, velocidad]
 tipo: concepto
+familia: velocidad-output
 fecha: 2026-03-04
 fuente:
   tipo: articulo
   referencia: "Múltiples fuentes: Figma, Humai 2026 Guide, Felix Lee, Ryo Lu"
   autor: "Investigación acumulada"
-relacionado: [disenador-a-constructor, agentes-ia, mvp-a-prototipo-en-produccion, equipos-pequeños-alto-impacto]
+relacionado: [disenador-a-constructor, agentes-ia, mvp-a-prototipo-en-produccion]
 proyectos: []
-estado: consolidado
+estado: activo
 ---
 
 ## ¿Qué es?
@@ -62,7 +63,7 @@ Ambos caminos son válidos — lo importante es que el **criterio y refinamiento
 - [[disenador-a-constructor]] → vibe coding es el habilitador técnico principal de esta evolución
 - [[agentes-ia]] → los agentes extienden el vibe coding a tareas más complejas y multi-paso
 - [[mvp-a-prototipo-en-produccion]] → vibe coding elimina el cuello de botella que hacía lento al MVP clásico
-- [[equipos-pequeños-alto-impacto]] → permite a equipos pequeños competir con grandes organizaciones
+- [[equipos-pequenos-alto-impacto]] → permite a equipos pequeños competir con grandes organizaciones
 
 ## Citas o fragmentos clave
 > "Cursor changed everything for designers. I went from sketching UI to shipping a full agent OS." — Ryo Lu

@@ -1,16 +1,17 @@
 ---
 titulo: "Colonialismo Cultural Digital"
 alias: ["Colonialismo Digital", "Descolonización Digital"]
-tags: ["tecnología", "cultura", "descolonización", "poder"]
+tags: [colonialismo, cultura, descolonizacion, poder, sistemas]
 tipo: concepto
+familia: epistemologia-practica
 fecha: 2026-04-04
 fuente:
   tipo: articulo
   referencia: "https://medium.com/@ernesto.celdeiro/colonialismo-cultural-digital-episodio-5-0bab74978e93"
   autor: "Ernesto Carlos Celdeiro"
-relacionado: [quien-controla-el-prompt, agentes-ia, disenador-a-constructor, momento-liminal]
+relacionado: [quien-controla-el-prompt, agentes-ia, disenador-a-constructor]
 proyectos: []
-estado: borrador
+estado: activo
 ---
 ## ¿Qué es?
 El colonialismo cultural digital se refiere a la forma en que las tecnologías digitales y la cultura dominante reproducen patrones de dominación, apropiación y jerarquización cultural que encuentran sus raíces en el colonialismo histórico. Esto incluye la imposición de categorías técnicas y métricas de engagement que determinan qué es legible algorítmicamente y qué es valorado culturalmente.

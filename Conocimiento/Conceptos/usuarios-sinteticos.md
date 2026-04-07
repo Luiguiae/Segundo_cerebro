@@ -1,16 +1,17 @@
 ---
 titulo: "Usuarios Sintéticos"
 alias: ["synthetic users", "usuarios simulados", "ai-users"]
-tags: [research, validacion, ia, producto, usuarios, diseño]
+tags: [research, validacion, producto, usuarios, diseño]
 tipo: concepto
+familia: equipos-impacto
 fecha: 2026-03-04
 fuente:
   tipo: reunion
   referencia: "Conversación acumulada — charla 'De Diseñador a Constructor'"
   autor: "Luigui Avila"
-relacionado: [disenador-a-constructor, vibe-coding, mvp-a-prototipo-en-produccion, agentes-ia]
+relacionado: [disenador-a-constructor, mvp-a-prototipo-en-produccion, agentes-ia]
 proyectos: []
-estado: borrador
+estado: activo
 ---
 
 ## ¿Qué es?

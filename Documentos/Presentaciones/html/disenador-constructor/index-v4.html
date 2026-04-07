@@ -54,10 +54,10 @@
 /* ── HEADER BAR ── */
 .hb { display:flex; align-items:center; gap:14px; margin-bottom:28px; flex-shrink:0; position:relative; z-index:1; }
 .hm { display:flex; align-items:center; gap:8px; }
-.hm-n { font-size:15px; font-weight:800; color:var(--tx); letter-spacing:.01em; white-space:nowrap; }
+.hm-n { font-size:16px; font-weight:800; color:var(--tx); letter-spacing:.01em; white-space:nowrap; }
 .hm-n .o { color:var(--or); }
 .hd { width:1px; height:20px; background:rgba(255,255,255,.28); }
-.hl { font-size:13px; font-weight:500; color:rgba(255,255,255,.55); }
+.hl { font-size:16px; font-weight:500; color:rgba(255,255,255,.55); }
 .sl.lt .hm-n { color:var(--bl); }
 .sl.lt .hm-n .o { color:var(--or); }
 .sl.lt .hd { background:rgba(11,51,194,.22); }
@@ -88,7 +88,7 @@
 .ttl-c { font-size:clamp(28px,3.8vw,54px); font-weight:700; line-height:1.1; letter-spacing:-.02em; color:var(--tx); margin:0 0 16px; text-align:center; }
 .ttl-c .o { color:var(--or); }
 
-.reveal p { font-size:clamp(15px,1.6vw,19px); line-height:1.7; color:var(--mu); margin:0 0 10px; }
+.reveal p { font-size:clamp(16px,1.6vw,19px); line-height:1.7; color:var(--mu); margin:0 0 10px; }
 .reveal p:last-child { margin:0; }
 .reveal strong { color:var(--tx); }
 .sl.lt .reveal p { color:var(--gr); }
@@ -128,7 +128,7 @@
 #role-word { display:inline-block; color:var(--or); transition:opacity .28s ease, transform .28s ease; }
 .ast-sup { color:var(--or); font-size:.45em; vertical-align:super; font-weight:900; margin-left:1px; }
 .ast-note {
-  font-size:clamp(11px,1.05vw,13px) !important;
+  font-size:clamp(16px,1.2vw,17px) !important;
   color:var(--dm) !important; margin-top:14px !important;
   font-weight:500 !important; letter-spacing:.02em;
 }
@@ -138,43 +138,43 @@
 .c { background:rgba(255,255,255,.10); border-radius:var(--r); padding:16px 20px; }
 .c.or { background:rgba(255,107,19,.14); border:1px solid rgba(255,107,19,.30); }
 .c.lt { background:#fff; border-radius:var(--r); padding:16px 20px; box-shadow:0 2px 14px rgba(11,51,194,.09); }
-.cl { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; display:block; color:var(--or); margin-bottom:8px; }
+.cl { font-size:16px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; display:block; color:var(--or); margin-bottom:8px; }
 .cl.w { color:rgba(255,255,255,.42); }
 .cl.pk { color:var(--pk); }
 
 /* ── QUOTE ── */
 .q { border-left:3px solid var(--or); padding:12px 18px; background:rgba(255,255,255,.07); border-radius:0 12px 12px 0; }
-.q p { font-style:italic; font-size:clamp(12px,1.2vw,15px) !important; color:rgba(255,255,255,.82) !important; }
-.qby { font-size:10px !important; font-weight:700 !important; color:var(--or) !important; font-style:normal !important; text-transform:uppercase; letter-spacing:.08em; display:block; margin-top:5px; }
+.q p { font-style:italic; font-size:clamp(16px,1.4vw,18px) !important; color:rgba(255,255,255,.82) !important; }
+.qby { font-size:16px !important; font-weight:700 !important; color:var(--or) !important; font-style:normal !important; text-transform:uppercase; letter-spacing:.08em; display:block; margin-top:5px; }
 
 /* ── STAT NUMBERS (light bg) ── */
 .stn { font-size:clamp(42px,5.2vw,68px); font-weight:900; font-style:italic; color:var(--dk); letter-spacing:-.04em; line-height:1; display:block; margin-bottom:5px; }
 .stn.o { color:var(--or); }
-.src { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--pk); display:block; margin-bottom:4px; }
-.sdsc { font-size:clamp(12px,1.1vw,14px); color:var(--gr); line-height:1.45; }
+.src { font-size:16px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--pk); display:block; margin-bottom:4px; }
+.sdsc { font-size:clamp(16px,1.4vw,18px); color:var(--gr); line-height:1.45; }
 
 /* ── STAT NUMBERS (blue bg) ── */
 .stn-b { font-size:clamp(26px,3.4vw,46px); font-weight:900; letter-spacing:-.03em; line-height:1; display:block; margin-bottom:4px; color:var(--or); }
 .stn-b.w { color:var(--tx); }
-.ndsc { font-size:clamp(11px,1.05vw,13px); color:var(--mu); line-height:1.38; }
+.ndsc { font-size:clamp(16px,1.2vw,17px); color:var(--mu); line-height:1.38; }
 
 /* ── CONTRAST GRID ── */
 .ct { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .cc { padding:15px 18px; border-radius:13px; background:rgba(255,255,255,.08); }
 .cc.on { background:rgba(255,107,19,.12); border:1px solid rgba(255,107,19,.28); }
-.cc .ccl { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:8px; }
+.cc .ccl { font-size:16px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:8px; }
 .cc.on .ccl { color:var(--or); }
-.cc p { font-size:clamp(12px,1.18vw,14px) !important; margin:0 0 4px !important; }
+.cc p { font-size:clamp(16px,1.3vw,17px) !important; margin:0 0 4px !important; }
 
 /* ── CODE FLOW ── */
-.cf { font-family:"SF Mono","Fira Code",monospace; font-size:12px; color:var(--or); display:block; margin:4px 0; opacity:.9; }
+.cf { font-family:"SF Mono","Fira Code",monospace; font-size:16px; color:var(--or); display:block; margin:4px 0; opacity:.9; }
 
 /* ── SYSTEM COMPONENTS ── */
 .sys { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:14px 0; }
 .sys-block {
   background:rgba(255,255,255,.10);
   border-radius:10px; padding:10px 18px;
-  font-size:clamp(13px,1.4vw,17px); font-weight:600;
+  font-size:clamp(16px,1.4vw,17px); font-weight:600;
   color:var(--tx); flex:1; text-align:center;
   white-space:nowrap;
 }
@@ -184,7 +184,7 @@
   background:rgba(255,107,19,.10);
   border:1px solid rgba(255,107,19,.25);
   border-radius:10px; padding:10px 20px;
-  font-size:clamp(13px,1.4vw,17px); font-weight:700;
+  font-size:clamp(16px,1.4vw,17px); font-weight:700;
   color:var(--or); text-align:center; width:100%;
   margin-top:8px;
 }
@@ -195,15 +195,15 @@
 .stg.on { background:rgba(255,107,19,.14); border:1px solid rgba(255,107,19,.32); }
 .stg.has-tip { cursor:default; }
 .stg.has-tip:hover { flex-grow: 2.2; }
-.stg .sn { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:4px; }
-.stg .st { font-size:clamp(12px,1.3vw,15px); font-weight:700; color:var(--tx); display:block; margin-bottom:3px; transition: font-size 0.28s ease; }
+.stg .sn { font-size:16px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:4px; }
+.stg .st { font-size:clamp(16px,1.4vw,18px); font-weight:700; color:var(--tx); display:block; margin-bottom:3px; transition: font-size 0.28s ease; }
 .stg.on .st { color:var(--or); }
-.stg .ss { font-size:10px; color:var(--or); font-weight:600; display:block; margin-bottom:4px; transition: font-size 0.28s ease; }
-.stg .sd { font-size:10px; color:var(--mu); line-height:1.35; transition: font-size 0.28s ease; }
+.stg .ss { font-size:16px; color:var(--or); font-weight:600; display:block; margin-bottom:4px; transition: font-size 0.28s ease; }
+.stg .sd { font-size:16px; color:var(--mu); line-height:1.35; transition: font-size 0.28s ease; }
 .stg.has-tip:hover .st { font-size: clamp(17px,2.2vw,26px); }
-.stg.has-tip:hover .ss { font-size: 14px; }
-.stg.has-tip:hover .sd { font-size: 13.5px; }
-.sarr { display:flex; align-items:center; color:var(--dm); font-size:14px; flex-shrink:0; }
+.stg.has-tip:hover .ss { font-size: 16px; }
+.stg.has-tip:hover .sd { font-size: 16px; }
+.sarr { display:flex; align-items:center; color:var(--dm); font-size:16px; flex-shrink:0; }
 
 /* TOOLTIP */
 .tip {
@@ -213,7 +213,7 @@
   background:rgba(8,12,42,.97);
   border:1px solid rgba(255,107,19,.35);
   border-radius:14px; padding:18px 20px;
-  font-size:13.5px; line-height:1.6; color:rgba(255,255,255,.88);
+  font-size:16px; line-height:1.6; color:rgba(255,255,255,.88);
   text-align:left; white-space:normal;
   opacity:0; pointer-events:none;
   transition:opacity .22s, transform .22s;
@@ -229,15 +229,15 @@
 .cost { display:grid; grid-template-columns:1fr auto 1fr; gap:10px; align-items:center; }
 .cb { padding:12px 14px; border-radius:12px; text-align:center; background:rgba(255,255,255,.08); }
 .cb.on { background:rgba(255,107,19,.12); border:1px solid rgba(255,107,19,.28); }
-.clb { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:3px; }
+.clb { font-size:16px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--dm); display:block; margin-bottom:3px; }
 .cb.on .clb { color:var(--or); }
 .cn { font-size:clamp(18px,2vw,26px); font-weight:900; color:var(--or); display:block; margin-bottom:2px; }
-.cd { font-size:11px; color:var(--mu); }
+.cd { font-size:16px; color:var(--mu); }
 .cvs { color:var(--dm); font-size:16px; text-align:center; }
 
 /* ── LIST ── */
 .ul { list-style:none; padding:0; margin:8px 0; }
-.ul li { display:flex; gap:10px; align-items:flex-start; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.07); font-size:clamp(13px,1.3vw,16px); color:var(--mu); line-height:1.5; }
+.ul li { display:flex; gap:10px; align-items:flex-start; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.07); font-size:clamp(16px,1.4vw,18px); color:var(--mu); line-height:1.5; }
 .ul li:last-child { border-bottom:none; }
 .ul li::before { content:"→"; color:var(--or); font-weight:700; flex-shrink:0; margin-top:2px; }
 .ul li strong { color:var(--tx); }
@@ -245,7 +245,7 @@
 /* ── CHART (slide 8) ── */
 .chart { display:flex; flex-direction:column; gap:18px; }
 .chart-row { display:grid; grid-template-columns:200px 1fr 72px; gap:16px; align-items:center; }
-.chart-lbl { font-size:clamp(12px,1.2vw,14px); font-weight:600; color:var(--gr); text-align:right; line-height:1.3; }
+.chart-lbl { font-size:clamp(16px,1.3vw,17px); font-weight:600; color:var(--gr); text-align:right; line-height:1.3; }
 .chart-track { background:rgba(11,51,194,.08); border-radius:50px; height:28px; overflow:hidden; }
 .chart-fill { height:100%; border-radius:50px; transition:width 1s ease; }
 .chart-fill.f0 { background:rgba(100,110,140,.35); }
@@ -254,7 +254,7 @@
 .chart-fill.f3 { background:linear-gradient(90deg,var(--or),#ff9a50); }
 .chart-pct { font-size:clamp(18px,2.4vw,30px); font-weight:900; color:var(--dk); font-style:italic; letter-spacing:-.03em; text-align:right; }
 .chart-pct.hi { color:var(--or); }
-.chart-desc { font-size:12px; color:var(--gr); line-height:1.35; grid-column:2 / span 2; margin-top:-10px; padding-left:4px; }
+.chart-desc { font-size:16px; color:var(--gr); line-height:1.35; grid-column:2 / span 2; margin-top:-10px; padding-left:4px; }
 .chart-row.full { grid-template-columns:200px 1fr 72px; }
 
 /* ── SLIDE 2 — DOS ESTADOS ── */
@@ -274,7 +274,7 @@
 /* Estado 2: Pregunta pequeña + respuesta */
 .s2-q2 { display: none; flex-direction: column; gap: 16px; flex: 1; justify-content: center; }
 .s2-small-q {
-  font-size: clamp(13px,1.4vw,16px) !important;
+  font-size: clamp(16px,1.5vw,18px) !important;
   font-weight: 500 !important; color: rgba(255,255,255,.45) !important;
   text-align: center; line-height: 1.4 !important; margin: 0 !important;
 }
@@ -295,7 +295,7 @@
   margin: 4px 0 12px; display: block;
 }
 .s2-card .s2-body {
-  font-size: clamp(14px,1.5vw,18px) !important;
+  font-size: clamp(16px,1.6vw,18px) !important;
   color: rgba(255,255,255,.70) !important;
   margin: 0 !important; line-height: 1.5 !important;
 }
@@ -391,13 +391,13 @@
     </div>
 
     <!-- Subtítulo -->
-    <div style="font-size:clamp(14px,1.6vw,20px); color:rgba(255,255,255,.60); margin-top:20px; font-weight:500; line-height:1.5; text-align:center;">
+    <div style="font-size:clamp(16px,1.6vw,20px); color:rgba(255,255,255,.60); margin-top:20px; font-weight:500; line-height:1.5; text-align:center;">
       Entre usuarios sintéticos, vibe coding y equipos de agentes
     </div>
 
 
     <!-- Autor -->
-    <div style="font-size:12px; color:rgba(255,255,255,.38); margin-top:28px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; text-align:center;">Luigui Avila</div>
+    <div style="font-size:16px; color:rgba(255,255,255,.38); margin-top:28px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; text-align:center;">Luigui Avila</div>
 
     <!-- Flecha de inicio -->
     <span class="arrow-down"></span>
@@ -408,70 +408,7 @@
 <aside class="notes">La animación del rol establece desde el inicio que esto no es solo para diseñadores. El asterisco es una señal visual de que esa palabra es dinámica. La flecha indica que hay más contenido al avanzar.</aside>
 </section>
 
-<!-- ══════════════════════════
-     SLIDE 2 — EL CÓDIGO
-══════════════════════════ -->
-<section>
-<div class="sl">
-  <div class="b b1"></div><div class="b b4"></div>
 
-  <div class="hb">
-    <div class="hm">
-      <img src="assets/DElogo2.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
-    </div>
-    <div class="hd"></div>
-    <span class="hl">Introducción</span>
-  </div>
-
-  <div class="mc">
-    <div class="s2-q1" style="flex-direction:column;">
-      <span class="se">💬</span>
-      <div class="s2-big-q">¿Cuál es un elemento en común con el que conviven todos los roles que construyen productos o servicios?</div>
-    </div>
-  </div>
-
-  <div class="bf"><span><img src="assets/pbdlogo.png" alt="Powered by Design" style="height:50px;width:auto;display:block;"></span></div>
-</div>
-<aside class="notes">Hacer la pregunta en voz alta. Esperar 3 segundos. Avanzar al siguiente slide.</aside>
-</section>
-
-<!-- ══════════════════════════
-     SLIDE 3 — LA RESPUESTA
-══════════════════════════ -->
-<section>
-<div class="sl">
-  <div class="b b1"></div><div class="b b4"></div>
-
-  <div class="hb">
-    <div class="hm">
-      <img src="assets/DElogo2.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
-    </div>
-    <div class="hd"></div>
-    <span class="hl">Introducción</span>
-  </div>
-
-  <div class="mc">
-    <div class="s2-q2" style="display:flex;">
-      <p class="s2-small-q">¿Cuál es un elemento en común con el que conviven todos los roles que construyen productos o servicios?</p>
-
-      <div class="s2-card">
-        <span class="se">💻</span>
-        <span class="cl" style="text-align:center; margin-bottom:6px;">La Respuesta</span>
-        <span class="s2-titulo">El Código.</span>
-        <p class="s2-body">Hasta hace poco resultaba ajeno a los roles no técnicos. <strong>Eso ya cambió.</strong></p>
-      </div>
-
-      <div class="s2-quote q">
-        <p>"El riesgo de hoy ya no es construir algo que nadie quiere. El riesgo está en quedarte analizando mientras alguien ya está iterando."</p>
-        <span class="qby">— Garry Tan · CEO, Y Combinator</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="bf"><span><img src="assets/pbdlogo.png" alt="Powered by Design" style="height:50px;width:auto;display:block;"></span></div>
-</div>
-<aside class="notes">El código como denominador común. El riesgo desplazado es la tensión que abre la charla.</aside>
-</section>
 
 <!-- ══════════════════════════
      SLIDE 3 — EL RETO
@@ -500,13 +437,15 @@
       </p>
     </div>
     <div class="sys">
-      <div class="sys-block">Humanos</div>
+      <div class="sys-block">Usuarios</div>
       <span class="sys-plus">+</span>
-      <div class="sys-block">Agentes</div>
+      <div class="sys-block">Negocio</div>
       <span class="sys-plus">+</span>
-      <div class="sys-block on">Decisiones de negocio</div>
+      <div class="sys-block">Tecnología</div>
       <span class="sys-plus">+</span>
       <div class="sys-block">Datos</div>
+      <span class="sys-plus">+</span>
+      <div class="sys-block on">AI</div>
     </div>
     <div class="sys-tag">→ Todo en un sistema vivo</div>
     <div class="g2 mt">
@@ -554,15 +493,15 @@
       <div class="cc">
         <span class="ccl">Doble Diamante · 20 años</span>
         <span class="cf">Descubrir → Definir → Desarrollar → Entregar</span>
-        <p style="font-size:12px; margin-top:6px;">Secuencial. Primero el problema, luego la solución. Diseñado para cuando construir era caro.</p>
+        <p style="font-size:16px; margin-top:6px;">Secuencial. Primero el problema, luego la solución. Diseñado para cuando construir era caro.</p>
       </div>
       <div class="cc on">
         <span class="ccl">Stingray · Board of Innovation</span>
         <span class="cf">Entrenar → Desarrollar → Iterar</span>
-        <p style="font-size:12px; color:rgba(255,255,255,.75); margin-top:6px;">Paralelo — problemas y soluciones <strong>simultáneamente.</strong> IA como copiloto en cada fase.</p>
+        <p style="font-size:16px; color:rgba(255,255,255,.75); margin-top:6px;">Paralelo — problemas y soluciones <strong>simultáneamente.</strong> IA como copiloto en cada fase.</p>
       </div>
     </div>
-    <p style="font-size:10px; color:var(--dm); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:8px;">Cómo cambió la distribución del tiempo del diseñador — Jenny Wen, Anthropic 2026</p>
+    <p style="font-size:16px; color:var(--dm); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:8px;">Cómo cambió la distribución del tiempo del diseñador — Jenny Wen, Anthropic 2026</p>
     <div class="g4">
       <div class="c"><span class="stn-b w">60–70%</span><span class="ndsc">antes en maquetación y prototipado</span></div>
       <div class="c"><span class="stn-b">30–40%</span><span class="ndsc">hoy en maquetación y prototipado</span></div>
@@ -574,57 +513,6 @@
   <div class="bf"><span><img src="assets/pbdlogo.png" alt="Powered by Design" style="height:50px;width:auto;display:block;"></span></div>
 </div>
 <aside class="notes">Stingray (Board of Innovation): Train=IA sintetiza datos existentes, Develop=problemas y soluciones en paralelo, Iterate=validación híbrida con usuarios reales. La IA no reemplaza la empatía — acelera lo que la rodea.</aside>
-</section>
-
-<!-- ══════════════════════════
-     SLIDE 5 — HANDOFF EN SALESFORCE
-══════════════════════════ -->
-<section>
-<div class="sl">
-  <div class="b b1"></div><div class="b b3"></div>
-
-  <div class="hb">
-    <div class="hm">
-      <img src="assets/DElogo2.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
-    </div>
-    <div class="hd"></div>
-    <span class="hl">Handoff en Salesforce</span>
-  </div>
-
-  <div class="mc">
-    <div style="text-align:center;"><span class="se">🔁</span></div>
-    <p class="ttl" style="margin-bottom:12px;">
-      Del handoff al<br><span class="o">sistema ejecutable</span>
-    </p>
-
-    <div class="g2 mt">
-      <div class="c or" style="padding:18px 20px;">
-        <span class="cl w" style="margin-bottom:10px;">Antes</span>
-        <ul class="ul" style="margin:0;">
-          <li>El diseño vive en Figma (mock) y se describe en specs</li>
-          <li>La iteración fuerte aparece tarde, cuando ya hay wiring y estados</li>
-          <li>Mucho feedback termina siendo “alinear el mock”</li>
-        </ul>
-      </div>
-
-      <div class="c" style="padding:18px 20px;">
-        <span class="cl" style="margin-bottom:10px; color:var(--or);">Ahora</span>
-        <ul class="ul" style="margin:0;">
-          <li>Vibecoding + entrega en un sandbox de Salesforce</li>
-          <li>Entregables aterrizados en <strong>LWC</strong> + <strong>Flow</strong> + pantallas</li>
-          <li>El feedback apunta a comportamiento real (FSC: contexto, permisos y datos)</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="q mt2" style="max-width:930px;margin:0 auto;">
-      <p>El handoff deja de ser un traspaso y se vuelve un loop: iterar contra evidencia en el entorno real.</p>
-    </div>
-  </div>
-
-  <div class="bf"><span><img src="assets/pbdlogo.png" alt="Powered by Design" style="height:50px;width:auto;display:block;"></span></div>
-</div>
-<aside class="notes">Mantener tono: no reemplaza dev, reduce interpretación entregando algo que corre en el sandbox (LWC + Flow + estados, alineado a FSC).</aside>
 </section>
 
 <!-- ══════════════════════════
@@ -732,8 +620,8 @@
     <!-- Card principal: La paradoja — foco central -->
     <div class="c" style="padding:24px 36px; text-align:center;">
       <span class="cl w" style="margin-bottom:10px;">La paradoja del momento</span>
-      <p style="font-size:clamp(14px,1.5vw,19px); color:var(--tx); line-height:1.6; margin-bottom:6px;">La IA <strong>acelera dramáticamente</strong> la construcción. Sin embargo, el <strong>juicio, el criterio y la capacidad de discernimiento</strong> pasan a ser aún más valiosos — no menos.</p>
-      <p style="font-size:clamp(11px,1vw,13px); color:var(--dm); margin:0;">IA amplifica lo que le traés. Si traés poco criterio, amplifica el error.</p>
+      <p style="font-size:clamp(16px,1.6vw,19px); color:var(--tx); line-height:1.6; margin-bottom:6px;">La IA <strong>acelera dramáticamente</strong> la construcción. Sin embargo, el <strong>juicio, el criterio y la capacidad de discernimiento</strong> pasan a ser aún más valiosos — no menos.</p>
+      <p style="font-size:clamp(16px,1.2vw,17px); color:var(--dm); margin:0;">IA amplifica lo que le traés. Si traés poco criterio, amplifica el error.</p>
     </div>
 
     <!-- Fila inferior: dato YC + quote Felix Lee — ancho completo -->
@@ -741,24 +629,24 @@
 
       <!-- YC: formato dato grande, fondo azul, texto blanco — centrado vertical y horizontal -->
       <div class="c" style="padding:22px 28px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); text-align:center;">
-        <span style="font-size:10px; color:var(--or); text-transform:uppercase; letter-spacing:.14em; font-weight:700;">Y Combinator · 2025</span>
+        <span style="font-size:16px; color:var(--or); text-transform:uppercase; letter-spacing:.14em; font-weight:700;">Y Combinator · 2025</span>
         <div style="display:flex; align-items:flex-end; justify-content:center; gap:22px;">
           <div style="text-align:center;">
             <span style="font-size:clamp(30px,3.4vw,46px); font-weight:900; color:#fff; letter-spacing:-.04em; line-height:1;">$10M</span>
-            <span style="font-size:10px; color:rgba(255,255,255,.55); display:block; margin-top:2px;">levantados</span>
+            <span style="font-size:16px; color:rgba(255,255,255,.55); display:block; margin-top:2px;">levantados</span>
           </div>
           <div style="width:1px; height:38px; background:rgba(255,255,255,.2); flex-shrink:0;"></div>
           <div style="text-align:center;">
             <span style="font-size:clamp(30px,3.4vw,46px); font-weight:900; color:var(--or); letter-spacing:-.04em; line-height:1;">5–10</span>
-            <span style="font-size:10px; color:rgba(255,255,255,.55); display:block; margin-top:2px;">personas</span>
+            <span style="font-size:16px; color:rgba(255,255,255,.55); display:block; margin-top:2px;">personas</span>
           </div>
         </div>
-        <p style="font-size:clamp(11px,1.05vw,13px); color:rgba(255,255,255,.65); line-height:1.5; margin:0;">Por primera vez en YC, startups que levantan esa cifra con equipos pequeños, amplificados por agentes de IA.</p>
+        <p style="font-size:clamp(16px,1.2vw,17px); color:rgba(255,255,255,.65); line-height:1.5; margin:0;">Por primera vez en YC, startups que levantan esa cifra con equipos pequeños, amplificados por agentes de IA.</p>
       </div>
 
       <!-- Quote: Felix Lee — centrado vertical y horizontal -->
       <div class="q" style="margin:0; padding:22px 28px; background:rgba(255,255,255,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-        <p style="font-style:italic; font-size:clamp(12px,1.1vw,14px) !important; color:rgba(255,255,255,.8) !important; margin-bottom:10px !important; line-height:1.6 !important;">"La mayoría espera tener el plan perfecto. Los que avanzan aprenden que el plan llega construyendo."</p>
+        <p style="font-style:italic; font-size:clamp(16px,1.3vw,17px) !important; color:rgba(255,255,255,.8) !important; margin-bottom:10px !important; line-height:1.6 !important;">"La mayoría espera tener el plan perfecto. Los que avanzan aprenden que el plan llega construyendo."</p>
         <span class="qby">— Felix Lee · Co-Founder &amp; CEO, ADPList</span>
       </div>
 
@@ -791,18 +679,18 @@
     <div style="display:grid; grid-template-columns:240px 1fr; gap:20px; height:100%;">
 
       <!-- Panel izquierdo: tarjeta azul altura completa -->
-      <div style="background:var(--bl); border-radius:var(--r); padding:28px 22px; display:flex; flex-direction:column; justify-content:flex-end; position:relative; overflow:hidden;">
+      <div style="background:var(--bl); border-radius:var(--r); padding:28px 22px; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden;">
         <div class="b" style="width:260px;height:260px;top:-90px;right:-90px;background:rgba(255,255,255,.07);"></div>
         <div class="b" style="width:160px;height:160px;bottom:-60px;left:-60px;background:rgba(255,255,255,.04);"></div>
         <span style="font-size:26px; display:block; margin-bottom:14px; position:relative; z-index:1; line-height:1;">🚀</span>
-        <p style="font-size:10px; color:rgba(255,255,255,.42); text-transform:uppercase; letter-spacing:.15em; font-weight:700; margin-bottom:10px; position:relative; z-index:1;">Un solo rol</p>
+        <p style="font-size:16px; color:rgba(255,255,255,.42); text-transform:uppercase; letter-spacing:.15em; font-weight:700; margin-bottom:10px; position:relative; z-index:1;">Un solo rol</p>
         <p style="font-size:clamp(22px,2.8vw,36px); font-weight:900; color:#fff; line-height:1.1; letter-spacing:-.03em; margin:0 0 12px 0; position:relative; z-index:1;">3 semanas.<br><span style="color:var(--or);">Aumentado.</span></p>
-        <p style="font-size:11px; color:rgba(255,255,255,.6); line-height:1.5; position:relative; z-index:1;">Lo que antes requería un equipo, ahora lo construye un diseñador con agentes.</p>
+        <p style="font-size:16px; color:rgba(255,255,255,.6); line-height:1.5; position:relative; z-index:1;">Lo que antes requería un equipo, ahora lo construye un diseñador con agentes.</p>
       </div>
 
       <!-- Panel derecho: grid de artefactos construidos -->
       <div style="display:flex; flex-direction:column; gap:12px; height:100%;">
-        <p style="font-size:11px; color:rgba(0,0,0,.38); text-transform:uppercase; letter-spacing:.14em; font-weight:700; margin:0; flex-shrink:0;">Artefactos construidos en 3 semanas</p>
+        <p style="font-size:16px; color:rgba(0,0,0,.38); text-transform:uppercase; letter-spacing:.14em; font-weight:700; margin:0; flex-shrink:0;">Artefactos construidos en 3 semanas</p>
         <div style="display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr; gap:10px; flex:1;">
 
           <div class="c lt stat-card" style="padding:22px 18px; display:flex; flex-direction:column; gap:10px;">
@@ -847,7 +735,6 @@
     </div>
   </div>
 
-  <div class="bf"><span><img src="assets/pbdlogo.png" alt="Powered by Design" style="height:50px;width:auto;display:block;"></span></div>
 </div>
 <aside class="notes">Este slide es personal. No son datos de industria, son artefactos reales construidos en 3 semanas. La pregunta implícita: ¿qué puede hacer un equipo entero si un solo diseñador construye esto?</aside>
 </section>
@@ -872,54 +759,53 @@
     <div style="display:grid; grid-template-columns:240px 1fr; gap:20px; height:100%;">
 
       <!-- Panel izquierdo: tarjeta azul altura completa -->
-      <div style="background:var(--bl); border-radius:var(--r); padding:28px 22px; display:flex; flex-direction:column; justify-content:flex-end; position:relative; overflow:hidden;">
+      <div style="background:var(--bl); border-radius:var(--r); padding:28px 22px; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden;">
         <div class="b" style="width:260px;height:260px;top:-90px;right:-90px;background:rgba(255,255,255,.07);"></div>
         <div class="b" style="width:160px;height:160px;bottom:-60px;left:-60px;background:rgba(255,255,255,.04);"></div>
         <span style="font-size:26px; display:block; margin-bottom:14px; position:relative; z-index:1; line-height:1;">📊</span>
-        <p style="font-size:10px; color:rgba(255,255,255,.42); text-transform:uppercase; letter-spacing:.15em; font-weight:700; margin-bottom:10px; position:relative; z-index:1;">No es especulación</p>
+        <p style="font-size:16px; color:rgba(255,255,255,.42); text-transform:uppercase; letter-spacing:.15em; font-weight:700; margin-bottom:10px; position:relative; z-index:1;">No es especulación</p>
         <p style="font-size:clamp(26px,3.2vw,42px); font-weight:900; color:#fff; line-height:1.08; letter-spacing:-.03em; margin:0; position:relative; z-index:1;">Son los<br>números<br><span style="color:var(--or);">de hoy.</span></p>
       </div>
 
       <!-- Panel derecho: 2×2 stats -->
       <div style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:16px; height:100%;">
         <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
-          <span class="src" style="font-size:12px; letter-spacing:.14em;">YC W25</span>
+          <span class="src" style="font-size:16px; letter-spacing:.14em;">YC W25</span>
           <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
             <span class="stat-icon">🚀</span>
             <span class="stn" style="font-size:clamp(80px,10vw,136px); line-height:1;">25%</span>
           </div>
-          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">de startups con 95% de su código creado con IA</span>
+          <span class="sdsc" style="font-size:clamp(16px,1.5vw,18px); line-height:1.4;">de startups con 95% de su código creado con IA</span>
         </div>
         <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
-          <span class="src" style="font-size:12px; letter-spacing:.14em;">Cursor · 2025</span>
+          <span class="src" style="font-size:16px; letter-spacing:.14em;">Cursor · 2025</span>
           <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
             <span class="stat-icon">💰</span>
             <span class="stn o" style="font-size:clamp(80px,10vw,136px); line-height:1;">$29B</span>
           </div>
-          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">sin PMs de tiempo completo. Roles difusos + agentes como pegamento</span>
+          <span class="sdsc" style="font-size:clamp(16px,1.5vw,18px); line-height:1.4;">sin PMs de tiempo completo. Roles difusos + agentes como pegamento</span>
         </div>
         <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
-          <span class="src" style="font-size:12px; letter-spacing:.14em;">Google · 2024</span>
+          <span class="src" style="font-size:16px; letter-spacing:.14em;">Google · 2024</span>
           <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
             <span class="stat-icon">⚙️</span>
             <span class="stn" style="font-size:clamp(80px,10vw,136px); line-height:1;">25%</span>
           </div>
-          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">del código asistido por IA · +10% en velocidad de producción</span>
+          <span class="sdsc" style="font-size:clamp(16px,1.5vw,18px); line-height:1.4;">del código asistido por IA · +10% en velocidad de producción</span>
         </div>
         <div class="c lt stat-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:32px 28px;">
-          <span class="src" style="font-size:12px; letter-spacing:.14em;">Global · Vibe Coding</span>
+          <span class="src" style="font-size:16px; letter-spacing:.14em;">Global · Vibe Coding</span>
           <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
             <span class="stat-icon">🌍</span>
             <span class="stn o" style="font-size:clamp(80px,10vw,136px); line-height:1;">0.04%</span>
           </div>
-          <span class="sdsc" style="font-size:clamp(14px,1.4vw,18px); line-height:1.4;">a nivel global usa vibe coding para construir productos o servicios</span>
+          <span class="sdsc" style="font-size:clamp(16px,1.5vw,18px); line-height:1.4;">a nivel global usa vibe coding para construir productos o servicios</span>
         </div>
       </div>
 
     </div>
   </div>
 
-  <div class="bf"><span><img src="assets/pbdlogo.png" alt="Powered by Design" style="height:50px;width:auto;display:block;"></span></div>
 </div>
 <aside class="notes">El 0.04% es el dato más contraintuitivo. Todo el mundo habla de IA, casi nadie la usa en producción globalmente. Cursor $29B sin PMs es el caso más impactante para esta audiencia.</aside>
 </section>
@@ -931,7 +817,7 @@
 <div class="sl">
   <div class="b b1"></div>
 
-  <div class="hb">
+  <div class="hb" style="margin-bottom:0;">
     <div class="hm">
       <img src="assets/DElogo2.png" alt="BCP COE Diseño Estratégico" style="height:30px;width:auto;display:block;">
     </div>
@@ -945,7 +831,7 @@
     <div style="width:100%;">
       <span class="se" style="text-align:center; margin-bottom:4px;">🌍</span>
       <div style="font-size:clamp(26px,3.2vw,44px); font-weight:900; color:#fff; line-height:1.1; margin-bottom:4px;">¿Cuánta gente usa la IA?</div>
-      <div style="font-size:10px; color:rgba(255,255,255,.35); letter-spacing:.05em;">Cada punto ≈ 3.2 millones de personas · 2,500 puntos = 8.1B humanos · Color = nivel más avanzado de interacción con IA · Feb 2026</div>
+      <div style="font-size:16px; color:rgba(255,255,255,.35); letter-spacing:.05em;">Cada punto ≈ 3.2 millones de personas · 2,500 puntos = 8.1B humanos · Color = nivel más avanzado de interacción con IA · Feb 2026</div>
     </div>
 
     <!-- Layout dos columnas -->
@@ -960,36 +846,36 @@
         <div style="display:flex; align-items:center; gap:18px; background:rgba(255,255,255,.07); border-radius:14px; padding:18px 22px;">
           <div style="width:28px; height:28px; border-radius:6px; background:#7A82A0; flex-shrink:0;"></div>
           <div style="flex:1;">
-            <div style="font-size:clamp(11px,1vw,13px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Nunca usó IA</div>
+            <div style="font-size:clamp(16px,1.2vw,17px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Nunca usó IA</div>
             <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#7A82A0; letter-spacing:-.03em; line-height:1;">~6.8B</div>
-            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.50); margin-top:2px;">84% de la humanidad — sin ningún contacto con IA</div>
+            <div style="font-size:clamp(16px,1.3vw,17px); color:rgba(255,255,255,.50); margin-top:2px;">84% de la humanidad — sin ningún contacto con IA</div>
           </div>
         </div>
 
         <div style="display:flex; align-items:center; gap:18px; background:rgba(255,255,255,.07); border-radius:14px; padding:18px 22px;">
           <div style="width:28px; height:28px; border-radius:6px; background:#4CAF50; flex-shrink:0;"></div>
           <div style="flex:1;">
-            <div style="font-size:clamp(11px,1vw,13px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Chatbot gratuito</div>
+            <div style="font-size:clamp(16px,1.2vw,17px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Chatbot gratuito</div>
             <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#4CAF50; letter-spacing:-.03em; line-height:1;">~1.3B</div>
-            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.50); margin-top:2px;">16% — usaron ChatGPT o similar al menos una vez</div>
+            <div style="font-size:clamp(16px,1.3vw,17px); color:rgba(255,255,255,.50); margin-top:2px;">16% — usaron ChatGPT o similar al menos una vez</div>
           </div>
         </div>
 
         <div style="display:flex; align-items:center; gap:18px; background:rgba(255,255,255,.07); border-radius:14px; padding:18px 22px;">
           <div style="width:28px; height:28px; border-radius:6px; background:#FFC107; flex-shrink:0;"></div>
           <div style="flex:1;">
-            <div style="font-size:clamp(11px,1vw,13px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Paga $20/mes</div>
+            <div style="font-size:clamp(16px,1.2vw,17px); color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Paga $20/mes</div>
             <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#FFC107; letter-spacing:-.03em; line-height:1;">~20M</div>
-            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.50); margin-top:2px;">~0.3% — suscriptores activos de herramientas premium</div>
+            <div style="font-size:clamp(16px,1.3vw,17px); color:rgba(255,255,255,.50); margin-top:2px;">~0.3% — suscriptores activos de herramientas premium</div>
           </div>
         </div>
 
         <div style="display:flex; align-items:center; gap:18px; background:rgba(255,107,19,.10); border:1px solid rgba(255,107,19,.25); border-radius:14px; padding:18px 22px;">
           <div style="width:28px; height:28px; border-radius:6px; background:#EF5350; flex-shrink:0;"></div>
           <div style="flex:1;">
-            <div style="font-size:clamp(11px,1vw,13px); color:var(--or); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Usa IA para construir</div>
+            <div style="font-size:clamp(16px,1.2vw,17px); color:var(--or); text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:2px;">Usa IA para construir</div>
             <div style="font-size:clamp(28px,3.2vw,42px); font-weight:900; color:#EF5350; letter-spacing:-.03em; line-height:1;">~3M</div>
-            <div style="font-size:clamp(12px,1.1vw,14px); color:rgba(255,255,255,.65); margin-top:2px;"><strong style="color:#fff;">0.04%</strong> — vibe coding, productos y servicios reales con IA</div>
+            <div style="font-size:clamp(16px,1.3vw,17px); color:rgba(255,255,255,.65); margin-top:2px;"><strong style="color:#fff;">0.04%</strong> — vibe coding, productos y servicios reales con IA</div>
           </div>
         </div>
 
@@ -1023,7 +909,7 @@
     <p style="font-size:clamp(16px,1.9vw,24px); font-weight:500; color:var(--mu); line-height:1.4; margin:0 auto 24px; max-width:680px;">
       La pregunta no es si deberíamos pasar a construir.
     </p>
-    <p style="font-size:clamp(26px,3.4vw,50px); font-weight:800; line-height:1.2; margin:0 auto 24px; max-width:820px; color:var(--tx); letter-spacing:-.025em;">
+    <p style="font-size:clamp(26px,3.4vw,50px); line-height:1.2; margin:0 auto 24px; max-width:1250px; color:var(--tx); letter-spacing:-.025em;">
       La pregunta es si, como profesionales<br>o como empresa,
       <span style="color:var(--or);">nos podemos permitirnos no hacerlo…</span>
     </p>
@@ -1040,9 +926,42 @@
 <!-- ══════════════════════════
      SLIDE 10 — GRACIAS
 ══════════════════════════ -->
+<style>
+  @keyframes wander1 {
+    0%   { transform: translate(0, 0); }
+    15%  { transform: translate(340px, -180px); }
+    30%  { transform: translate(-120px, 260px); }
+    45%  { transform: translate(500px, 80px); }
+    60%  { transform: translate(180px, -320px); }
+    75%  { transform: translate(-260px, 160px); }
+    90%  { transform: translate(420px, 300px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes wander2 {
+    0%   { transform: translate(0, 0); }
+    20%  { transform: translate(-300px, 220px); }
+    40%  { transform: translate(460px, -140px); }
+    55%  { transform: translate(120px, 380px); }
+    70%  { transform: translate(-400px, -80px); }
+    85%  { transform: translate(280px, 240px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes wander3 {
+    0%   { transform: translate(0, 0); }
+    18%  { transform: translate(520px, 200px); }
+    35%  { transform: translate(-180px, -260px); }
+    52%  { transform: translate(360px, 340px); }
+    68%  { transform: translate(-320px, 120px); }
+    84%  { transform: translate(200px, -200px); }
+    100% { transform: translate(0, 0); }
+  }
+  .b-w1 { animation: wander1 76s ease-in-out infinite; }
+  .b-w2 { animation: wander2 56s ease-in-out infinite; }
+  .b-w3 { animation: wander3 44s ease-in-out infinite; }
+</style>
 <section>
 <div class="sl">
-  <div class="b b1"></div><div class="b b2"></div><div class="b b3"></div>
+  <div class="b b1 b-w1"></div><div class="b b2 b-w2"></div><div class="b b3 b-w3"></div>
 
   <div class="hb">
     <div class="hm">
@@ -1110,7 +1029,7 @@ const roles = ['Diseñador','PO','PM','BA','QE','Marketing','Writer','Investigad
 let ri = 0;
 const roleEl = document.getElementById('role-word');
 if (roleEl) {
-  setInterval(() => {
+  const cycle = () => {
     roleEl.style.opacity = '0';
     roleEl.style.transform = 'translateY(-10px)';
     setTimeout(() => {
@@ -1119,7 +1038,11 @@ if (roleEl) {
       roleEl.style.opacity = '1';
       roleEl.style.transform = 'translateY(0)';
     }, 280);
-  }, 2200);
+  };
+  setTimeout(() => {
+    cycle();
+    setInterval(cycle, 2200);
+  }, 30000);
 }
 
 // ── REVEAL INIT ──

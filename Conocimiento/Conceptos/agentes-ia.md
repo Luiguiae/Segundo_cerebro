@@ -1,16 +1,17 @@
 ---
 titulo: "Equipos de Agentes IA"
 alias: ["agent teams", "agentes-ia", "multi-agent systems", "equipos de agentes"]
-tags: [agentes, ia, equipos, automatizacion, producto, escala, construccion]
+tags: [agentes, ia, equipos, automatizacion, escala]
 tipo: concepto
+familia: agencia-ia
 fecha: 2026-03-04
 fuente:
   tipo: articulo
   referencia: "Múltiples fuentes: Salesforce Agentforce, YC data, conversaciones acumuladas"
   autor: "Investigación acumulada"
-relacionado: [disenador-a-constructor, vibe-coding, usuarios-sinteticos, mvp-a-prototipo-en-produccion, equipos-pequeños-alto-impacto]
+relacionado: [disenador-a-constructor, vibe-coding, usuarios-sinteticos]
 proyectos: []
-estado: consolidado
+estado: activo
 ---
 
 ## ¿Qué es?
@@ -44,7 +45,7 @@ En Cursor, Ryo Lu describe que "los roles entre diseñadores, PMs e ingenieros s
 - [[vibe-coding]] → los agentes extienden el vibe coding a tareas más complejas y multi-paso
 - [[usuarios-sinteticos]] → los agentes pueden orquestar sesiones completas de testing con usuarios sintéticos
 - [[mvp-a-prototipo-en-produccion]] → permiten refactorizar deuda técnica tan rápido que la perfección inicial pierde sentido
-- [[equipos-pequeños-alto-impacto]] → son la infraestructura que hace posible el modelo de equipo pequeño
+- [[equipos-pequenos-alto-impacto]] → son la infraestructura que hace posible el modelo de equipo pequeño
 
 ## Citas o fragmentos clave
 > "La próxima ola de IA se parecerá a un equipo coordinado en lugar de un modelo único respondiendo preguntas."

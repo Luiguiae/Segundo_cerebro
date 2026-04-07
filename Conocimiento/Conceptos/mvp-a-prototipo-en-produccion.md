@@ -1,16 +1,17 @@
 ---
 titulo: "Del MVP al Prototipo en Producción"
 alias: ["mvp-muerto", "prototipo-produccion", "MLP", "velocidad-aprendizaje"]
-tags: [producto, mvp, velocidad, iteracion, aprendizaje, construccion, ia]
+tags: [mvp, velocidad, iteracion, aprendizaje, construccion]
 tipo: concepto
+familia: velocidad-output
 fecha: 2026-03-04
 fuente:
   tipo: reunion
   referencia: "Conversación con Claude — 20 feb 2026"
   autor: "Luigui Avila"
-relacionado: [vibe-coding, agentes-ia, disenador-a-constructor, equipos-pequeños-alto-impacto]
+relacionado: [vibe-coding, agentes-ia, disenador-a-constructor]
 proyectos: []
-estado: consolidado
+estado: activo
 ---
 
 ## ¿Qué es?
@@ -41,7 +42,7 @@ El cambio de mentalidad tiene cuatro ejes:
 - [[vibe-coding]] → elimina el cuello de botella de construcción que hacía lento al MVP clásico
 - [[agentes-ia]] → permite refactorizar deuda técnica tan rápido que la perfección inicial pierde sentido
 - [[disenador-a-constructor]] → el perfil híbrido es el que puede ejecutar este ciclo sin depender de otros
-- [[equipos-pequeños-alto-impacto]] → equipos pequeños con este modelo compiten con organizaciones grandes
+- [[equipos-pequenos-alto-impacto]] → equipos pequeños con este modelo compiten con organizaciones grandes
 
 ## Citas o fragmentos clave
 > "El tiempo de construcción ya no es la variable crítica — la variable crítica es qué aprendes y con qué velocidad actúas sobre ese aprendizaje."
