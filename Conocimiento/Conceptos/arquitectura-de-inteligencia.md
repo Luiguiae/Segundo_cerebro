@@ -22,7 +22,7 @@ El diseñador no es un productor de pantallas — es un arquitecto de cómo las 
 
 ## Conexión con el Segundo Cerebro
 
-El Segundo Cerebro es una implementación personal de arquitectura de inteligencia: define qué información entra (taxonomía), cómo se estructura (conceptos atómicos + YAML), cómo se relaciona (INDEX.md + correlaciones), y cómo se activa (presentaciones + outputs). El sistema no es el vault — es la lógica de estructuración que vive detrás.
+El Segundo Cerebro es una implementación personal de arquitectura de inteligencia: define qué información entra (taxonomía), cómo se estructura (conceptos atómicos + YAML), cómo se relaciona (ATLAS.md + correlaciones), y cómo se activa (presentaciones + outputs). El sistema no es el vault — es la lógica de estructuración que vive detrás.
 
 ## Cuándo no aplica
 

@@ -28,5 +28,5 @@ Restricciones críticas:
 - Todo en español: nombres de carpetas, archivos, variables, funciones y comentarios
 - Nunca escribir claves de API en el código — usar variables de entorno
 - La plantilla de concepto atómico debe respetarse exactamente (ver sección Pila técnica en ESPECIFICACION.md)
-- El campo `relacionado` debe inferirse automáticamente cruzando contra los conceptos existentes en el INDEX.md del Segundo Cerebro cuando esté disponible
+- El campo `relacionado` debe inferirse automáticamente cruzando contra los conceptos existentes en el ATLAS.md del Segundo Cerebro cuando esté disponible
 - SQLite como única base de datos — sin PostgreSQL ni dependencias externas en v1

@@ -2,6 +2,76 @@
 
 ---
 
+### 2026-04-10 10:30 — renombrado INDEX.md → ATLAS.md (vault-wide)
+
+**Instrucción:** "Renombra INDEX.md a ATLAS.md, actualiza todas las referencias en el vault, regenera el archivo."
+
+**Acciones:**
+- `Conocimiento/INDEX.md` renombrado a `Conocimiento/ATLAS.md`
+- `Prompts/Meta/generar_index.py`: OUTPUT_FILE, título, encabezado Context Layer, argparse description, print final — todos actualizados a ATLAS.md
+- `CLAUDE.md`: 9 menciones de INDEX/INDEX.md reemplazadas por ATLAS/ATLAS.md
+- `Prompts/JARVIS/prompts-jarvis.md`: 14 menciones de INDEX.md/INDEX actualizadas a ATLAS.md/ATLAS
+- `Conocimiento/Conceptos/arquitectura-de-inteligencia.md`: 1 mención en cuerpo → ATLAS.md
+- `Prompts/Meta/generar_presentacion.py`: INDEX_FILE + mensaje de error → ATLAS.md
+- `Prompts/Presentaciones/prompt-generar-presentacion.md`: 1 mención → ATLAS.md
+- `Proyectos/correlacion-conceptos/`: 4 archivos actualizados (tasks.md, plan.md, SPEC.md, SKILL.md)
+- `Proyectos/rastreador-conocimiento/`: 6 archivos actualizados (SPEC.md, AGENTES.md, plan.md, tareas.md, prompt-rastreador-conocimiento.md, redactor.py, cruzador.py)
+- Script ejecutado: ATLAS.md regenerado correctamente
+
+**Resultados:**
+- `Conocimiento/ATLAS.md`: **OK** — generado, 14 conceptos, 14/14 con resumen
+- `Conocimiento/INDEX.md`: **eliminado** — ya no existe
+- Referencias residuales: **0** — vault-wide scan limpio
+
+**ATLAS regenerado:** sí — 14 conceptos procesados · 41 tags únicos · 14 con links
+
+---
+
+### 2026-04-10 09:56 — actualización generar_index.py a v2
+
+**Instrucción:** "Reemplaza generar_index.py con versión que incluye resúmenes, sección por familia y encabezado Context Layer."
+
+**Acciones:**
+- `Prompts/Meta/generar_index.py` reescrito a v2
+- Nueva función `extract_resumen()`: extrae primer párrafo del cuerpo, ignora frontmatter/encabezados/líneas vacías, trunca a 120 chars
+- Tabla principal: nueva columna "Resumen"
+- Nueva sección "## Conceptos por familia" con `→ [resumen]` bajo cada concepto
+- Encabezado del INDEX: nota "Context Layer — Jarvis lee este archivo al inicio de cada sesión"
+- Instrucciones finales: actualizada referencia a `Prompts/JARVIS/prompts-jarvis.md`
+- Script ejecutado y INDEX regenerado
+
+**Resultados:**
+- `generar_index.py`: **OK** — v2 operacional
+- `Conocimiento/INDEX.md`: **OK** — tabla con resúmenes + 5 familias agrupadas
+
+**INDEX regenerado:** sí — 14 conceptos procesados · 14/14 con resumen extraído · 0 sin resumen · 41 tags únicos
+
+---
+
+### 2026-04-10 15:00 — configuración sistema de sesiones
+
+**Instrucción:** "Jarvis, agrega rituales de sesión, crea carpeta Sesiones/, actualiza CLAUDE.md y prompts-jarvis.md, crea sesión inicial, regenera INDEX."
+
+**Acciones:**
+- Creada carpeta `Conocimiento/Fuentes/Sesiones/`
+- `CLAUDE.md`: agregada sección "Ritual de inicio de sesión" antes de "Reglas que siempre sigues"
+- `CLAUDE.md`: agregada sección "Ritual de cierre de sesión" antes de "Reglas que siempre sigues"
+- `CLAUDE.md`: actualizada estructura de carpetas — agregada línea `Sesiones/` bajo `Fuentes/`
+- `CLAUDE.md`: agregado comando "Cerrar sesión" en sección "Comandos que entiendes"
+- `Prompts/JARVIS/prompts-jarvis.md`: agregada sección "5 · Gestión de sesiones" (prompts 5.1 y 5.2)
+- `Prompts/JARVIS/prompts-jarvis.md`: actualizada tabla de referencia rápida
+- `Conocimiento/Fuentes/Sesiones/2026-04-10.md`: creada sesión inicial con estado del vault
+
+**Resultados:**
+- `Conocimiento/Fuentes/Sesiones/`: **OK** — carpeta creada
+- `CLAUDE.md`: **OK** — dos secciones de ritual agregadas + estructura + comando
+- `Prompts/JARVIS/prompts-jarvis.md`: **OK** — sección 5 agregada
+- `Conocimiento/Fuentes/Sesiones/2026-04-10.md`: **OK** — sesión inicial creada
+
+**INDEX regenerado:** sí — 14 conceptos procesados, 41 tags únicos, 14 conceptos con links
+
+---
+
 ### 2026-04-07 — renombrado equipos-pequeños → equipos-pequenos
 
 **Instrucción:** "ok, realiza el cambio"

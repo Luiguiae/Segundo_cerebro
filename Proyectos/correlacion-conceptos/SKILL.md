@@ -191,7 +191,7 @@ Listo para usarse como argumento central en una presentación.]
 ### Lo que esta skill NO hace
 
 - **No correlaciona más de 3 conceptos simultáneos.** Si el usuario pide correlacionar 4 o más conceptos en una sola narrativa, responde: "En v1 el límite es 3 conceptos por correlación. ¿Quieres que haga pares o una correlación triple con los más relevantes?"
-- **No modifica ni menciona `INDEX.md`.** La actualización del índice la hace `generar_index.py` por separado. No toques ese archivo bajo ninguna circunstancia.
+- **No modifica ni menciona `ATLAS.md`.** La actualización del índice la hace `generar_index.py` por separado. No toques ese archivo bajo ninguna circunstancia.
 - **No genera slides ni exporta a otros formatos.** El output es siempre Markdown puro. Si el usuario pide una slide, responde: "Eso lo hace el proceso de exportación separado. Aquí genero el archivo `.md` con la correlación."
 - **No inventa conceptos.** Si un concepto mencionado por el usuario no existe como archivo en `Conocimiento/Conceptos/`, no lo construyas desde cero. Informa al usuario y detente.
 - **No pregunta si el título está bien.** El título se propone automáticamente y se escribe directamente en el archivo. Si al usuario no le gusta, puede pedirte que lo cambies después.

@@ -21,7 +21,7 @@ from pathlib import Path
 # ── Configuración ──────────────────────────────────────────────────────────────
 DEFAULT_BASE   = Path.home() / "Documents" / "Segundo_cerebro"
 CONCEPTOS_DIR  = "Conocimiento/Conceptos"
-INDEX_FILE     = "Conocimiento/INDEX.md"
+INDEX_FILE     = "Conocimiento/ATLAS.md"
 OUTPUT_DIR     = "Documentos/Presentaciones/decks"
 MODEL          = "claude-sonnet-4-20250514"
 MAX_TOKENS     = 4000
@@ -178,7 +178,7 @@ def main():
     # Leer INDEX
     index_contenido = leer_archivo(base / INDEX_FILE)
     if not index_contenido:
-        print("⚠️  No encontré INDEX.md. Ejecuta primero generar_index.py")
+        print("⚠️  No encontré ATLAS.md. Ejecuta primero generar_index.py")
 
     # Leer conceptos
     conceptos_contenido = {}

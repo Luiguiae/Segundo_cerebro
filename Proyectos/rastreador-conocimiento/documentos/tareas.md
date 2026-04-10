@@ -168,12 +168,12 @@
 
 ---
 
-## Fase 7 — Cruce con INDEX.md
+## Fase 7 — Cruce con ATLAS.md
 
 ### T-28 — Implementar inferencia del campo `relacionado`
-**Descripción**: En `redactor.py`, si existe la variable de entorno `SEGUNDO_CEREBRO_INDEX` con la ruta al `INDEX.md`, leer el archivo, extraer los títulos de conceptos existentes, y hacer una comparación semántica simple (palabras clave en común) entre el concepto nuevo y los existentes. Poblar `relacionado` con los títulos más cercanos (máximo 5). Si la variable no existe, dejar `relacionado: []`.
+**Descripción**: En `redactor.py`, si existe la variable de entorno `SEGUNDO_CEREBRO_INDEX` con la ruta al `ATLAS.md`, leer el archivo, extraer los títulos de conceptos existentes, y hacer una comparación semántica simple (palabras clave en común) entre el concepto nuevo y los existentes. Poblar `relacionado` con los títulos más cercanos (máximo 5). Si la variable no existe, dejar `relacionado: []`.
 **Archivos afectados**: `servidor/agentes/redactor.py`
-**Criterio**: con un `INDEX.md` de prueba, el campo `relacionado` del concepto generado contiene al menos 1 título relevante.
+**Criterio**: con un `ATLAS.md` de prueba, el campo `relacionado` del concepto generado contiene al menos 1 título relevante.
 
 ---
 

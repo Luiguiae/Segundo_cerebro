@@ -73,7 +73,7 @@ estado: borrador
 
 - Máximo 5 conceptos generados por agente por búsqueda.
 - Conceptos rechazados se eliminan permanentemente (sin papelera).
-- El campo `relacionado` cruza contra el INDEX.md del Segundo Cerebro;
+- El campo `relacionado` cruza contra el ATLAS.md del Segundo Cerebro;
   si el archivo no existe, queda `[]` sin bloquear el flujo.
 
 ## Estructura de archivos — no renombrar sin actualizar este documento

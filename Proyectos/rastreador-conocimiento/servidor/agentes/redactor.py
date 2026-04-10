@@ -285,7 +285,7 @@ def generar_concepto(contexto_tematica: dict, resultados: list[dict]) -> dict:
     concepto = _parsear_y_validar(texto_generado)
     concepto["tematica_id"] = contexto_tematica.get("id")
 
-    # --- Cruce con INDEX.md del Segundo Cerebro ---
+    # --- Cruce con ATLAS.md del Segundo Cerebro ---
     tags_lista = json.loads(concepto.get("tags", "[]"))
     relacionados = inferir_relacionados(concepto["titulo"], tags_lista)
     concepto["relacionado"] = json.dumps(relacionados, ensure_ascii=False)

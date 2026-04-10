@@ -68,7 +68,7 @@ Cada tarea produce una sección o bloque del archivo final `SKILL.md`. Son indep
 
 ## T5 — Reglas de comportamiento y límites explícitos
 
-**Descripción:** Añadir una sección al SKILL.md con las restricciones hard de la v1: no correlacionar más de 3 conceptos simultáneos, no modificar ni referenciar INDEX.md, no generar slides, no inventar conceptos que no existan como archivos, proponer título automáticamente (no preguntar).
+**Descripción:** Añadir una sección al SKILL.md con las restricciones hard de la v1: no correlacionar más de 3 conceptos simultáneos, no modificar ni referenciar ATLAS.md, no generar slides, no inventar conceptos que no existan como archivos, proponer título automáticamente (no preguntar).
 
 **Archivos afectados:**
 - Modifica: `SKILL.md`

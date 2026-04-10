@@ -23,7 +23,7 @@ Escribir las instrucciones para el flujo donde Claude lee todos los conceptos di
 Definir dentro del SKILL.md el template exacto que Claude debe seguir al escribir cada archivo de correlación: frontmatter YAML, secciones, convención de nombre, y reglas de tags (máx. 5).
 
 ### Fase 5 — Reglas de comportamiento y límites
-Añadir las restricciones explícitas: qué hacer si un concepto no existe como archivo, límite de 3 conceptos en v1, no tocar INDEX.md, proponer título automáticamente, no generar slides.
+Añadir las restricciones explícitas: qué hacer si un concepto no existe como archivo, límite de 3 conceptos en v1, no tocar ATLAS.md, proponer título automáticamente, no generar slides.
 
 ### Fase 6 — Ejemplos internos (few-shot)
 Incluir dentro del SKILL.md un ejemplo completo de correlación bien formada para anclar el tono narrativo que se espera. Esto es crítico para que la skill no produzca output genérico.

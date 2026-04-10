@@ -69,7 +69,7 @@ Listo para usarse como argumento en una presentación.]
 
 ## Fuera de alcance — v1
 - No genera slides ni exporta a Reveal.js (eso lo hace un proceso separado)
-- No actualiza el `INDEX.md` automáticamente (lo hace `generar_index.py` aparte)
+- No actualiza el `ATLAS.md` automáticamente (lo hace `generar_index.py` aparte)
 - No correlaciona conceptos que no existan como archivos en `Conocimiento/Conceptos/`
 - No hace correlaciones de más de 3 conceptos en esta versión
 - No tiene interfaz gráfica — se activa desde chat con Claude

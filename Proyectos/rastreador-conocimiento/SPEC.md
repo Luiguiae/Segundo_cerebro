@@ -169,4 +169,4 @@ estado: borrador
 ## Decisiones cerradas
 - Máximo 5 conceptos por agente por búsqueda
 - Conceptos rechazados se eliminan permanentemente
-- El campo `relacionado` se cruza automáticamente contra el INDEX.md del Segundo Cerebro
+- El campo `relacionado` se cruza automáticamente contra el ATLAS.md del Segundo Cerebro

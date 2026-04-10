@@ -1,8 +1,8 @@
 """
-Cruzador con el INDEX.md del Segundo Cerebro.
+Cruzador con el ATLAS.md del Segundo Cerebro.
 Lee los conceptos existentes y cruza tags y términos del título
 contra el concepto nuevo para inferir el campo 'relacionado'.
-Si el INDEX.md no existe o falla, devuelve lista vacía sin bloquear.
+Si el ATLAS.md no existe o falla, devuelve lista vacía sin bloquear.
 """
 
 import os
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 # Ruta por defecto: desde agentes/ subir 5 niveles → raíz del Segundo Cerebro
 # agentes/ → servidor/ → rastreador-conocimiento/ → Proyectos/ → Segundo_cerebro/
-_RUTA_DEFAULT = Path(__file__).parent.parent.parent.parent.parent / "Conocimiento" / "INDEX.md"
+_RUTA_DEFAULT = Path(__file__).parent.parent.parent.parent.parent / "Conocimiento" / "ATLAS.md"
 MAX_RELACIONADOS = 5
 
 
@@ -25,7 +25,7 @@ def _ruta_index() -> Path:
 
 
 # ---------------------------------------------------------------------------
-# Parseo del INDEX.md
+# Parseo del ATLAS.md
 # ---------------------------------------------------------------------------
 
 # Línea de tabla: | [[slug|Nombre]] | `tag1`, `tag2`, ... | ...
@@ -39,7 +39,7 @@ _RE_TAG = re.compile(r"`([^`]+)`")
 
 def _parsear_index(texto: str) -> list[dict]:
     """
-    Extrae lista de {nombre, slug, tags} de la tabla del INDEX.md.
+    Extrae lista de {nombre, slug, tags} de la tabla del ATLAS.md.
     nombre: texto para mostrar (o slug si no hay alias).
     tags:   set de strings en minúsculas.
     """
@@ -54,23 +54,23 @@ def _parsear_index(texto: str) -> list[dict]:
 
 @lru_cache(maxsize=1)
 def _cargar_conceptos_index() -> list[dict]:
-    """Carga y parsea el INDEX.md una sola vez (cached en memoria)."""
+    """Carga y parsea el ATLAS.md una sola vez (cached en memoria)."""
     ruta = _ruta_index()
     if not ruta.exists():
-        logger.warning("INDEX.md no encontrado en %s — campo 'relacionado' quedará vacío.", ruta)
+        logger.warning("ATLAS.md no encontrado en %s — campo 'relacionado' quedará vacío.", ruta)
         return []
     try:
         texto = ruta.read_text(encoding="utf-8")
         conceptos = _parsear_index(texto)
-        logger.info("INDEX.md cargado: %d conceptos existentes.", len(conceptos))
+        logger.info("ATLAS.md cargado: %d conceptos existentes.", len(conceptos))
         return conceptos
     except Exception as e:
-        logger.error("Error al leer INDEX.md: %s", e)
+        logger.error("Error al leer ATLAS.md: %s", e)
         return []
 
 
 def invalidar_cache() -> None:
-    """Fuerza recarga del INDEX.md en la próxima llamada (útil en tests)."""
+    """Fuerza recarga del ATLAS.md en la próxima llamada (útil en tests)."""
     _cargar_conceptos_index.cache_clear()
 
 
@@ -86,7 +86,7 @@ def _normalizar(texto: str) -> set[str]:
 
 def inferir_relacionados(titulo: str, tags: list[str]) -> list[str]:
     """
-    Cruza el título y tags del concepto nuevo contra el INDEX.md.
+    Cruza el título y tags del concepto nuevo contra el ATLAS.md.
     Devuelve los nombres de los conceptos relacionados (máx. MAX_RELACIONADOS).
     Nunca lanza excepción.
     """

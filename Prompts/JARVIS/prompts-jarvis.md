@@ -16,7 +16,7 @@ Lee los siguientes archivos para tener contexto completo antes de actuar:
 - Plantillas/taxonomia.md
 - Plantillas/rubrica.md
 - JARVIS_LOG.md
-- INDEX.md
+- ATLAS.md
 
 Confirma que los leíste y cuántos conceptos hay en el vault actualmente.
 ```
@@ -53,7 +53,7 @@ Fuente: [de dónde viene — conversación, artículo, podcast, reunión]
 Relacionado con: [otros conceptos que podrían conectar — opcional]
 
 Aplica la taxonomía, evalúa con la rúbrica, y escríbelo en Conocimiento/Conceptos/
-si aprueba. Regenera el INDEX después.
+si aprueba. Regenera el ATLAS después.
 ```
 
 ### 1.3 Procesar una fuente externa (artículo / video / podcast)
@@ -71,15 +71,15 @@ Contenido: [pega el texto, transcripción, o resumen de la fuente]
 3. Genera cada concepto candidato
 4. Evalúa cada uno con la rúbrica
 5. Escribe los que aprueban en Conocimiento/Conceptos/
-6. Registra todo en JARVIS_LOG.md y regenera el INDEX
+6. Registra todo en JARVIS_LOG.md y regenera el ATLAS
 ```
 
-### 1.4 Actualizar solo el INDEX
+### 1.4 Actualizar solo el ATLAS
 
 ```
 Lee CLAUDE.md.
 
-Jarvis, actualiza el INDEX:
+Jarvis, actualiza el ATLAS:
 Ejecuta python3 Prompts/Meta/generar_index.py y reporta cuántos conceptos fueron procesados.
 ```
 
@@ -92,7 +92,7 @@ Jarvis, limpia el vault:
 1. Encuentra todos los campos relacionado que apuntan a archivos que no existen en Conocimiento/Conceptos/
 2. Para cada referencia rota: elimínala del frontmatter
 3. Registra cada cambio en JARVIS_LOG.md
-4. Regenera el INDEX
+4. Regenera el ATLAS
 ```
 
 ---
@@ -110,13 +110,13 @@ Jarvis, correlaciona [nombre-concepto-a] y [nombre-concepto-b]:
 3. Identifica la tensión productiva entre ellos (no similitudes — la fricción)
 4. Evalúa con Gate 2 de correlación de la rúbrica
 5. Si aprueba: escribe el archivo en Conocimiento/Correlaciones/ con el formato del skill
-6. Regenera el INDEX y registra en JARVIS_LOG.md
+6. Regenera el ATLAS y registra en JARVIS_LOG.md
 ```
 
 ### 2.2 Descubrir correlaciones de alto potencial
 
 ```
-Lee CLAUDE.md, Plantillas/taxonomia.md, Plantillas/rubrica.md, JARVIS_LOG.md e INDEX.md.
+Lee CLAUDE.md, Plantillas/taxonomia.md, Plantillas/rubrica.md, JARVIS_LOG.md e ATLAS.md.
 
 Jarvis, descubre correlaciones:
 1. Lee el frontmatter de todos los conceptos en Conocimiento/Conceptos/
@@ -135,7 +135,7 @@ Jarvis, correlaciona estos tres conceptos: [concepto-a], [concepto-b] y [concept
 2. Busca la tensión que emerge solo cuando los tres están juntos (no pares)
 3. Evalúa con la rúbrica
 4. Si aprueba: escribe en Conocimiento/Correlaciones/
-5. Regenera INDEX y registra en log
+5. Regenera ATLAS y registra en log
 ```
 
 ---
@@ -145,7 +145,7 @@ Jarvis, correlaciona estos tres conceptos: [concepto-a], [concepto-b] y [concept
 ### 3.1 Presentación HTML (Reveal.js)
 
 ```
-Lee CLAUDE.md, INDEX.md y los siguientes conceptos de Conocimiento/Conceptos/:
+Lee CLAUDE.md, ATLAS.md y los siguientes conceptos de Conocimiento/Conceptos/:
 [lista los archivos relevantes, ej: disenador-a-constructor.md, vibe-coding.md]
 
 Lee también Prompts/Presentaciones/prompt-generar-presentacion.md para seguir
@@ -165,7 +165,7 @@ Entrega el outline primero. Espera mi aprobación antes de generar el HTML.
 ### 3.2 Post de LinkedIn
 
 ```
-Lee CLAUDE.md, INDEX.md y los siguientes conceptos:
+Lee CLAUDE.md, ATLAS.md y los siguientes conceptos:
 [lista los archivos relevantes]
 
 Genera un post de LinkedIn con estas instrucciones:
@@ -182,7 +182,7 @@ Genera 2 versiones con enfoques distintos para que elija.
 ### 3.3 Artículo largo
 
 ```
-Lee CLAUDE.md, INDEX.md y los siguientes conceptos:
+Lee CLAUDE.md, ATLAS.md y los siguientes conceptos:
 [lista los archivos relevantes]
 
 Genera un artículo con estas instrucciones:
@@ -201,7 +201,7 @@ Espera mi aprobación antes de desarrollar el cuerpo completo.
 ### 3.4 Taller (workshop)
 
 ```
-Lee CLAUDE.md, INDEX.md y los siguientes conceptos:
+Lee CLAUDE.md, ATLAS.md y los siguientes conceptos:
 [lista los archivos relevantes]
 
 Diseña un taller con estas instrucciones:
@@ -223,7 +223,7 @@ Entrega:
 ### 3.5 Diagrama de arquitectura o proceso
 
 ```
-Lee CLAUDE.md, INDEX.md y los siguientes conceptos:
+Lee CLAUDE.md, ATLAS.md y los siguientes conceptos:
 [lista los archivos relevantes]
 
 Genera un diagrama con estas instrucciones:
@@ -248,13 +248,13 @@ Jarvis, extrae conceptos de esta conversación:
 2. Para cada una: genera el archivo .md completo con frontmatter y cuerpo
 3. Evalúa cada uno con la rúbrica
 4. Escribe los que aprueban en Conocimiento/Conceptos/
-5. Regenera INDEX y registra en JARVIS_LOG.md
+5. Regenera ATLAS y registra en JARVIS_LOG.md
 ```
 
 ### 3.7 Resumen ejecutivo / one-pager
 
 ```
-Lee CLAUDE.md, INDEX.md y los siguientes conceptos:
+Lee CLAUDE.md, ATLAS.md y los siguientes conceptos:
 [lista los archivos relevantes]
 
 Genera un one-pager ejecutivo con estas instrucciones:
@@ -286,7 +286,7 @@ Jarvis, revisa los tags del vault:
 ### 4.2 Detectar conceptos duplicados o solapados
 
 ```
-Lee CLAUDE.md, INDEX.md y todos los archivos en Conocimiento/Conceptos/.
+Lee CLAUDE.md, ATLAS.md y todos los archivos en Conocimiento/Conceptos/.
 
 Jarvis, detecta duplicados:
 1. Lee el título y el primer párrafo de cada concepto
@@ -299,17 +299,35 @@ Jarvis, detecta duplicados:
 ### 4.3 Generar reporte del estado del vault
 
 ```
-Lee CLAUDE.md, INDEX.md, JARVIS_LOG.md y todos los archivos en Conocimiento/.
+Lee CLAUDE.md, ATLAS.md, JARVIS_LOG.md y todos los archivos en Conocimiento/.
 
 Jarvis, genera un reporte del estado del vault:
 1. Cuántos conceptos hay por familia
 2. Cuántos por estado (activo / borrador / archivado)
 3. Qué familias tienen menos de 2 conceptos (gaps temáticos)
 4. Qué conceptos no tienen ningún relacionado (nodos huérfanos)
-5. Las 3 correlaciones con más conexiones en el INDEX
+5. Las 3 correlaciones con más conexiones en el ATLAS
 6. Última fecha de actividad en el vault
 
 Presenta el reporte en formato de tabla donde aplique.
+```
+
+---
+
+## 5 · Gestión de sesiones
+
+### 5.1 Cerrar sesión
+
+```
+Lee CLAUDE.md.
+Jarvis, cierra la sesión.
+```
+
+### 5.2 Revisar pendientes
+
+```
+Lee CLAUDE.md.
+Jarvis, ¿qué quedó pendiente de la última sesión?
 ```
 
 ---
@@ -330,3 +348,5 @@ Presenta el reporte en formato de tabla donde aplique.
 | Hacer un diagrama | 3.5 Diagrama |
 | Bajar una conversación al vault | 3.6 Extraer de conversación |
 | Hacer un one-pager | 3.7 One-pager |
+| Cerrar y guardar sesión | 5.1 Cerrar sesión |
+| Ver qué quedó pendiente | 5.2 Revisar pendientes |

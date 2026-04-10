@@ -43,8 +43,8 @@ Construir la SPA con tres vistas:
 
 Componente compartido: **TarjetaConcepto.jsx**.
 
-### Fase 7 — Cruce con INDEX.md del Segundo Cerebro
-Lógica para inferir el campo `relacionado` cruzando el título y tags del concepto generado contra los conceptos existentes en el `INDEX.md` del Segundo Cerebro (cuando esté disponible en la sesión o como archivo subido).
+### Fase 7 — Cruce con ATLAS.md del Segundo Cerebro
+Lógica para inferir el campo `relacionado` cruzando el título y tags del concepto generado contra los conceptos existentes en el `ATLAS.md` del Segundo Cerebro (cuando esté disponible en la sesión o como archivo subido).
 
 ### Fase 8 — Preparación para despliegue en Render
 `render.yaml` o instrucciones de despliegue. Variables de entorno documentadas. Script de arranque único que sirve la API y los estáticos de React.
@@ -73,5 +73,5 @@ Fase 0 → Fase 1 → Fase 2 → Fase 3 → Fase 4 → Fase 5
 | Tavily devuelve resultados irrelevantes | Media | El redactor evalúa relevancia antes de generar el concepto |
 | Jina Reader falla en sitios con paywall | Alta | El buscador marca el error y continúa con otros resultados |
 | Plantilla de concepto atómico mal aplicada | Baja | Test unitario que valida la estructura YAML + 8 secciones |
-| INDEX.md no disponible | Media | El campo `relacionado` queda vacío `[]` sin bloquear el flujo |
+| ATLAS.md no disponible | Media | El campo `relacionado` queda vacío `[]` sin bloquear el flujo |
 | Render nivel gratuito con cold start lento | Alta | Aceptado en v1; documentado en README |
