@@ -2,6 +2,77 @@
 
 ---
 
+### 2026-04-11 — correlación: automatizar-mi-propio-trabajo ↔ expertise-de-dominio-en-producto
+
+**Instrucción:** "par c"
+
+**Rúbrica:**
+- Gate 2.1 Tensión real: ✓ — contradicción de secuencia: automatiza para descubrir expertise vs. codifica expertise antes de automatizar
+- Gate 2.2 Síntesis no obvia: ✓ — insight central (automatizar es arqueología de expertise tácito; los fallos del agente son el mapa del conocimiento no codificado) no está en ninguno de los dos conceptos por separado
+- Gate 2.3 Ambos existen: ✓
+
+**Acciones:**
+- `Conocimiento/Correlaciones/2026-04-11_automatizar-mi-propio-trabajo--expertise-de-dominio-en-producto.md`: escrito
+- ATLAS regenerado
+
+**Resultados:** **OK**
+
+**ATLAS regenerado:** sí — 20 conceptos · 44 tags únicos · 4 correlaciones en vault
+
+---
+
+### 2026-04-11 — corrección frontmatter 6 conceptos nuevos
+
+**Instrucción:** "corrige antes de pasar a las correlaciones"
+
+**Problemas detectados y corregidos:**
+
+| Concepto | Correcciones |
+|----------|-------------|
+| `automatizar-mi-propio-trabajo` | + `familia: transicion-ia` · + `estado: activo` · `relacionado` 4→3 (removido `quien-controla-el-prompt`) · tags: reemplazados 4 no controlados (`productividad`, `responsabilidad`, `organizaciones`, `trabajo`) por `organizacion`, `builder`, `principio` |
+| `expertise-de-dominio-en-producto` | + `familia: sistemas-conocimiento` · + `estado: activo` · `relacionado` 4→3 (removido `automatizar-mi-propio-trabajo`) · tags: reemplazados `dominio`, `expertise`, `b2b`, `diseño` por `criterio`; reducidos a 5 |
+| `feedback-que-escala` | + `familia: velocidad-output` · + `estado: activo` · `relacionado` 4→3 (removido `claridad-antes-de-velocidad`) · tags: reemplazados `feedback`, `calidad`, `proceso`, `diseño`, `organizaciones` por `liderazgo`, `criterio`, `organizacion`; reducidos a 5 |
+| `confianza-a-traves-de-velocidad` | + `familia: velocidad-output` · + `estado: activo` · tags: reemplazados `confianza`, `lanzamiento`, `marca` por `principio`; reducidos a 5 |
+| `diseno-dos-velocidades` | + `familia: transicion-ia` · + `estado: activo` · `relacionado` 4→3 (removido `fundamentales-vs-flux`) · tags: reemplazados `proceso`, `vision`, `ejecucion` por `criterio`; reducidos a 5 |
+| `lo-ilegible-como-senal` | + `familia: epistemologia-practica` · + `estado: activo` · `relacionado` 4→3 (removido `disenador-a-constructor`) · tags: reemplazados `innovacion`, `intuicion`, `deteccion`, `ideas`, `vanguardia` por `criterio`, `captura`, `hipotesis`; reducidos a 5 |
+
+**Resultados:** 6 conceptos — todos **OK**
+
+**ATLAS regenerado:** sí — 20 conceptos · 44 tags únicos · 20 con links
+
+---
+
+### 2026-04-10 11:00 — 2 correlaciones generadas
+
+**Instrucción:** "Par 4 y par 5" (de propuesta de correlaciones de alta tensión)
+
+**Rúbrica aplicada:**
+
+`claridad-antes-de-velocidad--momento-liminal`:
+- Gate 1: ✓ atómico · ✓ propio · ✓ frontmatter · ✓ nombre de archivo
+- Gate 2.1 Tensión real: ✓ — contradicción directa sobre cuándo llega la claridad
+- Gate 2.2 Síntesis no obvia: ✓ — distinción entre claridad de proceso vs. claridad de orientación no se obtiene leyendo ambos conceptos por separado
+- Gate 2.3 Ambos existen: ✓
+
+`fundamentales-vs-flux--disenador-a-constructor`:
+- Gate 1: ✓ atómico · ✓ propio · ✓ frontmatter · ✓ nombre de archivo
+- Gate 2.1 Tensión real: ✓ — ¿construir es fundamental o flux? Los dos conceptos tiran en direcciones opuestas
+- Gate 2.2 Síntesis no obvia: ✓ — el insight (lo fundamental no es construir sino el criterio que la construcción entrena) no está en ninguno de los dos conceptos por separado
+- Gate 2.3 Ambos existen: ✓
+
+**Acciones:**
+- `Conocimiento/Correlaciones/2026-04-10_claridad-antes-de-velocidad--momento-liminal.md`: escrito
+- `Conocimiento/Correlaciones/2026-04-10_fundamentales-vs-flux--disenador-a-constructor.md`: escrito
+- ATLAS regenerado
+
+**Resultados:**
+- `claridad-antes-de-velocidad--momento-liminal`: **OK**
+- `fundamentales-vs-flux--disenador-a-constructor`: **OK**
+
+**ATLAS regenerado:** sí — 14 conceptos · 41 tags únicos · 3 correlaciones en vault
+
+---
+
 ### 2026-04-10 10:30 — renombrado INDEX.md → ATLAS.md (vault-wide)
 
 **Instrucción:** "Renombra INDEX.md a ATLAS.md, actualiza todas las referencias en el vault, regenera el archivo."
