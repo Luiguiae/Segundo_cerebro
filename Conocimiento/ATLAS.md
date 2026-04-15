@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-04-10 20:24  
-> Total de conceptos: **20**  
+> Generado automáticamente el 2026-04-15 09:18  
+> Total de conceptos: **21**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y agrupación por familia.
 
@@ -24,6 +24,7 @@
 | [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]] | Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab… | `ia`, `producto`, `agentes`, `conocimiento`, `criterio` | activo | 2026-04-10 |
 | [[feedback-que-escala\|El feedback que escala]] | Hay dos tipos de feedback. Solo uno escala. | `ia`, `sistemas`, `liderazgo`, `criterio`, `organizacion` | activo | 2026-04-10 |
 | [[fundamentales-vs-flux\|Fundamentales vs. flux]] | Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m… | `diseño`, `educacion`, `habilidades`, `fundamentos`, `criterio` | activo | 2026-04-05 |
+| [[gobernanza-ia-performativa\|Gobernanza de IA performativa]] | Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració… | `ia`, `organizacion`, `estrategia`, `tension`, `cambio` | activo | 2026-04-15 |
 | [[lo-ilegible-como-senal\|Lo ilegible como señal]] | Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. No tienen nombre. Si les pregun… | `diseño`, `ia`, `criterio`, `captura`, `hipotesis` | activo | 2026-04-10 |
 | [[momento-liminal\|El momento liminal]] | Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u… | `liderazgo`, `cambio`, `incertidumbre`, `transicion`, `diseño` | activo | 2026-04-05 |
 | [[mvp-a-prototipo-en-produccion\|Del MVP al Prototipo en Producción]] | El MVP clásico —lanzar algo pequeño para aprender— no muere, pero cambia de naturaleza radicalmente. Con vibe coding y … | `mvp`, `velocidad`, `iteracion`, `aprendizaje`, `construccion` | activo | 2026-03-04 |
@@ -76,6 +77,8 @@
   → La integración de IA en el flujo UX/UI no agrega herramientas a un proceso existente — reconfigura el proceso mismo. Cu…
 - [[fundamentales-vs-flux\|Fundamentales vs. flux]]
   → Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m…
+- [[gobernanza-ia-performativa\|Gobernanza de IA performativa]]
+  → Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració…
 - [[momento-liminal\|El momento liminal]]
   → Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u…
 
@@ -113,6 +116,7 @@
 - [[automatizar-mi-propio-trabajo]]
 
 ### `cambio`
+- [[gobernanza-ia-performativa]]
 - [[momento-liminal]]
 
 ### `captura`
@@ -176,6 +180,7 @@
 ### `estrategia`
 - [[arquitectura-de-inteligencia]]
 - [[claridad-antes-de-velocidad]]
+- [[gobernanza-ia-performativa]]
 - [[quien-controla-el-prompt]]
 - [[spec-driven-development]]
 
@@ -201,6 +206,7 @@
 - [[diseno-uxui-y-ia]]
 - [[expertise-de-dominio-en-producto]]
 - [[feedback-que-escala]]
+- [[gobernanza-ia-performativa]]
 - [[lo-ilegible-como-senal]]
 - [[spec-driven-development]]
 
@@ -226,6 +232,7 @@
 - [[automatizar-mi-propio-trabajo]]
 - [[equipos-pequenos-alto-impacto]]
 - [[feedback-que-escala]]
+- [[gobernanza-ia-performativa]]
 - [[quien-controla-el-prompt]]
 
 ### `poder`
@@ -265,6 +272,7 @@
 
 ### `tension`
 - [[claridad-antes-de-velocidad]]
+- [[gobernanza-ia-performativa]]
 
 ### `transformacion`
 - [[disenador-a-constructor]]
@@ -353,6 +361,11 @@
   - [[disenador-a-constructor]]
   - [[momento-liminal]]
   - [[vibe-coding]]
+
+**[[gobernanza-ia-performativa]]** →
+  - [[agentes-ia]]
+  - [[quien-controla-el-prompt]]
+  - [[arquitectura-de-inteligencia]]
 
 **[[lo-ilegible-como-senal]]** →
   - [[arquitectura-de-inteligencia]]

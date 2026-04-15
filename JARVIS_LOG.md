@@ -2,6 +2,47 @@
 
 ---
 
+### 2026-04-15 12:00 — concepto agregado: gobernanza-ia-performativa
+
+**Instrucción:** "Jarvis, agrega el concepto gobernanza-ia-performativa"
+
+**Rúbrica:**
+- Gate 1.1 Atómico: ✓ — una sola idea: gobernanza visible ≠ control real
+- Gate 1.2 Propio: ✓ — redactado en voz del sistema, no copiado de fuentes
+- Gate 1.3 Frontmatter: ✓ — todos los campos completos y válidos
+- Gate 1.4 Nombre archivo: ✓ — kebab-case, sin acentos
+- Gate 2.1 No es resumen: ✓ — agrega interpretación, señal diagnóstica y estructura de 4 capas
+- Gate 2.2 Tensión interna: ✓ — paradoja 56%→12% entre declaración e implementación real
+- Gate 2.3 Relacionable: ✓ — agentes-ia, quien-controla-el-prompt, arquitectura-de-inteligencia
+- Gate 2.4 Transferible: ✓ — autocontenido, no requiere contexto del post original
+
+**Resultado:** OK — estado: activo
+
+**Acciones:**
+- Escrito: `Conocimiento/Conceptos/gobernanza-ia-performativa.md`
+- Respaldado con investigación web (shadow AI stats, FTC AI-washing, brecha 56%→12%)
+
+**ATLAS regenerado:** sí — 21 conceptos procesados
+
+---
+
+### 2026-04-13 — concepto rechazado y eliminado: etica-en-la-ia
+
+**Instrucción:** "descartalo"
+
+**Resultado:** RECHAZADO — eliminado permanentemente
+
+**Razones:**
+- Gate 1.2: cuerpo es paráfrasis del artículo fuente, sin interpretación propia
+- Gate 1.3: falta `familia`; tags `etica` y `filosofia` no están en lista controlada
+- Gate 2.1: reemplazable con el link — no agrega perspectiva
+- Gate 2.2: tensión declarada como "es complejo", sin paradoja real
+- Gate 2.3: `relacionado: []`
+
+**ATLAS regenerado:** no — vault sin cambios (20 conceptos)
+
+---
+
 ### 2026-04-11 — correlación: automatizar-mi-propio-trabajo ↔ expertise-de-dominio-en-producto
 
 **Instrucción:** "par c"
