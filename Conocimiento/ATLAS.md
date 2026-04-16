@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-04-15 09:18  
-> Total de conceptos: **21**  
+> Generado automáticamente el 2026-04-15 22:32  
+> Total de conceptos: **24**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y agrupación por familia.
 
@@ -13,9 +13,10 @@
 |----------|---------|------|--------|-------|
 | [[agentes-ia\|Equipos de Agentes IA]] | Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c… | `agentes`, `ia`, `equipos`, `automatizacion`, `escala` | activo | 2026-03-04 |
 | [[arquitectura-de-inteligencia\|Arquitectura de inteligencia]] | El trabajo del diseñador — y de cualquier profesional del conocimiento — no es producir artefactos: es ayudar a persona… | `conocimiento`, `ia`, `sistemas`, `estrategia`, `marco` | activo | 2026-04-06 |
+| [[automatizacion-vs-ampliacion\|Automatización vs. amplificación: los dos modos de impacto de la IA]] | La IA no afecta el trabajo de una sola manera. Tiene dos modos de impacto | `ia`, `automatizacion`, `roles`, `tension`, `habilidades` | activo | 2026-04-15 |
 | [[automatizar-mi-propio-trabajo\|Mi trabajo es automatizar mi trabajo]] | Geoff Charles, CPO de Ramp, lo dice sin rodeos: *"my job is to automate my job — and all our jobs is to automate our jo… | `ia`, `automatizacion`, `organizacion`, `builder`, `principio` | activo | 2026-04-10 |
 | [[claridad-antes-de-velocidad\|Claridad antes de velocidad]] | Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar… | `estrategia`, `velocidad`, `ia`, `tension`, `principio` | activo | 2026-04-06 |
-| [[colonialismo-cultural-digital\|Colonialismo Cultural Digital]] | El colonialismo cultural digital se refiere a la forma en que las tecnologías digitales y la cultura dominante reproduc… | `colonialismo`, `cultura`, `descolonizacion`, `poder`, `sistemas` | activo | 2026-04-04 |
+| [[colonialismo-cultural-digital\|Colonialismo cultural digital]] | El colonialismo cultural digital no es solo extracción de datos ni control de | `colonialismo`, `descolonizacion`, `poder`, `sistemas`, `cultura` | activo | 2026-04-04 |
 | [[confianza-a-traves-de-velocidad\|Confianza a través de velocidad]] | La lógica tradicional de calidad y confianza es lineal: primero haces algo perfecto, luego lo lanzas, y la calidad cons… | `diseño`, `velocidad`, `producto`, `iteracion`, `principio` | activo | 2026-04-10 |
 | [[disenador-a-constructor\|Del Diseñador al Constructor]] | La evolución del rol del diseñador desde un perfil que entrega especificaciones hacia uno que construye directamente el… | `diseño`, `construccion`, `roles`, `producto`, `transformacion` | activo | 2026-03-04 |
 | [[diseno-dos-velocidades\|El diseño en dos velocidades]] | El trabajo de diseño en la era de la IA no desaparece — se estratifica. Jenny Wen, head of design en Anthropic, lo desc… | `diseño`, `ia`, `velocidad`, `construccion`, `criterio` | activo | 2026-04-10 |
@@ -25,10 +26,12 @@
 | [[feedback-que-escala\|El feedback que escala]] | Hay dos tipos de feedback. Solo uno escala. | `ia`, `sistemas`, `liderazgo`, `criterio`, `organizacion` | activo | 2026-04-10 |
 | [[fundamentales-vs-flux\|Fundamentales vs. flux]] | Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m… | `diseño`, `educacion`, `habilidades`, `fundamentos`, `criterio` | activo | 2026-04-05 |
 | [[gobernanza-ia-performativa\|Gobernanza de IA performativa]] | Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració… | `ia`, `organizacion`, `estrategia`, `tension`, `cambio` | activo | 2026-04-15 |
+| [[ia-como-filtro-de-entrada\|IA como filtro de entrada al mercado laboral]] | La IA generativa no destruye empleo de manera uniforme: lo filtra por nivel de | `ia`, `automatizacion`, `transicion`, `habilidades`, `roles` | activo | 2026-04-15 |
 | [[lo-ilegible-como-senal\|Lo ilegible como señal]] | Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. No tienen nombre. Si les pregun… | `diseño`, `ia`, `criterio`, `captura`, `hipotesis` | activo | 2026-04-10 |
 | [[momento-liminal\|El momento liminal]] | Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u… | `liderazgo`, `cambio`, `incertidumbre`, `transicion`, `diseño` | activo | 2026-04-05 |
 | [[mvp-a-prototipo-en-produccion\|Del MVP al Prototipo en Producción]] | El MVP clásico —lanzar algo pequeño para aprender— no muere, pero cambia de naturaleza radicalmente. Con vibe coding y … | `mvp`, `velocidad`, `iteracion`, `aprendizaje`, `construccion` | activo | 2026-03-04 |
 | [[quien-controla-el-prompt\|Quien controla el prompt controla el producto]] | En el flujo de trabajo tradicional, quien controlaba las especificaciones controlaba el producto. Diseño definía la exp… | `diseño`, `estrategia`, `organizacion`, `poder`, `prompts` | activo | 2026-04-05 |
+| [[senal-anticipada-mercado-laboral\|Señal anticipada en el mercado laboral]] | Ciertos grupos de trabajadores o tipos de rol absorben el impacto de una | `ia`, `transicion`, `patron`, `cambio`, `roles` | activo | 2026-04-15 |
 | [[spec-driven-development\|Spec-Driven Development]] | Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po… | `codigo`, `construccion`, `ia`, `iteracion`, `estrategia` | activo | 2026-04-07 |
 | [[usuarios-sinteticos\|Usuarios Sintéticos]] | Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con … | `research`, `validacion`, `producto`, `usuarios`, `diseño` | activo | 2026-03-04 |
 | [[vibe-coding\|Vibe Coding]] | Vibe coding es un modo de construir software donde el punto de partida no es la estructura técnica sino la intención, e… | `construccion`, `herramientas`, `desarrollo`, `producto`, `velocidad` | activo | 2026-03-04 |
@@ -48,8 +51,8 @@
   → El trabajo del diseñador — y de cualquier profesional del conocimiento — no es producir artefactos: es ayudar a persona…
 - [[claridad-antes-de-velocidad\|Claridad antes de velocidad]]
   → Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar…
-- [[colonialismo-cultural-digital\|Colonialismo Cultural Digital]]
-  → El colonialismo cultural digital se refiere a la forma en que las tecnologías digitales y la cultura dominante reproduc…
+- [[colonialismo-cultural-digital\|Colonialismo cultural digital]]
+  → El colonialismo cultural digital no es solo extracción de datos ni control de
 - [[lo-ilegible-como-senal\|Lo ilegible como señal]]
   → Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. No tienen nombre. Si les pregun…
 
@@ -67,6 +70,8 @@
 
 ### `transicion-ia`
 
+- [[automatizacion-vs-ampliacion\|Automatización vs. amplificación: los dos modos de impacto de la IA]]
+  → La IA no afecta el trabajo de una sola manera. Tiene dos modos de impacto
 - [[automatizar-mi-propio-trabajo\|Mi trabajo es automatizar mi trabajo]]
   → Geoff Charles, CPO de Ramp, lo dice sin rodeos: *"my job is to automate my job — and all our jobs is to automate our jo…
 - [[disenador-a-constructor\|Del Diseñador al Constructor]]
@@ -79,8 +84,12 @@
   → Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m…
 - [[gobernanza-ia-performativa\|Gobernanza de IA performativa]]
   → Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració…
+- [[ia-como-filtro-de-entrada\|IA como filtro de entrada al mercado laboral]]
+  → La IA generativa no destruye empleo de manera uniforme: lo filtra por nivel de
 - [[momento-liminal\|El momento liminal]]
   → Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u…
+- [[senal-anticipada-mercado-laboral\|Señal anticipada en el mercado laboral]]
+  → Ciertos grupos de trabajadores o tipos de rol absorben el impacto de una
 
 ### `velocidad-output`
 
@@ -110,7 +119,9 @@
 
 ### `automatizacion`
 - [[agentes-ia]]
+- [[automatizacion-vs-ampliacion]]
 - [[automatizar-mi-propio-trabajo]]
+- [[ia-como-filtro-de-entrada]]
 
 ### `builder`
 - [[automatizar-mi-propio-trabajo]]
@@ -118,6 +129,7 @@
 ### `cambio`
 - [[gobernanza-ia-performativa]]
 - [[momento-liminal]]
+- [[senal-anticipada-mercado-laboral]]
 
 ### `captura`
 - [[lo-ilegible-como-senal]]
@@ -188,7 +200,9 @@
 - [[fundamentales-vs-flux]]
 
 ### `habilidades`
+- [[automatizacion-vs-ampliacion]]
 - [[fundamentales-vs-flux]]
+- [[ia-como-filtro-de-entrada]]
 
 ### `herramientas`
 - [[diseno-uxui-y-ia]]
@@ -200,6 +214,7 @@
 ### `ia`
 - [[agentes-ia]]
 - [[arquitectura-de-inteligencia]]
+- [[automatizacion-vs-ampliacion]]
 - [[automatizar-mi-propio-trabajo]]
 - [[claridad-antes-de-velocidad]]
 - [[diseno-dos-velocidades]]
@@ -207,7 +222,9 @@
 - [[expertise-de-dominio-en-producto]]
 - [[feedback-que-escala]]
 - [[gobernanza-ia-performativa]]
+- [[ia-como-filtro-de-entrada]]
 - [[lo-ilegible-como-senal]]
+- [[senal-anticipada-mercado-laboral]]
 - [[spec-driven-development]]
 
 ### `incertidumbre`
@@ -235,6 +252,9 @@
 - [[gobernanza-ia-performativa]]
 - [[quien-controla-el-prompt]]
 
+### `patron`
+- [[senal-anticipada-mercado-laboral]]
+
 ### `poder`
 - [[colonialismo-cultural-digital]]
 - [[quien-controla-el-prompt]]
@@ -260,7 +280,10 @@
 - [[usuarios-sinteticos]]
 
 ### `roles`
+- [[automatizacion-vs-ampliacion]]
 - [[disenador-a-constructor]]
+- [[ia-como-filtro-de-entrada]]
+- [[senal-anticipada-mercado-laboral]]
 
 ### `sistemas`
 - [[arquitectura-de-inteligencia]]
@@ -271,6 +294,7 @@
 - [[equipos-pequenos-alto-impacto]]
 
 ### `tension`
+- [[automatizacion-vs-ampliacion]]
 - [[claridad-antes-de-velocidad]]
 - [[gobernanza-ia-performativa]]
 
@@ -278,7 +302,9 @@
 - [[disenador-a-constructor]]
 
 ### `transicion`
+- [[ia-como-filtro-de-entrada]]
 - [[momento-liminal]]
+- [[senal-anticipada-mercado-laboral]]
 
 ### `usuarios`
 - [[usuarios-sinteticos]]
@@ -307,6 +333,11 @@
   - [[agentes-ia]]
   - [[claridad-antes-de-velocidad]]
   - [[quien-controla-el-prompt]]
+
+**[[automatizacion-vs-ampliacion]]** →
+  - [[ia-como-filtro-de-entrada]]
+  - [[fundamentales-vs-flux]]
+  - [[agentes-ia]]
 
 **[[automatizar-mi-propio-trabajo]]** →
   - [[disenador-a-constructor]]
@@ -367,6 +398,11 @@
   - [[quien-controla-el-prompt]]
   - [[arquitectura-de-inteligencia]]
 
+**[[ia-como-filtro-de-entrada]]** →
+  - [[disenador-a-constructor]]
+  - [[momento-liminal]]
+  - [[fundamentales-vs-flux]]
+
 **[[lo-ilegible-como-senal]]** →
   - [[arquitectura-de-inteligencia]]
   - [[momento-liminal]]
@@ -383,6 +419,11 @@
 **[[quien-controla-el-prompt]]** →
   - [[agentes-ia]]
   - [[disenador-a-constructor]]
+
+**[[senal-anticipada-mercado-laboral]]** →
+  - [[ia-como-filtro-de-entrada]]
+  - [[momento-liminal]]
+  - [[gobernanza-ia-performativa]]
 
 **[[spec-driven-development]]** →
   - [[vibe-coding]]

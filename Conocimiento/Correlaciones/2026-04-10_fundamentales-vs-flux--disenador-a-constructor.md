@@ -1,4 +1,5 @@
 ---
+titulo: "¿Construir es un fundamental o una habilidad que se depreca?"
 tipo: correlacion
 conceptos: [fundamentales-vs-flux, disenador-a-constructor]
 fecha: 2026-04-10

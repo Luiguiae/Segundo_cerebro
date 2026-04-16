@@ -83,6 +83,17 @@ Jarvis, actualiza el ATLAS:
 Ejecuta python3 Prompts/Meta/generar_index.py y reporta cuántos conceptos fueron procesados.
 ```
 
+### 1.6 Profundizar concepto
+
+```
+Lee CLAUDE.md, Plantillas/taxonomia.md y Plantillas/rubrica.md.
+
+Jarvis, profundiza este concepto:
+[pega aquí el texto del borrador o escribe la ruta al archivo .md]
+```
+
+---
+
 ### 1.5 Limpiar referencias rotas
 
 ```
@@ -348,5 +359,6 @@ Jarvis, ¿qué quedó pendiente de la última sesión?
 | Hacer un diagrama | 3.5 Diagrama |
 | Bajar una conversación al vault | 3.6 Extraer de conversación |
 | Hacer un one-pager | 3.7 One-pager |
+| Profundizar un concepto con fuentes | 1.6 Profundizar concepto |
 | Cerrar y guardar sesión | 5.1 Cerrar sesión |
 | Ver qué quedó pendiente | 5.2 Revisar pendientes |

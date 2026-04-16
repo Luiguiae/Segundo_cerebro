@@ -1,4 +1,5 @@
 ---
+titulo: "La trampa de construir sin saber qué estás construyendo"
 tipo: correlacion
 conceptos: [vibe-coding, spec-driven-development]
 fecha: 2026-04-03
@@ -20,5 +21,5 @@ El error es tratar vibe coding y spec-driven development como filosofías opuest
 - Al onboardear a otro diseñador en un plugin activo: el spec es el documento que explica por qué las cosas están como están — algo que ningún historial de prompts puede reemplazar
 
 ## Conceptos relacionados
-- [[prototipo]] — el vibe coding produce prototipos; el spec decide cuáles merecen convertirse en producto; la correlación entre exploración y argumento aplica directamente aquí
-- [[intencion-de-diseno]] — SDD es intencion operacionalizada; vibe coding sin intencion previa es movimiento sin dirección; la pregunta que conecta ambos es si el diseñador sabe lo que busca antes de buscar
+- [[claridad-antes-de-velocidad]] — el spec operacionaliza la claridad de proceso; vibe coding es la herramienta para fases donde aún no hay esa claridad
+- [[agentes-ia]] — los agentes necesitan un spec para no reinterpretar el objetivo en cada sesión; sin él, la velocidad de ejecución agéntica no tiene ancla

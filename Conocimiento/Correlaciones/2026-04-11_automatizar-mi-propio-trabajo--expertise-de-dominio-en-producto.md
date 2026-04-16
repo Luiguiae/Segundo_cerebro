@@ -1,4 +1,5 @@
 ---
+titulo: "El experto que intenta reemplazarse a sí mismo se descubre a sí mismo"
 tipo: correlacion
 conceptos: [automatizar-mi-propio-trabajo, expertise-de-dominio-en-producto]
 fecha: 2026-04-11

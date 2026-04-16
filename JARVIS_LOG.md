@@ -2,6 +2,189 @@
 
 ---
 
+### 2026-04-15 17:00 — concepto profundizado: colonialismo-cultural-digital
+
+**Instrucción:** "Profundiza en el concepto" (borrador colonialismo-cultural-digital)
+
+**Ejes investigados:**
+1. Legibilidad algorítmica como mecanismo de dominación — 4 fuentes (arXiv, Springer, Cultural Survival, Sagepub)
+2. Distinción entre marcos teóricos adyacentes (Kwet, Couldry & Mejias, Zuboff) — 3 fuentes (LSE, Oxford JoC, Lawfare)
+3. Resistencia y apropiación — 4 fuentes (Tierra Común, UNESCO Courier, Institute of Network Cultures, Milan & Treré 2024)
+
+**Acciones:**
+- Archivo sobreescrito con concepto enriquecido: 5 fuentes en frontmatter, sección nueva `## Datos y evidencia`, `## Ejes investigados`
+- Estado actualizado: `borrador` → `activo`
+- Eliminados campos no estándar (`alias`, `proyectos`, `fuente` estructurado)
+- ATLAS regenerado
+
+**Resultados:**
+- `colonialismo-cultural-digital.md`: OK — activo
+
+**ATLAS regenerado:** sí — 24 conceptos procesados
+
+---
+
+### 2026-04-15 16:30 — auditoría completa del vault
+
+**Instrucción:** "Jarvis, audita el vault completo"
+
+---
+
+#### CONCEPTOS — 24 evaluados
+
+| archivo | Gate 1 | Gate 2 | resultado |
+|---|---|---|---|
+| claridad-antes-de-velocidad | ✓✓✓✓ | ✓✓✓✓ | OK |
+| spec-driven-development | ✓✓✓✓ | ✓✓✓✓ | OK |
+| usuarios-sinteticos | ✓✓✓✓ | ✓✓✓✓ | OK |
+| quien-controla-el-prompt | ✓✓✓✓ | ✓✓✓✓ | OK |
+| momento-liminal | ✓✓✓✓ | ✓✓✓✓ | OK |
+| fundamentales-vs-flux | ✓✓✓✓ | ✓✓✓✓ | OK |
+| **colonialismo-cultural-digital** | ✓✓✓✓ | ✗✓✓✓ | **ADVERTENCIA** |
+| diseno-uxui-y-ia | ✓✓✓✓ | ✓✓✓✓ | OK |
+| disenador-a-constructor | ✓✓✓✓ | ✓✓✓✓ | OK |
+| vibe-coding | ✓✓✓✓ | ✓✓✓✓ | OK |
+| agentes-ia | ✓✓✓✓ | ✓✓✓✓ | OK |
+| mvp-a-prototipo-en-produccion | ✓✓✓✓ | ✓✓✓✓ | OK |
+| equipos-pequenos-alto-impacto | ✓✓✓✓ | ✓✓✓✓ | OK |
+| arquitectura-de-inteligencia | ✓✓✓✓ | ✓✓✓✓ | OK |
+| automatizar-mi-propio-trabajo | ✓✓✓✓ | ✓✓✓✓ | OK |
+| expertise-de-dominio-en-producto | ✓✓✓✓ | ✓✓✓✓ | OK |
+| feedback-que-escala | ✓✓✓✓ | ✓✓✓✓ | OK |
+| confianza-a-traves-de-velocidad | ✓✓✓✓ | ✓✓✓✓ | OK |
+| diseno-dos-velocidades | ✓✓✓✓ | ✓✓✓✓ | OK |
+| lo-ilegible-como-senal | ✓✓✓✓ | ✓✓✓✓ | OK |
+| gobernanza-ia-performativa | ✓✓✓✓ | ✓✓✓✓ | OK |
+| ia-como-filtro-de-entrada | ✓✓✓✓ | ✓✓✓✓ | OK |
+| automatizacion-vs-ampliacion | ✓✓✓✓ | ✓✓✓✓ | OK |
+| senal-anticipada-mercado-laboral | ✓✓✓✓ | ✓✓✓✓ | OK |
+
+**Resumen conceptos:** 23 activo · 1 borrador
+
+**Falla Gate 2.1 — colonialismo-cultural-digital:**
+Cuerpo descriptivo ("Es importante destacar que..."), secciones "¿Cómo funciona?" y "Mis notas" leen como resumen del artículo fuente, no como concepto destilado con voz propia. Estado degradado a `borrador`.
+**Propuesta de mejora:** reescribir "¿Cómo funciona?" con mecanismo propio interpretado; eliminar "Es importante destacar que..."; reformular "Mis notas" con observación original, no con repetición de la definición.
+
+---
+
+#### CORRELACIONES — 8 evaluadas
+
+| archivo | Gate 2.1 | Gate 2.2 | Gate 2.3 | titulo | resultado |
+|---|---|---|---|---|---|
+| vibe-coding--spec-driven-development | ✓ | ✓ | ✓ | agregado | ADVERTENCIA→OK |
+| claridad-antes-de-velocidad--momento-liminal | ✓ | ✓ | ✓ | agregado | ADVERTENCIA→OK |
+| fundamentales-vs-flux--disenador-a-constructor | ✓ | ✓ | ✓ | agregado | ADVERTENCIA→OK |
+| automatizar-mi-propio-trabajo--expertise-de-dominio | ✓ | ✓ | ✓ | agregado | ADVERTENCIA→OK |
+| ia-como-filtro-de-entrada--agentes-ia | ✓ | ✓ | ✓ | presente | OK |
+| automatizacion-vs-ampliacion--fundamentales-vs-flux | ✓ | ✓ | ✓ | presente | OK |
+| senal-anticipada--gobernanza-ia-performativa | ✓ | ✓ | ✓ | presente | OK |
+| ia-como-filtro-de-entrada--disenador-a-constructor | ✓ | ✓ | ✓ | presente | OK |
+
+**Acciones sobre correlaciones:**
+- Agregado campo `titulo` a las 4 correlaciones antiguas (inconsistencia con las nuevas)
+- Reemplazadas 2 referencias rotas (`[[prototipo]]`, `[[intencion-de-diseno]]`) en `vibe-coding--spec-driven-development` por conceptos existentes (`claridad-antes-de-velocidad`, `agentes-ia`)
+
+---
+
+**Acciones ejecutadas:** 6 archivos modificados, 1 concepto degradado a borrador, ATLAS regenerado
+**ATLAS regenerado:** sí — 24 conceptos procesados
+
+---
+
+### 2026-04-15 16:00 — 4 correlaciones generadas desde conceptos canaries-coal-mine
+
+**Instrucción:** "encuentra correlaciones entre estos 3 nuevos conceptos atómicos y la información que ya tenemos en Conceptos"
+
+**Pares evaluados con tensión real:**
+1. `ia-como-filtro-de-entrada` ↔ `agentes-ia` — OK
+2. `automatizacion-vs-ampliacion` ↔ `fundamentales-vs-flux` — OK
+3. `senal-anticipada-mercado-laboral` ↔ `gobernanza-ia-performativa` — OK
+4. `ia-como-filtro-de-entrada` ↔ `disenador-a-constructor` — OK
+
+**Pares descartados (co-ocurrencia sin tensión productiva):**
+- `senal-anticipada` ↔ `momento-liminal` — comparten frame temporal pero no se contradicen
+- `automatizacion-vs-ampliacion` ↔ `equipos-pequenos-alto-impacto` — relación de causa-efecto, no tensión
+
+**Resultados:**
+- `2026-04-15_ia-como-filtro-de-entrada--agentes-ia.md`: OK — "El multiplicador que cierra la puerta"
+- `2026-04-15_automatizacion-vs-ampliacion--fundamentales-vs-flux.md`: OK — "La misma línea divisoria, dos mapas"
+- `2026-04-15_senal-anticipada-mercado-laboral--gobernanza-ia-performativa.md`: OK — "Gobernar la señal sin verla"
+- `2026-04-15_ia-como-filtro-de-entrada--disenador-a-constructor.md`: OK — "La salida de emergencia también se cierra"
+
+**ATLAS regenerado:** sí — 24 conceptos procesados
+
+---
+
+### 2026-04-15 15:30 — 3 conceptos atómicos creados desde fuente canaries-coal-mine
+
+**Instrucción:** "Confirmado. Crea los conceptos atómicos que encuentres"
+
+**Rúbrica — ia-como-filtro-de-entrada:**
+- Gate 1: ✓✓✓✓ — Gate 2: ✓✓✓✓ — **OK → activo**
+
+**Rúbrica — automatizacion-vs-ampliacion:**
+- Gate 1: ✓✓✓✓ — Gate 2: ✓✓✓✓ — **OK → activo**
+
+**Rúbrica — senal-anticipada-mercado-laboral:**
+- Gate 1: ✓✓✓✓ — Gate 2: ✓✓✓✓ — **OK → activo**
+
+**Acciones:**
+- Creados 3 archivos en `Conocimiento/Conceptos/`
+- ATLAS regenerado
+
+**Resultados:**
+- `ia-como-filtro-de-entrada.md`: OK
+- `automatizacion-vs-ampliacion.md`: OK
+- `senal-anticipada-mercado-laboral.md`: OK
+
+**ATLAS regenerado:** sí — 24 conceptos procesados (era 21)
+
+---
+
+### 2026-04-15 15:00 — fuente procesada + concepto profundizado: canaries-coal-mine
+
+**Instrucción:** "profundiza y guarda el paper en Conocimiento/Fuentes/"
+
+**Ejes investigados:**
+1. Impacto de IA en trabajadores junior/entry-level — 6 fuentes encontradas, todas consistentes
+2. Automatización vs. amplificación — 4 fuentes (MIT Sloan, arXiv 2025, WEF, BCG)
+3. Destrucción de la rampa de aprendizaje laboral — 4 fuentes (CNBC, Focused Chaos, Veris Insights, rezi.ai)
+
+**Fuentes por eje:** 6 / 4 / 4 — mínimo de 2 cumplido en los 3 ejes
+
+**Acciones:**
+- Lectura de taxonomia.md y rubrica.md
+- Creación de `Conocimiento/Fuentes/2025-11-13_canaries-coal-mine-brynjolfsson.md`
+- Rúbrica fuente: Gate 1 ✓✓✓✓ · Gate 2 ✓✓✓ — resultado: OK
+- Concepto enriquecido `ia-como-filtro-de-entrada` generado y entregado en chat
+- Concepto NO guardado en disco — pendiente confirmación de Luigui
+
+**Resultados:**
+- `Conocimiento/Fuentes/2025-11-13_canaries-coal-mine-brynjolfsson.md`: OK — 3 candidatos en Conceptos a extraer
+- `ia-como-filtro-de-entrada.md`: PENDIENTE — listo para guardar, espera instrucción
+
+**ATLAS regenerado:** pendiente — sin escritura en Conceptos/ todavía
+
+---
+
+### 2026-04-15 14:30 — comando documentado: profundizar-concepto
+
+**Instrucción:** "Agrega la sección Profundizar concepto a CLAUDE.md y prompts-jarvis.md"
+
+**Acciones:**
+- Lectura de CLAUDE.md y Prompts/Jarvis/prompts-jarvis.md para mapear estructura existente
+- Inserción de sección `### Profundizar concepto` en bloque "Comandos que entiendes" de CLAUDE.md (línea 170)
+- Inserción de entrada `### 1.6 Profundizar concepto` en Sección 1 de prompts-jarvis.md (línea 86)
+- Adición de fila en tabla de Referencia rápida de prompts-jarvis.md (línea 362)
+
+**Resultados:**
+- CLAUDE.md: OK — sección agregada con flujo completo de 8 pasos y restricciones v1
+- Prompts/Jarvis/prompts-jarvis.md: OK — entrada 1.6 con prompt de uso + fila en referencia rápida
+
+**ATLAS regenerado:** no — cambio solo en archivos de configuración/prompts, no en Conocimiento/
+
+---
+
 ### 2026-04-15 12:00 — concepto agregado: gobernanza-ia-performativa
 
 **Instrucción:** "Jarvis, agrega el concepto gobernanza-ia-performativa"

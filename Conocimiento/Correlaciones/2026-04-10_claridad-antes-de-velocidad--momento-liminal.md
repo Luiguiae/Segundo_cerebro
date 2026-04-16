@@ -1,4 +1,5 @@
 ---
+titulo: "La claridad que pides no existe todavía"
 tipo: correlacion
 conceptos: [claridad-antes-de-velocidad, momento-liminal]
 fecha: 2026-04-10

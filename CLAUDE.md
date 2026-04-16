@@ -167,6 +167,45 @@ Jarvis, cierra la sesión
 ```
 Ejecuta el ritual de cierre completo: genera el archivo de sesión en `Conocimiento/Fuentes/Sesiones/YYYY-MM-DD.md`, mantiene solo las últimas 5 sesiones, regenera el ATLAS, y confirma el estado del vault.
 
+### Profundizar concepto
+```
+Jarvis, profundiza este concepto: [nombre o ruta del archivo]
+```
+— o —
+```
+Jarvis, profundiza este concepto: [pega el texto del borrador directamente]
+```
+
+1. Lee el borrador del concepto (desde archivo en `Conceptos/` o desde texto pegado)
+2. Identifica 3 a 5 ejes de investigación: temas centrales, tensiones,
+   afirmaciones sin respaldo, datos numéricos sin fuente
+3. Prioriza los 3 ejes con mayor impacto — este paso corre en silencio
+4. Por cada eje priorizado, lanza búsquedas web con queries específicos.
+   Criterios de calidad: fuente con autor o institución identificable,
+   dato verificable, agrega algo que el borrador no tiene.
+   Descarta fuentes débiles. Mínimo 2 fuentes sólidas por eje.
+5. Toma el borrador original y expándelo con los hallazgos.
+   No reemplaza el argumento central.
+   Cada dato numérico lleva cifra + fecha + fuente.
+   Si no hay respaldo, marca `[sin fuente verificada]`.
+6. Genera el archivo `.md` enriquecido con esta estructura adicional:
+   - `## Datos y evidencia` ← sección nueva generada por investigación
+   - `## Tensiones y límites`
+   - `## Ejes investigados` ← transparencia sobre qué se buscó
+   - Agrega el campo `fuentes:` en el frontmatter YAML con título, url
+     y fecha_acceso por cada fuente encontrada.
+7. NO guarda el archivo automáticamente. Entrega el `.md` en el chat.
+   Luigui decide cuándo y con qué nombre guardarlo.
+8. Registra en `JARVIS_LOG.md` qué ejes se investigaron y cuántas
+   fuentes se encontraron por eje.
+
+Restricciones:
+- Máximo 3 ejes por ejecución
+- No crea conceptos desde cero — requiere un borrador de entrada
+- No guarda en disco automáticamente
+- Si el input es una ruta a `.md` y el archivo no existe, informa y detente
+- Output siempre en español
+
 ---
 
 ## Formato del JARVIS_LOG.md
