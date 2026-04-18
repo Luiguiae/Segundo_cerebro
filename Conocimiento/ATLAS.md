@@ -1,6 +1,6 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-04-18 16:25  
+> Generado automáticamente el 2026-04-18 16:32  
 > Total de conceptos: **34**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y agrupación por familia.

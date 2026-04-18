@@ -2,6 +2,23 @@
 
 ---
 
+### 2026-04-18 — correlaciones generadas: top 3 conceptos del scout
+
+**Instrucción:** "correlaciona el top 3" (espectro-autonomia-agente, fabrica-oscura-de-software, capital-de-contexto)
+
+**Acciones:**
+- Evaluadas 3 pares posibles — todos aprueban Gate 1 + Gate 2
+- Escritas 3 correlaciones en `Correlaciones/`
+
+**Resultados:**
+- `2026-04-18_espectro-autonomia-agente--fabrica-oscura-de-software.md`: OK — "El operador que no está"
+- `2026-04-18_espectro-autonomia-agente--capital-de-contexto.md`: OK — "El precio de entrada para cada posición"
+- `2026-04-18_fabrica-oscura-de-software--capital-de-contexto.md`: OK — "El único activo que queda"
+
+**ATLAS regenerado:** sí — 34 conceptos procesados
+
+---
+
 ### 2026-04-18 — correlaciones generadas: 3 nuevas
 
 **Instrucción:** "sugiere correlaciones entre los 3 nuevos conceptos y los que ya existen → ejecuta top 3"
