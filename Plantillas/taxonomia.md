@@ -68,7 +68,7 @@ Solo estos tags están permitidos. Si un concepto necesita un tag que no está a
 Jarvis debe proponer agregarlo a esta lista antes de usarlo.
 
 ### Dominio
-`ia`, `diseño`, `producto`, `sistemas`, `conocimiento`, `agentes`, `codigo`, `automatizacion`, `estrategia`, `organizacion`, `prompts`, `educacion`, `habilidades`, `herramientas`, `desarrollo`, `escala`, `startups`, `mvp`, `cultura`, `colonialismo`, `descolonizacion`
+`ia`, `diseño`, `producto`, `sistemas`, `conocimiento`, `agentes`, `codigo`, `automatizacion`, `estrategia`, `organizacion`, `prompts`, `educacion`, `habilidades`, `herramientas`, `desarrollo`, `escala`, `startups`, `mvp`, `cultura`, `colonialismo`, `descolonizacion`, `trabajo`, `productividad`
 
 ### Proceso
 `captura`, `indexacion`, `activacion`, `correlacion`, `evaluacion`, `iteracion`, `prototipado`, `construccion`, `research`, `validacion`, `aprendizaje`

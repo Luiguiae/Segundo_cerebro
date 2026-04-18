@@ -2,6 +2,120 @@
 
 ---
 
+### 2026-04-18 — correlaciones generadas: 3 nuevas
+
+**Instrucción:** "sugiere correlaciones entre los 3 nuevos conceptos y los que ya existen → ejecuta top 3"
+
+**Acciones:**
+- Leídos conceptos relevantes: `confianza-a-traves-de-velocidad`, `quien-controla-el-prompt`, `expertise-de-dominio-en-producto`, `vibe-coding`, `feedback-que-escala`, `claridad-antes-de-velocidad`
+- 6 correlaciones candidatas evaluadas; top 3 seleccionadas por Luigui
+- Rúbrica aplicada — las 3 aprueban Gate 1 + Gate 2
+
+**Resultados:**
+- `2026-04-18_pit-stop-cognitivo--confianza-a-traves-de-velocidad.md`: OK — "La pausa que sostiene la velocidad"
+- `2026-04-18_copiloto-de-producto--quien-controla-el-prompt.md`: OK — "El mapa y el volante"
+- `2026-04-18_pit-stop-cognitivo--feedback-que-escala.md`: OK — "Lo que el sistema no puede enseñarse a sí mismo"
+
+**ATLAS regenerado:** sí — 29 conceptos procesados
+
+---
+
+### 2026-04-18 — profundizar: restriccion-de-tiempo-como-ventaja, copiloto-de-producto, pit-stop-cognitivo
+
+**Instrucción:** "profundiza estos conceptos: restriccion-de-tiempo-como-ventaja, copiloto-de-producto, pit-stop-cognitivo"
+
+**Acciones:**
+- Leídos los 3 borradores desde `Conocimiento/Conceptos/`
+- 9 búsquedas web ejecutadas (3 ejes × 3 conceptos)
+- Generados 3 `.md` enriquecidos entregados en chat (no guardados en disco)
+
+**Ejes investigados por concepto:**
+
+*restriccion-de-tiempo-como-ventaja*
+- Eje 1: Parkinson's Law + investigación en creatividad bajo restricciones (Acar et al. 2019, Cromwell 2024) — 3 fuentes sólidas
+- Eje 2: Datos empíricos velocidad IA vs comprensión humana (CodeRabbit 2025, 470 PRs) — 2 fuentes sólidas
+- Eje 3: Investigación en ingeniería y diseño sobre restricciones deliberadas (ResearchGate, SAGE) — 2 fuentes sólidas
+
+*copiloto-de-producto*
+- Eje 1: Pair programming navigator/driver — Cockburn & Williams, ScienceDirect 2006 — 2 fuentes sólidas
+- Eje 2: Supervisión humana en aviación, EASA AI framework 2025, MDPI — 2 fuentes sólidas
+- Eje 3: Evolución rol PM en equipos AI-native — Product School, Maven, HBR 2026 — 3 fuentes sólidas
+
+*pit-stop-cognitivo*
+- Eje 1: Leslie Lamport — Microsoft Research, Quanta Magazine — 2 fuentes sólidas
+- Eje 2: Comprehension debt empírico — arxiv 2604.13277 y 2603.28592, Addy Osmani — 3 fuentes sólidas
+- Eje 3: Cognitive offloading y pérdida de comprensión — Frontiers Psychology 2025, RCT ScienceDirect 2025 — 2 fuentes sólidas
+
+**Resultados:**
+- 3 `.md` enriquecidos generados — entregados en chat, pendientes de guardar por Luigui
+- Dato nuevo más relevante por concepto:
+  - *restriccion-tiempo*: código IA produce 1.7x más issues; solo 30% del código Copilot es aceptado (CodeRabbit 2025)
+  - *copiloto-de-producto*: EASA formaliza que IA debe ofrecer recomendaciones, no directivas; over-reliance erode habilidades
+  - *pit-stop-cognitivo*: RCT 2026 — IA asistida = mismo tiempo, 17% menos comprensión; comprehension debt ya es término académico formal
+
+**Correcciones de frontmatter aplicadas al guardar:**
+- Tags fuera de lista controlada reemplazados: `decision-making` → `criterio`, `equipos` → `equipo`, `agentes-ia` → `agentes`, `calidad` → `criterio`, `comprension` → `conocimiento`, `sostenibilidad` → omitido (excedía máx 5)
+- Campos `familia` y `estado: activo` agregados a los 3 archivos (faltaban en borradores)
+- Campo `relacionado` en copiloto-de-producto y pit-stop-cognitivo reducido a máx 3 (tenían 4)
+
+**ATLAS regenerado:** sí — 29 conceptos procesados
+
+---
+
+### 2026-04-16 00:00 — concepto agregado: inversion-sesgo-tecnologico
+
+**Instrucción:** "Jarvis, agrega los conceptos aprobados con tensión Fuerte (McKinsey PDF)"
+
+**Acciones:**
+- Leídos `taxonomia.md` y `rubrica.md`
+- Verificados archivos relacionados: `ia-como-filtro-de-entrada`, `automatizacion-vs-ampliacion`, `fundamentales-vs-flux` — todos existen ✓
+- Tags no controlados sustituidos: `trabajo` → omitido, `inversion` → omitido. Tags finales: [ia, automatizacion, educacion, habilidades, transicion]
+
+**Resultados:**
+- `inversion-sesgo-tecnologico.md`: OK — Gate 1: ✓✓✓✓ | Gate 2: ✓✓✓✓ → estado: activo
+
+**Criterios evaluados:**
+- Gate 1.1 Atómico: ✓ — una idea: inversión del sesgo de automatización en estratos altos
+- Gate 1.2 Propio: ✓ — destilación con interpretación, no resumen del reporte
+- Gate 1.3 Frontmatter completo: ✓
+- Gate 1.4 Nombre de archivo: ✓ — kebab-case, sin acentos, sin artículos
+- Gate 2.1 No es resumen: ✓
+- Gate 2.2 Tensión interna: ✓ — efecto no uniforme, potencial vs. trayectoria real
+- Gate 2.3 Relacionable: ✓ — 3 conceptos existentes
+- Gate 2.4 Transferible: ✓ — autocontenido con datos y contexto
+
+**[PROPUESTA]** Tags `trabajo` e `inversion` no están en la lista controlada. Se omitieron; propuesta: agregar `trabajo` a la lista de tags de dominio en `taxonomia.md`.
+
+---
+
+### 2026-04-16 00:00 — concepto agregado: condicion-redespliegue
+
+**Instrucción:** (mismo comando de sesión McKinsey)
+
+**Acciones:**
+- Verificados archivos relacionados: `automatizar-mi-propio-trabajo`, `feedback-que-escala`, `equipos-pequenos-alto-impacto` — todos existen ✓
+- Tags no controlados sustituidos: `productividad`, `condicion` → omitidos. Tags finales: [ia, automatizacion, organizacion, sistemas, transicion]
+- Familia cambiada de `sistemas-conocimiento` a `transicion-ia` — el concepto trata el cambio organizacional post-automatización, no arquitecturas de conocimiento
+
+**Resultados:**
+- `condicion-redespliegue.md`: OK — Gate 1: ✓✓✓✓ | Gate 2: ✓✓✓✓ → estado: activo
+
+**Criterios evaluados:**
+- Gate 1.1 Atómico: ✓ — una idea: el redespliegue como condición no automática de la promesa de productividad IA
+- Gate 1.2 Propio: ✓ — el supuesto implícito del modelo McKinsey es interpretación propia
+- Gate 1.3 Frontmatter completo: ✓
+- Gate 1.4 Nombre de archivo: ✓
+- Gate 2.1 No es resumen: ✓
+- Gate 2.2 Tensión interna: ✓ — no todos pueden redesplazarse, puede usarse como excusa para no actuar
+- Gate 2.3 Relacionable: ✓ — 3 conceptos existentes
+- Gate 2.4 Transferible: ✓
+
+**[PROPUESTA]** Tags `productividad` y `condicion` no están en la lista controlada. Propuesta: agregar `productividad` a dominio en `taxonomia.md`.
+
+**ATLAS regenerado:** sí — 26 conceptos procesados
+
+---
+
 ### 2026-04-15 17:00 — concepto profundizado: colonialismo-cultural-digital
 
 **Instrucción:** "Profundiza en el concepto" (borrador colonialismo-cultural-digital)
