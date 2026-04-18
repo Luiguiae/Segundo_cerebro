@@ -1,7 +1,17 @@
-.DS_Store
-*.swp
-*.swo
-.env
-.cursor/
-.vscode/
-node_modules/
+# Obsidian
+.obsidian/
+
+# Salesforce
+.sfdx/
+
+# Claude Code
+.claude/
+
+# Misc local
+.verb.md
+
+# Exports y binarios
+Documentos/Presentaciones/exports/
+*.pdf
+*.pptx
+*.key
