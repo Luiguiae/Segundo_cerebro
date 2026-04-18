@@ -2,6 +2,23 @@
 
 ---
 
+### 2026-04-18 — instalación: Backlog/
+
+**Instrucción:** "Crea la estructura Backlog/ con README, plantilla, ideas/ y listas/"
+
+**Acciones:**
+- Creada carpeta `Backlog/` en raíz del vault
+- Creados 6 archivos: README.md, _plantilla-idea.md, ideas/.gitkeep, listas/backlog.md, listas/en-construccion.md, listas/completados.md
+
+**Resultados:**
+- `Backlog/README.md`: OK — ciclo de vida, estados, convención de nombres
+- `Backlog/_plantilla-idea.md`: OK — 8 secciones SDD + SPEC.md + prompt para Jarvis
+- `Backlog/listas/`: OK — 3 listas vacías listas para uso
+
+**ATLAS regenerado:** no — sin cambios en Conocimiento/
+
+---
+
 ### 2026-04-18 — correlaciones generadas: top 3 conceptos del scout
 
 **Instrucción:** "correlaciona el top 3" (espectro-autonomia-agente, fabrica-oscura-de-software, capital-de-contexto)

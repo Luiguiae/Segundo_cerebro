@@ -77,7 +77,7 @@ def extract_resumen(cuerpo: str) -> str:
 def cargar_conceptos(directorio: Path) -> list[dict]:
     """Lee todos los .md en el directorio y devuelve lista de metadatos + nombre de archivo."""
     conceptos = []
-    for archivo in sorted(directorio.glob("*.md")):
+    for archivo in sorted(directorio.rglob("*.md")):
         texto       = archivo.read_text(encoding="utf-8")
         meta, cuerpo = parse_frontmatter(texto)
         if not meta:
@@ -107,6 +107,14 @@ def construir_grafo_relaciones(conceptos: list[dict]) -> dict[str, list[str]]:
             if rel_limpio:
                 grafo[nombre].append(rel_limpio)
     return dict(grafo)
+
+
+def agrupar_por_categoria(conceptos: list[dict]) -> dict[str, list[dict]]:
+    grupos = defaultdict(list)
+    for c in conceptos:
+        cat = c.get("categoria", "sin-categoria") or "sin-categoria"
+        grupos[cat].append(c)
+    return dict(sorted(grupos.items()))
 
 
 def agrupar_por_familia(conceptos: list[dict]) -> dict[str, list[dict]]:
@@ -156,7 +164,21 @@ def generar_markdown(conceptos: list[dict],
 
     lineas.append("")
 
-    # ── 2. Conceptos por familia ──────────────────────────────────────────────
+    # ── 2. Conceptos por categoría ───────────────────────────────────────────
+    lineas += ["---", "", "## Conceptos por categoría", ""]
+    grupos_cat = agrupar_por_categoria(conceptos)
+    for cat, miembros in grupos_cat.items():
+        lineas.append(f"### `{cat}` ({len(miembros)})")
+        lineas.append("")
+        for c in miembros:
+            titulo  = c.get("titulo", c["_archivo"])
+            archivo = c["_archivo"]
+            resumen = c["_resumen"]
+            lineas.append(f"- [[{archivo}\\|{titulo}]]")
+            lineas.append(f"  → {resumen}")
+        lineas.append("")
+
+    # ── 3. Conceptos por familia ──────────────────────────────────────────────
     lineas += ["---", "", "## Conceptos por familia", ""]
     grupos = agrupar_por_familia(conceptos)
     for familia, miembros in grupos.items():
