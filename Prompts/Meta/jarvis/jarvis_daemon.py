@@ -23,6 +23,10 @@ WAKE_THRESHOLD  = 0.5
 SAMPLE_RATE     = 16000
 CHUNK_SIZE      = 1280  # frames requeridos por OpenWakeWord
 
+# Segundos que Jarvis permanece en modo escucha activa tras el wake word.
+# Cada interacción reinicia el contador. Ajusta según tu preferencia.
+MODO_ESCUCHA_TIMEOUT = 60
+
 # ── Logging ────────────────────────────────────────────────────────────────────
 
 logging.basicConfig(
@@ -110,16 +114,35 @@ def init_stream():
 
 # ── Ciclo principal ───────────────────────────────────────────────────────────
 
-def procesar_comando(indice_vault: str) -> None:
-    """Escucha un comando tras el wake word y despacha via jarvis.py."""
+def procesar_comando(indice_vault: str) -> bool:
+    """Escucha un comando y despacha via jarvis.py. Retorna True si hubo comando."""
     texto = escuchar()
     if texto is None:
-        return
+        return False
 
     intent, params = detectar_intent(texto, historial_sesion, indice_vault)
     log(f"Intent: {intent} | Params: {params}")
     actualizar_historial(texto, (intent, params))
     despachar_intent(intent, params, texto)
+    return True
+
+
+def modo_escucha_activo(indice_vault: str) -> None:
+    """Mantiene Jarvis en escucha activa por MODO_ESCUCHA_TIMEOUT segundos.
+    Cada interacción reinicia el contador. Al agotarse, vuelve al wake word."""
+    import time
+
+    deadline = time.time() + MODO_ESCUCHA_TIMEOUT
+    log(f"Modo escucha activo ({MODO_ESCUCHA_TIMEOUT}s). Sin wake word necesario.")
+
+    while time.time() < deadline:
+        hubo_comando = procesar_comando(indice_vault)
+        if hubo_comando:
+            deadline = time.time() + MODO_ESCUCHA_TIMEOUT
+            log(f"Interacción detectada. Timer reiniciado ({MODO_ESCUCHA_TIMEOUT}s).")
+
+    hablar("Volviendo al modo espera. Di Hey Jarvis cuando me necesites.")
+    log("Modo escucha cerrado por timeout.")
 
 
 def loop_principal(oww_model, stream, indice_vault: str) -> None:
@@ -139,9 +162,8 @@ def loop_principal(oww_model, stream, indice_vault: str) -> None:
             if score > WAKE_THRESHOLD:
                 log(f"Wake word detectado (score={score:.2f}).")
                 hablar("Dime.")
-                procesar_comando(indice_vault)
-                # Vacía el buffer para evitar que el TTS active el wake word
-                oww_model.reset()
+                oww_model.reset()  # vacía el buffer antes de entrar al modo escucha
+                modo_escucha_activo(indice_vault)
                 log("Volviendo al loop de wake word.")
 
     except KeyboardInterrupt:
