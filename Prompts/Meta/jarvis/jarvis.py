@@ -10,6 +10,7 @@ Debe ejecutarse desde ~/Documents/Segundo_cerebro/ como working directory.
 """
 
 import json
+import logging
 import os
 import requests
 import subprocess
@@ -65,8 +66,10 @@ def escuchar() -> str | None:
 
     try:
         texto = recognizer.recognize_google(audio, language="es-ES")
-        print(f"[Transcripción] {texto}")
-        return texto.lower()
+        texto_transcrito = texto.lower()
+        print(f"[Transcripción] {texto_transcrito}")
+        logging.info(f"Transcripción: {texto_transcrito}")
+        return texto_transcrito
     except Exception:
         hablar("No entendí lo que dijiste. Intenta de nuevo.")
         return None
