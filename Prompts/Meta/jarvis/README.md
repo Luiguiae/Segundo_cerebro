@@ -82,27 +82,27 @@ VOZ → [STT Google] → texto → detectar_intent() → construir_prompt()
 ## Instalación del daemon (wake word — Mejora 002b)
 
 El daemon corre en segundo plano desde el login y responde al decir **"Hey Jarvis"**.
+Sin API keys — usa OpenWakeWord, completamente local y open source.
 
-### 1. Instalar dependencias nuevas
-
-```bash
-pip3.11 install pvporcupine pvrecorder
-```
-
-### 2. Obtener API key de Picovoice
-
-- Crear cuenta gratuita en https://console.picovoice.ai
-- Copiar el **AccessKey** del dashboard (el tier gratuito incluye el wake word "Jarvis" built-in)
-
-### 3. Editar el plist con tu API key
+### 1. Instalar dependencias
 
 ```bash
-nano ~/Documents/Segundo_cerebro/Prompts/Meta/jarvis/com.segundocerebro.jarvis.plist
+pip3.11 install openwakeword pyaudio numpy
 ```
 
-Reemplaza `[REEMPLAZAR_CON_TU_KEY]` con tu AccessKey de Picovoice.
+> **macOS (Apple Silicon):** si `pyaudio` falla, instala PortAudio primero:
+> ```bash
+> brew install portaudio
+> CFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3.11 install pyaudio
+> ```
 
-### 4. Instalar y cargar el LaunchAgent
+### 2. Descargar modelos de OpenWakeWord
+
+```bash
+python3.11 -c "from openwakeword.utils import download_models; download_models()"
+```
+
+### 3. Instalar y cargar el LaunchAgent
 
 ```bash
 cp ~/Documents/Segundo_cerebro/Prompts/Meta/jarvis/com.segundocerebro.jarvis.plist \
@@ -111,7 +111,7 @@ cp ~/Documents/Segundo_cerebro/Prompts/Meta/jarvis/com.segundocerebro.jarvis.pli
 launchctl load ~/Library/LaunchAgents/com.segundocerebro.jarvis.plist
 ```
 
-### 5. Verificar que está corriendo
+### 4. Verificar que está corriendo
 
 ```bash
 launchctl list | grep jarvis
@@ -140,8 +140,8 @@ tail -f ~/Documents/Segundo_cerebro/Prompts/Meta/jarvis/jarvis.log
 ```
 [BOOT] LaunchAgent → jarvis_daemon.py
     ↓ loop infinito
-    escucha frames de audio (PvRecorder)
-    Pvporcupine.process(frame) → detecta "Hey Jarvis"
+    lee chunks de audio (pyaudio, 16kHz mono)
+    OpenWakeWord.predict(chunk) → score "hey_jarvis" > 0.5
     Mónica dice "Dime"
     escuchar() → transcribir() → detectar_intent()
     construir_prompt() → claude CLI → resumir_output()

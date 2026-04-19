@@ -2,26 +2,26 @@
 """
 jarvis_daemon.py — Daemon de wake word para el Segundo Cerebro (Mejora 002b)
 
-Corre en segundo plano, escucha "Hey Jarvis" de forma offline con Pvporcupine,
+Corre en segundo plano, escucha "Hey Jarvis" de forma offline con OpenWakeWord,
 y al detectarlo ejecuta el flujo completo de jarvis.py.
 
-Requiere: PICOVOICE_KEY en variables de entorno (nunca hardcodeada)
-Logs:     Prompts/Meta/jarvis/jarvis.log
+Sin API keys — OpenWakeWord es completamente local y open source.
+Logs: Prompts/Meta/jarvis/jarvis.log
 """
 
-import os
 import sys
-import signal
 import logging
 from datetime import datetime
 from pathlib import Path
 
-# Agrega el directorio del proyecto al path para importar jarvis.py
 CEREBRO_PATH = Path.home() / "Documents" / "Segundo_cerebro"
 JARVIS_DIR   = CEREBRO_PATH / "Prompts" / "Meta" / "jarvis"
 LOG_PATH     = JARVIS_DIR / "jarvis.log"
 
-sys.path.insert(0, str(CEREBRO_PATH))
+WAKE_WORD       = "hey_jarvis"
+WAKE_THRESHOLD  = 0.5
+SAMPLE_RATE     = 16000
+CHUNK_SIZE      = 1280  # frames requeridos por OpenWakeWord
 
 # ── Logging ────────────────────────────────────────────────────────────────────
 
@@ -40,53 +40,62 @@ def log(msg: str) -> None:
 # ── Importar funciones de jarvis.py ───────────────────────────────────────────
 
 try:
-    from Prompts.Meta.jarvis.jarvis import (
-        hablar,
-        escuchar,
-        detectar_intent,
-        construir_prompt,
-        ejecutar_claude,
-        resumir_output,
-        listar_conceptos,
-    )
-except ImportError:
-    # Fallback: importar por ruta directa si el módulo no está en el path
     import importlib.util
-    spec = importlib.util.spec_from_file_location("jarvis", JARVIS_DIR / "jarvis.py")
-    jarvis_mod = importlib.util.load_from_spec(spec)
-    spec.loader.exec_module(jarvis_mod)
-    hablar          = jarvis_mod.hablar
-    escuchar        = jarvis_mod.escuchar
-    detectar_intent = jarvis_mod.detectar_intent
-    construir_prompt= jarvis_mod.construir_prompt
-    ejecutar_claude = jarvis_mod.ejecutar_claude
-    resumir_output  = jarvis_mod.resumir_output
-    listar_conceptos= jarvis_mod.listar_conceptos
+    _spec = importlib.util.spec_from_file_location("jarvis", JARVIS_DIR / "jarvis.py")
+    _mod  = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_mod)
+
+    hablar           = _mod.hablar
+    escuchar         = _mod.escuchar
+    detectar_intent  = _mod.detectar_intent
+    construir_prompt = _mod.construir_prompt
+    ejecutar_claude  = _mod.ejecutar_claude
+    resumir_output   = _mod.resumir_output
+    listar_conceptos = _mod.listar_conceptos
+except Exception as e:
+    print(f"[ERROR] No pude importar jarvis.py: {e}")
+    sys.exit(1)
 
 
-# ── Porcupine ─────────────────────────────────────────────────────────────────
+# ── OpenWakeWord ───────────────────────────────────────────────────────────────
 
-def init_porcupine():
-    """Inicializa Pvporcupine con la keyword 'jarvis' (built-in tier gratuito)."""
-    import pvporcupine
-    key = os.environ.get("PICOVOICE_KEY")
-    if not key:
-        log("ERROR: PICOVOICE_KEY no está en las variables de entorno.")
-        hablar("Falta la API key de Picovoice. Revisa la configuración del daemon.")
+def init_wakeword():
+    """Carga modelo OpenWakeWord para 'hey_jarvis'."""
+    try:
+        from openwakeword.model import Model
+        model = Model(wakeword_models=[WAKE_WORD], inference_framework="onnx")
+        log(f"Modelo OpenWakeWord cargado: {WAKE_WORD}")
+        return model
+    except Exception as e:
+        log(f"ERROR al cargar OpenWakeWord: {e}")
+        hablar("No pude cargar el modelo de wake word. Revisa el log.")
         sys.exit(1)
-    return pvporcupine.create(access_key=key, keywords=["jarvis"])
 
 
-def init_recorder(frame_length: int):
-    """Inicializa PvRecorder con el frame_length que requiere Porcupine."""
-    from pvrecorder import PvRecorder
-    return PvRecorder(device_index=-1, frame_length=frame_length)
+def init_stream():
+    """Abre stream pyaudio continuo a 16kHz mono."""
+    try:
+        import pyaudio
+        pa     = pyaudio.PyAudio()
+        stream = pa.open(
+            rate=SAMPLE_RATE,
+            channels=1,
+            format=pyaudio.paInt16,
+            input=True,
+            frames_per_buffer=CHUNK_SIZE,
+        )
+        log("Stream de audio iniciado (16kHz, mono).")
+        return pa, stream
+    except Exception as e:
+        log(f"ERROR al abrir stream de audio: {e}")
+        hablar("No pude acceder al micrófono. Revisa los permisos en Preferencias del Sistema.")
+        sys.exit(1)
 
 
 # ── Ciclo principal ───────────────────────────────────────────────────────────
 
 def procesar_comando() -> None:
-    """Escucha, detecta intent y ejecuta la acción correspondiente."""
+    """Escucha un comando tras el wake word y ejecuta la acción correspondiente."""
     texto = escuchar()
     if texto is None:
         return
@@ -109,7 +118,7 @@ def procesar_comando() -> None:
 
     try:
         import subprocess
-        output = ejecutar_claude(prompt)
+        output  = ejecutar_claude(prompt)
         resumen = resumir_output(output)
     except subprocess.TimeoutExpired:
         log("ERROR: Claude Code timeout")
@@ -124,38 +133,44 @@ def procesar_comando() -> None:
     hablar(resumen if resumen else "Listo.")
 
 
-def loop_principal(porcupine, recorder) -> None:
-    """Ciclo infinito: escucha frames de audio, detecta wake word, ejecuta flujo."""
+def loop_principal(oww_model, stream) -> None:
+    """Ciclo infinito: lee chunks de audio, detecta wake word, ejecuta flujo."""
+    import numpy as np
+
     log("Daemon iniciado. Escuchando wake word 'Hey Jarvis'...")
-    recorder.start()
 
     try:
         while True:
-            frame = recorder.read()
-            resultado = porcupine.process(frame)
+            chunk = stream.read(CHUNK_SIZE, exception_on_overflow=False)
+            audio = np.frombuffer(chunk, dtype=np.int16)
 
-            if resultado >= 0:
-                log("Wake word detectado.")
+            scores = oww_model.predict(audio)
+            score  = scores.get(WAKE_WORD, 0.0)
+
+            if score > WAKE_THRESHOLD:
+                log(f"Wake word detectado (score={score:.2f}).")
                 hablar("Dime.")
                 procesar_comando()
+                # Vacía el buffer para evitar que el TTS active el wake word
+                oww_model.reset()
                 log("Volviendo al loop de wake word.")
 
     except KeyboardInterrupt:
         log("Daemon detenido por KeyboardInterrupt.")
 
 
-def cleanup(porcupine, recorder) -> None:
-    """Libera recursos de Porcupine y PvRecorder."""
+def cleanup(pa, stream) -> None:
+    """Cierra el stream y libera pyaudio."""
     try:
-        recorder.stop()
-        recorder.delete()
+        stream.stop_stream()
+        stream.close()
     except Exception:
         pass
     try:
-        porcupine.delete()
+        pa.terminate()
     except Exception:
         pass
-    log("Recursos liberados.")
+    log("Recursos de audio liberados.")
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -163,13 +178,13 @@ def cleanup(porcupine, recorder) -> None:
 def main():
     log("=== Jarvis Daemon arrancando ===")
 
-    porcupine = None
-    recorder  = None
+    pa     = None
+    stream = None
 
     try:
-        porcupine = init_porcupine()
-        recorder  = init_recorder(porcupine.frame_length)
-        loop_principal(porcupine, recorder)
+        oww_model    = init_wakeword()
+        pa, stream   = init_stream()
+        loop_principal(oww_model, stream)
     except Exception as e:
         log(f"ERROR fatal: {e}")
         try:
@@ -178,8 +193,8 @@ def main():
             pass
         sys.exit(1)
     finally:
-        if porcupine and recorder:
-            cleanup(porcupine, recorder)
+        if pa and stream:
+            cleanup(pa, stream)
 
 
 if __name__ == "__main__":

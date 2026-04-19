@@ -12,12 +12,6 @@
     <string>/Users/luiguiavilae/Documents/Segundo_cerebro/Prompts/Meta/jarvis/jarvis_daemon.py</string>
   </array>
 
-  <key>EnvironmentVariables</key>
-  <dict>
-    <key>PICOVOICE_KEY</key>
-    <string>[REEMPLAZAR_CON_TU_KEY]</string>
-  </dict>
-
   <key>RunAtLoad</key>
   <true/>
 
