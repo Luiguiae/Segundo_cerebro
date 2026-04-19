@@ -434,7 +434,12 @@ def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
     """Ejecuta la acción y, al terminar, dispara _response_complete_callback."""
     _despachar_intent_impl(intent, params, texto_transcrito)
     if _response_complete_callback:
+        import time
+        logging.info(f"[Timer] Callback registrado — reiniciando deadline.")
         _response_complete_callback()
+        logging.info(f"[Timer] Deadline reiniciado a {time.time() + 0:.0f} (now={time.time():.0f})")
+    else:
+        logging.info("[Timer] _response_complete_callback es None — callback no registrado.")
 
 
 def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> None:
