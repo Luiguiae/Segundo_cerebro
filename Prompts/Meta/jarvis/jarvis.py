@@ -250,11 +250,19 @@ def ejecutar_claude(prompt: str) -> str:
 
 
 def resumir_output(output: str) -> str:
-    """Extrae un resumen de 1-2 oraciones del output de Claude Code."""
+    """Extrae un resumen de 1-2 oraciones del output de Claude Code.
+    Si detecta rechazo o error, devuelve la línea completa con la razón."""
     lineas = [l.strip() for l in output.splitlines() if l.strip()]
+    RECHAZO = ["rechazado", "no encontrado", "no existe", "error", "❌", "fallo", "falló"]
+    EXITO   = ["creado", "guardado", "generado", "✅", "concepto", "correlación"]
+    # Prioridad: líneas de rechazo primero (para leer la razón completa)
     for linea in lineas:
         low = linea.lower()
-        if any(k in low for k in ["creado", "guardado", "generado", "✅", "concepto", "correlación"]):
+        if any(k in low for k in RECHAZO):
+            return linea[:300]
+    for linea in lineas:
+        low = linea.lower()
+        if any(k in low for k in EXITO):
             return linea[:200]
     relevantes = [l for l in lineas if len(l) > 10][:2]
     return " ".join(relevantes)[:200] if relevantes else "Listo."
@@ -305,7 +313,15 @@ def main():
         return
 
     prompt = construir_prompt(intent, params)
-    hablar("Procesando. Un momento.")
+
+    if intent == "correlacionar":
+        hablar(f"Correlacionando {params.get('concepto_a')} con {params.get('concepto_b')}, un momento.")
+    elif intent == "profundizar_concepto":
+        hablar(f"Profundizando el concepto {params.get('nombre')}, un momento.")
+    elif intent == "crear_concepto":
+        hablar(f"Creando un concepto sobre {params.get('tema')}, un momento.")
+    else:
+        hablar("Procesando. Un momento.")
 
     try:
         output = ejecutar_claude(prompt)
