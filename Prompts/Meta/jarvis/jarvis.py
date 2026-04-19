@@ -409,7 +409,11 @@ def main():
         contenido = cargar_contenido_vault(params)
         respuesta = responder_con_groq(pregunta, contenido, historial_sesion)
         hablar(respuesta)
-        actualizar_historial(texto_transcrito, {"intent": intent, "respuesta": respuesta})
+        actualizar_historial(texto_transcrito, (intent, {"respuesta": respuesta}))
+        return
+
+    if intent not in ("crear_concepto", "profundizar_concepto", "correlacionar"):
+        hablar(f"No sé cómo ejecutar el intent: {intent}")
         return
 
     prompt = construir_prompt(intent, params)
