@@ -45,15 +45,17 @@ try:
     _mod  = importlib.util.module_from_spec(_spec)
     _spec.loader.exec_module(_mod)
 
-    hablar              = _mod.hablar
-    escuchar            = _mod.escuchar
-    detectar_intent     = _mod.detectar_intent
-    construir_prompt    = _mod.construir_prompt
-    ejecutar_claude     = _mod.ejecutar_claude
-    resumir_output      = _mod.resumir_output
-    listar_conceptos    = _mod.listar_conceptos
-    actualizar_historial= _mod.actualizar_historial
-    historial_sesion    = _mod.historial_sesion
+    hablar               = _mod.hablar
+    escuchar             = _mod.escuchar
+    detectar_intent      = _mod.detectar_intent
+    construir_prompt     = _mod.construir_prompt
+    ejecutar_claude      = _mod.ejecutar_claude
+    resumir_output       = _mod.resumir_output
+    listar_conceptos     = _mod.listar_conceptos
+    actualizar_historial = _mod.actualizar_historial
+    historial_sesion     = _mod.historial_sesion
+    cargar_contenido_vault = _mod.cargar_contenido_vault
+    responder_con_groq   = _mod.responder_con_groq
 except Exception as e:
     print(f"[ERROR] No pude importar jarvis.py: {e}")
     sys.exit(1)
@@ -133,8 +135,30 @@ def procesar_comando(indice_vault: str) -> None:
         hablar(f"No entendí: {params.get('razon', 'comando no reconocido')}")
         return
 
+    if intent == "consulta_vault":
+        pregunta = params.get("pregunta", texto)
+        hablar("Un momento, consultando el vault.")
+        contenido = cargar_contenido_vault(params)
+        respuesta = responder_con_groq(pregunta, contenido, historial_sesion)
+        log(f"Consulta vault: {respuesta}")
+        hablar(respuesta)
+        actualizar_historial(texto, (intent, {"respuesta": respuesta}))
+        return
+
+    if intent not in ("crear_concepto", "profundizar_concepto", "correlacionar"):
+        hablar(f"No sé cómo ejecutar el intent: {intent}")
+        return
+
     prompt = construir_prompt(intent, params)
-    hablar("Procesando. Un momento.")
+
+    if intent == "correlacionar":
+        hablar(f"Correlacionando {params.get('concepto_a')} con {params.get('concepto_b')}, un momento.")
+    elif intent == "profundizar_concepto":
+        hablar(f"Profundizando el concepto {params.get('nombre')}, un momento.")
+    elif intent == "crear_concepto":
+        hablar(f"Creando un concepto sobre {params.get('tema')}, un momento.")
+    else:
+        hablar("Procesando. Un momento.")
 
     try:
         import subprocess
