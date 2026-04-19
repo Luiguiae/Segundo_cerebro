@@ -102,6 +102,10 @@ INTENTS DISPONIBLES:
   "revisa el vault", "evalúa el vault", "qué estado tiene el vault",
   "audita el baúl", "audita el bal", "audita el ball", "revisa el baúl",
   "audita mis notas", "audita todo".
+- despedirse: params: {{}}
+  Usar cuando el usuario quiere terminar la sesión de escucha activa.
+  Ejemplos: "te hablo luego", "Jarvis te hablo luego", "hasta luego Jarvis",
+  "bye", "gracias ya terminé", "descansa", "modo espera", "para".
 - desconocido: params: {{"razon": "<por qué no se pudo clasificar>"}}
 
 CONCEPTOS DISPONIBLES EN EL VAULT:
@@ -429,6 +433,9 @@ def _claude_disponible() -> bool:
 # El daemon lo registra para reiniciar el timer de escucha activa.
 _response_complete_callback: "callable | None" = None
 
+# Flag que señala al daemon que debe salir del modo escucha activa.
+_salir_escucha: list[bool] = [False]
+
 
 def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
     """Ejecuta la acción y, al terminar, dispara _response_complete_callback."""
@@ -449,6 +456,11 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> 
         respuesta = listar_conceptos()
         print(f"[Respuesta] {respuesta}")
         hablar(respuesta)
+        return
+
+    if intent == "despedirse":
+        hablar("Hasta luego. Di Hey Jarvis cuando me necesites.")
+        _salir_escucha[0] = True
         return
 
     if intent == "desconocido":

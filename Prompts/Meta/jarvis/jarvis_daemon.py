@@ -140,14 +140,18 @@ def modo_escucha_activo(indice_vault: str) -> None:
         log(f"Timer reiniciado ({MODO_ESCUCHA_TIMEOUT}s) tras respuesta completa.")
 
     _mod._response_complete_callback = _reset_timer
+    _mod._salir_escucha[0] = False
     log(f"Modo escucha activo ({MODO_ESCUCHA_TIMEOUT}s). Sin wake word necesario.")
 
     while time.time() < _deadline[0]:
         procesar_comando(indice_vault)
+        if _mod._salir_escucha[0]:
+            log("Modo escucha cerrado por despedida del usuario.")
+            break
 
     _mod._response_complete_callback = None
-    hablar("Volviendo al modo espera. Di Hey Jarvis cuando me necesites.")
-    log("Modo escucha cerrado por timeout.")
+    _mod._salir_escucha[0] = False
+    log("Volviendo al loop de wake word.")
 
 
 def loop_principal(oww_model, stream, indice_vault: str) -> None:
