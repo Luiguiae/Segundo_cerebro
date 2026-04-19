@@ -23,12 +23,8 @@ def hablar(texto: str) -> None:
     try:
         import pyttsx3
         engine = pyttsx3.init()
-        # Voz en español si está disponible
-        for voice in engine.getProperty("voices"):
-            if "spanish" in voice.name.lower() or "es_" in voice.id.lower():
-                engine.setProperty("voice", voice.id)
-                break
-        engine.setProperty("rate", 160)
+        engine.setProperty('voice', 'com.apple.voice.compact.es-ES.Monica')
+        engine.setProperty('rate', 175)
         engine.say(texto)
         engine.runAndWait()
     except Exception as e:
