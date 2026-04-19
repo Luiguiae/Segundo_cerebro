@@ -48,14 +48,9 @@ try:
     hablar               = _mod.hablar
     escuchar             = _mod.escuchar
     detectar_intent      = _mod.detectar_intent
-    construir_prompt     = _mod.construir_prompt
-    ejecutar_claude      = _mod.ejecutar_claude
-    resumir_output       = _mod.resumir_output
-    listar_conceptos     = _mod.listar_conceptos
     actualizar_historial = _mod.actualizar_historial
     historial_sesion     = _mod.historial_sesion
-    cargar_contenido_vault = _mod.cargar_contenido_vault
-    responder_con_groq   = _mod.responder_con_groq
+    despachar_intent     = _mod.despachar_intent
 except Exception as e:
     print(f"[ERROR] No pude importar jarvis.py: {e}")
     sys.exit(1)
@@ -116,7 +111,7 @@ def init_stream():
 # ── Ciclo principal ───────────────────────────────────────────────────────────
 
 def procesar_comando(indice_vault: str) -> None:
-    """Escucha un comando tras el wake word y ejecuta la acción correspondiente."""
+    """Escucha un comando tras el wake word y despacha via jarvis.py."""
     texto = escuchar()
     if texto is None:
         return
@@ -124,57 +119,7 @@ def procesar_comando(indice_vault: str) -> None:
     intent, params = detectar_intent(texto, historial_sesion, indice_vault)
     log(f"Intent: {intent} | Params: {params}")
     actualizar_historial(texto, (intent, params))
-
-    if intent == "listar_conceptos":
-        respuesta = listar_conceptos()
-        log(f"Respuesta: {respuesta}")
-        hablar(respuesta)
-        return
-
-    if intent == "desconocido":
-        hablar(f"No entendí: {params.get('razon', 'comando no reconocido')}")
-        return
-
-    if intent == "consulta_vault":
-        pregunta = params.get("pregunta", texto)
-        hablar("Un momento, consultando el vault.")
-        contenido = cargar_contenido_vault(params)
-        respuesta = responder_con_groq(pregunta, contenido, historial_sesion)
-        log(f"Consulta vault: {respuesta}")
-        hablar(respuesta)
-        actualizar_historial(texto, (intent, {"respuesta": respuesta}))
-        return
-
-    if intent not in ("crear_concepto", "profundizar_concepto", "correlacionar"):
-        hablar(f"No sé cómo ejecutar el intent: {intent}")
-        return
-
-    prompt = construir_prompt(intent, params)
-
-    if intent == "correlacionar":
-        hablar(f"Correlacionando {params.get('concepto_a')} con {params.get('concepto_b')}, un momento.")
-    elif intent == "profundizar_concepto":
-        hablar(f"Profundizando el concepto {params.get('nombre')}, un momento.")
-    elif intent == "crear_concepto":
-        hablar(f"Creando un concepto sobre {params.get('tema')}, un momento.")
-    else:
-        hablar("Procesando. Un momento.")
-
-    try:
-        import subprocess
-        output  = ejecutar_claude(prompt)
-        resumen = resumir_output(output)
-    except subprocess.TimeoutExpired:
-        log("ERROR: Claude Code timeout")
-        hablar("Claude Code tardó demasiado. Revisa el log para más detalles.")
-        return
-    except Exception as e:
-        log(f"ERROR en ejecutar_claude: {e}")
-        hablar("Hubo un error al ejecutar el comando.")
-        return
-
-    log(f"Output resumido: {resumen}")
-    hablar(resumen if resumen else "Listo.")
+    despachar_intent(intent, params, texto)
 
 
 def loop_principal(oww_model, stream, indice_vault: str) -> None:

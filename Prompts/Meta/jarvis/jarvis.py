@@ -379,19 +379,10 @@ def _claude_disponible() -> bool:
     return resultado.returncode == 0
 
 
-# ── Main ───────────────────────────────────────────────────────────────────────
+# ── Dispatch central (usado por main() y por jarvis_daemon.py) ────────────────
 
-def main():
-    print("=== Jarvis — Segundo Cerebro ===")
-    hablar("Jarvis listo. ¿Qué necesitas?")
-
-    texto_transcrito = escuchar()
-    if texto_transcrito is None:
-        return
-
-    intent, params = detectar_intent(texto_transcrito, historial_sesion)
-    print(f"[Intent] {intent} | [Params] {params}")
-    actualizar_historial(texto_transcrito, (intent, params))
+def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
+    """Ejecuta la acción correspondiente al intent. Única fuente de verdad del dispatch."""
 
     if intent == "listar_conceptos":
         respuesta = listar_conceptos()
@@ -399,15 +390,16 @@ def main():
         hablar(respuesta)
         return
 
-    elif intent == "desconocido":
+    if intent == "desconocido":
         hablar(f"No entendí: {params.get('razon', 'comando no reconocido')}")
         return
 
-    elif intent == "consulta_vault":
+    if intent == "consulta_vault":
         pregunta = params.get("pregunta", texto_transcrito)
         hablar("Un momento, consultando el vault.")
         contenido = cargar_contenido_vault(params)
         respuesta = responder_con_groq(pregunta, contenido, historial_sesion)
+        print(f"[Consulta vault] {respuesta}")
         hablar(respuesta)
         actualizar_historial(texto_transcrito, (intent, {"respuesta": respuesta}))
         return
@@ -440,6 +432,22 @@ def main():
 
     print(f"[Output resumido] {resumen}")
     hablar(resumen if resumen else "Listo.")
+
+
+# ── Main ───────────────────────────────────────────────────────────────────────
+
+def main():
+    print("=== Jarvis — Segundo Cerebro ===")
+    hablar("Jarvis listo. ¿Qué necesitas?")
+
+    texto_transcrito = escuchar()
+    if texto_transcrito is None:
+        return
+
+    intent, params = detectar_intent(texto_transcrito, historial_sesion)
+    print(f"[Intent] {intent} | [Params] {params}")
+    actualizar_historial(texto_transcrito, (intent, params))
+    despachar_intent(intent, params, texto_transcrito)
 
 
 if __name__ == "__main__":
