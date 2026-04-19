@@ -114,11 +114,29 @@ def init_stream():
 
 # ── Ciclo principal ───────────────────────────────────────────────────────────
 
+_DESPEDIDAS = (
+    "te hablo luego", "hasta luego", "bye", "chau", "adiós", "adios",
+    "descansa", "modo espera", "ya terminé", "ya termine", "para jarvis",
+)
+
+
+def _es_despedida(texto: str) -> bool:
+    t = texto.lower()
+    return any(d in t for d in _DESPEDIDAS)
+
+
 def procesar_comando(indice_vault: str) -> bool:
     """Escucha un comando y despacha via jarvis.py. Retorna True si hubo comando."""
     texto = escuchar()
     if texto is None:
         return False
+
+    # Detección de despedida por keywords, sin pasar por Groq (más confiable).
+    if _es_despedida(texto):
+        log(f"Despedida detectada: '{texto}'")
+        hablar("Hasta luego. Di Hey Jarvis cuando me necesites.")
+        _mod._salir_escucha[0] = True
+        return True
 
     intent, params = detectar_intent(texto, historial_sesion, indice_vault)
     log(f"Intent: {intent} | Params: {params}")
