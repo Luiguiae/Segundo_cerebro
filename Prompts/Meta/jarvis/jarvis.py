@@ -97,6 +97,9 @@ INTENTS DISPONIBLES:
 - conversacion_libre: params: {{"mensaje": "<texto literal del usuario>"}}
   Usar cuando el usuario dice algo que no es una acción sobre el vault ni una consulta de conocimiento.
   Ejemplos: saludos, preguntas personales a Jarvis, comentarios, expresiones emocionales.
+- auditar_vault: params: {{}}
+  Usar cuando el usuario dice "audita el vault", "audita mis conceptos",
+  "revisa el vault", "evalúa el vault", "qué estado tiene el vault".
 - desconocido: params: {{"razon": "<por qué no se pudo clasificar>"}}
 
 CONCEPTOS DISPONIBLES EN EL VAULT:
@@ -329,6 +332,18 @@ def construir_prompt(intent: str, params: dict) -> str | None:
             f'Guarda el archivo en Conocimiento/Correlaciones/ con el formato estándar.'
         )
 
+    if intent == "auditar_vault":
+        return (
+            "Lee CLAUDE.md, Plantillas/taxonomia.md, Plantillas/rubrica.md y JARVIS_LOG.md.\n\n"
+            "Jarvis, audita el vault:\n"
+            "1. Lee todos los archivos en Conocimiento/Conceptos/ y Conocimiento/Correlaciones/\n"
+            "2. Evalúa cada uno contra Gate 1 y Gate 2 de la rúbrica\n"
+            "3. Actualiza el campo estado en el frontmatter de cada archivo\n"
+            "4. Registra resultados en JARVIS_LOG.md\n"
+            "5. Ejecuta: python3 Prompts/Meta/generar_index.py\n"
+            "6. Reporta: cuántos activo, borrador, rechazado"
+        )
+
     return None
 
 
@@ -426,7 +441,7 @@ def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
         actualizar_historial(texto_transcrito, (intent, {"respuesta": respuesta}))
         return
 
-    if intent not in ("crear_concepto", "profundizar_concepto", "correlacionar"):
+    if intent not in ("crear_concepto", "profundizar_concepto", "correlacionar", "auditar_vault"):
         hablar(f"No sé cómo ejecutar el intent: {intent}")
         return
 
@@ -438,6 +453,8 @@ def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
         hablar(f"Profundizando el concepto {params.get('nombre')}, un momento.")
     elif intent == "crear_concepto":
         hablar(f"Creando un concepto sobre {params.get('tema')}, un momento.")
+    elif intent == "auditar_vault":
+        hablar("Auditando el vault, esto puede tardar unos minutos.")
     else:
         hablar("Procesando. Un momento.")
 
