@@ -385,13 +385,13 @@ def main():
     print("=== Jarvis — Segundo Cerebro ===")
     hablar("Jarvis listo. ¿Qué necesitas?")
 
-    texto = escuchar()
-    if texto is None:
+    texto_transcrito = escuchar()
+    if texto_transcrito is None:
         return
 
-    intent, params = detectar_intent(texto, historial_sesion)
+    intent, params = detectar_intent(texto_transcrito, historial_sesion)
     print(f"[Intent] {intent} | [Params] {params}")
-    actualizar_historial(texto, (intent, params))
+    actualizar_historial(texto_transcrito, (intent, params))
 
     if intent == "listar_conceptos":
         respuesta = listar_conceptos()
@@ -399,18 +399,17 @@ def main():
         hablar(respuesta)
         return
 
-    if intent == "desconocido":
+    elif intent == "desconocido":
         hablar(f"No entendí: {params.get('razon', 'comando no reconocido')}")
         return
 
-    if intent == "consulta_vault":
+    elif intent == "consulta_vault":
+        pregunta = params.get("pregunta", texto_transcrito)
         hablar("Un momento, consultando el vault.")
         contenido = cargar_contenido_vault(params)
-        pregunta  = params.get("pregunta", texto)
         respuesta = responder_con_groq(pregunta, contenido, historial_sesion)
-        print(f"[Consulta vault] {respuesta}")
-        actualizar_historial(texto, (intent, {"respuesta": respuesta}))
         hablar(respuesta)
+        actualizar_historial(texto_transcrito, {"intent": intent, "respuesta": respuesta})
         return
 
     prompt = construir_prompt(intent, params)
