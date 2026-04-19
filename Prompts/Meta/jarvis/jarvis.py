@@ -425,8 +425,20 @@ def _claude_disponible() -> bool:
 
 # ── Dispatch central (usado por main() y por jarvis_daemon.py) ────────────────
 
+# Callback invocado justo después de la última hablar() de cada respuesta.
+# El daemon lo registra para reiniciar el timer de escucha activa.
+_response_complete_callback: "callable | None" = None
+
+
 def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
-    """Ejecuta la acción correspondiente al intent. Única fuente de verdad del dispatch."""
+    """Ejecuta la acción y, al terminar, dispara _response_complete_callback."""
+    _despachar_intent_impl(intent, params, texto_transcrito)
+    if _response_complete_callback:
+        _response_complete_callback()
+
+
+def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> None:
+    """Lógica de dispatch. Única fuente de verdad del intent routing."""
 
     if intent == "listar_conceptos":
         respuesta = listar_conceptos()

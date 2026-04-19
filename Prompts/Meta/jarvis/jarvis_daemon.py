@@ -129,18 +129,23 @@ def procesar_comando(indice_vault: str) -> bool:
 
 def modo_escucha_activo(indice_vault: str) -> None:
     """Mantiene Jarvis en escucha activa por MODO_ESCUCHA_TIMEOUT segundos.
-    Cada interacción reinicia el contador. Al agotarse, vuelve al wake word."""
+    El timer se reinicia DESPUÉS de que Mónica termina de hablar, via callback."""
     import time
 
-    deadline = time.time() + MODO_ESCUCHA_TIMEOUT
+    # Contenedor mutable para que el callback pueda actualizar el deadline.
+    _deadline = [time.time() + MODO_ESCUCHA_TIMEOUT]
+
+    def _reset_timer():
+        _deadline[0] = time.time() + MODO_ESCUCHA_TIMEOUT
+        log(f"Timer reiniciado ({MODO_ESCUCHA_TIMEOUT}s) tras respuesta completa.")
+
+    _mod._response_complete_callback = _reset_timer
     log(f"Modo escucha activo ({MODO_ESCUCHA_TIMEOUT}s). Sin wake word necesario.")
 
-    while time.time() < deadline:
-        hubo_comando = procesar_comando(indice_vault)
-        if hubo_comando:
-            deadline = time.time() + MODO_ESCUCHA_TIMEOUT
-            log(f"Interacción detectada. Timer reiniciado ({MODO_ESCUCHA_TIMEOUT}s).")
+    while time.time() < _deadline[0]:
+        procesar_comando(indice_vault)
 
+    _mod._response_complete_callback = None
     hablar("Volviendo al modo espera. Di Hey Jarvis cuando me necesites.")
     log("Modo escucha cerrado por timeout.")
 
