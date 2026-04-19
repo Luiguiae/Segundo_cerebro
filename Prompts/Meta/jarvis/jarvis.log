@@ -1,0 +1,18 @@
+2026-04-18 21:04:13 [INFO] === Jarvis Daemon arrancando ===
+2026-04-18 21:04:15 [INFO] Modelo OpenWakeWord cargado: hey_jarvis
+2026-04-18 21:04:16 [INFO] Stream de audio iniciado (16kHz, mono).
+2026-04-18 21:04:16 [INFO] Daemon iniciado. Escuchando wake word 'Hey Jarvis'...
+2026-04-18 21:05:19 [INFO] Wake word detectado (score=0.83).
+2026-04-18 21:05:28 [INFO] Intent: desconocido | Params: {}
+2026-04-18 21:05:35 [INFO] Volviendo al loop de wake word.
+2026-04-18 21:06:20 [INFO] Wake word detectado (score=0.74).
+2026-04-18 21:06:24 [INFO] Intent: desconocido | Params: {}
+2026-04-18 21:06:31 [INFO] Volviendo al loop de wake word.
+2026-04-18 21:06:43 [INFO] Wake word detectado (score=0.56).
+2026-04-18 21:06:47 [INFO] Intent: listar_conceptos | Params: {}
+2026-04-18 21:06:47 [INFO] Respuesta: Tienes 34 conceptos en 6 categorías: 5 de diseno, 3 de economia, 4 de filosofia, 10 de ia, 3 de organizaciones, 9 de producto.
+2026-04-18 21:06:57 [INFO] Volviendo al loop de wake word.
+2026-04-18 21:14:37 [INFO] Wake word detectado (score=0.63).
+2026-04-18 21:14:41 [INFO] Intent: listar_conceptos | Params: {}
+2026-04-18 21:14:41 [INFO] Respuesta: Tienes 34 conceptos en 6 categorías: 5 de diseno, 3 de economia, 4 de filosofia, 10 de ia, 3 de organizaciones, 9 de producto.
+2026-04-18 21:14:52 [INFO] Volviendo al loop de wake word.

@@ -45,16 +45,35 @@ try:
     _mod  = importlib.util.module_from_spec(_spec)
     _spec.loader.exec_module(_mod)
 
-    hablar           = _mod.hablar
-    escuchar         = _mod.escuchar
-    detectar_intent  = _mod.detectar_intent
-    construir_prompt = _mod.construir_prompt
-    ejecutar_claude  = _mod.ejecutar_claude
-    resumir_output   = _mod.resumir_output
-    listar_conceptos = _mod.listar_conceptos
+    hablar              = _mod.hablar
+    escuchar            = _mod.escuchar
+    detectar_intent     = _mod.detectar_intent
+    construir_prompt    = _mod.construir_prompt
+    ejecutar_claude     = _mod.ejecutar_claude
+    resumir_output      = _mod.resumir_output
+    listar_conceptos    = _mod.listar_conceptos
+    actualizar_historial= _mod.actualizar_historial
+    historial_sesion    = _mod.historial_sesion
 except Exception as e:
     print(f"[ERROR] No pude importar jarvis.py: {e}")
     sys.exit(1)
+
+
+# ── Índice del vault ──────────────────────────────────────────────────────────
+
+def cargar_indice_vault() -> str:
+    """Construye lista de slugs por categoría para el contexto de Groq.
+    Se llama una vez al arrancar; resultado en variable global."""
+    base = CEREBRO_PATH / "Conocimiento" / "Conceptos"
+    if not base.exists():
+        return ""
+    archivos = sorted(base.glob("**/*.md"))
+    lineas = ["Conceptos disponibles en el vault (slug : categoría):"]
+    for f in archivos:
+        lineas.append(f"- {f.stem} ({f.parent.name})")
+    resultado = "\n".join(lineas)
+    log(f"Índice del vault cargado: {len(archivos)} conceptos.")
+    return resultado
 
 
 # ── OpenWakeWord ───────────────────────────────────────────────────────────────
@@ -94,14 +113,15 @@ def init_stream():
 
 # ── Ciclo principal ───────────────────────────────────────────────────────────
 
-def procesar_comando() -> None:
+def procesar_comando(indice_vault: str) -> None:
     """Escucha un comando tras el wake word y ejecuta la acción correspondiente."""
     texto = escuchar()
     if texto is None:
         return
 
-    intent, params = detectar_intent(texto)
+    intent, params = detectar_intent(texto, historial_sesion, indice_vault)
     log(f"Intent: {intent} | Params: {params}")
+    actualizar_historial(texto, (intent, params))
 
     if intent == "listar_conceptos":
         respuesta = listar_conceptos()
@@ -110,7 +130,9 @@ def procesar_comando() -> None:
         return
 
     if intent == "desconocido":
-        hablar("No reconocí el comando. Puedes decir: crea un concepto, profundiza, correlaciona, o qué conceptos tengo.")
+        razon = params.get("razon", "")
+        msg = f"No reconocí el comando{': ' + razon if razon else ''}. Puedes decir: crea un concepto, profundiza, correlaciona, o qué conceptos tengo."
+        hablar(msg)
         return
 
     prompt = construir_prompt(intent, params)
@@ -133,7 +155,7 @@ def procesar_comando() -> None:
     hablar(resumen if resumen else "Listo.")
 
 
-def loop_principal(oww_model, stream) -> None:
+def loop_principal(oww_model, stream, indice_vault: str) -> None:
     """Ciclo infinito: lee chunks de audio, detecta wake word, ejecuta flujo."""
     import numpy as np
 
@@ -150,7 +172,7 @@ def loop_principal(oww_model, stream) -> None:
             if score > WAKE_THRESHOLD:
                 log(f"Wake word detectado (score={score:.2f}).")
                 hablar("Dime.")
-                procesar_comando()
+                procesar_comando(indice_vault)
                 # Vacía el buffer para evitar que el TTS active el wake word
                 oww_model.reset()
                 log("Volviendo al loop de wake word.")
@@ -182,9 +204,10 @@ def main():
     stream = None
 
     try:
+        indice_vault = cargar_indice_vault()
         oww_model    = init_wakeword()
         pa, stream   = init_stream()
-        loop_principal(oww_model, stream)
+        loop_principal(oww_model, stream, indice_vault)
     except Exception as e:
         log(f"ERROR fatal: {e}")
         try:
