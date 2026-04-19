@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/bin/python3.11
 """
 jarvis.py — Interfaz de voz para el Segundo Cerebro (Mejora 002)
 
