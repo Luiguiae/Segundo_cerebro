@@ -94,6 +94,9 @@ INTENTS DISPONIBLES:
   Usar cuando el usuario hace una PREGUNTA sobre el vault, no una acción.
   Ejemplos: "¿qué concepto es más interesante?", "explícame vibe coding",
   "¿cuál es la diferencia entre X e Y?", "¿qué tengo sobre producto?", "¿qué correlaciones tengo?"
+- conversacion_libre: params: {{"mensaje": "<texto literal del usuario>"}}
+  Usar cuando el usuario dice algo que no es una acción sobre el vault ni una consulta de conocimiento.
+  Ejemplos: saludos, preguntas personales a Jarvis, comentarios, expresiones emocionales.
 - desconocido: params: {{"razon": "<por qué no se pudo clasificar>"}}
 
 CONCEPTOS DISPONIBLES EN EL VAULT:
@@ -247,13 +250,18 @@ def cargar_contenido_vault(params: dict) -> str:
     return texto[:8000]
 
 
-def responder_con_groq(pregunta: str, contenido_vault: str, historial: list[dict]) -> str:
-    """Genera una respuesta conversacional sobre el vault usando Groq."""
+def responder_con_groq(pregunta: str, contenido_vault: str, historial: list[dict],
+                       system_prompt_override: str | None = None) -> str:
+    """Genera una respuesta conversacional usando Groq.
+    Si system_prompt_override se provee, lo usa directamente como system prompt."""
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         return "No tengo acceso a Groq para responder esta consulta."
 
-    system_prompt = f"""Eres Jarvis, asistente de voz del Segundo Cerebro de Luigui.
+    if system_prompt_override:
+        system_prompt = system_prompt_override
+    else:
+        system_prompt = f"""Eres Jarvis, asistente de voz del Segundo Cerebro de Luigui.
 Respondes preguntas sobre el vault de conocimiento de forma concisa y audible.
 
 REGLAS:
@@ -392,6 +400,20 @@ def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
 
     if intent == "desconocido":
         hablar(f"No entendí: {params.get('razon', 'comando no reconocido')}")
+        return
+
+    if intent == "conversacion_libre":
+        mensaje = params.get("mensaje", texto_transcrito)
+        system_chat = (
+            "Eres Jarvis, asistente personal de Luigui. "
+            "Tienes personalidad: directo, inteligente, algo irónico pero amable. "
+            "Respondes en español, máximo 2 oraciones, tono conversacional natural."
+        )
+        respuesta = responder_con_groq(mensaje, "", historial_sesion,
+                                       system_prompt_override=system_chat)
+        print(f"[Conversación] {respuesta}")
+        hablar(respuesta)
+        actualizar_historial(texto_transcrito, (intent, {"respuesta": respuesta}))
         return
 
     if intent == "consulta_vault":
