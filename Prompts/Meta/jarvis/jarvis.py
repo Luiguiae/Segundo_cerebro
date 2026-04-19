@@ -301,9 +301,7 @@ def main():
         return
 
     if intent == "desconocido":
-        razon = params.get("razon", "")
-        msg = f"No reconocí el comando{': ' + razon if razon else ''}. Puedes decir: crea un concepto, profundiza, correlaciona, o qué conceptos tengo."
-        hablar(msg)
+        hablar(f"No entendí: {params.get('razon', 'comando no reconocido')}")
         return
 
     prompt = construir_prompt(intent, params)
