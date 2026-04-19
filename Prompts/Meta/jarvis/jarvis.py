@@ -183,6 +183,22 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
     return "desconocido", {}
 
 
+# ── Normalización de texto (correcciones de STT) ─────────────────────────────
+
+def normalizar_texto(texto: str) -> str:
+    """Corrige errores frecuentes del STT antes de clasificar el intent."""
+    reemplazos = {
+        "baúl": "vault",
+        "baul": "vault",
+        "ball": "vault",
+        "bal ": "vault",
+    }
+    texto_lower = texto.lower()
+    for error, correcto in reemplazos.items():
+        texto_lower = texto_lower.replace(error, correcto)
+    return texto_lower
+
+
 # ── Intent detection — wrapper con fallback ───────────────────────────────────
 
 def detectar_intent(texto: str, historial: list[dict] | None = None,
@@ -190,13 +206,16 @@ def detectar_intent(texto: str, historial: list[dict] | None = None,
     """Intenta Groq primero; si falla, usa keywords. Loggea el método usado."""
     if historial is None:
         historial = []
+    texto_normalizado = normalizar_texto(texto)
+    if texto_normalizado != texto:
+        print(f"[Normalización] '{texto}' → '{texto_normalizado}'")
     try:
-        intent, params = detectar_intent_groq(texto, historial, indice_vault)
+        intent, params = detectar_intent_groq(texto_normalizado, historial, indice_vault)
         print(f"[Intent via Groq] {intent} | {params}")
         return intent, params
     except Exception as e:
         print(f"[Groq falló ({e}), usando keywords]")
-        intent, params = detectar_intent_keywords(texto)
+        intent, params = detectar_intent_keywords(texto_normalizado)
         print(f"[Intent via keywords] {intent} | {params}")
         return intent, params
 
