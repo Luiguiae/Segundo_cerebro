@@ -7,7 +7,7 @@ categoria: diseno
 fecha: 2026-04-05
 fuente: "Finding Our Way, ep. 58 — Jesse James Garrett y Peter Merholz"
 fuente_url: "https://findingourway.design/2025/05/02/58-ai-is-a-stress-test-for-your-ux-what-cracks-will-it-show/"
-relacionado: [agentes-ia, disenador-a-constructor]
+relacionado: [agentes-ia, disenador-a-constructor, arquitectura-de-inteligencia]
 tags: [diseño, estrategia, organizacion, poder, prompts]
 estado: activo
 ---

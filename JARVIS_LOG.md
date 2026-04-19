@@ -2,6 +2,79 @@
 
 ---
 
+### 2026-04-18 19:00 — auditar_vault
+
+**Instrucción:** "Jarvis audita el vault"
+
+**Acciones:**
+- Leídos 34 conceptos en 6 categorías y 14 correlaciones
+- Evaluados contra Gate 1 (4 criterios) y Gate 2 por tipo
+- Corregido frontmatter `relacionado` en 2 archivos con inconsistencias
+
+**Resultados:**
+
+*Conceptos (34):*
+- [OK] `diseno/disenador-a-constructor.md` — activo
+- [OK] `diseno/diseno-dos-velocidades.md` — activo
+- [OK] `diseno/diseno-uxui-y-ia.md` — activo
+- [OK] `diseno/fundamentales-vs-flux.md` — activo
+- [OK] `diseno/quien-controla-el-prompt.md` — activo. **CORRECCIÓN:** agregado `arquitectura-de-inteligencia` a `relacionado` (mencionado en cuerpo, ausente en frontmatter)
+- [OK] `ia/agentes-ia.md` — activo
+- [OK] `ia/automatizacion-vs-ampliacion.md` — activo
+- [OK] `ia/capital-de-contexto.md` — activo
+- [OK] `ia/conocimiento-autoorganizado-por-llm.md` — activo
+- [OK] `ia/espectro-autonomia-agente.md` — activo
+- [OK] `ia/fabrica-oscura-de-software.md` — activo
+- [ADVERTENCIA] `ia/gobernanza-ia-performativa.md` — activo. Sin campo `fuentes` en frontmatter; estadísticas (57-80% shadow AI, 56%/12%, 97%) sin URL verificable. Propuesta: agregar fuentes con referencias a las estadísticas citadas.
+- [OK] `ia/spec-driven-development.md` — activo
+- [OK] `ia/usuarios-sinteticos.md` — activo
+- [OK] `ia/vibe-coding.md` — activo
+- [OK] `producto/claridad-antes-de-velocidad.md` — activo. Nota: fuente mencionada solo en "Mis notas", no en frontmatter. No es bloqueante.
+- [OK] `producto/confianza-a-traves-de-velocidad.md` — activo
+- [OK] `producto/copiloto-de-producto.md` — activo
+- [OK] `producto/expertise-de-dominio-en-producto.md` — activo
+- [OK] `producto/feedback-que-escala.md` — activo
+- [OK] `producto/mvp-a-prototipo-en-produccion.md` — activo
+- [OK] `producto/pit-stop-cognitivo.md` — activo
+- [OK] `producto/pmf-perecedero.md` — activo
+- [OK] `producto/restriccion-de-tiempo-como-ventaja.md` — activo
+- [OK] `organizaciones/automatizar-mi-propio-trabajo.md` — activo
+- [OK] `organizaciones/condicion-redespliegue.md` — activo
+- [OK] `organizaciones/equipos-pequenos-alto-impacto.md` — activo
+- [OK] `economia/ia-como-filtro-de-entrada.md` — activo
+- [OK] `economia/inversion-sesgo-tecnologico.md` — activo
+- [OK] `economia/senal-anticipada-mercado-laboral.md` — activo
+- [OK] `filosofia/arquitectura-de-inteligencia.md` — activo. Nota: sin campo `fuente` en frontmatter (referencia en "Mis notas"). No es bloqueante.
+- [OK] `filosofia/colonialismo-cultural-digital.md` — activo
+- [OK] `filosofia/lo-ilegible-como-senal.md` — activo
+- [ADVERTENCIA] `filosofia/momento-liminal.md` — activo. **CORRECCIÓN:** `relacionado` tenía solo `[disenador-a-constructor]`; ampliado a `[disenador-a-constructor, claridad-antes-de-velocidad, fundamentales-vs-flux, lo-ilegible-como-senal]`
+
+*Correlaciones (14):*
+- [OK] `2026-04-03_vibe-coding--spec-driven-development.md` — tensión real ✓, síntesis no obvia ✓
+- [OK] `2026-04-10_claridad-antes-de-velocidad--momento-liminal.md` — tensión real ✓, síntesis no obvia ✓
+- [OK] `2026-04-10_fundamentales-vs-flux--disenador-a-constructor.md` — ✓
+- [OK] `2026-04-11_automatizar-mi-propio-trabajo--expertise-de-dominio-en-producto.md` — ✓
+- [OK] `2026-04-15_automatizacion-vs-ampliacion--fundamentales-vs-flux.md` — ✓
+- [OK] `2026-04-15_ia-como-filtro-de-entrada--agentes-ia.md` — ✓
+- [OK] `2026-04-15_ia-como-filtro-de-entrada--disenador-a-constructor.md` — ✓
+- [OK] `2026-04-15_senal-anticipada-mercado-laboral--gobernanza-ia-performativa.md` — ✓
+- [OK] `2026-04-18_copiloto-de-producto--quien-controla-el-prompt.md` — ✓
+- [OK] `2026-04-18_espectro-autonomia-agente--capital-de-contexto.md` — ✓
+- [OK] `2026-04-18_espectro-autonomia-agente--fabrica-oscura-de-software.md` — ✓
+- [OK] `2026-04-18_fabrica-oscura-de-software--capital-de-contexto.md` — ✓
+- [OK] `2026-04-18_pit-stop-cognitivo--confianza-a-traves-de-velocidad.md` — ✓
+- [OK] `2026-04-18_pit-stop-cognitivo--feedback-que-escala.md` — ✓
+
+**Resumen:**
+- Conceptos activo: 32 | Con advertencia: 2 | Borrador: 0 | Rechazado: 0
+- Correlaciones activo: 14 | Rechazado: 0
+- Correcciones aplicadas: 2 (frontmatter `relacionado`)
+- Pendiente para Luigui: agregar `fuentes` a `gobernanza-ia-performativa.md`
+
+**ATLAS regenerado:** sí
+
+---
+
 ### 2026-04-18 — instalación: Backlog/
 
 **Instrucción:** "Crea la estructura Backlog/ con README, plantilla, ideas/ y listas/"
