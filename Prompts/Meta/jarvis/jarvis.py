@@ -383,7 +383,7 @@ def ejecutar_claude(prompt: str) -> str:
         cwd=str(CEREBRO_PATH),
         capture_output=True,
         text=True,
-        timeout=120,
+        timeout=300,
     )
     return resultado.stdout or resultado.stderr
 
