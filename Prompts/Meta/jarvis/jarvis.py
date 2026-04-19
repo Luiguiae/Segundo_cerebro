@@ -87,6 +87,10 @@ INTENTS DISPONIBLES:
 - profundizar_concepto: params: {{"nombre": "<slug-del-concepto>"}}
 - correlacionar: params: {{"concepto_a": "<slug>", "concepto_b": "<slug>"}}
 - listar_conceptos: params: {{}}
+- consulta_vault: params: {{"pregunta": "<pregunta literal del usuario>", "conceptos_mencionados": ["<slug>"], "categoria": "<categoria o vacío>"}}
+  Usar cuando el usuario hace una PREGUNTA sobre el vault, no una acción.
+  Ejemplos: "¿qué concepto es más interesante?", "explícame vibe coding",
+  "¿cuál es la diferencia entre X e Y?", "¿qué tengo sobre producto?", "¿qué correlaciones tengo?"
 - desconocido: params: {{"razon": "<por qué no se pudo clasificar>"}}
 
 CONCEPTOS DISPONIBLES EN EL VAULT:
@@ -100,7 +104,9 @@ REGLAS:
 
 EJEMPLOS:
 - "junta capital de contexto con la fábrica oscura" → {{"intent": "correlacionar", "params": {{"concepto_a": "capital-de-contexto", "concepto_b": "fabrica-oscura-de-software"}}}}
-- "háblame de vibe coding" → {{"intent": "profundizar_concepto", "params": {{"nombre": "vibe-coding"}}}}
+- "háblame de vibe coding" → {{"intent": "consulta_vault", "params": {{"pregunta": "háblame de vibe coding", "conceptos_mencionados": ["vibe-coding"], "categoria": ""}}}}
+- "¿cuál es la diferencia entre vibe coding y spec driven?" → {{"intent": "consulta_vault", "params": {{"pregunta": "¿cuál es la diferencia entre vibe coding y spec driven?", "conceptos_mencionados": ["vibe-coding", "spec-driven-development"], "categoria": ""}}}}
+- "¿qué tengo sobre producto?" → {{"intent": "consulta_vault", "params": {{"pregunta": "¿qué tengo sobre producto?", "conceptos_mencionados": [], "categoria": "producto"}}}}
 - "qué conceptos tengo sobre ia" → {{"intent": "listar_conceptos", "params": {{}}}}
 - "crea un concepto sobre diseño especulativo" → {{"intent": "crear_concepto", "params": {{"tema": "diseño especulativo"}}}}"""
 
@@ -198,6 +204,88 @@ def actualizar_historial(texto_usuario: str, resultado_intent: tuple[str, dict])
     while len(historial_sesion) > 20:
         historial_sesion.pop(0)
         historial_sesion.pop(0)
+
+
+# ── Consultas conversacionales ────────────────────────────────────────────────
+
+def cargar_contenido_vault(params: dict) -> str:
+    """Carga el contenido relevante del vault según los params del intent consulta_vault.
+    Trunca a 8000 caracteres para no exceder el contexto de Groq."""
+    base  = CEREBRO_PATH / "Conocimiento"
+    partes: list[str] = []
+
+    # Conceptos específicos mencionados
+    for slug in params.get("conceptos_mencionados", []):
+        matches = list((base / "Conceptos").glob(f"**/{slug}.md"))
+        if matches:
+            partes.append(matches[0].read_text(encoding="utf-8"))
+
+    # Categoría completa
+    categoria = params.get("categoria", "").strip()
+    if categoria:
+        cat_dir = base / "Conceptos" / categoria
+        if cat_dir.exists():
+            for f in sorted(cat_dir.glob("*.md")):
+                partes.append(f.read_text(encoding="utf-8"))
+
+    # Correlaciones si la pregunta las menciona
+    pregunta = params.get("pregunta", "").lower()
+    if "correlaci" in pregunta:
+        for f in sorted((base / "Correlaciones").glob("*.md")):
+            partes.append(f.read_text(encoding="utf-8"))
+
+    # Fallback: ATLAS.md como resumen general
+    if not partes:
+        atlas = base / "ATLAS.md"
+        if atlas.exists():
+            partes.append(atlas.read_text(encoding="utf-8"))
+
+    texto = "\n\n---\n\n".join(partes)
+    return texto[:8000]
+
+
+def responder_con_groq(pregunta: str, contenido_vault: str, historial: list[dict]) -> str:
+    """Genera una respuesta conversacional sobre el vault usando Groq."""
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        return "No tengo acceso a Groq para responder esta consulta."
+
+    system_prompt = f"""Eres Jarvis, asistente de voz del Segundo Cerebro de Luigui.
+Respondes preguntas sobre el vault de conocimiento de forma concisa y audible.
+
+REGLAS:
+- Máximo 4 oraciones en tu respuesta.
+- En español, tono conversacional.
+- No uses listas ni bullets — esto se leerá en voz alta.
+- Responde directamente. "Según el vault..." está bien. "Como Jarvis..." no.
+
+CONTENIDO DEL VAULT:
+{contenido_vault}"""
+
+    mensajes = [{"role": "system", "content": system_prompt}]
+    mensajes += historial[-6:]
+    mensajes += [{"role": "user", "content": pregunta}]
+
+    try:
+        response = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "llama-3.3-70b-versatile",
+                "messages": mensajes,
+                "temperature": 0.3,
+                "max_tokens": 200,
+            },
+            timeout=10,
+        )
+        response.raise_for_status()
+        return response.json()["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        print(f"[responder_con_groq error] {e}")
+        return "No pude consultar el vault en este momento."
 
 
 # ── Acciones ───────────────────────────────────────────────────────────────────
@@ -310,6 +398,16 @@ def main():
 
     if intent == "desconocido":
         hablar(f"No entendí: {params.get('razon', 'comando no reconocido')}")
+        return
+
+    if intent == "consulta_vault":
+        hablar("Un momento, consultando el vault.")
+        contenido = cargar_contenido_vault(params)
+        pregunta  = params.get("pregunta", texto)
+        respuesta = responder_con_groq(pregunta, contenido, historial_sesion)
+        print(f"[Consulta vault] {respuesta}")
+        actualizar_historial(texto, (intent, {"respuesta": respuesta}))
+        hablar(respuesta)
         return
 
     prompt = construir_prompt(intent, params)
