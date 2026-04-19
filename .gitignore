@@ -10,6 +10,11 @@
 # Misc local
 .verb.md
 
+# Python
+__pycache__/
+*.pyc
+*.log
+
 # Exports y binarios
 Documentos/Presentaciones/exports/
 *.pdf
