@@ -99,7 +99,9 @@ INTENTS DISPONIBLES:
   Ejemplos: saludos, preguntas personales a Jarvis, comentarios, expresiones emocionales.
 - auditar_vault: params: {{}}
   Usar cuando el usuario dice "audita el vault", "audita mis conceptos",
-  "revisa el vault", "evalúa el vault", "qué estado tiene el vault".
+  "revisa el vault", "evalúa el vault", "qué estado tiene el vault",
+  "audita el baúl", "audita el bal", "audita el ball", "revisa el baúl",
+  "audita mis notas", "audita todo".
 - desconocido: params: {{"razon": "<por qué no se pudo clasificar>"}}
 
 CONCEPTOS DISPONIBLES EN EL VAULT:
