@@ -1,11 +1,11 @@
 #!/usr/local/bin/python3.11
 """
-jarvis_daemon.py — Daemon de wake word para el Segundo Cerebro (Mejora 002b)
+jarvis_daemon.py — Daemon de wake word para el Segundo Cerebro (Mejora 003)
 
-Corre en segundo plano, escucha "Hey Jarvis" de forma offline con OpenWakeWord,
+Corre en segundo plano, escucha "Jarvis" o "Hola Jarvis" via STT (Google),
 y al detectarlo ejecuta el flujo completo de jarvis.py.
 
-Sin API keys — OpenWakeWord es completamente local y open source.
+Requiere conexión a internet para el reconocimiento de voz (Google STT).
 Logs: Prompts/Meta/jarvis/jarvis.log
 """
 
@@ -18,14 +18,8 @@ CEREBRO_PATH = Path.home() / "Documents" / "Segundo_cerebro"
 JARVIS_DIR   = CEREBRO_PATH / "Prompts" / "Meta" / "jarvis"
 LOG_PATH     = JARVIS_DIR / "jarvis.log"
 
-WAKE_WORD       = "hey_jarvis"
-WAKE_THRESHOLD  = 0.5
-SAMPLE_RATE     = 16000
-CHUNK_SIZE      = 1280  # frames requeridos por OpenWakeWord
-
-# Segundos que Jarvis permanece en modo escucha activa tras el wake word.
-# Cada interacción reinicia el contador. Ajusta según tu preferencia.
-MODO_ESCUCHA_TIMEOUT = 60
+WAKE_WORD           = "jarvis"   # basta con que aparezca en el texto
+MODO_ESCUCHA_TIMEOUT = 60        # segundos de escucha activa tras el wake word
 
 # ── Logging ────────────────────────────────────────────────────────────────────
 
@@ -77,42 +71,33 @@ def cargar_indice_vault() -> str:
     return resultado
 
 
-# ── OpenWakeWord ───────────────────────────────────────────────────────────────
+# ── Wake word via STT ─────────────────────────────────────────────────────────
 
-def init_wakeword():
-    """Carga modelo OpenWakeWord para 'hey_jarvis'."""
-    try:
-        from openwakeword.model import Model
-        model = Model(wakeword_models=[WAKE_WORD], inference_framework="onnx")
-        log(f"Modelo OpenWakeWord cargado: {WAKE_WORD}")
-        return model
-    except Exception as e:
-        log(f"ERROR al cargar OpenWakeWord: {e}")
-        hablar("No pude cargar el modelo de wake word. Revisa el log.")
-        sys.exit(1)
+def esperar_wake_word() -> None:
+    """Escucha en loop cortos hasta detectar 'jarvis' en la transcripción STT."""
+    import speech_recognition as sr
+    recognizer = sr.Recognizer()
+    log(f"Esperando wake word '{WAKE_WORD}'...")
 
-
-def init_stream():
-    """Abre stream pyaudio continuo a 16kHz mono."""
-    try:
-        import pyaudio
-        pa     = pyaudio.PyAudio()
-        stream = pa.open(
-            rate=SAMPLE_RATE,
-            channels=1,
-            format=pyaudio.paInt16,
-            input=True,
-            frames_per_buffer=CHUNK_SIZE,
-        )
-        log("Stream de audio iniciado (16kHz, mono).")
-        return pa, stream
-    except Exception as e:
-        log(f"ERROR al abrir stream de audio: {e}")
-        hablar("No pude acceder al micrófono. Revisa los permisos en Preferencias del Sistema.")
-        sys.exit(1)
+    while True:
+        try:
+            with sr.Microphone() as source:
+                recognizer.adjust_for_ambient_noise(source, duration=0.3)
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=4)
+            texto = recognizer.recognize_google(audio, language="es-ES").lower()
+            log(f"[Wake] Escuchado: '{texto}'")
+            if WAKE_WORD in texto:
+                return
+        except sr.WaitTimeoutError:
+            continue
+        except sr.UnknownValueError:
+            continue
+        except Exception as e:
+            log(f"[Wake] Error: {e}")
+            continue
 
 
-# ── Ciclo principal ───────────────────────────────────────────────────────────
+# ── Ciclo de escucha activa ───────────────────────────────────────────────────
 
 _DESPEDIDAS = (
     "te hablo luego", "hasta luego", "bye", "chau", "adiós", "adios",
@@ -134,7 +119,7 @@ def procesar_comando(indice_vault: str) -> bool:
     # Detección de despedida por keywords, sin pasar por Groq (más confiable).
     if _es_despedida(texto):
         log(f"Despedida detectada: '{texto}'")
-        hablar("Hasta luego. Di Hey Jarvis cuando me necesites.")
+        hablar("Hasta luego. Di Jarvis cuando me necesites.")
         _mod._salir_escucha[0] = True
         return True
 
@@ -150,7 +135,6 @@ def modo_escucha_activo(indice_vault: str) -> None:
     El timer se reinicia DESPUÉS de que Mónica termina de hablar, via callback."""
     import time
 
-    # Contenedor mutable para que el callback pueda actualizar el deadline.
     _deadline = [time.time() + MODO_ESCUCHA_TIMEOUT]
 
     def _reset_timer():
@@ -172,43 +156,21 @@ def modo_escucha_activo(indice_vault: str) -> None:
     log("Volviendo al loop de wake word.")
 
 
-def loop_principal(oww_model, stream, indice_vault: str) -> None:
-    """Ciclo infinito: lee chunks de audio, detecta wake word, ejecuta flujo."""
-    import numpy as np
+# ── Ciclo principal ───────────────────────────────────────────────────────────
 
-    log("Daemon iniciado. Escuchando wake word 'Hey Jarvis'...")
+def loop_principal(indice_vault: str) -> None:
+    """Ciclo infinito: espera wake word via STT, ejecuta flujo de escucha activa."""
+    log("Daemon iniciado. Di 'Jarvis' para activar.")
 
     try:
         while True:
-            chunk = stream.read(CHUNK_SIZE, exception_on_overflow=False)
-            audio = np.frombuffer(chunk, dtype=np.int16)
-
-            scores = oww_model.predict(audio)
-            score  = scores.get(WAKE_WORD, 0.0)
-
-            if score > WAKE_THRESHOLD:
-                log(f"Wake word detectado (score={score:.2f}).")
-                hablar("Dime.")
-                oww_model.reset()  # vacía el buffer antes de entrar al modo escucha
-                modo_escucha_activo(indice_vault)
-                log("Volviendo al loop de wake word.")
-
+            esperar_wake_word()
+            log("Wake word detectado.")
+            hablar("Dime.")
+            modo_escucha_activo(indice_vault)
+            log("Volviendo al loop de wake word.")
     except KeyboardInterrupt:
         log("Daemon detenido por KeyboardInterrupt.")
-
-
-def cleanup(pa, stream) -> None:
-    """Cierra el stream y libera pyaudio."""
-    try:
-        stream.stop_stream()
-        stream.close()
-    except Exception:
-        pass
-    try:
-        pa.terminate()
-    except Exception:
-        pass
-    log("Recursos de audio liberados.")
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -216,14 +178,9 @@ def cleanup(pa, stream) -> None:
 def main():
     log("=== Jarvis Daemon arrancando ===")
 
-    pa     = None
-    stream = None
-
     try:
         indice_vault = cargar_indice_vault()
-        oww_model    = init_wakeword()
-        pa, stream   = init_stream()
-        loop_principal(oww_model, stream, indice_vault)
+        loop_principal(indice_vault)
     except Exception as e:
         log(f"ERROR fatal: {e}")
         try:
@@ -231,9 +188,6 @@ def main():
         except Exception:
             pass
         sys.exit(1)
-    finally:
-        if pa and stream:
-            cleanup(pa, stream)
 
 
 if __name__ == "__main__":

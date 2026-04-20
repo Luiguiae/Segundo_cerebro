@@ -459,7 +459,7 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> 
         return
 
     if intent == "despedirse":
-        hablar("Hasta luego. Di Hey Jarvis cuando me necesites.")
+        hablar("Hasta luego. Di Jarvis cuando me necesites.")
         _salir_escucha[0] = True
         return
 
