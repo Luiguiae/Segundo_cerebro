@@ -1,0 +1,41 @@
+---
+titulo: el-moat-del-gusto
+tipo: concepto
+fecha: 2026-04-24
+categoria: diseno
+tags: [gusto, agencia, criterio, ia, diferenciacion]
+relacionado: [fundamentales-vs-flux, disenador-a-constructor, quien-controla-el-prompt, arquitectura-de-inteligencia]
+fuentes:
+  - titulo: "Steal these 30 design ideas for 2026"
+    url: "https://adplist.substack.com/p/steal-these-30-design-ideas-for-2026"
+    autor: "Felix Lee, AI-First Designer Newsletter"
+    fecha_acceso: 2026-04-24
+  - titulo: "When AI Has Better Taste Than You"
+    autor: "Julie Zhuo"
+    fecha_acceso: 2026-04-24
+---
+
+# El moat del gusto
+
+## El concepto
+
+Durante años, el gusto fue el argumento más sólido para defender el rol del diseñador: la IA puede generar, pero no puede distinguir qué es bueno. Ese argumento se está erosionando. Felix Lee (citando a Julie Zhuo, 2026) formula la incomodidad con precisión: la IA ya iguala o supera en capacidades técnicas y está ganando terreno en reconocimiento de patrones estéticos, aprendiendo de los mismos referentes visuales que los diseñadores estudian. Lo que queda como irreduciblemente humano no es el gusto como percepción ni como criterio — es la **agencia**: la voluntad de defender trabajo que incomoda, que no optimiza para el aplauso inmediato, que apuesta por reconfigurar cultura en lugar de confirmarla.
+
+## Por qué importa
+
+El error es confundir dos cosas distintas: tener buen gusto y estar dispuesto a pelear por él. La IA puede generar trabajo que "se ve bien" según los patrones dominantes. Lo que no puede hacer es decidir que esos patrones dominantes son el problema — y producir algo que los desafíe. El moat del diseñador en 2026 no es ver mejor que la IA. Es tener posición: saber qué trabajo vale la pena defender aunque sea incómodo, aunque no genere likes inmediatos, aunque contradiga las expectativas del cliente. Cuando todos usan las mismas herramientas, lo que diferencia no es la ejecución sino el criterio sobre qué merece existir.
+
+## Datos y evidencia
+
+- Felix Lee, AI-First Designer Newsletter (abril 2026): "AI is winning on capabilities and even taste through pattern recognition. What remains uniquely human is agency: the will to champion work that reshapes culture."
+- El 81% de equipos que rediseñaron sus workflows con IA mostraron éxito; equipos que solo agregaron herramientas a procesos existentes, no (Figma AI Report 2025 — citado por Felix Lee)
+- Julie Zhuo: la pregunta ya no es "¿tiene mejor gusto que yo?" sino "¿estoy dispuesto a defender lo que yo creo que importa?"
+
+## Tensiones y límites
+
+La tensión real es que la agencia sin gusto formado es arbitrariedad. Y el gusto sin agencia es colección de referencias sin consecuencias. El moat genuino requiere los dos: criterio desarrollado a través de exposición y práctica, más la voluntad de actuar sobre ese criterio cuando es incómodo. El límite del concepto: en contextos donde el cliente define el éxito como métricas de conversión, la agencia del diseñador tiene poco espacio estructural para ejercerse. El moat existe — pero no siempre hay condiciones para usarlo.
+
+## Ejes investigados
+
+1. Evolución del argumento "gusto como ventaja humana" frente al avance de modelos de imagen y diseño generativo
+2. Distinción entre gusto como percepción, gusto como criterio, y agencia como disposición a actuar

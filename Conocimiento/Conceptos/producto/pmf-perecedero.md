@@ -1,5 +1,5 @@
 ---
-titulo: pmf-perecedero
+titulo: "PMF perecedero"
 tipo: concepto
 familia: equipos-impacto
 categoria: producto

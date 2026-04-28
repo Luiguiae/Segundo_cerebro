@@ -1,5 +1,5 @@
 ---
-titulo: restriccion-de-tiempo-como-ventaja
+titulo: "Restricción de tiempo como ventaja"
 tipo: concepto
 familia: velocidad-output
 categoria: producto

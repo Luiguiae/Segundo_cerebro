@@ -1,5 +1,5 @@
 ---
-titulo: copiloto-de-producto
+titulo: "Copiloto de producto"
 tipo: concepto
 familia: equipos-impacto
 categoria: producto

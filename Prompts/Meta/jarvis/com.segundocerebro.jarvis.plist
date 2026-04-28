@@ -8,8 +8,7 @@
 
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/local/bin/python3.11</string>
-    <string>/Users/luiguiavilae/Documents/Segundo_cerebro/Prompts/Meta/jarvis/jarvis_daemon.py</string>
+    <string>/Users/luiguiavilae/Applications/Jarvis.app/Contents/MacOS/Jarvis</string>
   </array>
 
   <key>RunAtLoad</key>
@@ -19,9 +18,9 @@
   <true/>
 
   <key>StandardOutPath</key>
-  <string>/Users/luiguiavilae/Documents/Segundo_cerebro/Prompts/Meta/jarvis/jarvis.log</string>
+  <string>/Users/luiguiavilae/Library/Logs/jarvis.log</string>
 
   <key>StandardErrorPath</key>
-  <string>/Users/luiguiavilae/Documents/Segundo_cerebro/Prompts/Meta/jarvis/jarvis.log</string>
+  <string>/Users/luiguiavilae/Library/Logs/jarvis.log</string>
 </dict>
 </plist>

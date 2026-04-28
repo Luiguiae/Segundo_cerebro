@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-04-18 23:11  
-> Total de conceptos: **34**  
+> Generado automáticamente el 2026-04-28 16:16  
+> Total de conceptos: **44**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y agrupación por familia.
 
@@ -11,11 +11,15 @@
 
 | Concepto | Resumen | Tags | Estado | Fecha |
 |----------|---------|------|--------|-------|
+| [[agencia-humana-como-imperativo-ux\|Agencia humana como imperativo UX]] | Preservar la agencia humana en la era de IA es el nuevo imperativo del diseño — no un | `diseño`, `ux`, `agentes`, `etica`, `control` | activo | 2026-04-21 |
+| [[arquitectura-de-confianza\|Arquitectura de confianza]] | La confianza en sistemas autónomos no emerge espontáneamente de la buena tecnología — | `diseño`, `ux`, `agentes`, `confianza`, `transparencia` | activo | 2026-04-21 |
+| [[de-usuario-a-cliente-servido\|De usuario a cliente servido]] | Durante treinta años, el diseño digital operó bajo una premisa implícita: hay un humano | `diseño`, `ux`, `agentes`, `roles`, `historia` | activo | 2026-04-21 |
 | [[disenador-a-constructor\|Del Diseñador al Constructor]] | La evolución del rol del diseñador desde un perfil que entrega especificaciones hacia uno que construye directamente el… | `diseño`, `construccion`, `roles`, `producto`, `transformacion` | activo | 2026-03-04 |
 | [[diseno-dos-velocidades\|El diseño en dos velocidades]] | El trabajo de diseño en la era de la IA no desaparece — se estratifica. Jenny Wen, head of design en Anthropic, lo desc… | `diseño`, `ia`, `velocidad`, `construccion`, `criterio` | activo | 2026-04-10 |
 | [[diseno-uxui-y-ia\|Diseño UX/UI y IA]] | La integración de IA en el flujo UX/UI no agrega herramientas a un proceso existente — reconfigura el proceso mismo. Cu… | `diseño`, `ia`, `producto`, `criterio`, `herramientas` | activo | 2026-04-04 |
 | [[fundamentales-vs-flux\|Fundamentales vs. flux]] | Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m… | `diseño`, `educacion`, `habilidades`, `fundamentos`, `criterio` | activo | 2026-04-05 |
 | [[quien-controla-el-prompt\|Quien controla el prompt controla el producto]] | En el flujo de trabajo tradicional, quien controlaba las especificaciones controlaba el producto. Diseño definía la exp… | `diseño`, `estrategia`, `organizacion`, `poder`, `prompts` | activo | 2026-04-05 |
+| [[ux-checkpoints\|UX Checkpoints]] | En la era de agentes, la filosofía del diseño se invierte: la fricción deliberada es el | `diseño`, `ux`, `agentes`, `confianza`, `control` | activo | 2026-04-21 |
 | [[ia-como-filtro-de-entrada\|IA como filtro de entrada al mercado laboral]] | La IA generativa no destruye empleo de manera uniforme: lo filtra por nivel de | `ia`, `automatizacion`, `transicion`, `habilidades`, `roles` | activo | 2026-04-15 |
 | [[inversion-sesgo-tecnologico\|La inversión del sesgo tecnológico]] | Las olas anteriores de automatización siguieron un patrón consistente: afectaban | `ia`, `automatizacion`, `educacion`, `habilidades`, `transicion` | activo | 2026-04-16 |
 | [[senal-anticipada-mercado-laboral\|Señal anticipada en el mercado laboral]] | Ciertos grupos de trabajadores o tipos de rol absorben el impacto de una | `ia`, `transicion`, `patron`, `cambio`, `roles` | activo | 2026-04-15 |
@@ -24,34 +28,46 @@
 | [[lo-ilegible-como-senal\|Lo ilegible como señal]] | Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. No tienen nombre. Si les pregun… | `diseño`, `ia`, `criterio`, `captura`, `hipotesis` | activo | 2026-04-10 |
 | [[momento-liminal\|El momento liminal]] | Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u… | `liderazgo`, `cambio`, `incertidumbre`, `transicion`, `diseño` | activo | 2026-04-05 |
 | [[agentes-ia\|Equipos de Agentes IA]] | Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c… | `agentes`, `ia`, `equipos`, `automatizacion`, `escala` | activo | 2026-03-04 |
+| [[arnes-del-agente\|Arnés del agente]] | Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla | `agentes`, `ia`, `diseño`, `producto`, `criterio` | activo | 2026-04-20 |
 | [[automatizacion-vs-ampliacion\|Automatización vs. amplificación: los dos modos de impacto de la IA]] | La IA no afecta el trabajo de una sola manera. Tiene dos modos de impacto | `ia`, `automatizacion`, `roles`, `tension`, `habilidades` | activo | 2026-04-15 |
-| [[capital-de-contexto\|capital-de-contexto]] | Los mejores practicantes de IA no tratan los prompts como interacciones desechables — | `ia`, `conocimiento`, `prompts`, `estrategia`, `criterio` | activo | 2026-04-18 |
-| [[conocimiento-autoorganizado-por-llm\|conocimiento-autoorganizado-por-llm]] | El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una | `ia`, `conocimiento`, `sistemas`, `agentes`, `tension` | activo | 2026-04-18 |
+| [[capital-de-contexto\|Capital de contexto]] | Los mejores practicantes de IA no tratan los prompts como interacciones desechables — | `ia`, `conocimiento`, `prompts`, `estrategia`, `criterio` | activo | 2026-04-18 |
+| [[comprehension-debt\|Comprehension debt]] | La deuda de comprensión es la brecha creciente entre el volumen de código que existe en | `ia`, `velocidad`, `conocimiento`, `equipo`, `criterio` | activo | 2026-04-22 |
+| [[conocimiento-autoorganizado-por-llm\|Conocimiento autoorganizado por LLM]] | El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una | `ia`, `conocimiento`, `sistemas`, `agentes`, `tension` | activo | 2026-04-18 |
 | [[espectro-autonomia-agente\|espectro-autonomia-agente]] | "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo | `ia`, `agentes`, `roles`, `criterio`, `poder` | activo | 2026-04-18 |
 | [[fabrica-oscura-de-software\|fabrica-oscura-de-software]] | En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros | `ia`, `agentes`, `codigo`, `automatizacion`, `criterio` | activo | 2026-04-18 |
 | [[gobernanza-ia-performativa\|Gobernanza de IA performativa]] | Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració… | `ia`, `organizacion`, `estrategia`, `tension`, `cambio` | activo | 2026-04-15 |
+| [[legibilidad-de-maquina\|Legibilidad de máquina]] | La competencia entre productos ya no se decide solo por experiencia de usuario humana — | `agentes`, `ia`, `producto`, `estrategia`, `sistemas` | activo | 2026-04-20 |
 | [[spec-driven-development\|Spec-Driven Development]] | Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po… | `codigo`, `construccion`, `ia`, `iteracion`, `estrategia` | activo | 2026-04-07 |
 | [[usuarios-sinteticos\|Usuarios Sintéticos]] | Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con … | `research`, `validacion`, `producto`, `usuarios`, `diseño` | activo | 2026-03-04 |
 | [[vibe-coding\|Vibe Coding]] | Vibe coding es un modo de construir software donde el punto de partida no es la estructura técnica sino la intención, e… | `construccion`, `herramientas`, `desarrollo`, `producto`, `velocidad` | activo | 2026-03-04 |
+| [[web-bifurcada\|Web bifurcada]] | La web está desarrollando dos capas paralelas e incompatibles: una diseñada para humanos | `agentes`, `ia`, `producto`, `sistemas`, `herramientas` | activo | 2026-04-20 |
 | [[automatizar-mi-propio-trabajo\|Mi trabajo es automatizar mi trabajo]] | Geoff Charles, CPO de Ramp, lo dice sin rodeos: *"my job is to automate my job — and all our jobs is to automate our jo… | `ia`, `automatizacion`, `organizacion`, `builder`, `principio` | activo | 2026-04-10 |
 | [[condicion-redespliegue\|La condición del redespliegue]] | Los modelos de impacto económico de la IA generativa — incluyendo la proyección | `ia`, `automatizacion`, `organizacion`, `sistemas`, `transicion` | activo | 2026-04-16 |
 | [[equipos-pequenos-alto-impacto\|Equipos Pequeños de Alto Impacto]] | Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante… | `equipos`, `producto`, `velocidad`, `organizacion`, `startups` | activo | 2026-03-04 |
 | [[claridad-antes-de-velocidad\|Claridad antes de velocidad]] | Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar… | `estrategia`, `velocidad`, `ia`, `tension`, `principio` | activo | 2026-04-06 |
 | [[confianza-a-traves-de-velocidad\|Confianza a través de velocidad]] | La lógica tradicional de calidad y confianza es lineal: primero haces algo perfecto, luego lo lanzas, y la calidad cons… | `diseño`, `velocidad`, `producto`, `iteracion`, `principio` | activo | 2026-04-10 |
-| [[copiloto-de-producto\|copiloto-de-producto]] | En Le Mans el piloto no puede ver el mapa completo de la carrera — el copiloto navega. | `roles`, `producto`, `ia`, `agentes`, `equipo` | activo | 2026-04-18 |
+| [[copiloto-de-producto\|Copiloto de producto]] | En Le Mans el piloto no puede ver el mapa completo de la carrera — el copiloto navega. | `roles`, `producto`, `ia`, `agentes`, `equipo` | activo | 2026-04-18 |
 | [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]] | Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab… | `ia`, `producto`, `agentes`, `conocimiento`, `criterio` | activo | 2026-04-10 |
 | [[feedback-que-escala\|El feedback que escala]] | Hay dos tipos de feedback. Solo uno escala. | `ia`, `sistemas`, `liderazgo`, `criterio`, `organizacion` | activo | 2026-04-10 |
+| [[las-tres-caras-del-producto-agentico\|Las tres caras del producto agéntico]] | Un producto en la era de agentes puede existir en tres modos estructuralmente distintos, | `producto`, `agentes`, `ia`, `diseño`, `estrategia` | activo | 2026-04-20 |
+| [[metricas-post-pantalla\|Métricas post-pantalla]] | Las métricas de engagement clásicas — time on site, page views, bounce rate, conversión | `producto`, `evaluacion`, `agentes`, `ia`, `criterio` | activo | 2026-04-20 |
 | [[mvp-a-prototipo-en-produccion\|Del MVP al Prototipo en Producción]] | El MVP clásico —lanzar algo pequeño para aprender— no muere, pero cambia de naturaleza radicalmente. Con vibe coding y … | `mvp`, `velocidad`, `iteracion`, `aprendizaje`, `construccion` | activo | 2026-03-04 |
-| [[pit-stop-cognitivo\|pit-stop-cognitivo]] | En Le Mans los pit stops no son tiempo perdido — son el mecanismo que hace posible | `velocidad`, `ia`, `criterio`, `conocimiento`, `equipo` | activo | 2026-04-18 |
-| [[pmf-perecedero\|pmf-perecedero]] | La teoría clásica de startups trata el product-market fit como un destino — algo | `producto`, `ia`, `estrategia`, `velocidad`, `cambio` | activo | 2026-04-18 |
-| [[restriccion-de-tiempo-como-ventaja\|restriccion-de-tiempo-como-ventaja]] | En las 24 Horas de Le Mans no gana el auto más rápido — gana el equipo que toma | `velocidad`, `criterio`, `ia`, `equipo`, `producto` | activo | 2026-04-18 |
+| [[pit-stop-cognitivo\|Pit stop cognitivo]] | En Le Mans los pit stops no son tiempo perdido — son el mecanismo que hace posible | `velocidad`, `ia`, `criterio`, `conocimiento`, `equipo` | activo | 2026-04-18 |
+| [[pmf-perecedero\|PMF perecedero]] | La teoría clásica de startups trata el product-market fit como un destino — algo | `producto`, `ia`, `estrategia`, `velocidad`, `cambio` | activo | 2026-04-18 |
+| [[restriccion-de-tiempo-como-ventaja\|Restricción de tiempo como ventaja]] | En las 24 Horas de Le Mans no gana el auto más rápido — gana el equipo que toma | `velocidad`, `criterio`, `ia`, `equipo`, `producto` | activo | 2026-04-18 |
 
 ---
 
 ## Conceptos por categoría
 
-### `diseno` (5)
+### `diseno` (9)
 
+- [[agencia-humana-como-imperativo-ux\|Agencia humana como imperativo UX]]
+  → Preservar la agencia humana en la era de IA es el nuevo imperativo del diseño — no un
+- [[arquitectura-de-confianza\|Arquitectura de confianza]]
+  → La confianza en sistemas autónomos no emerge espontáneamente de la buena tecnología —
+- [[de-usuario-a-cliente-servido\|De usuario a cliente servido]]
+  → Durante treinta años, el diseño digital operó bajo una premisa implícita: hay un humano
 - [[disenador-a-constructor\|Del Diseñador al Constructor]]
   → La evolución del rol del diseñador desde un perfil que entrega especificaciones hacia uno que construye directamente el…
 - [[diseno-dos-velocidades\|El diseño en dos velocidades]]
@@ -62,6 +78,8 @@
   → Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m…
 - [[quien-controla-el-prompt\|Quien controla el prompt controla el producto]]
   → En el flujo de trabajo tradicional, quien controlaba las especificaciones controlaba el producto. Diseño definía la exp…
+- [[ux-checkpoints\|UX Checkpoints]]
+  → En la era de agentes, la filosofía del diseño se invierte: la fricción deliberada es el
 
 ### `economia` (3)
 
@@ -83,15 +101,19 @@
 - [[momento-liminal\|El momento liminal]]
   → Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u…
 
-### `ia` (10)
+### `ia` (14)
 
 - [[agentes-ia\|Equipos de Agentes IA]]
   → Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c…
+- [[arnes-del-agente\|Arnés del agente]]
+  → Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla
 - [[automatizacion-vs-ampliacion\|Automatización vs. amplificación: los dos modos de impacto de la IA]]
   → La IA no afecta el trabajo de una sola manera. Tiene dos modos de impacto
-- [[capital-de-contexto\|capital-de-contexto]]
+- [[capital-de-contexto\|Capital de contexto]]
   → Los mejores practicantes de IA no tratan los prompts como interacciones desechables —
-- [[conocimiento-autoorganizado-por-llm\|conocimiento-autoorganizado-por-llm]]
+- [[comprehension-debt\|Comprehension debt]]
+  → La deuda de comprensión es la brecha creciente entre el volumen de código que existe en
+- [[conocimiento-autoorganizado-por-llm\|Conocimiento autoorganizado por LLM]]
   → El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una
 - [[espectro-autonomia-agente\|espectro-autonomia-agente]]
   → "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo
@@ -99,12 +121,16 @@
   → En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros
 - [[gobernanza-ia-performativa\|Gobernanza de IA performativa]]
   → Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració…
+- [[legibilidad-de-maquina\|Legibilidad de máquina]]
+  → La competencia entre productos ya no se decide solo por experiencia de usuario humana —
 - [[spec-driven-development\|Spec-Driven Development]]
   → Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po…
 - [[usuarios-sinteticos\|Usuarios Sintéticos]]
   → Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con …
 - [[vibe-coding\|Vibe Coding]]
   → Vibe coding es un modo de construir software donde el punto de partida no es la estructura técnica sino la intención, e…
+- [[web-bifurcada\|Web bifurcada]]
+  → La web está desarrollando dos capas paralelas e incompatibles: una diseñada para humanos
 
 ### `organizaciones` (3)
 
@@ -115,25 +141,29 @@
 - [[equipos-pequenos-alto-impacto\|Equipos Pequeños de Alto Impacto]]
   → Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante…
 
-### `producto` (9)
+### `producto` (11)
 
 - [[claridad-antes-de-velocidad\|Claridad antes de velocidad]]
   → Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar…
 - [[confianza-a-traves-de-velocidad\|Confianza a través de velocidad]]
   → La lógica tradicional de calidad y confianza es lineal: primero haces algo perfecto, luego lo lanzas, y la calidad cons…
-- [[copiloto-de-producto\|copiloto-de-producto]]
+- [[copiloto-de-producto\|Copiloto de producto]]
   → En Le Mans el piloto no puede ver el mapa completo de la carrera — el copiloto navega.
 - [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]]
   → Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab…
 - [[feedback-que-escala\|El feedback que escala]]
   → Hay dos tipos de feedback. Solo uno escala.
+- [[las-tres-caras-del-producto-agentico\|Las tres caras del producto agéntico]]
+  → Un producto en la era de agentes puede existir en tres modos estructuralmente distintos,
+- [[metricas-post-pantalla\|Métricas post-pantalla]]
+  → Las métricas de engagement clásicas — time on site, page views, bounce rate, conversión
 - [[mvp-a-prototipo-en-produccion\|Del MVP al Prototipo en Producción]]
   → El MVP clásico —lanzar algo pequeño para aprender— no muere, pero cambia de naturaleza radicalmente. Con vibe coding y …
-- [[pit-stop-cognitivo\|pit-stop-cognitivo]]
+- [[pit-stop-cognitivo\|Pit stop cognitivo]]
   → En Le Mans los pit stops no son tiempo perdido — son el mecanismo que hace posible
-- [[pmf-perecedero\|pmf-perecedero]]
+- [[pmf-perecedero\|PMF perecedero]]
   → La teoría clásica de startups trata el product-market fit como un destino — algo
-- [[restriccion-de-tiempo-como-ventaja\|restriccion-de-tiempo-como-ventaja]]
+- [[restriccion-de-tiempo-como-ventaja\|Restricción de tiempo como ventaja]]
   → En las 24 Horas de Le Mans no gana el auto más rápido — gana el equipo que toma
 
 ---
@@ -142,12 +172,28 @@
 
 ### `agencia-ia`
 
+- [[agencia-humana-como-imperativo-ux\|Agencia humana como imperativo UX]]
+  → Preservar la agencia humana en la era de IA es el nuevo imperativo del diseño — no un
+- [[arquitectura-de-confianza\|Arquitectura de confianza]]
+  → La confianza en sistemas autónomos no emerge espontáneamente de la buena tecnología —
+- [[ux-checkpoints\|UX Checkpoints]]
+  → En la era de agentes, la filosofía del diseño se invierte: la fricción deliberada es el
 - [[agentes-ia\|Equipos de Agentes IA]]
   → Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c…
+- [[arnes-del-agente\|Arnés del agente]]
+  → Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla
 - [[espectro-autonomia-agente\|espectro-autonomia-agente]]
   → "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo
 - [[fabrica-oscura-de-software\|fabrica-oscura-de-software]]
   → En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros
+- [[legibilidad-de-maquina\|Legibilidad de máquina]]
+  → La competencia entre productos ya no se decide solo por experiencia de usuario humana —
+- [[web-bifurcada\|Web bifurcada]]
+  → La web está desarrollando dos capas paralelas e incompatibles: una diseñada para humanos
+- [[las-tres-caras-del-producto-agentico\|Las tres caras del producto agéntico]]
+  → Un producto en la era de agentes puede existir en tres modos estructuralmente distintos,
+- [[metricas-post-pantalla\|Métricas post-pantalla]]
+  → Las métricas de engagement clásicas — time on site, page views, bounce rate, conversión
 
 ### `epistemologia-practica`
 
@@ -157,7 +203,7 @@
   → El colonialismo cultural digital no es solo extracción de datos ni control de
 - [[lo-ilegible-como-senal\|Lo ilegible como señal]]
   → Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. No tienen nombre. Si les pregun…
-- [[capital-de-contexto\|capital-de-contexto]]
+- [[capital-de-contexto\|Capital de contexto]]
   → Los mejores practicantes de IA no tratan los prompts como interacciones desechables —
 - [[claridad-antes-de-velocidad\|Claridad antes de velocidad]]
   → Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar…
@@ -168,20 +214,22 @@
   → Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con …
 - [[equipos-pequenos-alto-impacto\|Equipos Pequeños de Alto Impacto]]
   → Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante…
-- [[copiloto-de-producto\|copiloto-de-producto]]
+- [[copiloto-de-producto\|Copiloto de producto]]
   → En Le Mans el piloto no puede ver el mapa completo de la carrera — el copiloto navega.
-- [[pmf-perecedero\|pmf-perecedero]]
+- [[pmf-perecedero\|PMF perecedero]]
   → La teoría clásica de startups trata el product-market fit como un destino — algo
 
 ### `sistemas-conocimiento`
 
-- [[conocimiento-autoorganizado-por-llm\|conocimiento-autoorganizado-por-llm]]
+- [[conocimiento-autoorganizado-por-llm\|Conocimiento autoorganizado por LLM]]
   → El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una
 - [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]]
   → Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab…
 
 ### `transicion-ia`
 
+- [[de-usuario-a-cliente-servido\|De usuario a cliente servido]]
+  → Durante treinta años, el diseño digital operó bajo una premisa implícita: hay un humano
 - [[disenador-a-constructor\|Del Diseñador al Constructor]]
   → La evolución del rol del diseñador desde un perfil que entrega especificaciones hacia uno que construye directamente el…
 - [[diseno-dos-velocidades\|El diseño en dos velocidades]]
@@ -211,6 +259,8 @@
 
 - [[quien-controla-el-prompt\|Quien controla el prompt controla el producto]]
   → En el flujo de trabajo tradicional, quien controlaba las especificaciones controlaba el producto. Diseño definía la exp…
+- [[comprehension-debt\|Comprehension debt]]
+  → La deuda de comprensión es la brecha creciente entre el volumen de código que existe en
 - [[spec-driven-development\|Spec-Driven Development]]
   → Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po…
 - [[vibe-coding\|Vibe Coding]]
@@ -221,9 +271,9 @@
   → Hay dos tipos de feedback. Solo uno escala.
 - [[mvp-a-prototipo-en-produccion\|Del MVP al Prototipo en Producción]]
   → El MVP clásico —lanzar algo pequeño para aprender— no muere, pero cambia de naturaleza radicalmente. Con vibe coding y …
-- [[pit-stop-cognitivo\|pit-stop-cognitivo]]
+- [[pit-stop-cognitivo\|Pit stop cognitivo]]
   → En Le Mans los pit stops no son tiempo perdido — son el mecanismo que hace posible
-- [[restriccion-de-tiempo-como-ventaja\|restriccion-de-tiempo-como-ventaja]]
+- [[restriccion-de-tiempo-como-ventaja\|Restricción de tiempo como ventaja]]
   → En las 24 Horas de Le Mans no gana el auto más rápido — gana el equipo que toma
 
 ---
@@ -231,12 +281,21 @@
 ## Índice por tags
 
 ### `agentes`
+- [[agencia-humana-como-imperativo-ux]]
+- [[arquitectura-de-confianza]]
+- [[de-usuario-a-cliente-servido]]
+- [[ux-checkpoints]]
 - [[agentes-ia]]
+- [[arnes-del-agente]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[espectro-autonomia-agente]]
 - [[fabrica-oscura-de-software]]
+- [[legibilidad-de-maquina]]
+- [[web-bifurcada]]
 - [[copiloto-de-producto]]
 - [[expertise-de-dominio-en-producto]]
+- [[las-tres-caras-del-producto-agentico]]
+- [[metricas-post-pantalla]]
 
 ### `aprendizaje`
 - [[mvp-a-prototipo-en-produccion]]
@@ -269,9 +328,14 @@
 ### `colonialismo`
 - [[colonialismo-cultural-digital]]
 
+### `confianza`
+- [[arquitectura-de-confianza]]
+- [[ux-checkpoints]]
+
 ### `conocimiento`
 - [[arquitectura-de-inteligencia]]
 - [[capital-de-contexto]]
+- [[comprehension-debt]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[expertise-de-dominio-en-producto]]
 - [[pit-stop-cognitivo]]
@@ -283,16 +347,23 @@
 - [[vibe-coding]]
 - [[mvp-a-prototipo-en-produccion]]
 
+### `control`
+- [[agencia-humana-como-imperativo-ux]]
+- [[ux-checkpoints]]
+
 ### `criterio`
 - [[diseno-dos-velocidades]]
 - [[diseno-uxui-y-ia]]
 - [[fundamentales-vs-flux]]
 - [[lo-ilegible-como-senal]]
+- [[arnes-del-agente]]
 - [[capital-de-contexto]]
+- [[comprehension-debt]]
 - [[espectro-autonomia-agente]]
 - [[fabrica-oscura-de-software]]
 - [[expertise-de-dominio-en-producto]]
 - [[feedback-que-escala]]
+- [[metricas-post-pantalla]]
 - [[pit-stop-cognitivo]]
 - [[restriccion-de-tiempo-como-ventaja]]
 
@@ -306,21 +377,28 @@
 - [[colonialismo-cultural-digital]]
 
 ### `diseño`
+- [[agencia-humana-como-imperativo-ux]]
+- [[arquitectura-de-confianza]]
+- [[de-usuario-a-cliente-servido]]
 - [[disenador-a-constructor]]
 - [[diseno-dos-velocidades]]
 - [[diseno-uxui-y-ia]]
 - [[fundamentales-vs-flux]]
 - [[quien-controla-el-prompt]]
+- [[ux-checkpoints]]
 - [[lo-ilegible-como-senal]]
 - [[momento-liminal]]
+- [[arnes-del-agente]]
 - [[usuarios-sinteticos]]
 - [[confianza-a-traves-de-velocidad]]
+- [[las-tres-caras-del-producto-agentico]]
 
 ### `educacion`
 - [[fundamentales-vs-flux]]
 - [[inversion-sesgo-tecnologico]]
 
 ### `equipo`
+- [[comprehension-debt]]
 - [[copiloto-de-producto]]
 - [[pit-stop-cognitivo]]
 - [[restriccion-de-tiempo-como-ventaja]]
@@ -337,9 +415,17 @@
 - [[arquitectura-de-inteligencia]]
 - [[capital-de-contexto]]
 - [[gobernanza-ia-performativa]]
+- [[legibilidad-de-maquina]]
 - [[spec-driven-development]]
 - [[claridad-antes-de-velocidad]]
+- [[las-tres-caras-del-producto-agentico]]
 - [[pmf-perecedero]]
+
+### `etica`
+- [[agencia-humana-como-imperativo-ux]]
+
+### `evaluacion`
+- [[metricas-post-pantalla]]
 
 ### `fundamentos`
 - [[fundamentales-vs-flux]]
@@ -353,9 +439,13 @@
 ### `herramientas`
 - [[diseno-uxui-y-ia]]
 - [[vibe-coding]]
+- [[web-bifurcada]]
 
 ### `hipotesis`
 - [[lo-ilegible-como-senal]]
+
+### `historia`
+- [[de-usuario-a-cliente-servido]]
 
 ### `ia`
 - [[diseno-dos-velocidades]]
@@ -366,19 +456,25 @@
 - [[arquitectura-de-inteligencia]]
 - [[lo-ilegible-como-senal]]
 - [[agentes-ia]]
+- [[arnes-del-agente]]
 - [[automatizacion-vs-ampliacion]]
 - [[capital-de-contexto]]
+- [[comprehension-debt]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[espectro-autonomia-agente]]
 - [[fabrica-oscura-de-software]]
 - [[gobernanza-ia-performativa]]
+- [[legibilidad-de-maquina]]
 - [[spec-driven-development]]
+- [[web-bifurcada]]
 - [[automatizar-mi-propio-trabajo]]
 - [[condicion-redespliegue]]
 - [[claridad-antes-de-velocidad]]
 - [[copiloto-de-producto]]
 - [[expertise-de-dominio-en-producto]]
 - [[feedback-que-escala]]
+- [[las-tres-caras-del-producto-agentico]]
+- [[metricas-post-pantalla]]
 - [[pit-stop-cognitivo]]
 - [[pmf-perecedero]]
 - [[restriccion-de-tiempo-como-ventaja]]
@@ -425,12 +521,17 @@
 ### `producto`
 - [[disenador-a-constructor]]
 - [[diseno-uxui-y-ia]]
+- [[arnes-del-agente]]
+- [[legibilidad-de-maquina]]
 - [[usuarios-sinteticos]]
 - [[vibe-coding]]
+- [[web-bifurcada]]
 - [[equipos-pequenos-alto-impacto]]
 - [[confianza-a-traves-de-velocidad]]
 - [[copiloto-de-producto]]
 - [[expertise-de-dominio-en-producto]]
+- [[las-tres-caras-del-producto-agentico]]
+- [[metricas-post-pantalla]]
 - [[pmf-perecedero]]
 - [[restriccion-de-tiempo-como-ventaja]]
 
@@ -442,6 +543,7 @@
 - [[usuarios-sinteticos]]
 
 ### `roles`
+- [[de-usuario-a-cliente-servido]]
 - [[disenador-a-constructor]]
 - [[ia-como-filtro-de-entrada]]
 - [[senal-anticipada-mercado-laboral]]
@@ -453,6 +555,8 @@
 - [[arquitectura-de-inteligencia]]
 - [[colonialismo-cultural-digital]]
 - [[conocimiento-autoorganizado-por-llm]]
+- [[legibilidad-de-maquina]]
+- [[web-bifurcada]]
 - [[condicion-redespliegue]]
 - [[feedback-que-escala]]
 
@@ -475,14 +579,24 @@
 - [[momento-liminal]]
 - [[condicion-redespliegue]]
 
+### `transparencia`
+- [[arquitectura-de-confianza]]
+
 ### `usuarios`
 - [[usuarios-sinteticos]]
+
+### `ux`
+- [[agencia-humana-como-imperativo-ux]]
+- [[arquitectura-de-confianza]]
+- [[de-usuario-a-cliente-servido]]
+- [[ux-checkpoints]]
 
 ### `validacion`
 - [[usuarios-sinteticos]]
 
 ### `velocidad`
 - [[diseno-dos-velocidades]]
+- [[comprehension-debt]]
 - [[vibe-coding]]
 - [[equipos-pequenos-alto-impacto]]
 - [[claridad-antes-de-velocidad]]
@@ -496,10 +610,25 @@
 
 ## Mapa de relaciones
 
+**[[agencia-humana-como-imperativo-ux]]** →
+  - [[espectro-autonomia-agente]]
+  - [[ux-checkpoints]]
+  - [[comprehension-debt]]
+
 **[[agentes-ia]]** →
   - [[disenador-a-constructor]]
   - [[vibe-coding]]
   - [[usuarios-sinteticos]]
+
+**[[arnes-del-agente]]** →
+  - [[espectro-autonomia-agente]]
+  - [[gobernanza-ia-performativa]]
+  - [[las-tres-caras-del-producto-agentico]]
+
+**[[arquitectura-de-confianza]]** →
+  - [[gobernanza-ia-performativa]]
+  - [[arnes-del-agente]]
+  - [[ux-checkpoints]]
 
 **[[arquitectura-de-inteligencia]]** →
   - [[agentes-ia]]
@@ -531,6 +660,11 @@
   - [[agentes-ia]]
   - [[disenador-a-constructor]]
 
+**[[comprehension-debt]]** →
+  - [[pit-stop-cognitivo]]
+  - [[vibe-coding]]
+  - [[spec-driven-development]]
+
 **[[condicion-redespliegue]]** →
   - [[automatizar-mi-propio-trabajo]]
   - [[feedback-que-escala]]
@@ -550,6 +684,11 @@
   - [[quien-controla-el-prompt]]
   - [[disenador-a-constructor]]
   - [[equipos-pequenos-alto-impacto]]
+
+**[[de-usuario-a-cliente-servido]]** →
+  - [[disenador-a-constructor]]
+  - [[las-tres-caras-del-producto-agentico]]
+  - [[agencia-humana-como-imperativo-ux]]
 
 **[[disenador-a-constructor]]** →
   - [[vibe-coding]]
@@ -610,16 +749,30 @@
   - [[automatizacion-vs-ampliacion]]
   - [[fundamentales-vs-flux]]
 
+**[[las-tres-caras-del-producto-agentico]]** →
+  - [[espectro-autonomia-agente]]
+  - [[arnes-del-agente]]
+  - [[legibilidad-de-maquina]]
+
+**[[legibilidad-de-maquina]]** →
+  - [[web-bifurcada]]
+  - [[colonialismo-cultural-digital]]
+  - [[lo-ilegible-como-senal]]
+
 **[[lo-ilegible-como-senal]]** →
   - [[arquitectura-de-inteligencia]]
   - [[momento-liminal]]
   - [[fundamentales-vs-flux]]
 
+**[[metricas-post-pantalla]]** →
+  - [[feedback-que-escala]]
+  - [[las-tres-caras-del-producto-agentico]]
+  - [[arnes-del-agente]]
+
 **[[momento-liminal]]** →
   - [[disenador-a-constructor]]
   - [[claridad-antes-de-velocidad]]
   - [[fundamentales-vs-flux]]
-  - [[lo-ilegible-como-senal]]
 
 **[[mvp-a-prototipo-en-produccion]]** →
   - [[vibe-coding]]
@@ -661,10 +814,20 @@
   - [[mvp-a-prototipo-en-produccion]]
   - [[agentes-ia]]
 
+**[[ux-checkpoints]]** →
+  - [[pit-stop-cognitivo]]
+  - [[arnes-del-agente]]
+  - [[arquitectura-de-confianza]]
+
 **[[vibe-coding]]** →
   - [[disenador-a-constructor]]
   - [[agentes-ia]]
   - [[mvp-a-prototipo-en-produccion]]
+
+**[[web-bifurcada]]** →
+  - [[agentes-ia]]
+  - [[arnes-del-agente]]
+  - [[quien-controla-el-prompt]]
 
 ---
 

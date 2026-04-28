@@ -1,6 +1,6 @@
 # Contexto del Segundo Cerebro — Luigui Avila
 
-> Archivo generado el 2026-04-18. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
+> Archivo actualizado el 2026-04-24. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
 
 ---
 
@@ -14,42 +14,44 @@ Diseñador-constructor. Construye el Segundo Cerebro como infraestructura de con
 
 Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se capturan como unidades independientes con frontmatter YAML estricto, se correlacionan explícitamente entre sí, y se activan como insumo para entregables concretos (charlas, propuestas, decks). El sistema no es el vault — es la lógica de estructuración que vive detrás.
 
-**Jarvis** es el agente de mantenimiento del vault (Claude Code). Ejecuta comandos sin preguntar, registra en `JARVIS_LOG.md`, y regenera el ATLAS después de cada cambio.
+**Jarvis** es el agente de mantenimiento del vault (Claude Code). Ejecuta comandos sin preguntar, registra en `JARVIS_LOG.md`, y regenera el ATLAS después de cada cambio. Tiene interfaz de voz vía wake word "Jarvis" — corre como daemon en macOS (`Jarvis.app` → launchd → python).
 
 ---
 
 ## Estado actual del vault
 
-- **34 conceptos activos** (todos en estado `activo`)
+- **44 conceptos activos** (10 nuevos desde 2026-04-20)
 - **14 correlaciones documentadas**
-- **Última acción registrada:** mejora-004 — categorización de conceptos en 6 subcarpetas + 10 conceptos nuevos + 6 correlaciones (2026-04-18)
+- **Última gran adición:** clúster `agencia-ia` — 10 conceptos sobre agentes, arnés, checkpoints, métricas y bifurcación de la web (2026-04-20 a 2026-04-22)
+- **Origen del clúster:** artículos de Martín Alaimo (productos agénticos), Gianluca Brugnoli (UX checkpoints), Cloudflare (Markdown for Agents), Galileo + AWS (métricas de agentes), Addy Osmani (comprehension debt)
 
 ---
 
-## Estructura de carpetas (desde 2026-04-18)
+## Estructura de carpetas
 
 Los conceptos viven en `Conocimiento/Conceptos/` organizados en 6 subcarpetas temáticas:
 
 ```
 Conocimiento/Conceptos/
-├── ia/           (10 conceptos) — tecnología, modelos, agentes IA
-├── diseno/       (5 conceptos)  — proceso de diseño, rol del diseñador
-├── producto/     (9 conceptos)  — construir, medir, iterar productos
-├── organizaciones/ (3 conceptos) — equipos, roles, transformación organizacional
-├── economia/     (3 conceptos)  — mercado laboral, impacto económico de la IA
-└── filosofia/    (4 conceptos)  — pensamiento abstracto, epistemología, marcos
+├── ia/             (14 conceptos) — tecnología, modelos, agentes IA
+├── diseno/         (9 conceptos)  — proceso de diseño, rol del diseñador, UX agéntico
+├── producto/       (11 conceptos) — construir, medir, iterar productos
+├── organizaciones/ (3 conceptos)  — equipos, roles, transformación organizacional
+├── economia/       (3 conceptos)  — mercado laboral, impacto económico de la IA
+└── filosofia/      (4 conceptos)  — pensamiento abstracto, epistemología, marcos
 ```
 
-Sistemas adicionales instalados en 2026-04-18:
-- `Backlog/` — pipeline para ideas de proyectos construibles (borrador → en-maduración → listo → en-construcción → completado)
+Sistemas adicionales:
+- `Backlog/` — pipeline para ideas de proyectos construibles
 - `Inbox/` — archivo de entrada para scouts y fuentes sin procesar
 - `docs/` — planes de implementación de mejoras del vault
+- `Prompts/Meta/jarvis/` — daemon de voz de Jarvis (corre como `Jarvis.app` vía launchd, log en `~/Library/Logs/jarvis.log`)
 
 ---
 
-## Los 34 conceptos activos
+## Los 44 conceptos activos
 
-### Categoría: `ia` — Tecnología, modelos, agentes
+### Categoría: `ia` — Tecnología, modelos, agentes (14)
 
 ---
 
@@ -59,31 +61,45 @@ Un equipo de agentes IA es un conjunto de modelos especializados que trabajan co
 
 ---
 
+**Arnés del agente** (`arnes-del-agente`) ⬆ nuevo 2026-04-20
+Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla — es el arnés: el sistema de reglas, herramientas, permisos y guardrails que definen el espacio de acción del agente. Cuatro preguntas: qué puede hacer, qué información puede ver, cuándo debe confirmar, qué nunca puede hacer. Las validaciones que antes eran botones deshabilitados son ahora restricciones explícitas dentro del arnés. El loop de control del agente es el nuevo flujo de usuario — solo que el "usuario" es una máquina. Un arnés mal diseñado no se detiene en una pantalla de error; ejecuta acciones incorrectas a velocidad de máquina.
+*Fuente:* Martín Alaimo, "La era de los productos agénticos" (2026).
+*Relacionado con:* espectro-autonomia-agente, gobernanza-ia-performativa, las-tres-caras-del-producto-agentico
+
+---
+
 **Automatización vs. amplificación** (`automatizacion-vs-ampliacion`)
 La IA tiene dos modos de impacto estructuralmente distintos: **automatización** (la tarea pasa de humano a máquina) y **amplificación** (la IA multiplica la capacidad del humano). El modo no es fijo: la misma herramienta puede automatizar el trabajo de un junior y amplificar el de un senior en la misma ocupación. El seniority actúa como variable que cambia el modo de impacto.
 *Relacionado con:* ia-como-filtro-de-entrada, fundamentales-vs-flux, agentes-ia
 
 ---
 
-**Capital de contexto** (`capital-de-contexto`) ⬆ nuevo 2026-04-18
+**Capital de contexto** (`capital-de-contexto`)
 El contexto acumulado sobre el dominio, los usuarios, el equipo y las decisiones pasadas actúa como activo competitivo que se compone en el tiempo. HBR (Feb 2026): el contexto es el activo competitivo más duradero en la era IA porque no puede copiarse instantáneamente. Gartner: el context engineering estará en el 80% de las herramientas IA en 2028, con +30% de mejora en precisión. Quien construye contexto estructurado hoy tiene ventaja compuesta mañana. Sin contexto suficiente, los agentes más capaces siguen produciendo outputs mediocres.
 *Relacionado con:* espectro-autonomia-agente, fabrica-oscura-de-software, arquitectura-de-inteligencia
 
 ---
 
-**Conocimiento autoorganizado por LLM** (`conocimiento-autoorganizado-por-llm`) ⬆ nuevo 2026-04-18
+**Comprehension Debt** (`comprehension-debt`) ⬆ nuevo 2026-04-22
+La deuda de comprensión es la brecha creciente entre el volumen de código que existe en un sistema y el volumen que cualquier humano del equipo genuinamente entiende. A diferencia de la deuda técnica (visible: builds lentos, dependencias enredadas), la comprehension debt produce **falsa confianza**: el código se ve limpio, los tests verdes, y el ajuste de cuentas llega en silencio. RCT de Anthropic con 52 ingenieros: misma velocidad con IA, pero **17% menos en comprensión** posterior (50% vs 67%). arXiv 2604.13277 (Glasgow, 2026): cuatro patrones de acumulación; único mitigador validado es **rewrite before commit**. Allstacks: tres etapas — Honeymoon (1-30 días), Drift (30-180), Cliff (>180), donde el equipo ya no puede explicar su propia base de código.
+*Fuente:* Addy Osmani; arXiv 2604.13277; Anthropic.
+*Relacionado con:* pit-stop-cognitivo, vibe-coding, spec-driven-development, capital-de-contexto, fabrica-oscura-de-software
+
+---
+
+**Conocimiento autoorganizado por LLM** (`conocimiento-autoorganizado-por-llm`)
 Karpathy (abril 2026) propuso `llm-wiki`: un repositorio donde los LLMs son a la vez lectores y escritores del conocimiento. Arquitectura: raw/ (fuentes sin procesar), wiki/ (artículos sintetizados), CLAUDE.md (instrucciones para el siguiente agente). Las operaciones son ingest, query y lint. Tensión directa con este vault: si los propios modelos pueden organizar su conocimiento, ¿qué queda de la arquitectura humana intencional?
 *Relacionado con:* arquitectura-de-inteligencia, capital-de-contexto, espectro-autonomia-agente
 
 ---
 
-**Espectro de autonomía del agente** (`espectro-autonomia-agente`) ⬆ nuevo 2026-04-18
+**Espectro de autonomía del agente** (`espectro-autonomia-agente`)
 La autonomía de un agente de IA no es binaria — es un diseño explícito con cinco posiciones. arXiv 2506.12469 (U. Washington, 2026): operator (el humano decide todo), collaborator (decide junto), consultant (la IA propone, el humano aprueba selectivamente), approver (el humano solo interviene en decisiones críticas), observer (el humano solo monitorea). Cada posición requiere distinto nivel de contexto, confianza y reversibilidad de acciones. La posición no la determina la capacidad del agente — la determina el diseñador.
 *Relacionado con:* capital-de-contexto, fabrica-oscura-de-software, agentes-ia
 
 ---
 
-**La fábrica oscura de software** (`fabrica-oscura-de-software`) ⬆ nuevo 2026-04-18
+**La fábrica oscura de software** (`fabrica-oscura-de-software`)
 StrongDM (2026): 3 ingenieros humanos, cero líneas de código escrito por humanos, spec de 6-7k líneas. La "fábrica oscura" (dark factory industrial: planta sin luces porque no hay humanos) aplicada al software. El vibe testing es la Ley de Goodhart en acción: cuando los tests se convierten en el objetivo, los agentes los optimizan sin validar el comportamiento real. Los scenarios (casos de uso end-to-end) como holdout validation son el mecanismo correcto. Quien opera la fábrica oscura no es el observador — es el operador que diseñó el spec y las condiciones de aceptación.
 *Relacionado con:* espectro-autonomia-agente, capital-de-contexto, spec-driven-development
 
@@ -92,6 +108,13 @@ StrongDM (2026): 3 ingenieros humanos, cero líneas de código escrito por human
 **Gobernanza de IA performativa** (`gobernanza-ia-performativa`)
 Cuando una organización construye las capas visibles de gobernanza de IA (política, comité de ética, declaración de principios) pero no construye las capas que realmente hacen cumplir esas reglas. El shadow AI es el síntoma: 57-80% de empleados usa IA sin reportarlo. El 56% de organizaciones dice tener gobernanza comprensiva; solo el 12% la tiene implementada. Cuatro capas: gobernanza → modelo operativo → proceso → sistema. Las organizaciones invierten bien en 1 y 2; subinvierten en 3 y 4.
 *Relacionado con:* agentes-ia, quien-controla-el-prompt, arquitectura-de-inteligencia
+
+---
+
+**Legibilidad de máquina** (`legibilidad-de-maquina`) ⬆ nuevo 2026-04-20
+La competencia entre productos ya no se decide solo por experiencia de usuario humana — se decide también por qué tan fácil es operar el sistema **para una máquina**. La legibilidad se bifurca: para humanos (claridad visual, jerarquía, flujos intuitivos) y para máquinas (datos estructurados semánticamente, reglas de negocio sin ambigüedad, MCPs con contratos claros). Un producto puede tener excelente UX humana y legibilidad de máquina nula — gap invisible hasta que los agentes son fracción significativa del tráfico. La consecuencia no es un error de UX: es pérdida de negocio silenciosa. El primer indicador no es la conversión humana — es el % de tareas que agentes externos completan sin errores.
+*Fuente:* Martín Alaimo, "La era de los productos agénticos" (2026).
+*Relacionado con:* web-bifurcada, colonialismo-cultural-digital, lo-ilegible-como-senal
 
 ---
 
@@ -113,7 +136,35 @@ Modo de construir software donde el punto de partida es la intención, no la est
 
 ---
 
-### Categoría: `diseno` — Proceso de diseño, rol del diseñador
+**Web bifurcada** (`web-bifurcada`) ⬆ nuevo 2026-04-20
+La web está desarrollando dos capas paralelas e incompatibles: una para humanos (HTML visual, scripts) y otra para agentes (Markdown estructurado, datos semánticos, MCPs). Cloudflare con "Markdown for Agents" (12 feb 2026) confirmó que la bifurcación dejó de ser teórica. Diferencia de costo: blogpost de 16,180 tokens en HTML baja a 3,150 en Markdown (**80% reducción**). Bun sirve su documentación como Markdown puro a Claude Code → **10x reducción en tokens**. Claude Code y OpenCode ya enviaban headers `Accept: text/markdown` antes de que Cloudflare implementara la feature. Para PM/diseñador: ¿el producto existe y es operable en la capa de agentes, independiente de cuán buena sea su UI humana?
+*Fuente:* Cloudflare blog (feb 2026); Ben Word; Salesforce Connectivity Report (2026).
+*Relacionado con:* agentes-ia, arnes-del-agente, quien-controla-el-prompt
+
+---
+
+### Categoría: `diseno` — Proceso de diseño, rol del diseñador, UX agéntico (9)
+
+---
+
+**Agencia humana como imperativo UX** (`agencia-humana-como-imperativo-ux`) ⬆ nuevo 2026-04-21
+Preservar la agencia humana en la era de IA es el nuevo imperativo del diseño — no un feature de accesibilidad sino la condición que distingue sistemas que **sirven** a personas de sistemas que las **bypasean**. El rol del diseñador como "abogado del usuario" se vuelve más urgente: ya no se trata de simplificar interfaces sino de defender activamente los momentos de decisión humana en flujos que sin esa intervención eliminarían al usuario por completo. La presión organizacional irá hacia la automatización máxima — menos checkpoints, menos interrupciones, más velocidad. El criterio de calibración es la **reversibilidad**: acciones irreversibles requieren agencia humana explícita; las reversibles pueden ser autónomas.
+*Fuente:* Gianluca Brugnoli, "The checkpoints of the AI User Experience".
+*Relacionado con:* espectro-autonomia-agente, ux-checkpoints, comprehension-debt
+
+---
+
+**Arquitectura de confianza** (`arquitectura-de-confianza`) ⬆ nuevo 2026-04-21
+La confianza en sistemas autónomos no emerge de la buena tecnología — se diseña deliberadamente. Tres niveles complementarios: transparencia de decisión (¿por qué este resultado?), de proceso (¿qué está haciendo el agente ahora?) y de accountability (¿cómo se reconstruye y audita una decisión después?). Los tres son necesarios — ninguno suficiente. Waymo ilustra: los pasajeros ven en tiempo real cómo el vehículo percibe e interpreta su entorno. En la era de autoservicio el estándar era usabilidad; en la era de agentes es confianza. Las palancas son distintas: usabilidad se mejora reduciendo pasos; confianza se construye con comportamiento consistente, razonamiento legible y la sensación de que el sistema opera en el interés del usuario.
+*Fuente:* Gianluca Brugnoli, "The checkpoints of the AI User Experience".
+*Relacionado con:* gobernanza-ia-performativa, arnes-del-agente, ux-checkpoints
+
+---
+
+**De usuario a cliente servido** (`de-usuario-a-cliente-servido`) ⬆ nuevo 2026-04-21
+Durante 30 años el diseño digital operó bajo una premisa implícita: hay un humano frente a una pantalla operando software en autoservicio. Esa premisa se cae. La IA invierte el modelo: el agente actúa, el humano expresa intención y recibe solución. Brugnoli lo lee como regreso histórico: antes del digital, las personas eran asistidas por profesionales (agente de viajes, bancario) que entregaban solución completa; el digital las convirtió en operadores; la IA las regresa al rol de cliente servido — solo que el asistente ya no es humano. La calidad del diseño ya no se mide por facilidad de operación sino por **calidad de la colaboración** humano-agente.
+*Fuente:* Gianluca Brugnoli, "The checkpoints of the AI User Experience".
+*Relacionado con:* disenador-a-constructor, las-tres-caras-del-producto-agentico, agencia-humana-como-imperativo-ux
 
 ---
 
@@ -147,7 +198,14 @@ En el flujo de trabajo con IA hay una capa nueva entre intención y entrega: el 
 
 ---
 
-### Categoría: `producto` — Construir, medir, iterar productos
+**UX Checkpoints** (`ux-checkpoints`) ⬆ nuevo 2026-04-21
+En la era de agentes, la filosofía del diseño se invierte: la **fricción deliberada** es el mecanismo que mantiene al humano en control. Un UX checkpoint es un momento explícito donde el agente pausa para validación, confirmación o corrección humana antes de continuar. Tres funciones: control (puntos de decisión antes de acciones irreversibles), transparencia (exponer el razonamiento del agente) y consistencia (patrones predecibles que permiten construir un modelo mental). Klarna hace handoff cuando detecta problemas; Duolingo ofrece "Explain My Answer". Sin checkpoints, los usuarios ante un resultado incorrecto **reinician la conversación desde cero** en lugar de corregir incrementalmente. El diseño ya no pregunta "¿dónde está la fricción y cómo la elimino?" sino "¿dónde está la decisión humana y cómo la preservo?"
+*Fuente:* Gianluca Brugnoli, "The checkpoints of the AI User Experience".
+*Relacionado con:* pit-stop-cognitivo, arnes-del-agente, arquitectura-de-confianza
+
+---
+
+### Categoría: `producto` — Construir, medir, iterar productos (11)
 
 ---
 
@@ -164,7 +222,7 @@ Jenny Wen (Anthropic): lanzar imperfecto y mejorar rápido públicamente constru
 
 ---
 
-**Copiloto de producto** (`copiloto-de-producto`) ⬆ nuevo 2026-04-18
+**Copiloto de producto** (`copiloto-de-producto`)
 En la era de los agentes, cada PM necesita un copiloto de producto: un sistema IA que lleva el mapa mientras el humano lleva el volante. La analogía de aviación: el copiloto no toma el control — mantiene la altitud, monitorea los sistemas, alerta sobre el clima. Pero hay dos capas de control que pueden desalinearse: la táctica (quién teclea el prompt) y la estratégica (quién define la dirección del producto). Un PM sin copiloto no pierde velocidad — pierde altitud sin notarlo.
 *Relacionado con:* quien-controla-el-prompt, espectro-autonomia-agente, capital-de-contexto
 
@@ -183,32 +241,46 @@ Hay dos tipos de feedback. Solo uno escala. **Feedback puntual**: corriges una i
 
 ---
 
+**Las tres caras del producto agéntico** (`las-tres-caras-del-producto-agentico`) ⬆ nuevo 2026-04-20
+Un producto en la era de agentes puede existir en tres modos estructuralmente distintos, no son etapas evolutivas — son apuestas de diseño simultáneas. **Cara 1 (Tu producto es un agente)**: diseñas el arnés en lugar de UI. **Cara 2 (Agentes externos interactúan con tu producto)**: tu UI es irrelevante; lo que importa es legibilidad de máquina, MCPs, datos semánticos, reglas de negocio explícitas. Un competidor con peor producto pero sistema más predecible gana. **Cara 3 (Agente contra agente)**: tu producto tiene su representante que negocia con el agente del usuario en tiempo real — propone alternativas, aplica estrategia comercial, prioriza stock. Cada cara requiere capacidades, métricas y definiciones distintas de éxito.
+*Fuente:* Martín Alaimo, "La era de los productos agénticos" (2026).
+*Relacionado con:* espectro-autonomia-agente, arnes-del-agente, legibilidad-de-maquina
+
+---
+
+**Métricas post-pantalla** (`metricas-post-pantalla`) ⬆ nuevo 2026-04-20
+Las métricas clásicas — time on site, page views, bounce rate — asumen un humano mirando. Cuando el usuario es un agente que entra, ejecuta y sale en milisegundos, esas métricas no solo pierden valor: **engañan activamente**. Tres niveles nuevos: **sesión** (¿completó objetivos?), **flujo** (¿avanzó sin estancarse?, ¿eligió las herramientas correctas?), **operación granular** (¿pasos innecesarios?, ¿razonamiento coherente?). Datos: solo 15% de equipos logra cobertura élite (90-100%) de evaluación; 72% cree que importa — brecha de 57%. **63% de sitios web** ya recibe tráfico de agentes IA en 2026 (50% del cual es ChatGPT). GA4 y Mixpanel fallan: GA4 aplica bot filtering vía listas IAB que los agentes modernos eluden; Mixpanel registra agentes como humanos y esos eventos son inmutables.
+*Fuente:* Galileo AI; AWS evaluación de agentes; Plausible Analytics.
+*Relacionado con:* feedback-que-escala, las-tres-caras-del-producto-agentico, arnes-del-agente
+
+---
+
 **Del MVP al Prototipo en Producción** (`mvp-a-prototipo-en-produccion`)
 Con vibe coding y agentes, el cuello de botella dejó de ser la construcción. Lo que tiene sentido hoy es un prototipo en producción: algo funcional en manos de usuarios reales en días, no semanas. La variable crítica cambió: ya no es el tiempo de construcción — es qué aprendes y con qué velocidad actúas sobre ese aprendizaje. La deuda técnica es temporal por diseño: con agentes puedes refactorizar partes enteras tan rápido que la perfección inicial no tiene sentido.
 *Relacionado con:* vibe-coding, agentes-ia, disenador-a-constructor
 
 ---
 
-**El pit stop cognitivo** (`pit-stop-cognitivo`) ⬆ nuevo 2026-04-18
+**El pit stop cognitivo** (`pit-stop-cognitivo`)
 Una pausa breve e intencional en el flujo de trabajo asistido por IA para verificar que el equipo entiende lo que se está construyendo, no solo que el output es correcto. Investigación reciente (RCT, 2026): colaboradores con asistencia IA continua mostraron 17% menos comprensión del código respecto a quienes pausaban periódicamente. El riesgo no es el error que el agente introduce — es el error que el humano no detecta porque ya no lee el trabajo con atención. El pit stop es la práctica que separa velocidad sostenible de velocidad que acumula deuda cognitiva.
 *Fuente:* arXiv 2604.13277, 2603.28592; Addy Osmani "comprehension debt".
 *Relacionado con:* confianza-a-traves-de-velocidad, feedback-que-escala, capital-de-contexto
 
 ---
 
-**PMF perecedero** (`pmf-perecedero`) ⬆ nuevo 2026-04-18
+**PMF perecedero** (`pmf-perecedero`)
 El product-market fit ya no es un destino — es un estado que se recaptura continuamente. Elena Verna (2026) tras el caso Lovable: $200M ARR en menos de un año, pero el PMF se recaptura cada 3 meses en productos IA-nativos. Solo el 30-40% del playbook de producto de 20 años sigue aplicando. Las métricas SaaS clásicas están rotas para productos IA-nativos: el MRR/ARR captura ingresos pero no la estabilidad del fit. El PMF perecedero requiere un músculo diferente: no buscar el fit y protegerlo, sino detectar cuándo caducó y relanzar.
 *Relacionado con:* mvp-a-prototipo-en-produccion, claridad-antes-de-velocidad, confianza-a-traves-de-velocidad
 
 ---
 
-**Restricción de tiempo como ventaja** (`restriccion-de-tiempo-como-ventaja`) ⬆ nuevo 2026-04-18
-Los plazos imposibles no son obstáculos al trabajo de calidad — son el mecanismo que lo produce. La restricción de tiempo actúa como un operador de selección: cuando el tiempo colapsa, lo que queda es lo esencial. Parakinson's Law en reverse: el trabajo no se expande para llenar el tiempo disponible cuando hay una restricción real que lo impide. En la era IA, la restricción actúa sobre la velocidad de iteración: un equipo con dos horas para lanzar toma decisiones que un equipo con dos semanas no toma.
+**Restricción de tiempo como ventaja** (`restriccion-de-tiempo-como-ventaja`)
+Los plazos imposibles no son obstáculos al trabajo de calidad — son el mecanismo que lo produce. La restricción de tiempo actúa como un operador de selección: cuando el tiempo colapsa, lo que queda es lo esencial. Parkinson's Law en reverse: el trabajo no se expande para llenar el tiempo disponible cuando hay una restricción real que lo impide. En la era IA, la restricción actúa sobre la velocidad de iteración: un equipo con dos horas para lanzar toma decisiones que un equipo con dos semanas no toma.
 *Relacionado con:* claridad-antes-de-velocidad, pit-stop-cognitivo, confianza-a-traves-de-velocidad
 
 ---
 
-### Categoría: `organizaciones` — Equipos, roles, transformación
+### Categoría: `organizaciones` — Equipos, roles, transformación (3)
 
 ---
 
@@ -230,7 +302,7 @@ Unidad de 2-10 personas que, potenciada por IA, alcanza resultados antes reserva
 
 ---
 
-### Categoría: `economia` — Mercado laboral, impacto económico
+### Categoría: `economia` — Mercado laboral, impacto económico (3)
 
 ---
 
@@ -252,7 +324,7 @@ Ciertos grupos absorben el impacto de una disrupción antes de que sea visible e
 
 ---
 
-### Categoría: `filosofia` — Pensamiento abstracto, epistemología, marcos
+### Categoría: `filosofia` — Pensamiento abstracto, epistemología, marcos (4)
 
 ---
 
@@ -300,6 +372,15 @@ El espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. Del
 | `espectro-autonomia-agente` ↔ `capital-de-contexto` | El precio de entrada para cada posición: el capital de contexto determina qué posición de autonomía es seguro ocupar |
 | `fabrica-oscura-de-software` ↔ `capital-de-contexto` | El único activo que queda: la fábrica oscura como stress test del capital de contexto |
 
+**Correlaciones implícitas pendientes de documentar** (relaciones presentes en `relacionado:` pero sin archivo formal en `Correlaciones/`):
+- `arnes-del-agente` ↔ `espectro-autonomia-agente` — el arnés codifica la posición del agente en el espectro
+- `web-bifurcada` ↔ `legibilidad-de-maquina` — la bifurcación de la web es la consecuencia agregada del gap de legibilidad
+- `comprehension-debt` ↔ `fabrica-oscura-de-software` — la fábrica oscura como condición que hace inevitable la deuda de comprensión
+- `ux-checkpoints` ↔ `pit-stop-cognitivo` — checkpoints externos (UX) y pausas internas (equipo) son la misma operación en dos niveles
+- `agencia-humana-como-imperativo-ux` ↔ `comprehension-debt` — sistemas que bypasean al usuario producen dependencia sin comprensión
+- `metricas-post-pantalla` ↔ `feedback-que-escala` — instrumentar lo que importa hoy, no lo que importaba ayer
+- `las-tres-caras-del-producto-agentico` ↔ `arnes-del-agente` ↔ `legibilidad-de-maquina` — clúster operativo del producto agéntico
+
 ---
 
 ## Mapa de nodos centrales
@@ -308,9 +389,25 @@ Los conceptos más conectados del vault (hubs):
 
 - **`disenador-a-constructor`** — nodo central. Aparece como destino en casi todas las correlaciones. Es el concepto marco del sistema.
 - **`agentes-ia`** — segundo hub. Es la infraestructura técnica que habilita la mayoría de los otros conceptos.
-- **`capital-de-contexto`** — hub emergente (2026-04-18). Conecta el espectro de autonomía, la fábrica oscura, el pit stop cognitivo y la arquitectura de inteligencia.
+- **`espectro-autonomia-agente`** — hub del clúster agéntico. Conecta arnés, capital de contexto, fábrica oscura, agencia humana, las tres caras y arquitectura de confianza.
+- **`arnes-del-agente`** — hub operativo emergente. Es el artefacto donde aterrizan las decisiones de diseño en sistemas agénticos.
+- **`capital-de-contexto`** — hub estratégico. Conecta espectro de autonomía, fábrica oscura, pit stop cognitivo, comprehension debt y arquitectura de inteligencia.
 - **`arquitectura-de-inteligencia`** — marco epistemológico que conecta el trabajo de diseño con el conocimiento estructurado.
 - **`momento-liminal`** — concepto de orientación. Muchos conceptos apuntan a él como contexto.
+
+---
+
+## Familias de conceptos (clusters)
+
+El ATLAS agrupa los 44 conceptos en 7 familias:
+
+- **`agencia-ia`** (11 conceptos) — el clúster más grande y reciente. Une el diseño UX agéntico (agencia humana, arquitectura de confianza, ux-checkpoints), la ingeniería del agente (arnés, espectro de autonomía, fábrica oscura), y la nueva forma de los productos (las tres caras, web bifurcada, legibilidad de máquina, métricas post-pantalla).
+- **`transicion-ia`** (13 conceptos) — el cambio estructural en roles, productos, mercado laboral y modelos de trabajo.
+- **`velocidad-output`** (8 conceptos) — vibe coding, SDD, MVP/prototipo, confianza a través de velocidad, pit stop cognitivo, restricción de tiempo.
+- **`epistemologia-practica`** (5 conceptos) — arquitectura de inteligencia, capital de contexto, claridad antes de velocidad, lo ilegible como señal, colonialismo cultural digital.
+- **`equipos-impacto`** (4 conceptos) — usuarios sintéticos, equipos pequeños de alto impacto, copiloto de producto, PMF perecedero.
+- **`sistemas-conocimiento`** (2 conceptos) — conocimiento autoorganizado por LLM, expertise de dominio en producto.
+- **`sin-familia`** (1 concepto) — comprehension debt (puente entre velocidad-output y agencia-ia, no clasificada formalmente aún).
 
 ---
 
@@ -327,14 +424,18 @@ Los conceptos más conectados del vault (hubs):
 | Stanford Digital Economy Lab, 2025 (Brynjolfsson et al.) | ia-como-filtro-de-entrada, senal-anticipada-mercado-laboral, automatizacion-vs-ampliacion |
 | McKinsey "Economic potential of generative AI", 2023 | condicion-redespliegue, inversion-sesgo-tecnologico |
 | YC Winter 2025 data + Menlo Ventures | equipos-pequenos-alto-impacto, vibe-coding |
-| Salesforce Agentforce data | agentes-ia |
+| Salesforce Agentforce + Connectivity Report | agentes-ia, web-bifurcada |
 | HBR Feb 2026 | capital-de-contexto |
 | arXiv 2506.12469, U. Washington 2026 | espectro-autonomia-agente |
 | StrongDM case study, 2026 | fabrica-oscura-de-software |
 | Karpathy llm-wiki, abril 2026 | conocimiento-autoorganizado-por-llm |
-| arXiv 2604.13277, 2603.28592; Addy Osmani | pit-stop-cognitivo |
+| arXiv 2604.13277 (Glasgow); Anthropic RCT; Addy Osmani | pit-stop-cognitivo, comprehension-debt |
 | Elena Verna / Lovable case 2026 | pmf-perecedero |
 | Scout interno 2026-04-18 | restriccion-de-tiempo-como-ventaja, copiloto-de-producto |
+| **Martín Alaimo, "La era de los productos agénticos" (2026)** | arnes-del-agente, web-bifurcada, legibilidad-de-maquina, las-tres-caras-del-producto-agentico |
+| **Gianluca Brugnoli, "The checkpoints of the AI User Experience"** | agencia-humana-como-imperativo-ux, arquitectura-de-confianza, de-usuario-a-cliente-servido, ux-checkpoints |
+| Cloudflare blog "Markdown for Agents" (feb 2026); Ben Word | web-bifurcada |
+| Galileo AI, AWS evaluación de agentes, Plausible Analytics | metricas-post-pantalla |
 | Experiencia propia / Wayta IA | disenador-a-constructor, mvp-a-prototipo-en-produccion, usuarios-sinteticos, spec-driven-development |
 
 ---
@@ -343,18 +444,24 @@ Los conceptos más conectados del vault (hubs):
 
 Cuando Luigui comparte este archivo en un chat de Claude.ai:
 
-1. **Para generar presentaciones**: los conceptos son los bloques. Pregunta qué narrativa quiere construir y qué audiencia tiene. La "escalera" validada para charlas: Usuarios Sintéticos → Vibe Coding → Agentes IA.
+1. **Para generar presentaciones**: los conceptos son los bloques. Pregunta qué narrativa quiere construir y qué audiencia tiene. La "escalera" validada para charlas: Usuarios Sintéticos → Vibe Coding → Agentes IA. Para charlas sobre **producto agéntico**: las tres caras → arnés → ux-checkpoints → métricas post-pantalla.
 
 2. **Para profundizar un concepto**: identifica sus ejes de tensión, busca los conceptos relacionados, y usa las correlaciones existentes como puntos de partida.
 
-3. **Para nuevas correlaciones**: busca tensiones no resueltas entre conceptos de distintas categorías. Las mejores correlaciones no son co-ocurrencias — son tensiones productivas.
+3. **Para nuevas correlaciones**: busca tensiones no resueltas entre conceptos de distintas categorías. Las mejores correlaciones no son co-ocurrencias — son tensiones productivas. El clúster `agencia-ia` tiene varias correlaciones implícitas pendientes de documentar (ver sección "Correlaciones implícitas pendientes").
 
-4. **Para propuestas**: los conceptos más persuasivos para audiencias de liderazgo son: claridad-antes-de-velocidad, feedback-que-escala, quien-controla-el-prompt, expertise-de-dominio-en-producto, capital-de-contexto.
+4. **Para propuestas**: los conceptos más persuasivos para audiencias de liderazgo son: claridad-antes-de-velocidad, feedback-que-escala, quien-controla-el-prompt, expertise-de-dominio-en-producto, capital-de-contexto, comprehension-debt.
 
 5. **Para explorar el impacto de la IA en el trabajo**: el clúster ia-como-filtro-de-entrada + inversion-sesgo-tecnologico + senal-anticipada-mercado-laboral + condicion-redespliegue es el más basado en evidencia empírica del vault.
 
-6. **Para explorar agentes y autonomía**: el clúster espectro-autonomia-agente + fabrica-oscura-de-software + capital-de-contexto es el más nuevo y con mayor potencial de entregables.
+6. **Para explorar agentes y autonomía** (clúster operativo más nuevo): espectro-autonomia-agente + arnes-del-agente + fabrica-oscura-de-software + capital-de-contexto + las-tres-caras-del-producto-agentico.
+
+7. **Para explorar UX agéntico y confianza**: agencia-humana-como-imperativo-ux + arquitectura-de-confianza + ux-checkpoints + de-usuario-a-cliente-servido (todos derivados del artículo de Brugnoli).
+
+8. **Para explorar el cambio en producto**: web-bifurcada + legibilidad-de-maquina + las-tres-caras-del-producto-agentico + metricas-post-pantalla. La pregunta clave: ¿el producto existe y es operable en la capa de agentes?
+
+9. **Para explorar deuda y velocidad sostenible**: comprehension-debt + pit-stop-cognitivo + capital-de-contexto. Datos duros: 17% menos comprensión con IA continua (Anthropic RCT, 52 ingenieros).
 
 ---
 
-*Este archivo es un snapshot del vault al 2026-04-18. Para el estado más actualizado, consultar directamente `Conocimiento/ATLAS.md` en el vault.*
+*Este archivo es un snapshot del vault al 2026-04-24. Para el estado más actualizado, consultar directamente `Conocimiento/ATLAS.md` en el vault.*

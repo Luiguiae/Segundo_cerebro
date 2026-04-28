@@ -7,7 +7,7 @@ categoria: filosofia
 fecha: 2026-04-05
 fuente: "Finding Our Way, LIMINAL-1 y LIMINAL-2 — Jesse James Garrett y Peter Merholz"
 fuente_url: "https://findingourway.design/2026/02/27/liminal-2-liminal-mindset-skillset-and-leadership/"
-relacionado: [disenador-a-constructor, claridad-antes-de-velocidad, fundamentales-vs-flux, lo-ilegible-como-senal]
+relacionado: [disenador-a-constructor, claridad-antes-de-velocidad, fundamentales-vs-flux]
 tags: [liderazgo, cambio, incertidumbre, transicion, diseño]
 estado: activo
 ---

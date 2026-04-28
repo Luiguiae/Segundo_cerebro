@@ -68,7 +68,7 @@ Solo estos tags están permitidos. Si un concepto necesita un tag que no está a
 Jarvis debe proponer agregarlo a esta lista antes de usarlo.
 
 ### Dominio
-`ia`, `diseño`, `producto`, `sistemas`, `conocimiento`, `agentes`, `codigo`, `automatizacion`, `estrategia`, `organizacion`, `prompts`, `educacion`, `habilidades`, `herramientas`, `desarrollo`, `escala`, `startups`, `mvp`, `cultura`, `colonialismo`, `descolonizacion`, `trabajo`, `productividad`
+`ia`, `diseño`, `producto`, `sistemas`, `conocimiento`, `agentes`, `codigo`, `automatizacion`, `estrategia`, `organizacion`, `prompts`, `educacion`, `habilidades`, `herramientas`, `desarrollo`, `escala`, `startups`, `mvp`, `cultura`, `colonialismo`, `descolonizacion`, `trabajo`, `productividad`, `mcp`, `infraestructura`, `web`, `ux`
 
 ### Proceso
 `captura`, `indexacion`, `activacion`, `correlacion`, `evaluacion`, `iteracion`, `prototipado`, `construccion`, `research`, `validacion`, `aprendizaje`
@@ -77,10 +77,10 @@ Jarvis debe proponer agregarlo a esta lista antes de usarlo.
 `disenador`, `builder`, `lider`, `equipo`, `latam`, `liderazgo`, `usuarios`, `roles`
 
 ### Temporalidad
-`transicion`, `momentum`, `velocidad`, `largo-plazo`, `ahora`, `cambio`, `transformacion`
+`transicion`, `momentum`, `velocidad`, `largo-plazo`, `ahora`, `cambio`, `transformacion`, `historia`
 
 ### Postura epistémica
-`tension`, `paradoja`, `principio`, `patron`, `hipotesis`, `marco`, `poder`, `incertidumbre`, `fundamentos`, `criterio`
+`tension`, `paradoja`, `principio`, `patron`, `hipotesis`, `marco`, `poder`, `incertidumbre`, `fundamentos`, `criterio`, `confianza`, `transparencia`, `control`, `etica`
 
 ---
 

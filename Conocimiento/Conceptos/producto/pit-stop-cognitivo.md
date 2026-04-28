@@ -1,5 +1,5 @@
 ---
-titulo: pit-stop-cognitivo
+titulo: "Pit stop cognitivo"
 tipo: concepto
 familia: velocidad-output
 categoria: producto

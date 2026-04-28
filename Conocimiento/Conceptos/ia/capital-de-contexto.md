@@ -1,5 +1,5 @@
 ---
-titulo: capital-de-contexto
+titulo: "Capital de contexto"
 tipo: concepto
 familia: epistemologia-practica
 categoria: ia

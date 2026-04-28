@@ -1,0 +1,45 @@
+---
+titulo: ia-sin-ecosistema
+tipo: concepto
+fecha: 2026-04-24
+categoria: organizaciones
+categorias_secundarias: [ia, producto]
+tags: [adopcion-ia, activos-complementarios, ecosistema, estrategia, valor]
+relacionado: [gobernanza-ia-performativa, condicion-redespliegue, las-tres-caras-del-producto-agentico, capital-de-contexto]
+fuentes:
+  - titulo: "Generative AI Won't Create Value on Its Own"
+    url: "https://knowledge.wharton.upenn.edu/article/generative-ai-wont-create-value-on-its-own/"
+    autor: "Rahul Kapoor, Wharton School"
+    fecha_acceso: 2026-04-24
+  - titulo: "AI is everywhere. The agentic organization isn't yet."
+    url: "https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/ai-is-everywhere-the-agentic-organization-isnt-yet"
+    autor: "McKinsey & Company"
+    fecha_acceso: 2026-04-24
+---
+
+# IA sin ecosistema
+
+## El concepto
+
+La IA generativa no falla porque los modelos son insuficientes. Falla porque las organizaciones tratan la tecnología como si el valor viviera en ella, cuando en realidad vive en lo que la rodea. Rahul Kapoor (Wharton, 2026) lo nombra con precisión: toda tecnología de propósito general tiene tres caras para crear valor — emergencia, habilitación, embedding — y la mayoría de las organizaciones solo trabajan la primera. La distinción crítica: una invención es demostrar que la tecnología funciona. Una innovación es convertirla en valor real para clientes y captura sostenible para la empresa. La historia demuestra que muchas organizaciones logran lo primero y fracasan en lo segundo.
+
+## Por qué importa
+
+McKinsey documentó el resultado concreto en 2026: el 80% de las empresas invierten activamente en IA generativa, pero la mayoría no puede mostrar ROI real a sus directorios. La causa no es la calidad de los modelos — es que la IA se está pegando sobre flujos de trabajo diseñados para humanos sin rediseñar nada. Kapoor lo formula como el problema de los **activos complementarios**: la IA requiere infraestructura de datos propia, workflows rediseñados, talento específico y gobernanza real para generar valor. Sin esos complementos, el modelo más capaz sigue siendo económicamente estéril. La pregunta estratégica incorrecta es "¿dónde podemos usar IA?". La correcta es "¿dónde podemos desplegarla compartiendo datos, infraestructura y procesos entre múltiples casos de uso?". La sinergia entre complementos es lo que convierte pilotos en ventaja.
+
+## Datos y evidencia
+
+- **80% de empresas** invierten en IA generativa; la mayoría sin ROI visible para sus boards (McKinsey, 2026)
+- Nokia invirtió fuertemente en I+D móvil y perdió frente a Apple y Google — no por falta de tecnología, sino por no construir el ecosistema (plataformas, desarrolladores, modelo de negocio) que el smartphone requería
+- Kodak inventó la fotografía digital y no pudo sobrevivir el cambio — el problema no fue ignorancia tecnológica, sino incapacidad de adaptar su modelo de negocio y ecosistema
+- Amazon, Google, Netflix no solo adoptaron internet — construyeron modelos de negocio y ecosistemas a su alrededor; el acceso a la tecnología fue condición necesaria, no suficiente
+
+## Tensiones y límites
+
+La tensión más difícil está en el **embedding**: el ecosistema que una organización necesita para crear valor en el corto plazo puede convertirse en quien le captura el margen en el largo plazo. El colaborador de hoy puede ser el competidor de mañana. Esto crea una paradoja de co-creación: necesitas a los socios para escalar, pero escalar con los socios equivocados puede costarte la posición. El límite del concepto: aplica principalmente a organizaciones que ya tienen presencia de mercado y buscan ventaja sostenible. Para startups nativas en IA, el riesgo es inverso — la lentitud en construir complementos es más costosa que la dependencia de socios.
+
+## Ejes investigados
+
+1. Diferencia entre invención e innovación en tecnologías de propósito general (Kapoor/Teece, *Strategy Science*, 2021)
+2. Evidencia empírica del gap adopción-ROI en IA generativa (McKinsey, 2026)
+3. Casos históricos de liderazgo tecnológico sin liderazgo comercial (Nokia, Kodak vs. Amazon, Netflix)

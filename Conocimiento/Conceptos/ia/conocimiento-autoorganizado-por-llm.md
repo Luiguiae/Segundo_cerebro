@@ -1,5 +1,5 @@
 ---
-titulo: conocimiento-autoorganizado-por-llm
+titulo: "Conocimiento autoorganizado por LLM"
 tipo: concepto
 familia: sistemas-conocimiento
 categoria: ia
