@@ -1,6 +1,6 @@
 # Contexto del Segundo Cerebro — Luigui Avila
 
-> Archivo actualizado el 2026-05-11. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
+> Archivo actualizado el 2026-05-11 (sesión 2). Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
 
 ---
 
@@ -29,8 +29,9 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
   - `metacognicion-del-disenador` — la capacidad de observar el propio proceso de razonamiento y articularlo; lo que separa al diseñador con criterio del que ejecuta en piloto automático
   - `ia-sin-ecosistema` — 80% de empresas invierten en IA generativa sin ROI visible porque tratan la tecnología como si el valor viviera en ella, no en los activos complementarios que la rodean
   - `juicio-como-trabajo-completo` — cuando los agentes hacen todo el trabajo preparatorio, el juicio humano se convierte en el trabajo completo; el problema: el juicio se construye ejerciéndolo en tareas de baja complejidad que los agentes ahora hacen primero
-- **Auditoría de mantenimiento completada (2026-05-11):** 6 archivos sin extensión `.md` normalizados; campo prohibido `categoria` eliminado de 30 archivos; títulos slug corregidos; tags fuera de lista controlada normalizados; todo el vault en Gate 0 limpio
-- **Nota técnica:** la sección "por categoría" del ATLAS muestra `sin-categoria` para todos los conceptos porque el script `generar_index.py` aún usa el campo `categoria` (eliminado). La sección "por familia" es la correcta y funciona bien.
+- **Auditoría de mantenimiento completada (2026-05-11):** 6 archivos sin extensión `.md` normalizados; campo prohibido `categoria` eliminado de 30 archivos; títulos slug corregidos; tags fuera de lista controlada normalizados; todo el vault en Gate 0 limpio.
+- **Mejora-006 Fase 1 completada (2026-05-11):** grafo tipado de relaciones implementado. 21 conceptos tienen campo `edges:` en el frontmatter con 28 edges tipados. Tipos usados: `contradicts`, `requires`, `enables`, `refines`, `extends`, `exemplifies`, `same_mechanism_as`. El ATLAS ahora incluye sección "Grafo tipado de relaciones" agrupada por tipo. `generar_index.py` v3 soporta bloques YAML multi-línea y lee edges. `docs/plan-fase1.md` documenta candidatos de edges para los 30 conceptos restantes.
+- **Nota técnica:** la sección "por categoría" del ATLAS fue eliminada en `generar_index.py` v3 (campo `categoria` ya no existe). El ATLAS ahora agrupa solo por familia.
 
 ---
 
@@ -408,24 +409,26 @@ El espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. Del
 
 ---
 
-## Las 14 correlaciones documentadas
+## Las 14 correlaciones documentadas + edges tipados
 
-| Correlación | Insight central |
-|-------------|-----------------|
-| `ia-como-filtro-de-entrada` ↔ `agentes-ia` | Los agentes que reemplazan trabajo de entrada son el mecanismo técnico del filtro |
-| `automatizacion-vs-ampliacion` ↔ `fundamentales-vs-flux` | El modo de impacto correlaciona con el tipo de habilidad (flux vs. fundamental) |
-| `senal-anticipada-mercado-laboral` ↔ `gobernanza-ia-performativa` | Ambos muestran el mismo patrón: las capas visibles de respuesta existen, las funcionales no |
-| `ia-como-filtro-de-entrada` ↔ `disenador-a-constructor` | El filtro hace urgente la transición: quien no evoluciona a constructor cae en la zona de automatización |
-| `claridad-antes-de-velocidad` ↔ `momento-liminal` | En la liminalidad, la claridad no precede al movimiento — se construye mientras se avanza |
-| `fundamentales-vs-flux` ↔ `disenador-a-constructor` | La transición requiere distinguir qué habilidades son fundamentales transferibles y cuáles son flux |
-| `automatizar-mi-propio-trabajo` ↔ `expertise-de-dominio-en-producto` | Automatizar el propio trabajo requiere saber qué partes son de bajo criterio y cuáles requieren expertise irreemplazable |
-| `vibe-coding` ↔ `spec-driven-development` | Vibe coding para explorar el espacio del problema; SDD para ejecutar con precisión lo que esa exploración reveló |
-| `pit-stop-cognitivo` ↔ `confianza-a-traves-de-velocidad` | La pausa que sostiene la velocidad: la velocidad visible para usuarios la habilita la pausa invisible del equipo |
-| `copiloto-de-producto` ↔ `quien-controla-el-prompt` | El mapa y el volante: dos capas de control (táctica y estratégica) que pueden desalinearse |
-| `pit-stop-cognitivo` ↔ `feedback-que-escala` | Lo que el sistema no puede enseñarse a sí mismo: feedback-que-escala codifica errores conocidos; pit-stop detecta lo que el sistema no sabe que tiene |
-| `espectro-autonomia-agente` ↔ `fabrica-oscura-de-software` | El operador que no está: la fábrica oscura es operar como operador sin estar presente, no como observador |
-| `espectro-autonomia-agente` ↔ `capital-de-contexto` | El precio de entrada para cada posición: el capital de contexto determina qué posición de autonomía es seguro ocupar |
-| `fabrica-oscura-de-software` ↔ `capital-de-contexto` | El único activo que queda: la fábrica oscura como stress test del capital de contexto |
+Las correlaciones tienen ahora campo `edges:` en el frontmatter de cada concepto involucrado. El tipo de relación está formalizado; el `why` explica el mecanismo específico.
+
+| Correlación | Tipo | Insight central |
+|-------------|------|-----------------|
+| `vibe-coding` ↔ `spec-driven-development` | `contradicts` | Criterio de done negociado en tiempo real vs fijado antes de ejecutar |
+| `claridad-antes-de-velocidad` ↔ `momento-liminal` | `contradicts` | ¿La claridad precede al conocimiento o emerge de habitar la incertidumbre? |
+| `ia-como-filtro-de-entrada` ↔ `agentes-ia` | `contradicts` | El mismo sistema amplifica a quienes tienen criterio y sustituye a quienes venían a adquirirlo |
+| `ia-como-filtro-de-entrada` ↔ `disenador-a-constructor` | `requires` | El modo constructor requiere la experiencia junior que el filtro elimina del mercado |
+| `disenador-a-constructor` ↔ `fundamentales-vs-flux` | `refines` | La construcción encarna el criterio que permite distinguir fundamental de flux |
+| `automatizar-mi-propio-trabajo` ↔ `expertise-de-dominio-en-producto` | `requires` | Automatizar el propio trabajo revela el expertise que el trabajador no sabía que tenía |
+| `automatizacion-vs-ampliacion` ↔ `fundamentales-vs-flux` | `same_mechanism_as` | Misma línea divisoria: lo amplificable = fundamental; lo automatizable = flux |
+| `senal-anticipada-mercado-laboral` ↔ `gobernanza-ia-performativa` | `same_mechanism_as` | Señal observable + respuesta que gestiona percepción sin modificar el sistema |
+| `copiloto-de-producto` ↔ `quien-controla-el-prompt` | `refines` | Control táctico (prompt inmediato) vs control estratégico (dirección en el tiempo) |
+| `espectro-autonomia-agente` ↔ `capital-de-contexto` | `requires` | El capital determina qué posición en el espectro es sostenible |
+| `espectro-autonomia-agente` ↔ `fabrica-oscura-de-software` | `refines` | La fábrica oscura es la posición más extrema del espectro materializada en una organización |
+| `fabrica-oscura-de-software` ↔ `capital-de-contexto` | `exemplifies` | La fábrica oscura como test de estrés máximo del capital de contexto |
+| `pit-stop-cognitivo` ↔ `confianza-a-traves-de-velocidad` | `enables` | Las pausas invisibles del equipo habilitan la velocidad visible para el usuario |
+| `pit-stop-cognitivo` ↔ `feedback-que-escala` | `extends` | El pit-stop extiende el feedback al estado cognitivo del equipo — lo que los loops de output no detectan |
 
 **Correlaciones implícitas pendientes de documentar:**
 - `sycophancy-como-riesgo-de-diseno` ↔ `espiral-delusional` — causa (arquitectura RLHF) y efecto (espiral cognitiva) del mismo mecanismo
@@ -532,6 +535,8 @@ Cuando Luigui comparte este archivo en un chat de Claude.ai:
 
 11. **Para explorar el futuro del trabajo y formación de criterio**: juicio-como-trabajo-completo + ia-como-filtro-de-entrada + ia-sin-ecosistema + condicion-redespliegue. La pregunta: ¿qué se pierde cuando los agentes hacen el trabajo de entrada?
 
+12. **Para navegar por tipo de relación** (usando los edges tipados): el ATLAS tiene sección "Grafo tipado de relaciones". Los tipos más ricos del vault: `contradicts` (tensiones irresolubles), `requires` (dependencias estructurales), `enables` (habilitadores). Los edges con `why` de 30+ palabras en el frontmatter de cada concepto explican el mecanismo específico, no solo la co-ocurrencia.
+
 ---
 
-*Este archivo es un snapshot del vault al 2026-05-11. Para el estado más actualizado, consultar directamente `Conocimiento/ATLAS.md` en el vault.*
+*Este archivo es un snapshot del vault al 2026-05-11 (sesión 2, post mejora-006 Fase 1). Para el estado más actualizado, consultar directamente `Conocimiento/ATLAS.md` en el vault.*
