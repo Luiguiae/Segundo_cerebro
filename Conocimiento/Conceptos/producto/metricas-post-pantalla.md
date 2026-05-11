@@ -2,7 +2,6 @@
 titulo: "Métricas post-pantalla"
 tipo: concepto
 fecha: 2026-04-20
-categoria: producto
 familia: agencia-ia
 estado: activo
 tags: [producto, evaluacion, agentes, ia, criterio]

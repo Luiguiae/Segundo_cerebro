@@ -1,11 +1,11 @@
 ---
-titulo: juicio-como-trabajo-completo
+titulo: "El juicio como trabajo completo"
 tipo: concepto
+familia: transicion-ia
+tags: [ia, roles, transicion, organizacion, trabajo]
+relacionado: [ia-como-filtro-de-entrada, condicion-redespliegue, automatizar-mi-propio-trabajo]
 fecha: 2026-04-24
-categoria: organizaciones
-categorias_secundarias: [economia]
-tags: [juicio, agentes-ia, roles, formacion, mercado-laboral]
-relacionado: [ia-como-filtro-de-entrada, condicion-redespliegue, automatizar-mi-propio-trabajo, espectro-autonomia-agente]
+estado: activo
 fuentes:
   - titulo: "AI is everywhere. The agentic organization isn't yet."
     url: "https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/ai-is-everywhere-the-agentic-organization-isnt-yet"

@@ -2,7 +2,6 @@
 titulo: "Comprehension debt"
 tipo: concepto
 fecha: 2026-04-22
-categoria: ia
 familia: velocidad-output
 estado: activo
 tags: [ia, velocidad, conocimiento, equipo, criterio]

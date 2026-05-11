@@ -2,7 +2,6 @@
 titulo: "UX Checkpoints"
 tipo: concepto
 fecha: 2026-04-21
-categoria: diseno
 familia: agencia-ia
 estado: activo
 tags: [diseño, ux, agentes, confianza, control]

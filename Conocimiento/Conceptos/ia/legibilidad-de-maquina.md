@@ -2,7 +2,6 @@
 titulo: "Legibilidad de máquina"
 tipo: concepto
 fecha: 2026-04-20
-categoria: ia
 familia: agencia-ia
 estado: activo
 tags: [agentes, ia, producto, estrategia, sistemas]

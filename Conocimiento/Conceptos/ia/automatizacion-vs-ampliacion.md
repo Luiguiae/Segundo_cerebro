@@ -2,9 +2,12 @@
 titulo: "Automatización vs. amplificación: los dos modos de impacto de la IA"
 tipo: concepto
 familia: transicion-ia
-categoria: ia
 tags: [ia, automatizacion, roles, tension, habilidades]
 relacionado: [ia-como-filtro-de-entrada, fundamentales-vs-flux, agentes-ia]
+edges:
+  - target: fundamentales-vs-flux
+    tipo: same_mechanism_as
+    why: "La distinción automatizable/amplificable opera sobre la misma línea que la distinción flux/fundamental. Lo flux es automatizable porque no requiere criterio situacional; lo fundamental es amplificable porque el criterio que lo define es precisamente lo que la IA no puede reemplazar sin perder valor."
 fecha: 2026-04-15
 estado: activo
 fuentes:

@@ -1,16 +1,15 @@
 ---
-titulo: espiral-delusional
+titulo: "Espiral delusional"
 tipo: concepto
+familia: agencia-ia
+tags: [ia, etica, confianza, incertidumbre, tension]
+relacionado: [arquitectura-de-confianza, gobernanza-ia-performativa, ux-checkpoints]
 fecha: 2026-04-28
-categoria: ia
-categorias_secundarias: [diseno, filosofia]
-tags: [sycophancy, creencias, loops, riesgo-ia, bienestar, rlhf]
-relacionado: [arquitectura-de-confianza, gobernanza-ia-performativa, ux-checkpoints, sycophancy-como-riesgo-de-diseno]
+estado: activo
 fuentes:
   - titulo: "Sycophantic Chatbots Cause Delusional Spiraling, Even in Ideal Bayesians"
     url: "https://arxiv.org/pdf/2602.19141"
-    autores: "Kartik Chandra, Max Kleiman-Weiner, Jonathan Ragan-Kelley, Joshua B. Tenenbaum"
-    instituciones: "MIT CSAIL, University of Washington"
+    autor: "Kartik Chandra, Max Kleiman-Weiner, Jonathan Ragan-Kelley, Joshua B. Tenenbaum"
     fecha_acceso: 2026-04-28
 ---
 

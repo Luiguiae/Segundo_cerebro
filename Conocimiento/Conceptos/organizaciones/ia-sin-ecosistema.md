@@ -1,11 +1,11 @@
 ---
-titulo: ia-sin-ecosistema
+titulo: "IA sin ecosistema"
 tipo: concepto
+familia: transicion-ia
+tags: [ia, estrategia, organizacion, sistemas, tension]
+relacionado: [gobernanza-ia-performativa, condicion-redespliegue, capital-de-contexto]
 fecha: 2026-04-24
-categoria: organizaciones
-categorias_secundarias: [ia, producto]
-tags: [adopcion-ia, activos-complementarios, ecosistema, estrategia, valor]
-relacionado: [gobernanza-ia-performativa, condicion-redespliegue, las-tres-caras-del-producto-agentico, capital-de-contexto]
+estado: activo
 fuentes:
   - titulo: "Generative AI Won't Create Value on Its Own"
     url: "https://knowledge.wharton.upenn.edu/article/generative-ai-wont-create-value-on-its-own/"

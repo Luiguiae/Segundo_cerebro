@@ -1,10 +1,11 @@
 ---
-titulo: el-moat-del-gusto
+titulo: "El moat del gusto"
 tipo: concepto
+familia: transicion-ia
+tags: [ia, diseño, criterio, estrategia, transicion]
+relacionado: [fundamentales-vs-flux, disenador-a-constructor, quien-controla-el-prompt]
 fecha: 2026-04-24
-categoria: diseno
-tags: [gusto, agencia, criterio, ia, diferenciacion]
-relacionado: [fundamentales-vs-flux, disenador-a-constructor, quien-controla-el-prompt, arquitectura-de-inteligencia]
+estado: activo
 fuentes:
   - titulo: "Steal these 30 design ideas for 2026"
     url: "https://adplist.substack.com/p/steal-these-30-design-ideas-for-2026"

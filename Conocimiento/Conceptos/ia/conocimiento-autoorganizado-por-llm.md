@@ -2,7 +2,6 @@
 titulo: "Conocimiento autoorganizado por LLM"
 tipo: concepto
 familia: sistemas-conocimiento
-categoria: ia
 fecha: 2026-04-18
 tags: [ia, conocimiento, sistemas, agentes, tension]
 relacionado: [arquitectura-de-inteligencia, automatizar-mi-propio-trabajo, agentes-ia]

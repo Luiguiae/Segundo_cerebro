@@ -2,9 +2,12 @@
 titulo: "Señal anticipada en el mercado laboral"
 tipo: concepto
 familia: transicion-ia
-categoria: economia
 tags: [ia, transicion, patron, cambio, roles]
 relacionado: [ia-como-filtro-de-entrada, momento-liminal, gobernanza-ia-performativa]
+edges:
+  - target: gobernanza-ia-performativa
+    tipo: same_mechanism_as
+    why: "Ambos documentan la misma estructura de falla institucional: señal observable de impacto sistémico seguida de respuesta que gestiona la percepción del riesgo sin modificar el sistema que lo genera. senal-anticipada-mercado-laboral muestra la señal; gobernanza-ia-performativa muestra el mecanismo de respuesta que la absorbe sin procesarla."
 fecha: 2026-04-15
 estado: activo
 fuentes:

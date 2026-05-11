@@ -2,7 +2,6 @@
 titulo: "La inversión del sesgo tecnológico"
 tipo: concepto
 familia: transicion-ia
-categoria: economia
 tags: [ia, automatizacion, educacion, habilidades, transicion]
 relacionado: [ia-como-filtro-de-entrada, automatizacion-vs-ampliacion, fundamentales-vs-flux]
 fecha: 2026-04-16

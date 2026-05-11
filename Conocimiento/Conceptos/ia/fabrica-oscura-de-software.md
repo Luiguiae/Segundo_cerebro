@@ -1,11 +1,17 @@
 ---
-titulo: fabrica-oscura-de-software
+titulo: "La fábrica oscura de software"
 tipo: concepto
 familia: agencia-ia
-categoria: ia
 fecha: 2026-04-18
 tags: [ia, agentes, codigo, automatizacion, criterio]
 relacionado: [spec-driven-development, agentes-ia, automatizacion-vs-ampliacion]
+edges:
+  - target: espectro-autonomia-agente
+    tipo: exemplifies
+    why: "La fábrica oscura de software es la forma más concreta y visible de una posición extrema en el espectro de autonomía: el operador no está presente pero el sistema opera. Ejemplifica el espectro al mostrar qué aspecto tiene la posición más autónoma en la práctica organizacional real, incluyendo los riesgos específicos que genera."
+  - target: capital-de-contexto
+    tipo: exemplifies
+    why: "La fábrica oscura de software es la prueba más exigente del capital de contexto: el sistema funciona sin supervisión humana continua porque el capital ha sido acumulado y codificado con suficiente densidad. Ejemplifica el concepto al mostrar el umbral mínimo de capital que se necesita — y lo que ocurre cuando no se alcanza."
 estado: activo
 fuentes:
   - titulo: "How StrongDM's AI team builds serious software without even looking at the code – Simon Willison"

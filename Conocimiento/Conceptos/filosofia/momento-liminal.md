@@ -1,44 +1,35 @@
 ---
-titulo: El momento liminal
-slug: momento-liminal
+titulo: "El momento liminal"
 tipo: concepto
 familia: transicion-ia
-categoria: filosofia
-fecha: 2026-04-05
-fuente: "Finding Our Way, LIMINAL-1 y LIMINAL-2 — Jesse James Garrett y Peter Merholz"
-fuente_url: "https://findingourway.design/2026/02/27/liminal-2-liminal-mindset-skillset-and-leadership/"
-relacionado: [disenador-a-constructor, claridad-antes-de-velocidad, fundamentales-vs-flux]
 tags: [liderazgo, cambio, incertidumbre, transicion, diseño]
+relacionado: [disenador-a-constructor, claridad-antes-de-velocidad, fundamentales-vs-flux]
+edges:
+  - target: claridad-antes-de-velocidad
+    tipo: contradicts
+    why: "momento-liminal propone que el umbral es productivo precisamente porque no tiene orientación fija; claridad-antes-de-velocidad trata la falta de orientación como obstáculo que debe resolverse antes de actuar. La tensión determina si la ambigüedad se gestiona como condición productiva o como falla operativa."
+fecha: 2026-04-05
 estado: activo
+fuentes:
+  - titulo: "Finding Our Way, LIMINAL-1 y LIMINAL-2 — Jesse James Garrett y Peter Merholz"
+    url: "https://findingourway.design/2026/02/27/liminal-2-liminal-mindset-skillset-and-leadership/"
+    fecha_acceso: 2026-04-05
 ---
 
-# El momento liminal
+## El concepto
 
 Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni una transformación — es el umbral entre ambas. El término viene de la antropología: *limen* es el dintel de la puerta, el punto exacto donde ya saliste de un cuarto pero todavía no entraste al siguiente.
 
-En ese espacio, las reglas del cuarto anterior no aplican, pero las del siguiente todavía no existen. Quien intenta operar con el mapa antiguo se pierde. Quien espera que el nuevo mapa aparezca solo, también.
+En ese espacio, las reglas del cuarto anterior no aplican, pero las del siguiente todavía no existen. Quien intenta operar con el mapa antiguo se pierde. Quien espera que el nuevo mapa aparezca solo, también. Lo que distingue a quien navega bien la liminalidad no es tener las respuestas — es el mindset: conciencia situacional continua, capacidad de operar en loops de feedback apretados, y principios propios lo suficientemente sólidos como para tomar decisiones con datos imperfectos. No rigidez. No deriva. Equilibrio dinámico.
 
-Lo que distingue a quien navega bien la liminalidad no es tener las respuestas — es el mindset: conciencia situacional continua, capacidad de operar en loops de feedback apretados, y principios propios lo suficientemente sólidos como para tomar decisiones con datos imperfectos. No rigidez. No deriva. Equilibrio dinámico.
+## Por qué importa
 
-## La provocación
+La llegada de la IA generativa al trabajo de diseño y producto es un momento liminal de primer orden. Las prácticas establecidas — wireframes, handoffs, roles separados, investigación previa a construcción — no han desaparecido, pero su utilidad relativa está en flux. Las nuevas prácticas todavía no tienen nombre ni consenso.
 
-> Si crees que ya sabes adónde vas, probablemente no estás en el momento liminal correcto — estás ejecutando el plan anterior con otro nombre.
+Quien espera que el polvo se asiente para decidir qué hacer llega tarde. Quien actúa como si nada hubiera cambiado, también. Nombrar explícitamente que un equipo está en un momento liminal reduce la ansiedad y da marco a la incomodidad: no es que algo esté roto — es que están en el umbral.
 
-El indicador de que estás navegando bien la liminalidad no es la certeza. Es la incomodidad productiva: sentir que el terreno se mueve y seguir avanzando de todas formas.
+## Tensiones y límites
 
-## Por qué importa ahora
+El indicador de que estás navegando bien la liminalidad no es la certeza — es la incomodidad productiva: sentir que el terreno se mueve y seguir avanzando. Si crees que ya sabes adónde vas, probablemente estás ejecutando el plan anterior con otro nombre.
 
-La llegada de la IA generativa al trabajo de diseño y producto es un momento liminal de primer orden. Las prácticas establecidas — wireframes, handoffs, roles separados de diseño/desarrollo, investigación previa a construcción — no han desaparecido, pero su utilidad relativa está en flux. Las nuevas prácticas todavía no tienen nombre ni consenso.
-
-Quien espera que el polvo se asiente para decidir qué hacer, llega tarde. Quien actúa como si nada hubiera cambiado, también.
-
-## Aplicaciones
-
-- **Para equipos en transición hacia IA:** nombrar explícitamente que están en un momento liminal reduce la ansiedad y da marco a la incomodidad. No es que algo esté roto — es que están en el umbral.
-- **Para propuestas internas:** un momento liminal bien articulado es argumento para experimentar sin esperar permiso. La organización que espera certeza antes de moverse pierde el umbral.
-- **Para desarrollo personal:** la transición de diseñador a constructor es liminal por definición. El diseñador que aprende a construir no sabe todavía qué tipo de constructor es — y esa ambigüedad es parte del proceso, no un error.
-
-## Conceptos relacionados
-
-- [[disenador-a-constructor]] — la trayectoria de diseñador a constructor *es* un recorrido liminal: ya no eres solo diseñador, todavía no eres plenamente constructor
-- [[claridad-antes-de-velocidad]] — en la liminalidad, la claridad no precede al movimiento: se construye mientras se avanza
+La organización que espera certeza antes de moverse pierde el umbral. Pero actuar en la liminalidad sin principios propios produce deriva, no adaptación.

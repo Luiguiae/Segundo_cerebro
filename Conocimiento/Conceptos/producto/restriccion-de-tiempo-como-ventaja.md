@@ -2,7 +2,6 @@
 titulo: "Restricción de tiempo como ventaja"
 tipo: concepto
 familia: velocidad-output
-categoria: producto
 fecha: 2026-04-18
 tags: [velocidad, criterio, ia, equipo, producto]
 relacionado: [claridad-antes-de-velocidad, mvp-a-prototipo-en-produccion, vibe-coding]

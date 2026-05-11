@@ -2,9 +2,15 @@
 titulo: "IA como filtro de entrada al mercado laboral"
 tipo: concepto
 familia: transicion-ia
-categoria: economia
 tags: [ia, automatizacion, transicion, habilidades, roles]
 relacionado: [disenador-a-constructor, momento-liminal, fundamentales-vs-flux]
+edges:
+  - target: agentes-ia
+    tipo: contradicts
+    why: "El mismo sistema de IA tiene efectos estructuralmente opuestos según la posición del actor: ia-como-filtro-de-entrada documenta que cierra el acceso a posiciones junior; agentes-ia documenta que amplifica el alcance de operadores con criterio. Multiplica a quienes ya tienen criterio y sustituye a quienes venían a adquirirlo."
+  - target: disenador-a-constructor
+    tipo: requires
+    why: "El diseñador-constructor presupone un actor con criterio para evaluar lo que construye. ia-como-filtro-de-entrada muestra que el filtro está cerrando el camino formativo por el que ese criterio se adquiría históricamente. La transición al modo constructor requiere la experiencia junior que el filtro elimina del mercado."
 fecha: 2026-04-15
 estado: activo
 fuentes:

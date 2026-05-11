@@ -108,11 +108,21 @@ Cuando Luigui diga `"Jarvis, cierra la sesión"` o `"Jarvis, guarda sesión"`:
 
 5. **No inventas conceptos relacionados.** El campo `relacionado` solo puede apuntar a slugs que existen como archivos `.md` en alguna subcarpeta de `Conocimiento/Conceptos/`. Verifica con `find Conocimiento/Conceptos/ -name "[slug].md"` antes de escribir.
 
-6. **Los conceptos viven en subcarpetas.** Al crear un concepto nuevo, determina su `categoria` según el criterio de `taxonomia.md` y guárdalo en la subcarpeta correspondiente (`ia/`, `diseno/`, `producto/`, `organizaciones/`, `economia/`, `filosofia/`). Si ninguna aplica y la temática es suficientemente amplia, propón nueva carpeta en el log antes de crearla.
+6. **Los conceptos viven en subcarpetas.** Al crear un concepto nuevo, determina su `familia` según `taxonomia.md` para el frontmatter, y su subcarpeta destino según la categoría temática del concepto (`ia/`, `diseno/`, `producto/`, `organizaciones/`, `economia/`, `filosofia/`). Si ninguna aplica y la temática es suficientemente amplia, propón nueva carpeta en el log antes de crearla.
 
-7. **No modificas `taxonomia.md` ni `rubrica.md`.** Esos archivos solo los edita Luigui. Si necesitas un tag nuevo, lo propones en el log como `[PROPUESTA]` y esperas confirmación.
+7. **No modificas `taxonomia.md` ni `rubrica.md` por iniciativa propia.** Solo los editas cuando Luigui lo solicita explícitamente. Si necesitas un tag nuevo, lo propones en el log como `[PROPUESTA]` y esperas confirmación.
 
 8. **No sobrescribes sin avisar.** Si el archivo que vas a crear ya existe, detente y reporta: nombre del archivo existente, fecha de última modificación, y qué haría la versión nueva diferente.
+
+9. **Gate 0 — Estructura antes de la rúbrica.** Antes de evaluar contenido, todo concepto debe pasar un check estructural contra la plantilla canónica de `taxonomia.md`. Gate 0 falla si:
+   - Faltan campos requeridos: `titulo`, `tipo`, `familia`, `tags`, `relacionado`, `fecha`, `estado`
+   - Están presentes campos prohibidos: `alias`, `proyectos`, `slug`, `categoria`, `fuente` (string u objeto)
+   - `tags` tiene más de 5 items
+   - `relacionado` tiene más de 3 items, o apunta a slugs que no existen
+   - El cuerpo no contiene las tres secciones obligatorias: `## El concepto`, `## Por qué importa`, `## Tensiones y límites`
+
+   **Al crear:** si Gate 0 falla, corrige la estructura antes de continuar con la rúbrica.
+   **Al auditar:** si Gate 0 falla en un archivo existente, normalízalo y registra el cambio en log.
 
 ---
 
@@ -125,11 +135,12 @@ Luigui te invoca con `claude "Jarvis, [instrucción]"` desde la raíz del Segund
 Jarvis, agrega el concepto [nombre] sobre [descripción breve]
 ```
 1. Verifica que no existe en ninguna subcarpeta de `Conceptos/`
-2. Determina la `categoria` canónica según el criterio de `taxonomia.md`
-3. Genera el archivo siguiendo `taxonomia.md` (incluye campo `categoria`)
-4. Aplica rúbrica Gate 1 + Gate 2 (concepto)
-5. Si aprueba: escribe en `Conceptos/[categoria]/`, regenera ATLAS, registra en log
-6. Si rechaza: reporta en log, no escribe nada
+2. Determina la `familia` y subcarpeta destino según `taxonomia.md`
+3. Genera el archivo siguiendo la **plantilla canónica** de `taxonomia.md`
+4. Aplica **Gate 0 — Estructura** (Regla 9). Si falla, corrige antes de continuar.
+5. Aplica rúbrica Gate 1 + Gate 2 (concepto)
+6. Si aprueba: escribe en `Conceptos/[subcarpeta]/`, regenera ATLAS, registra en log
+7. Si rechaza: reporta en log, no escribe nada
 
 ### Correlacionar conceptos
 ```
@@ -146,13 +157,14 @@ Jarvis, correlaciona [concepto-a] y [concepto-b]
 Jarvis, audita el vault
 ```
 1. Lee todos los archivos en `Conceptos/` (todas las subcarpetas) y `Correlaciones/`
-2. Evalúa cada uno contra la rúbrica
-3. Genera un reporte en `JARVIS_LOG.md` con:
+2. Aplica **Gate 0 — Estructura** (Regla 9) a cada concepto. Si falla, normaliza el archivo antes de evaluar contenido y registra el cambio en log.
+3. Evalúa cada uno contra la rúbrica
+4. Genera un reporte en `JARVIS_LOG.md` con:
    - Archivos que aprueban (estado `activo`)
    - Archivos con advertencias (propone mejoras)
    - Archivos que fallan (propone qué editar)
-4. Actualiza el campo `estado` en el frontmatter de cada archivo según el resultado
-5. Regenera ATLAS
+5. Actualiza el campo `estado` en el frontmatter de cada archivo según el resultado
+6. Regenera ATLAS
 
 ### Actualizar ATLAS
 ```
@@ -174,9 +186,10 @@ Jarvis, procesa esta fuente: [URL o texto]
 Jarvis, extrae conceptos de [nombre-fuente]
 ```
 1. Lee el archivo de fuente en `Conocimiento/Fuentes/`
-2. Por cada candidato en `## Conceptos a extraer`, genera el concepto atómico completo
-3. Aplica rúbrica a cada uno
-4. Escribe los que aprueban en su subcarpeta correspondiente, reporta los que no
+2. Por cada candidato en `## Conceptos a extraer`, genera el concepto atómico completo siguiendo la plantilla canónica de `taxonomia.md`
+3. Aplica **Gate 0 — Estructura** (Regla 9). Si falla, corrige antes de continuar.
+4. Aplica rúbrica a cada uno
+5. Escribe los que aprueban en su subcarpeta correspondiente, reporta los que no
 
 ### Cerrar sesión
 ```

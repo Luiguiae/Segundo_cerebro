@@ -2,10 +2,16 @@
 titulo: "Capital de contexto"
 tipo: concepto
 familia: epistemologia-practica
-categoria: ia
 fecha: 2026-04-18
 tags: [ia, conocimiento, prompts, estrategia, criterio]
 relacionado: [quien-controla-el-prompt, feedback-que-escala, arquitectura-de-inteligencia]
+edges:
+  - target: espectro-autonomia-agente
+    tipo: requires
+    why: "El capital de contexto determina qué posición en el espectro de autonomía del agente es sostenible. La misma posición de observer que es segura con alto capital se vuelve riesgosa con capital bajo: sin modelos mentales acumulados sobre el dominio, no hay capacidad real de evaluar si el agente opera correctamente."
+  - target: fabrica-oscura-de-software
+    tipo: requires
+    why: "La fábrica oscura de software es sostenible solo si el capital de contexto ha sido suficientemente acumulado y codificado para que el sistema funcione sin supervisión continua. El capital no es un prerequisito opcional: es la condición que distingue la fábrica oscura funcional del abandono de control con consecuencias catastróficas."
 estado: activo
 fuentes:
   - titulo: "An AI state of the union: hoarding pattern – Simon Willison, Lenny's Podcast"

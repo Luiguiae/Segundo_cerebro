@@ -2,10 +2,13 @@
 titulo: "Copiloto de producto"
 tipo: concepto
 familia: equipos-impacto
-categoria: producto
 fecha: 2026-04-18
 tags: [roles, producto, ia, agentes, equipo]
 relacionado: [quien-controla-el-prompt, disenador-a-constructor, equipos-pequenos-alto-impacto]
+edges:
+  - target: quien-controla-el-prompt
+    tipo: refines
+    why: "quien-controla-el-prompt opera en la capa táctica: quién formula la instrucción inmediata al modelo en un momento dado. copiloto-de-producto opera en la capa estratégica: quién mantiene la orientación del producto en el tiempo. El copiloto refina el concepto de control añadiendo la dimensión temporal y organizacional que la pregunta táctica no resuelve."
 estado: activo
 fuentes:
   - titulo: "Dev Racing"

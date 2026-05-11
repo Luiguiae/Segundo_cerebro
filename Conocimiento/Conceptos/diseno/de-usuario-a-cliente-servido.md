@@ -2,7 +2,6 @@
 titulo: "De usuario a cliente servido"
 tipo: concepto
 fecha: 2026-04-21
-categoria: diseno
 familia: transicion-ia
 estado: activo
 tags: [diseño, ux, agentes, roles, historia]

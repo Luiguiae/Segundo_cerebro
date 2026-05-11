@@ -2,6 +2,106 @@
 
 ---
 
+### 2026-05-11 — FASE 1: PLAN GRAFO DE CONOCIMIENTO (mejora-006)
+
+**Instrucción:** "Lee el archivo adjunto y ejecuta la Fase 1 completa: genera docs/plan-fase1.md"
+
+**Acciones:**
+- Creado `docs/` (directorio nuevo)
+- Generado `docs/plan-fase1.md` con plan completo para mejora-006-evolucion-grafo-conocimiento
+- Leídos los 14 archivos de `Correlaciones/` para draft de edges
+- Mapeado el campo `relacionado:` de los 51 conceptos para candidatos
+
+**Resultados:**
+- Sección A: 21 conceptos con edges drafted (28 edges en total, basados en correlaciones documentadas)
+- Sección B: 30 conceptos con edges candidatos (~80 edges propuestos desde `relacionado:`)
+- `ia/impuesto-de-verificacion`: campo `relacionado:` vacío — 2 candidatos manuales propuestos + nota de actualizar relacionado
+- Ningún concepto modificado — plan en espera de revisión
+
+**ATLAS regenerado:** no — sin cambios en Conceptos/
+
+---
+
+### 2026-05-11 — AUDITORÍA COMPLETA DEL VAULT (51 conceptos)
+
+**Instrucción:** "Evalúa el segundo cerebro"
+
+**Gate 0 — Violaciones detectadas y corregidas:**
+
+1. **6 archivos sin extensión `.md`** — renombrados y normalizados:
+   - `diseno/el-moat-del-gusto` → `.md` | familia: transicion-ia | tags: [ia, diseño, criterio, estrategia, transicion]
+   - `diseno/metacognicion-del-disenador` → `.md` | familia: epistemologia-practica | tags: [diseño, criterio, aprendizaje, marco, ia]
+   - `diseno/sycophancy-como-riesgo-de-diseno` → `.md` | familia: agencia-ia | tags: [ia, diseño, etica, confianza, criterio]
+   - `ia/espiral-delusional` → `.md` | familia: agencia-ia | tags: [ia, etica, confianza, incertidumbre, tension]
+   - `organizaciones/ia-sin-ecosistema` → `.md` | familia: transicion-ia | tags: [ia, estrategia, organizacion, sistemas, tension]
+   - `organizaciones/juicio-como-trabajo-completo` → `.md` | familia: transicion-ia | tags: [ia, roles, transicion, organizacion, trabajo]
+   - Todos tenían: `categoria` (prohibido), `categorias_secundarias` (prohibido), título=slug (inválido), `relacionado` > 3 items, tags fuera de lista controlada, sin `familia`, sin `estado`
+
+2. **Campo `categoria` prohibido** — eliminado de 24 archivos `.md` adicionales (batch)
+
+3. **Campo `categorias_secundarias`** — eliminado de los 6 archivos renombrados
+
+4. **Títulos slug** — corregidos en 2 archivos `.md`:
+   - `ia/espectro-autonomia-agente.md`: `espectro-autonomia-agente` → `"Espectro de autonomía del agente"`
+   - `ia/fabrica-oscura-de-software.md`: `fabrica-oscura-de-software` → `"La fábrica oscura de software"`
+
+5. **Tags fuera de lista controlada** — corregidos en 3 archivos `.md`:
+   - `ia/agentes-ia.md`: `equipos` → `equipo`
+   - `organizaciones/equipos-pequenos-alto-impacto.md`: `equipos` → `equipo`
+   - `ia/impuesto-de-verificacion.md`: `[organizaciones, productividad, cognicion, supervision]` → `[organizacion, criterio, trabajo, control]`
+
+**Advertencias (no bloqueantes):**
+- `ia/arnes-del-agente.md` y `ia/legibilidad-de-maquina.md`: fuente "La era de los productos agénticos" (Martín Alaimo) sin URL — posible libro o recurso sin acceso público
+
+**Archivos que aprueban Gate 0 + rúbrica:** 51 (`activo`)
+**Archivos rechazados:** 0
+
+**ATLAS regenerado:** sí — 51 conceptos procesados (antes: 45 .md + 6 sin extensión = misma base, ahora todos validados)
+
+---
+
+### 2026-04-28 — NORMALIZACIÓN Gen-3/4 (21 conceptos)
+
+**Instrucción:** "normaliza a Gen-3/4"
+
+**Acciones:**
+- Reescritura completa de frontmatter: eliminados `alias`, `proyectos`, `slug`, `categoria`, `fuente` (string/objeto); añadidos `familia` y `estado` donde faltaban; `fuente` → `fuentes` array
+- Normalización de cuerpo: secciones Gen-1 (¿Qué es?, ¿Cómo funciona?, Ejemplos, Se conecta con..., Citas, Mis notas) y Gen-2 (narrativo) reescritas como `## El concepto` / `## Por qué importa` / `## Tensiones y límites`
+- Contenido sustantivo preservado íntegramente; secciones "Mis notas" y citas absorbidas en los cuerpos sin sección separada
+- `relacionado` verificado contra slugs existentes; trimado a máx 3 en todos los casos
+- `tags` trimados a máx 5 donde excedían el límite
+
+**Archivos normalizados (21):**
+- `diseno/disenador-a-constructor.md` — Gen-1 → Gen-3 ✓
+- `diseno/diseno-uxui-y-ia.md` — Gen-1 → Gen-3 ✓
+- `diseno/diseno-dos-velocidades.md` — Gen-2 → Gen-3 ✓
+- `diseno/fundamentales-vs-flux.md` — Gen-2 → Gen-3 ✓
+- `diseno/quien-controla-el-prompt.md` — Gen-2 → Gen-3 ✓
+- `ia/agentes-ia.md` — Gen-1 → Gen-3 ✓
+- `ia/spec-driven-development.md` — Gen-1 → Gen-3 ✓
+- `ia/vibe-coding.md` — Gen-1 → Gen-3 ✓
+- `ia/usuarios-sinteticos.md` — Gen-1 → Gen-3 ✓
+- `ia/gobernanza-ia-performativa.md` — mixed → Gen-3 ✓
+- `ia/impuesto-de-verificacion.md` — frontmatter patch: `familia`, `estado`, `titulo`, `relacionado` (5→3), `tags` (6→5) ✓
+- `filosofia/lo-ilegible-como-senal.md` — Gen-2 → Gen-3 ✓
+- `filosofia/momento-liminal.md` — Gen-2 → Gen-3 ✓
+- `filosofia/arquitectura-de-inteligencia.md` — mixed → Gen-3 ✓
+- `organizaciones/equipos-pequenos-alto-impacto.md` — Gen-1 → Gen-3 ✓
+- `organizaciones/automatizar-mi-propio-trabajo.md` — Gen-2 → Gen-3 ✓
+- `producto/mvp-a-prototipo-en-produccion.md` — Gen-1 → Gen-3 ✓
+- `producto/claridad-antes-de-velocidad.md` — mixed → Gen-3 ✓
+- `producto/confianza-a-traves-de-velocidad.md` — Gen-2 → Gen-3 ✓
+- `producto/feedback-que-escala.md` — Gen-2 → Gen-3 ✓
+- `producto/expertise-de-dominio-en-producto.md` — Gen-2 → Gen-3 ✓
+
+**Resultados:**
+- 21 archivos: OK — normalizados a Gen-3/4
+- 0 archivos rechazados
+
+**ATLAS regenerado:** sí — 45 conceptos procesados
+
+---
+
 ### 2026-04-28 — AUDITORÍA COMPLETA (44 conceptos)
 
 **Instrucción:** "audita los conceptos atómicos, evalúalos, realiza las actualizaciones necesarias en index, atlas"
@@ -1237,3 +1337,31 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-04-28 16:23 — ACCION
 **Instrucción:** puedes hacer git push
 **Resultado:** El repositorio ya estaba sincronizado con el remoto — no había commits pendientes por enviar.
+
+## 2026-04-28 16:36 — RAZONAMIENTO
+**Instrucción:** evalúa el nuevo concepto
+**Resultado:** No pude responder en este momento.
+
+## 2026-04-28 16:36 — ACCION
+**Instrucción:** usted es un nuevo concepto en la carpeta de
+**Resultado:** La instrucción de voz quedó incompleta — falta el nombre del concepto y la carpeta destino. ¿Puede repetir la instrucción completa?
+
+## 2026-04-28 16:39 — ACCION
+**Instrucción:** verifica los conceptos nuevos dentro de la carpeta ia
+**Resultado:** No se pudo escribir el log por falta de permiso. Aquí el reporte de la auditoría: El contenido es de excelente calidad y pasa Gate 2 con 4/4, pero el frontmatter tiene 4 fallos de Gate 1: le falta `familia` y `estado`, el `titulo` usa el slug en lugar de un nombre legible, los tags `cognicion`, `supervision` y `organizaciones` no están en la lista controlada, y el campo `relacionado` tiene 5 slugs cuando el máximo es 3. Para aprobar `impuesto-de-verificacion.
+
+## 2026-04-28 16:45 — ACCION
+**Instrucción:** rige el front matter de impuesto de veri
+**Resultado:** Necesito que apruebes permisos de escritura para editar el archivo. Una vez aprobado, aplicaré estos 5 cambios al frontmatter: 1. `titulo` → `"El Impuesto de Verificación"` (legible, no kebab) 2. `categoria: ia` → `familia: transicion-ia` (campo correcto según taxonomía) 3. `tags` → reducir a 5 válidos: `[ia, productividad, organizacion, trabajo, control]` (elimina `cognicion` y `supervision` que no están en la lista controlada) 4. `relacionado` → reducir a 3: conserva `pit-stop-cognitivo`, `automatizacion-vs-ampliacion`, `condicion-redespliegue` 5.
+
+## 2026-04-28 16:57 — CONSULTA
+**Instrucción:** cuéntame qué ha cambiado en el
+**Resultado:** Hasta donde llega mi conocimiento, se han agregado 44 conceptos nuevos en el índice del VAULT, incluyendo temas como diseño, UX, IA, arquitectura de confianza y colonialismo cultural digital.
+
+## 2026-04-29 09:18 — CONSULTA
+**Instrucción:** eh que tengo en el vault
+**Resultado:** No pude responder en este momento.
+
+## 2026-04-29 09:18 — CONSULTA
+**Instrucción:** eh qué conceptos tengo en el
+**Resultado:** No pude responder en este momento.

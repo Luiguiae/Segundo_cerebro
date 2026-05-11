@@ -2,10 +2,16 @@
 titulo: "Pit stop cognitivo"
 tipo: concepto
 familia: velocidad-output
-categoria: producto
 fecha: 2026-04-18
 tags: [velocidad, ia, criterio, conocimiento, equipo]
 relacionado: [vibe-coding, claridad-antes-de-velocidad, spec-driven-development]
+edges:
+  - target: confianza-a-traves-de-velocidad
+    tipo: enables
+    why: "pit-stop-cognitivo describe pausas de revisión intencionales que aparentemente ralentizan el proceso; confianza-a-traves-de-velocidad propone que la velocidad sostenida de entrega es el mecanismo de construcción de confianza. El pit-stop habilita la velocidad sostenida: sin revisión periódica, la velocidad acumula deuda que destruye la confianza que intenta construir."
+  - target: feedback-que-escala
+    tipo: extends
+    why: "feedback-que-escala captura señales sobre lo que el sistema produce; pit-stop-cognitivo captura señales sobre cómo el equipo está procesando lo que produce. El pit-stop extiende el alcance del feedback hacia la dimensión cognitiva y organizacional — problemas de criterio, fatiga, deriva sistémica — que los loops sobre output no pueden detectar."
 estado: activo
 fuentes:
   - titulo: "Dev Racing"

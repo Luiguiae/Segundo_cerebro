@@ -2,7 +2,6 @@
 titulo: "Colonialismo cultural digital"
 tipo: concepto
 familia: epistemologia-practica
-categoria: filosofia
 tags: [colonialismo, descolonizacion, poder, sistemas, cultura]
 relacionado: [quien-controla-el-prompt, agentes-ia, disenador-a-constructor]
 fecha: 2026-04-04

@@ -21,9 +21,11 @@ Los tipos válidos son:
 
 ## Estructura obligatoria de un concepto atómico
 
-Todo archivo de tipo `concepto` debe tener exactamente este frontmatter:
+### Plantilla canónica (Gen-3)
 
-```yaml
+Todo archivo de tipo `concepto` debe seguir exactamente esta plantilla:
+
+```markdown
 ---
 titulo: "Nombre legible del concepto"
 tipo: concepto
@@ -32,18 +34,55 @@ tags: [máximo 5, ver tags controlados abajo]
 relacionado: [kebab-case de otros conceptos, máximo 3]
 fecha: YYYY-MM-DD
 estado: borrador | activo | archivado
+fuentes:                          ← opcional, pero obligatorio si hay datos verificados
+  - titulo: "Título de la fuente"
+    autor: "Nombre del autor"     ← opcional
+    url: "https://..."
+    fecha_acceso: YYYY-MM-DD
 ---
+
+## El concepto
+[La idea central: qué es, qué mecanismo opera, cómo funciona.]
+
+## Por qué importa
+[Consecuencias, impacto, por qué este concepto cambia algo.]
+
+## Tensiones y límites
+[Paradojas, cuándo no aplica, fuerzas que lo contradicen.]
+```
+
+Si el concepto tiene datos verificados con fuentes externas (Gen-4), se agregan dos secciones adicionales al final del cuerpo:
+
+```markdown
+## Datos y evidencia
+[Cifras con: número + fecha + fuente por cada dato.]
+
+## Ejes investigados
+[Transparencia sobre qué líneas se investigaron y cuántas fuentes sólidas se encontraron por eje.]
 ```
 
 ### Reglas de frontmatter
 
-- `titulo`: legible, en español, sin signos de exclamación ni mayúsculas innecesarias
+- `titulo`: legible, en español, con artículo si aplica; sin signos de exclamación ni mayúsculas innecesarias
 - `tipo`: siempre `concepto` para archivos en `Conceptos/`
 - `familia`: exactamente una de las familias definidas abajo
 - `tags`: máximo 5, en minúsculas, en español, sin acentos, de la lista controlada
-- `relacionado`: solo conceptos que ya existen como archivos en `Conceptos/`; no inventar
+- `relacionado`: solo conceptos que ya existen como archivos en `Conceptos/`; no inventar; máximo 3
 - `fecha`: fecha de creación en formato `YYYY-MM-DD`
 - `estado`: `borrador` cuando se crea, `activo` cuando pasa la rúbrica, `archivado` si queda obsoleto
+- `fuentes`: array obligatorio cuando el cuerpo contiene datos numéricos o afirmaciones de terceros verificables
+
+### Campos prohibidos en el frontmatter
+
+Los siguientes campos **no pueden aparecer** en conceptos del vault. Si Jarvis los encuentra al auditar, los elimina:
+
+| campo | razón |
+|-------|-------|
+| `alias` | Redundante; el slug del filename es la referencia única |
+| `proyectos` | Los conceptos no pertenecen a proyectos — esa relación va en el proyecto |
+| `slug` | Ya está codificado en el nombre del archivo |
+| `categoria` | Reemplazado por `familia` |
+| `fuente` (string u objeto) | Reemplazado por `fuentes` (array) |
 
 ---
 
@@ -116,4 +155,4 @@ La relación específica se declara en los archivos de `Correlaciones/`.
 - No puede asignar más de una familia a un concepto
 - No puede crear un archivo de tipo `correlacion` en `Conceptos/` ni viceversa
 - No puede marcar un concepto como `activo` sin que haya pasado la rúbrica
-- No puede modificar este archivo — solo Luigui puede actualizar la taxonomía
+- No puede modificar este archivo por iniciativa propia — solo lo edita cuando Luigui lo solicita explícitamente

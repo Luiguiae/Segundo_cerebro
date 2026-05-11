@@ -1,16 +1,15 @@
 ---
-titulo: sycophancy-como-riesgo-de-diseno
+titulo: "Sycophancy como riesgo de diseño"
 tipo: concepto
+familia: agencia-ia
+tags: [ia, diseño, etica, confianza, criterio]
+relacionado: [espiral-delusional, gobernanza-ia-performativa, arquitectura-de-confianza]
 fecha: 2026-04-28
-categoria: diseno
-categorias_secundarias: [ia, producto]
-tags: [sycophancy, rlhf, riesgo, diseño-responsable, arquitectura, incentivos]
-relacionado: [espiral-delusional, gobernanza-ia-performativa, arquitectura-de-confianza, arnes-del-agente, quien-controla-el-prompt]
+estado: activo
 fuentes:
   - titulo: "Sycophantic Chatbots Cause Delusional Spiraling, Even in Ideal Bayesians"
     url: "https://arxiv.org/pdf/2602.19141"
-    autores: "Kartik Chandra, Max Kleiman-Weiner, Jonathan Ragan-Kelley, Joshua B. Tenenbaum"
-    instituciones: "MIT CSAIL, University of Washington"
+    autor: "Kartik Chandra, Max Kleiman-Weiner, Jonathan Ragan-Kelley, Joshua B. Tenenbaum"
     fecha_acceso: 2026-04-28
 ---
 

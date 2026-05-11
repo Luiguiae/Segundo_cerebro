@@ -2,7 +2,6 @@
 titulo: "La condición del redespliegue"
 tipo: concepto
 familia: transicion-ia
-categoria: organizaciones
 tags: [ia, automatizacion, organizacion, sistemas, transicion]
 relacionado: [automatizar-mi-propio-trabajo, feedback-que-escala, equipos-pequenos-alto-impacto]
 fecha: 2026-04-16

@@ -1,11 +1,11 @@
 ---
-titulo: metacognicion-del-disenador
+titulo: "Metacognición del diseñador"
 tipo: concepto
+familia: epistemologia-practica
+tags: [diseño, criterio, aprendizaje, marco, ia]
+relacionado: [claridad-antes-de-velocidad, arquitectura-de-inteligencia, pit-stop-cognitivo]
 fecha: 2026-04-24
-categoria: diseno
-categorias_secundarias: [filosofia]
-tags: [metacognicion, razonamiento, criterio, stakeholders, aprendizaje]
-relacionado: [claridad-antes-de-velocidad, arquitectura-de-inteligencia, pit-stop-cognitivo, quien-controla-el-prompt]
+estado: activo
 fuentes:
   - titulo: "Los retos de trabajar en organizaciones de escala mundial"
     url: "https://iterativethinking.substack.com/p/los-retos-de-trabajar-en-organizaciones"

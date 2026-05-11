@@ -2,7 +2,6 @@
 titulo: "Arnés del agente"
 tipo: concepto
 fecha: 2026-04-20
-categoria: ia
 familia: agencia-ia
 estado: activo
 tags: [agentes, ia, diseño, producto, criterio]

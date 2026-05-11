@@ -2,7 +2,6 @@
 titulo: "PMF perecedero"
 tipo: concepto
 familia: equipos-impacto
-categoria: producto
 fecha: 2026-04-18
 tags: [producto, ia, estrategia, velocidad, cambio]
 relacionado: [mvp-a-prototipo-en-produccion, confianza-a-traves-de-velocidad, fundamentales-vs-flux]

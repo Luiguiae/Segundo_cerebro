@@ -1,11 +1,17 @@
 ---
-titulo: espectro-autonomia-agente
+titulo: "Espectro de autonomía del agente"
 tipo: concepto
 familia: agencia-ia
-categoria: ia
 fecha: 2026-04-18
 tags: [ia, agentes, roles, criterio, poder]
 relacionado: [agentes-ia, gobernanza-ia-performativa, quien-controla-el-prompt]
+edges:
+  - target: capital-de-contexto
+    tipo: requires
+    why: "El espectro de autonomía del agente describe posiciones disponibles desde executor hasta observer; capital-de-contexto determina cuál de esas posiciones es sostenible para un actor dado. Sin capital suficiente, delegar la posición de observer es insostenible: sin contexto acumulado no se puede evaluar si el agente se está desviando."
+  - target: fabrica-oscura-de-software
+    tipo: refines
+    why: "La fábrica oscura de software es una realización concreta de una posición extrema en el espectro: operador que ha delegado ejecución completa sin presencia activa. Refina el espectro dotándolo de una forma organizacional específica — no es solo una categoría abstracta sino una configuración que ya existe con consecuencias documentadas."
 estado: activo
 fuentes:
   - titulo: "Levels of Autonomy for AI Agents – arXiv 2506.12469 (Feng, McDonald, Zhang – U. Washington)"

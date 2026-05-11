@@ -2,7 +2,6 @@
 titulo: "Las tres caras del producto agéntico"
 tipo: concepto
 fecha: 2026-04-20
-categoria: producto
 familia: agencia-ia
 estado: activo
 tags: [producto, agentes, ia, diseño, estrategia]
