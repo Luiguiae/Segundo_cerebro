@@ -2,6 +2,33 @@
 
 ---
 
+### 2026-06-06 — PROFUNDIZADOR-3: usuario-implicito-invalidado
+
+**Instrucción:** "Profundizador-3: profundiza CONCEPTO 3 del Scout 2026-06-06"
+
+**Acciones:**
+- Leído Issue #43 "Scout 2026-06-06 — 6 candidatos" del repo luiguiavilae/Segundo_cerebro
+- Extraído CONCEPTO 3: slug=usuario-implicito-invalidado, score=24/30
+- Leído CONTEXTO_SEGUNDO_CEREBRO.md para verificar conceptos relacionados existentes
+- Lanzadas 5 búsquedas web por 3 ejes de investigación
+- Eje 1: Magnitud del cruce cuantitativo (Cloudflare, abril 2026) — 6 fuentes confirmadas
+- Eje 2: Ceguera estructural GA4 ante bots agenticos modernos — 3 fuentes confirmadas
+- Eje 3: Consecuencias downstream en ad spend y decisiones de producto — 2 fuentes con datos
+- Construido .md completo con frontmatter vault-compatible (familia: ia)
+- Draft de email creado en Gmail (id: r2603078607049758690) — no enviado directamente (herramienta send no disponible)
+
+**Resultados:**
+- usuario-implicito-invalidado.md: LISTO — 4 fuentes verificables, 8 datos numéricos con fecha+origen
+- Draft Gmail: CREADO en bandeja de Drafts — requiere envío manual desde Gmail
+- ATLAS regenerado: no — concepto no instalado en vault todavía
+
+**Ejes investigados:** 3/3 con mínimo 2 fuentes sólidas cada uno
+**Fuentes totales encontradas:** 11 (4 incluidas en frontmatter, 7 como respaldo en Ejes investigados)
+
+---
+
+---
+
 ### 2026-05-11 — FASE 1: PLAN GRAFO DE CONOCIMIENTO (mejora-006)
 
 **Instrucción:** "Lee el archivo adjunto y ejecuta la Fase 1 completa: genera docs/plan-fase1.md"
