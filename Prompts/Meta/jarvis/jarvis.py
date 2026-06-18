@@ -277,6 +277,16 @@ relacionar_con_vault: el usuario quiere saber si tiene conceptos en el vault rel
   "busca relaciones con el vault", "¿se relaciona con algo que tengo?".
   Params: {}
 
+auditar_huerfanos: el usuario quiere saber qué conceptos del vault no tienen backlinks apuntando hacia ellos.
+  Señales: "conceptos huérfanos", "qué conceptos no están conectados", "qué notas no tienen links",
+  "qué conceptos están solos", "audita huérfanos", "encuentra los huérfanos".
+  Params: {}
+
+buscar_por_tag: el usuario quiere listar conceptos que tienen un tag específico.
+  Señales: "conceptos con el tag X", "qué tiene el tag X", "busca por tag X",
+  "qué hay en el tag X", "lista los de tag X", "filtra por tag X".
+  Params: tag = "el tag que menciona el usuario"
+
 REGLA DE DESAMBIGUACIÓN CRÍTICA: Si el mensaje menciona una ubicación del sistema operativo
 (downloads, descargas, escritorio, desktop, wayta, home, o "carpeta de [nombre]") → clasifica SIEMPRE
 como operacion_archivo, nunca como consulta_simple ni conversacion_libre.
@@ -303,6 +313,12 @@ Para capturar_como_concepto:
 
 Para relacionar_con_vault:
 {"intent": "relacionar_con_vault", "instruccion": "<texto literal>", "archivos_relevantes": []}
+
+Para auditar_huerfanos:
+{"intent": "auditar_huerfanos", "instruccion": "<texto literal>", "archivos_relevantes": []}
+
+Para buscar_por_tag:
+{"intent": "buscar_por_tag", "instruccion": "<texto literal>", "archivos_relevantes": [], "tag": "<tag que mencionó el usuario>"}
 
 Para razonamiento_profundo incluye en archivos_relevantes las categorías relevantes (ej. ["ia", "producto", "Correlaciones"]).
 Para los demás tipos archivos_relevantes puede ser []."""
@@ -344,6 +360,8 @@ Para los demás tipos archivos_relevantes puede ser []."""
         "accion":           data.get("accion", "describir"),
         "foco":             data.get("foco", ""),
         "titulo_candidato": data.get("titulo_candidato", ""),
+        # mcp vault
+        "tag": data.get("tag", ""),
     }
     # Compatibilidad con formato anterior (conversacion_libre usa "mensaje")
     if intent == "conversacion_libre":
@@ -393,6 +411,23 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
                   "accion": "describir", "foco": "", "titulo_candidato": ""}
     if any(k in t for k in FS_KEYWORDS):
         return "operacion_archivo", _fs_params
+
+    MCP_HUERFANOS = ("conceptos huérfanos", "conceptos huerfanos", "no están conectados",
+                     "no tienen links", "audita huérfanos", "audita huerfanos",
+                     "qué conceptos están solos", "que conceptos estan solos")
+    if any(k in t for k in MCP_HUERFANOS):
+        return "auditar_huerfanos", {"instruccion": texto, "archivos_relevantes": [], "tag": "",
+                                     "accion": "describir", "foco": "", "titulo_candidato": "",
+                                     "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
+
+    MCP_TAG_KEYWORDS = ("conceptos con el tag", "busca por tag", "qué hay en el tag", "que hay en el tag",
+                        "filtra por tag", "lista los de tag")
+    for k in MCP_TAG_KEYWORDS:
+        if k in t:
+            tag_extraido = t.split(k)[-1].strip().split()[0] if t.split(k)[-1].strip() else ""
+            return "buscar_por_tag", {"instruccion": texto, "archivos_relevantes": [], "tag": tag_extraido,
+                                      "accion": "describir", "foco": "", "titulo_candidato": "",
+                                      "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
 
     VISION_KEYWORDS = (
         "qué estoy viendo", "que estoy viendo",
@@ -971,6 +1006,68 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         emitir_evento("respondiendo", respuesta[:80])
         hablar_respuesta(respuesta)
         registrar_en_jarvis_log("VISION", instruccion, respuesta[:200])
+        if vision_callback:
+            vision_callback(respuesta)
+        return
+
+    if intent == "auditar_huerfanos":
+        try:
+            from mejora_009_mcp import mcp_disponible, detectar_huerfanos
+        except ImportError:
+            hablar("El módulo MCP no está disponible.")
+            return
+        if not mcp_disponible():
+            hablar("Obsidian no está abierto. Ábrelo para usar esta función.")
+            return
+        emitir_evento("procesando", "Buscando conceptos huérfanos...")
+        hablar("Un momento, consultando el grafo del vault.")
+        try:
+            huerfanos = detectar_huerfanos()
+        except Exception as _e:
+            hablar(f"Error al consultar el MCP: {_e}")
+            registrar_en_jarvis_log("MCP", instruccion, f"ERROR: {_e}")
+            return
+        if not huerfanos:
+            respuesta = "Todos los conceptos tienen al menos un backlink. El vault está bien conectado."
+        else:
+            primeros = ", ".join(huerfanos[:5])
+            resto = f" y {len(huerfanos) - 5} más" if len(huerfanos) > 5 else ""
+            respuesta = f"Encontré {len(huerfanos)} conceptos huérfanos: {primeros}{resto}."
+        hablar_respuesta(respuesta)
+        registrar_en_jarvis_log("MCP_HUERFANOS", instruccion, respuesta)
+        if vision_callback:
+            vision_callback(respuesta)
+        return
+
+    if intent == "buscar_por_tag":
+        try:
+            from mejora_009_mcp import mcp_disponible, buscar_por_tag
+        except ImportError:
+            hablar("El módulo MCP no está disponible.")
+            return
+        if not mcp_disponible():
+            hablar("Obsidian no está abierto. Ábrelo para usar esta función.")
+            return
+        tag = params.get("tag", "").strip()
+        if not tag:
+            hablar("No entendí qué tag quieres buscar. Dímelo de nuevo.")
+            return
+        emitir_evento("procesando", f"Buscando por tag: {tag}")
+        hablar(f"Buscando conceptos con el tag {tag}.")
+        try:
+            resultados = buscar_por_tag(tag)
+        except Exception as _e:
+            hablar(f"Error al consultar el MCP: {_e}")
+            registrar_en_jarvis_log("MCP", instruccion, f"ERROR: {_e}")
+            return
+        if not resultados:
+            respuesta = f"No encontré conceptos con el tag {tag}."
+        else:
+            nombres = ", ".join(Path(r).stem for r in resultados[:5])
+            resto = f" y {len(resultados) - 5} más" if len(resultados) > 5 else ""
+            respuesta = f"Encontré {len(resultados)} conceptos con el tag {tag}: {nombres}{resto}."
+        hablar_respuesta(respuesta)
+        registrar_en_jarvis_log("MCP_TAG", instruccion, respuesta)
         if vision_callback:
             vision_callback(respuesta)
         return
