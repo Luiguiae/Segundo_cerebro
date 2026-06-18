@@ -2,11 +2,13 @@
 """
 jarvis.py — Interfaz de voz para el Segundo Cerebro
 
-Arquitectura: STT → clasificación en 5 intents → tres carriles:
+Arquitectura: STT → clasificación en 10 intents → tres carriles:
   - conversacion_libre / despedirse → Groq directo
-  - consulta_simple → Groq con contexto de ATLAS.md
+  - consulta_simple / razonamiento_profundo → Groq con contexto del vault
   - accion_directa → Claude Code
-  - razonamiento_profundo → Ollama (Qwen2.5:14b) lee vault y razona
+  - operacion_archivo → mejora_006_filesystem (Groq o TTS directo)
+  - ver_pantalla / relacionar_con_vault → mejora_007_vision + Groq
+  - profundizar_pantalla / capturar_como_concepto → mejora_007_vision + Claude Code
 """
 
 import json
@@ -15,35 +17,144 @@ import os
 import requests
 import subprocess
 import sys
+import threading
+import time
 from datetime import datetime
 from pathlib import Path
 
 CEREBRO_PATH = Path.home() / "Documents" / "Segundo_cerebro"
 
+if str(Path(__file__).parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).parent))
+
+try:
+    from mejora_006_filesystem import operacion_archivo as _operacion_archivo
+    _filesystem_disponible = True
+    print("[Módulo] mejora_006_filesystem importado OK — operacion_archivo disponible.", flush=True)
+except ImportError as _e006:
+    _filesystem_disponible = False
+    print(f"[Módulo] mejora_006_filesystem NO disponible: {_e006}", flush=True)
+
+try:
+    from mejora_007_vision import (
+        ver_pantalla as _ver_pantalla,
+        profundizar_pantalla as _profundizar_pantalla,
+        capturar_como_concepto as _capturar_como_concepto,
+        relacionar_con_vault as _relacionar_con_vault,
+        es_error_vision as _es_error_vision,
+    )
+    _vision_pantalla_disponible = True
+except ImportError:
+    _vision_pantalla_disponible = False
+
 # Historial de sesión en memoria — ventana deslizante de 10 turnos (20 mensajes)
 historial_sesion: list[dict] = []
+
+# Último archivo leído vía operacion_archivo — persiste entre comandos de voz
+_ultimo_archivo_leido: dict = {"ruta": None, "contenido": None}
+
+_CONTEXT_REFS = (
+    "esto", "este archivo", "este documento", "esta nota",
+    "lo que leíste", "lo que acabas de leer", "el archivo que leíste",
+    "lo anterior", "lo que me mostraste", "el contenido que leíste",
+    "profundiza esto", "profundiza este", "analiza esto", "sobre esto",
+    "de esto", "en esto", "con esto",
+)
+
+
+# ── Dashboard ──────────────────────────────────────────────────────────────────
+
+def emitir_evento(tipo: str, mensaje: str) -> None:
+    """Envía evento al dashboard via HTTP POST. Fire-and-forget: nunca bloquea Jarvis."""
+    try:
+        requests.post(
+            "http://localhost:7777/event",
+            json={"tipo": tipo, "mensaje": mensaje,
+                  "timestamp": datetime.now().isoformat()},
+            timeout=0.1,
+        )
+    except Exception:
+        pass
 
 
 # ── TTS ────────────────────────────────────────────────────────────────────────
 
+_jarvis_hablando: bool = False
+_last_hablar_end_time: float = 0.0   # timestamp de fin del último TTS — usado para buffer de eco
+_last_spoken_text: str = ""           # texto del último hablar() — para detección de eco en daemon
+_hablar_lock = threading.Lock()  # serializa llamadas TTS entre threads
+
+
 def hablar(texto: str) -> None:
-    """Convierte texto a voz usando pyttsx3 con voz Monica."""
-    try:
-        import pyttsx3
-        engine = pyttsx3.init()
-        engine.setProperty('voice', 'com.apple.voice.compact.es-ES.Monica')
-        engine.setProperty('rate', 175)
-        engine.say(texto)
-        engine.runAndWait()
-    except Exception as e:
-        print(f"[TTS] {texto}")
-        print(f"[TTS error] {e}")
+    """TTS con chunking para evitar corte en textos largos (bug pyttsx3/macOS). Thread-safe."""
+    import re
+    global _jarvis_hablando, _last_hablar_end_time, _last_spoken_text
+    with _hablar_lock:
+        _jarvis_hablando = True
+        _last_spoken_text = texto.lower()
+        _end_time_seteado = False
+        try:
+            import pyttsx3
+
+            LIMITE = 200
+            oraciones = re.split(r'(?<=[.!?])\s+', texto.strip())
+            chunks: list[str] = []
+            chunk_actual = ""
+            for oracion in oraciones:
+                if len(chunk_actual) + len(oracion) < LIMITE:
+                    chunk_actual += (" " if chunk_actual else "") + oracion
+                else:
+                    if chunk_actual:
+                        chunks.append(chunk_actual)
+                    chunk_actual = oracion
+            if chunk_actual:
+                chunks.append(chunk_actual)
+
+            engine = pyttsx3.init()
+            engine.setProperty('voice', 'com.apple.speech.synthesis.voice.monica')
+            engine.setProperty('rate', 150)
+            for chunk in chunks:
+                engine.say(chunk)
+                engine.runAndWait()
+
+            # Marcar fin del TTS ANTES del sleep de CoreAudio.
+            # El eco buffer corre durante el drain, así escuchar() abre el mic
+            # apenas el audio termina (~0.8s) en lugar de 0.5s después.
+            _last_hablar_end_time = time.time()
+            _end_time_seteado = True
+            time.sleep(0.8)  # CoreAudio drain
+        except Exception as e:
+            print(f"[TTS] {texto}")
+            print(f"[TTS error] {e}")
+        finally:
+            _jarvis_hablando = False
+            if not _end_time_seteado:
+                _last_hablar_end_time = time.time()
+
+
+def hablar_respuesta(texto: str, max_chars: int = 600) -> None:
+    """Para respuestas de vault: trunca con gracia si es muy larga."""
+    if len(texto) > max_chars:
+        corte = texto[:max_chars].rfind('.')
+        texto = texto[:corte + 1] + " Hay más información disponible." if corte > 0 else texto[:max_chars] + "..."
+    hablar(texto)
 
 
 # ── STT ────────────────────────────────────────────────────────────────────────
 
+_ECO_BUFFER = 0.5  # segundos de margen tras fin del TTS antes de abrir el micrófono
+# 0.2s en hablar() cubre el tail de CoreAudio; 0.5s aquí cubre el eco físico de la sala.
+
+
 def escuchar() -> str | None:
     """Captura audio del micrófono y devuelve el texto transcrito (o None si falla)."""
+    # Esperar a que Jarvis termine de hablar y dejar que el eco físico se disipe
+    while _jarvis_hablando:
+        time.sleep(0.05)
+    eco_restante = _ECO_BUFFER - (time.time() - _last_hablar_end_time)
+    if eco_restante > 0:
+        time.sleep(eco_restante)
+
     try:
         import speech_recognition as sr
     except ImportError:
@@ -51,28 +162,36 @@ def escuchar() -> str | None:
         return None
 
     recognizer = sr.Recognizer()
-    try:
-        with sr.Microphone() as source:
-            print("Escuchando... (habla ahora)")
-            recognizer.adjust_for_ambient_noise(source, duration=0.5)
-            audio = recognizer.listen(source, timeout=10, phrase_time_limit=15)
-    except AttributeError:
-        hablar("Micrófono no disponible.")
-        return None
-    except Exception as e:
-        hablar("No pude acceder al micrófono.")
-        print(f"[Micrófono error] {e}")
-        return None
+    for intento in range(2):
+        try:
+            with sr.Microphone() as source:
+                print("Escuchando... (habla ahora)")
+                recognizer.adjust_for_ambient_noise(source, duration=0.05)
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=15)
+        except AttributeError:
+            hablar("Micrófono no disponible.")
+            return None
+        except sr.WaitTimeoutError:
+            return None  # silencio normal — sin hablar, sin eco
+        except Exception as e:
+            print(f"[Micrófono error] {e}")
+            return None
 
-    try:
-        texto = recognizer.recognize_google(audio, language="es-ES")
-        texto_transcrito = texto.lower()
-        print(f"[Transcripción] {texto_transcrito}")
-        logging.info(f"Transcripción: {texto_transcrito}")
-        return texto_transcrito
-    except Exception:
-        hablar("No entendí lo que dijiste. Intenta de nuevo.")
-        return None
+        try:
+            texto = recognizer.recognize_google(audio, language="es-ES").lower()
+            print(f"[Transcripción] {texto}")
+            logging.info(f"Transcripción: {texto}")
+            return texto
+        except sr.UnknownValueError:
+            # Audio capturado pero STT no pudo transcribir (ej. "sí" muy corto)
+            if intento < 1:
+                time.sleep(0.2)
+                continue
+            return None
+        except Exception:
+            return None
+
+    return None
 
 
 # ── Normalización de texto (correcciones de STT) ─────────────────────────────
@@ -84,6 +203,9 @@ def normalizar_texto(texto: str) -> str:
         "baul": "vault",
         "ball": "vault",
         "bal ": "vault",
+        "downloads": "descargas",
+        "desktop": "escritorio",
+        "documents": "documentos",
     }
     texto_lower = texto.lower()
     for error, correcto in reemplazos.items():
@@ -94,33 +216,93 @@ def normalizar_texto(texto: str) -> str:
 # ── Clasificación binaria — Groq ──────────────────────────────────────────────
 
 def detectar_intent_groq(texto: str, historial: list[dict], indice_vault: str) -> tuple[str, dict]:
-    """Clasifica en conversacion_libre | despedirse | consulta_simple | accion_directa | razonamiento_profundo."""
+    """Clasifica en conversacion_libre | despedirse | consulta_simple | accion_directa | razonamiento_profundo | operacion_archivo."""
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         raise ValueError("GROQ_API_KEY no disponible.")
 
     system_prompt = """Eres el clasificador de Jarvis, asistente de voz del Segundo Cerebro de Luigui.
 
-Clasifica el mensaje en UNA de estas cinco categorías:
+Clasifica el mensaje en UNA de estas diez categorías:
 
-conversacion_libre: saludo, pregunta personal a Jarvis, comentario casual que NO involucra el vault.
+conversacion_libre: saludo, pregunta personal a Jarvis, comentario casual que NO involucra el vault ni el filesystem.
   Ejemplos: "cómo estás", "qué hora es", "gracias", "muy bien".
 
 despedirse: el usuario quiere terminar la sesión de escucha activa.
   Ejemplos: "bye", "hasta luego", "ya terminé", "modo espera", "para", "descansa", "chau".
 
-consulta_simple: pregunta factual sobre el vault respondible con el índice (cuántos conceptos hay, qué categorías existen, cuáles son los slugs).
-  Ejemplos: "cuántos conceptos tengo", "qué conceptos hay en producto", "lista mis correlaciones", "cuál es el más reciente".
+consulta_simple: pregunta sobre los CONCEPTOS o el historial del vault del Segundo Cerebro. Solo aplica cuando la pregunta es sobre conocimiento guardado en el vault, no sobre archivos del sistema operativo.
+  Ejemplos: "cuántos conceptos tengo", "qué conceptos hay en producto", "lista mis correlaciones", "cuál es el más reciente",
+  "qué hemos hecho hoy", "qué cambios se hicieron", "qué actualizaciones hubo", "cuéntame el resumen del día".
 
-accion_directa: instrucción que modifica el vault o ejecuta una tarea concreta.
+accion_directa: instrucción que modifica el vault o ejecuta una tarea concreta en el Segundo Cerebro.
   Ejemplos: "crea un concepto sobre X", "correlaciona X con Y", "audita el vault", "profundiza X", "procesa esta fuente".
 
-razonamiento_profundo: análisis, evaluación o recomendaciones que requieren leer el contenido completo de los conceptos, no solo el índice.
+razonamiento_profundo: análisis, evaluación o recomendaciones que requieren leer el contenido completo de los conceptos.
   Ejemplos: "qué correlaciones me faltan", "cuál es el concepto más débil", "qué patrones ves en mis conceptos de IA",
   "qué debería explorar próximamente", "qué concepto tiene menos conexiones", "evalúa la calidad del vault".
 
-Responde ÚNICAMENTE con JSON válido:
+operacion_archivo: el usuario quiere operar sobre archivos o carpetas reales de su computadora (NO conceptos del vault).
+  Señales fuertes: menciona "carpeta", "directorio", "archivo" junto con una ubicación del sistema operativo.
+  Ubicaciones del sistema operativo reconocidas: downloads, descargas, desktop, escritorio, wayta, documentos, vault, home.
+  Frases que activan este intent: "qué hay en", "lista los archivos de", "lee el [archivo]", "abre el archivo",
+  "crea una carpeta", "mueve el [archivo]", "elimina el [archivo]", "borra el [archivo]", "busca en [carpeta]".
+  Ejemplos (TODOS estos son operacion_archivo, no consulta_simple):
+    - "qué hay en la carpeta de descargas"
+    - "qué hay en downloads"
+    - "qué hay en el escritorio"
+    - "lista los archivos de wayta"
+    - "lee el SPEC.md de wayta"
+    - "crea una carpeta llamada propuestas en documentos"
+    - "mueve el PDF de downloads a documentos"
+    - "busca en wayta archivos que digan diseño"
+
+ver_pantalla: el usuario quiere saber qué hay en su pantalla o que le expliquen/describan/opinen sobre lo que está viendo.
+  Señales: "qué estoy viendo", "de qué trata esto", "explícame esto", "qué es esto", "qué hay aquí",
+  "qué dice la pantalla", "qué estoy leyendo", "describe lo que ves", "explica esto".
+  Params: accion = "describir" (default) | "resumir" | "opinar"
+
+profundizar_pantalla: el usuario quiere investigar más, profundizar o buscar fuentes sobre lo que está viendo en pantalla.
+  Señales: "profundiza sobre lo que estoy leyendo", "profundiza esto", "investiga más sobre esto",
+  "busca más sobre el autor", "profundiza sobre el tema de la pantalla", "investiga esto".
+  Params: foco = "tema o autor específico si lo menciona, sino vacío"
+
+capturar_como_concepto: el usuario quiere guardar o convertir lo que ve en pantalla como concepto del vault.
+  Señales: "guarda esto como concepto", "crea un concepto de esto", "esto me parece importante",
+  "captura esto", "agrega esto al vault", "guarda esto en el vault".
+  Params: titulo_candidato = "título sugerido por el usuario si lo menciona, sino null"
+
+relacionar_con_vault: el usuario quiere saber si tiene conceptos en el vault relacionados con lo que está viendo.
+  Señales: "¿hay algo en el vault sobre esto?", "¿tengo algo relacionado?", "¿tengo un concepto sobre esto?",
+  "busca relaciones con el vault", "¿se relaciona con algo que tengo?".
+  Params: {}
+
+REGLA DE DESAMBIGUACIÓN CRÍTICA: Si el mensaje menciona una ubicación del sistema operativo
+(downloads, descargas, escritorio, desktop, wayta, home, o "carpeta de [nombre]") → clasifica SIEMPRE
+como operacion_archivo, nunca como consulta_simple ni conversacion_libre.
+
+REGLA PANTALLA: "profundiza esto" o "profundiza lo que estoy leyendo" → profundizar_pantalla (NO accion_directa).
+"guarda esto como concepto" → capturar_como_concepto. "qué estoy viendo" → ver_pantalla.
+
+Responde ÚNICAMENTE con JSON válido.
+
+Para conversacion_libre, despedirse, consulta_simple, accion_directa, razonamiento_profundo:
 {"intent": "<categoria>", "instruccion": "<texto literal del usuario>", "archivos_relevantes": ["<categoria_o_ruta>"]}
+
+Para operacion_archivo:
+{"intent": "operacion_archivo", "instruccion": "<texto literal>", "archivos_relevantes": [], "operacion": "<listar|leer|crear_carpeta|mover|eliminar|buscar>", "ruta": "<alias o path>", "archivo": "<nombre o vacío>", "destino": "<alias o path o vacío>", "query": "<texto o vacío>", "extension": "<ext o vacío>"}
+
+Para ver_pantalla:
+{"intent": "ver_pantalla", "instruccion": "<texto literal>", "archivos_relevantes": [], "accion": "<describir|resumir|opinar>"}
+
+Para profundizar_pantalla:
+{"intent": "profundizar_pantalla", "instruccion": "<texto literal>", "archivos_relevantes": [], "foco": "<tema o autor específico, o vacío>"}
+
+Para capturar_como_concepto:
+{"intent": "capturar_como_concepto", "instruccion": "<texto literal>", "archivos_relevantes": [], "titulo_candidato": "<título sugerido o null>"}
+
+Para relacionar_con_vault:
+{"intent": "relacionar_con_vault", "instruccion": "<texto literal>", "archivos_relevantes": []}
 
 Para razonamiento_profundo incluye en archivos_relevantes las categorías relevantes (ej. ["ia", "producto", "Correlaciones"]).
 Para los demás tipos archivos_relevantes puede ser []."""
@@ -144,11 +326,24 @@ Para los demás tipos archivos_relevantes puede ser []."""
         timeout=10,
     )
     response.raise_for_status()
-    data = json.loads(response.json()["choices"][0]["message"]["content"])
+    _raw = response.json()["choices"][0]["message"]["content"]
+    print(f"[Groq raw intent] {_raw}")
+    data = json.loads(_raw)
     intent = data.get("intent", "accion_directa")
     params = {
         "instruccion": data.get("instruccion", texto),
         "archivos_relevantes": data.get("archivos_relevantes", []),
+        # operacion_archivo
+        "operacion":  data.get("operacion", ""),
+        "ruta":       data.get("ruta", ""),
+        "archivo":    data.get("archivo", ""),
+        "destino":    data.get("destino", ""),
+        "query":      data.get("query", ""),
+        "extension":  data.get("extension", ""),
+        # vision de pantalla
+        "accion":           data.get("accion", "describir"),
+        "foco":             data.get("foco", ""),
+        "titulo_candidato": data.get("titulo_candidato", ""),
     }
     # Compatibilidad con formato anterior (conversacion_libre usa "mensaje")
     if intent == "conversacion_libre":
@@ -182,7 +377,51 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
     )
     if any(c in t for c in CONSULTA):
         return "consulta_simple", {"instruccion": texto, "archivos_relevantes": []}
-    return "accion_directa", {"instruccion": texto, "archivos_relevantes": []}
+    FS_KEYWORDS = (
+        # frases de acción
+        "lista los archivos", "qué hay en", "que hay en",
+        "lee el archivo", "crea una carpeta", "crea la carpeta",
+        "mueve el", "mueve la", "elimina el", "elimina la",
+        "borra el", "borra la", "busca en archivos", "busca en",
+        # ubicaciones del sistema — señal suficiente para operacion_archivo
+        "de wayta", "en wayta", "de downloads", "en downloads",
+        "de descargas", "en descargas", "del escritorio", "en el escritorio",
+        "del desktop", "en el desktop", "de la carpeta", "en la carpeta",
+    )
+    _fs_params = {"instruccion": texto, "archivos_relevantes": [],
+                  "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": "",
+                  "accion": "describir", "foco": "", "titulo_candidato": ""}
+    if any(k in t for k in FS_KEYWORDS):
+        return "operacion_archivo", _fs_params
+
+    VISION_KEYWORDS = (
+        "qué estoy viendo", "que estoy viendo",
+        "de qué trata esto", "de que trata esto",
+        "explícame esto", "explicame esto",
+        "qué hay en la pantalla", "que hay en la pantalla",
+        "qué dice la pantalla", "que dice la pantalla",
+        "qué estoy leyendo", "que estoy leyendo",
+        "profundiza lo que estoy", "profundiza sobre lo que",
+        "investiga más sobre esto", "investiga mas sobre esto",
+        "guarda esto como concepto", "crea un concepto de esto",
+        "captura esto", "esto me parece importante", "agrega esto al vault",
+        "hay algo en el vault sobre esto", "tengo algo relacionado",
+        "tengo un concepto sobre esto", "se relaciona con algo",
+    )
+    _vision_base = {"instruccion": texto, "archivos_relevantes": [],
+                    "accion": "describir", "foco": "", "titulo_candidato": "",
+                    "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
+    if any(k in t for k in VISION_KEYWORDS):
+        if any(k in t for k in ("guarda esto", "crea un concepto de", "captura esto", "agrega esto al vault")):
+            return "capturar_como_concepto", _vision_base
+        if any(k in t for k in ("hay algo en el vault", "tengo algo relacionado", "tengo un concepto sobre", "se relaciona con")):
+            return "relacionar_con_vault", _vision_base
+        if any(k in t for k in ("profundiza", "investiga más", "investiga mas")):
+            return "profundizar_pantalla", _vision_base
+        return "ver_pantalla", _vision_base
+
+    return "accion_directa", {"instruccion": texto, "archivos_relevantes": [],
+                               "accion": "describir", "foco": "", "titulo_candidato": ""}
 
 
 def detectar_intent(texto: str, historial: list[dict] | None = None,
@@ -261,13 +500,32 @@ def responder_con_groq(pregunta: str, historial: list[dict],
         return "No pude responder en este momento."
 
 
-# ── Consulta simple — carga ATLAS para contexto Groq ─────────────────────────
+# ── Consulta simple — carga contexto según pregunta ──────────────────────────
 
-def cargar_atlas() -> str:
+_LOG_KEYWORDS = ("hoy", "hicimos", "cambios", "actualizaciones", "historial", "hiciste", "resumen del día", "resumen del dia")
+
+def cargar_contenido_vault_por_pregunta(instruccion: str) -> str:
+    """Carga JARVIS_LOG.md (últimas 100 líneas) si la pregunta es sobre historial/cambios,
+    o ATLAS.md si es sobre el índice de conceptos."""
+    if any(k in instruccion.lower() for k in _LOG_KEYWORDS):
+        log_path = CEREBRO_PATH / "JARVIS_LOG.md"
+        logging.info(f"[Debug] Buscando JARVIS_LOG en: {log_path}")
+        logging.info(f"[Debug] Existe: {log_path.exists()}")
+        if log_path.exists():
+            lineas = log_path.read_text(encoding="utf-8").splitlines()
+            contenido = "\n".join(lineas[-100:])
+            logging.info(f"[Debug] Contenido cargado: {contenido[:100] if contenido else 'VACÍO'}")
+            return contenido
+        logging.info("[Debug] Contenido cargado: VACÍO")
+        return ""
     atlas_path = CEREBRO_PATH / "Conocimiento" / "ATLAS.md"
     if atlas_path.exists():
         return atlas_path.read_text(encoding="utf-8")[:4000]
     return ""
+
+
+def cargar_atlas() -> str:
+    return cargar_contenido_vault_por_pregunta("")
 
 
 # ── Razonamiento profundo — Ollama ────────────────────────────────────────────
@@ -364,8 +622,61 @@ def ejecutar_claude(instruccion: str) -> str:
     return resultado.stdout or resultado.stderr
 
 
+_AUDIT_MARKERS = (
+    "auditoría", "auditoria", "conceptos activos", "borrador", "rechazado"
+)
+
+_AUDIT_CRITICOS = (
+    "rechazado", "falla", "error", "advertencia", "normaliz", "sin fuente", "gate"
+)
+
+
+def _resumir_auditoria(output: str) -> str:
+    """Construye respuesta de voz concisa a partir de un output de auditoría."""
+    import re
+    lineas = output.splitlines()
+
+    activos = borradores = correlaciones = None
+    for linea in lineas:
+        l = linea.lower()
+        m = re.search(r"(\d+)\s+conceptos?\s+activos?", l)
+        if m:
+            activos = m.group(1)
+        m = re.search(r"(\d+)\s+(?:en\s+)?borrador", l)
+        if m:
+            borradores = m.group(1)
+        m = re.search(r"(\d+)\s+correlaciones?", l)
+        if m:
+            correlaciones = m.group(1)
+
+    nums = []
+    if activos:
+        nums.append(f"{activos} conceptos activos")
+    if borradores:
+        nums.append(f"{borradores} en borrador")
+    if correlaciones:
+        nums.append(f"{correlaciones} correlaciones documentadas")
+
+    partes = ["Auditoría completada."]
+    if nums:
+        partes.append(", ".join(nums) + ".")
+
+    for linea in lineas:
+        l = linea.strip()
+        if any(k in l.lower() for k in _AUDIT_CRITICOS) and len(l) > 15:
+            l = re.sub(r"[*_`#|>\-]", "", l).strip()
+            if l:
+                partes.append(l[:150] + ("." if not l.endswith(".") else ""))
+                break
+
+    return " ".join(partes)
+
+
 def resumir_output_para_voz(output: str, max_chars: int = 600) -> str:
     """Extrae una respuesta apta para TTS del output de Claude Code."""
+    if any(k in output.lower() for k in _AUDIT_MARKERS):
+        return _resumir_auditoria(output)
+
     SKIP_PREFIXES = ("```", "---", "##", "**", "• ", "- ", "* ", "> ", "|")
     lineas = [
         l.strip() for l in output.splitlines()
@@ -411,9 +722,19 @@ _response_complete_callback: "callable | None" = None
 _salir_escucha: list[bool] = [False]
 
 
-def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
+def _contexto_archivo_si_referenciado(texto: str) -> str | None:
+    """Retorna el contenido del último archivo leído si el texto lo referencia."""
+    if _ultimo_archivo_leido["contenido"] is None:
+        return None
+    if any(ref in texto.lower() for ref in _CONTEXT_REFS):
+        return _ultimo_archivo_leido["contenido"]
+    return None
+
+
+def despachar_intent(intent: str, params: dict, texto_transcrito: str, vision_callback=None) -> None:
     """Ejecuta la acción y al terminar dispara _response_complete_callback."""
-    _despachar_intent_impl(intent, params, texto_transcrito)
+    print(f"[Dispatch] intent='{intent}' | fs_disponible={_filesystem_disponible} | params={params}", flush=True)
+    _despachar_intent_impl(intent, params, texto_transcrito, vision_callback=vision_callback)
     if _response_complete_callback:
         import time
         logging.info("[Timer] Callback registrado — reiniciando deadline.")
@@ -423,7 +744,7 @@ def despachar_intent(intent: str, params: dict, texto_transcrito: str) -> None:
         logging.info("[Timer] _response_complete_callback es None.")
 
 
-def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> None:
+def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vision_callback=None) -> None:
     instruccion = params.get("instruccion", texto_transcrito)
 
     CAPACIDADES_TRIGGERS = (
@@ -448,31 +769,45 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> 
 
     if intent == "conversacion_libre":
         mensaje = params.get("mensaje") or instruccion
+        emitir_evento("procesando", "Consultando Groq...")
         respuesta = responder_con_groq(mensaje, historial_sesion)
         print(f"[Conversación] {respuesta}")
-        hablar(respuesta)
+        emitir_evento("respondiendo", respuesta[:80])
+        hablar_respuesta(respuesta)
         actualizar_historial(texto_transcrito, (intent, {"respuesta": respuesta}))
+        if vision_callback:
+            vision_callback(respuesta)
         return
 
     if intent == "consulta_simple":
+        emitir_evento("procesando", instruccion[:60])
         hablar("Un momento.")
-        atlas = cargar_atlas()
+        atlas = cargar_contenido_vault_por_pregunta(instruccion)
+        _ctx = _contexto_archivo_si_referenciado(instruccion)
         system = (
             "Eres Jarvis, asistente del Segundo Cerebro de Luigui. "
             "Responde en español, máximo 3 oraciones, sin bullets ni listas — "
             "la respuesta se leerá en voz alta.\n\n"
             f"ÍNDICE DEL VAULT:\n{atlas}"
+            + (f"\n\nARCHIVO LEÍDO RECIENTEMENTE (úsalo si el usuario lo referencia):\n{_ctx[:3000]}" if _ctx else "")
         )
         respuesta = responder_con_groq(instruccion, historial_sesion, system_prompt_override=system)
         print(f"[Consulta] {respuesta}")
-        hablar(respuesta)
+        emitir_evento("respondiendo", respuesta[:80])
+        hablar_respuesta(respuesta)
         registrar_en_jarvis_log("CONSULTA", instruccion, respuesta)
+        if vision_callback:
+            vision_callback(respuesta)
         return
 
     if intent == "razonamiento_profundo":
+        emitir_evento("procesando", instruccion[:60])
         hablar("Analizando el vault, dame un momento.")
         archivos = params.get("archivos_relevantes", [])
         contenido = cargar_contenido_para_razonamiento(archivos)
+        _ctx = _contexto_archivo_si_referenciado(instruccion)
+        if _ctx:
+            contenido = f"ARCHIVO LEÍDO RECIENTEMENTE:\n{_ctx[:3000]}\n\n---\n\n{contenido}"
         system = (
             "Eres Jarvis. Responde en español, máximo 3 oraciones, sin bullets. "
             "La respuesta se leerá en voz alta.\n\n"
@@ -480,16 +815,190 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> 
         )
         respuesta = responder_con_groq(instruccion, historial_sesion, system_prompt_override=system)
         print(f"[Razonamiento] {respuesta}")
-        hablar(respuesta)
+        emitir_evento("respondiendo", respuesta[:80])
+        hablar_respuesta(respuesta)
         registrar_en_jarvis_log("RAZONAMIENTO", instruccion, respuesta)
+        if vision_callback:
+            vision_callback(respuesta)
+        return
+
+    if intent == "operacion_archivo":
+        if not _filesystem_disponible:
+            hablar("El módulo de filesystem no está disponible.")
+            return
+        emitir_evento("procesando", instruccion[:60])
+        print("[FS] Llamando operacion_archivo con params:", params, flush=True)
+        try:
+            resultado = _operacion_archivo(params)
+            print("[FS] Resultado:", repr(resultado), flush=True)
+        except Exception as _fs_err:
+            print("[FS] ERROR:", _fs_err, flush=True)
+            import traceback
+            traceback.print_exc()
+            hablar("Error en el módulo de filesystem.")
+            return
+        _operacion = params.get("operacion", "").strip().lower()
+        _es_lectura = _operacion in ("leer", "lee", "read", "mostrar", "abre")
+
+        if _es_lectura:
+            emitir_evento("respondiendo", instruccion[:80])
+            hablar_respuesta(resultado)
+            # Bug 3: guardar contexto si la lectura fue exitosa (no es un mensaje de error)
+            _es_error = resultado.startswith(
+                ("El archivo", "No puedo", "Error al", "La ruta", "No encontré", "'")
+            )
+            if not _es_error:
+                _ruta_leida = "/".join(filter(None, [
+                    params.get("ruta", ""), params.get("archivo", "")
+                ]))
+                _ultimo_archivo_leido["ruta"] = _ruta_leida or instruccion
+                _ultimo_archivo_leido["contenido"] = resultado
+                print(f"[Contexto] Archivo guardado en sesión: {_ultimo_archivo_leido['ruta']}")
+        elif len(resultado) <= 180:
+            emitir_evento("respondiendo", resultado[:80])
+            hablar(resultado)
+        else:
+            system = (
+                "Eres Jarvis. Resume el siguiente resultado de una operación de filesystem "
+                "en máximo 2 oraciones en español, sin bullets ni listas, apto para TTS.\n\n"
+                f"RESULTADO:\n{resultado[:3000]}"
+            )
+            resumen = responder_con_groq(instruccion, historial_sesion, system_prompt_override=system)
+            emitir_evento("respondiendo", resumen[:80])
+            hablar_respuesta(resumen)
+        registrar_en_jarvis_log("FILESYSTEM", instruccion, resultado[:200])
+        if vision_callback:
+            vision_callback(resultado)
+        return
+
+    if intent == "ver_pantalla":
+        if not _vision_pantalla_disponible:
+            hablar("El módulo de visión de pantalla no está disponible.")
+            return
+        emitir_evento("procesando", "Leyendo pantalla...")
+        hablar("Un momento, voy a ver qué estás leyendo.")
+        resultado = _ver_pantalla(params)
+        if _es_error_vision(resultado):
+            hablar(resultado)
+            return
+        emitir_evento("procesando", "Consultando Groq...")
+        respuesta = responder_con_groq(resultado, historial_sesion)
+        print(f"[Vision] {respuesta}")
+        emitir_evento("respondiendo", respuesta[:80])
+        hablar_respuesta(respuesta)
+        registrar_en_jarvis_log("VISION", instruccion, respuesta[:200])
+        if vision_callback:
+            vision_callback(respuesta)
+        return
+
+    if intent == "profundizar_pantalla":
+        if not _vision_pantalla_disponible:
+            hablar("El módulo de visión de pantalla no está disponible.")
+            return
+        emitir_evento("procesando", "Leyendo pantalla...")
+        hablar("Un momento, leo lo que tienes en pantalla.")
+        prompt = _profundizar_pantalla(params)
+        if _es_error_vision(prompt):
+            hablar(prompt)
+            return
+        hablar("Profundizando lo que estás leyendo. Revisa Claude Code en un momento.")
+        emitir_evento("ejecutando", instruccion[:60])
+        try:
+            output = ejecutar_claude(prompt)
+            resumen = resumir_output_para_voz(output)
+        except subprocess.TimeoutExpired:
+            hablar("Claude tardó demasiado al profundizar.")
+            registrar_en_jarvis_log("VISION", instruccion, "TIMEOUT")
+            return
+        except Exception as e:
+            hablar("Hubo un error al profundizar el concepto.")
+            print(f"[Vision error] {e}")
+            registrar_en_jarvis_log("VISION", instruccion, f"ERROR: {e}")
+            return
+        print(f"[Vision profundizar] {resumen}")
+        emitir_evento("respondiendo", resumen[:80] if resumen else "Listo.")
+        hablar_respuesta(resumen if resumen else "Listo, Luigui.")
+        registrar_en_jarvis_log("VISION", instruccion, resumen[:200] if resumen else "OK")
+        if vision_callback:
+            vision_callback(resumen or "")
+        return
+
+    if intent == "capturar_como_concepto":
+        if not _vision_pantalla_disponible:
+            hablar("El módulo de visión de pantalla no está disponible.")
+            return
+        emitir_evento("procesando", "Leyendo pantalla...")
+        hablar("Un momento, leo el contenido.")
+        prompt = _capturar_como_concepto(params)
+        if _es_error_vision(prompt):
+            hablar(prompt)
+            return
+        hablar("Generando el concepto. Revisa Claude Code para aprobarlo.")
+        emitir_evento("ejecutando", instruccion[:60])
+        try:
+            output = ejecutar_claude(prompt)
+            resumen = resumir_output_para_voz(output)
+        except subprocess.TimeoutExpired:
+            hablar("Claude tardó demasiado al generar el concepto.")
+            registrar_en_jarvis_log("VISION", instruccion, "TIMEOUT")
+            return
+        except Exception as e:
+            hablar("Hubo un error al generar el concepto.")
+            print(f"[Vision error] {e}")
+            registrar_en_jarvis_log("VISION", instruccion, f"ERROR: {e}")
+            return
+        print(f"[Vision capturar] {resumen}")
+        emitir_evento("respondiendo", resumen[:80] if resumen else "Listo.")
+        hablar_respuesta(resumen if resumen else "Concepto listo, Luigui.")
+        registrar_en_jarvis_log("VISION", instruccion, resumen[:200] if resumen else "OK")
+        if vision_callback:
+            vision_callback(resumen or "")
+        return
+
+    if intent == "relacionar_con_vault":
+        if not _vision_pantalla_disponible:
+            hablar("El módulo de visión de pantalla no está disponible.")
+            return
+        emitir_evento("procesando", "Leyendo pantalla...")
+        hablar("Un momento, busco conexiones con el vault.")
+        resultado = _relacionar_con_vault(params)
+        if _es_error_vision(resultado):
+            hablar(resultado)
+            return
+        emitir_evento("procesando", "Consultando Groq...")
+        respuesta = responder_con_groq(resultado, historial_sesion)
+        print(f"[Vision vault] {respuesta}")
+        emitir_evento("respondiendo", respuesta[:80])
+        hablar_respuesta(respuesta)
+        registrar_en_jarvis_log("VISION", instruccion, respuesta[:200])
+        if vision_callback:
+            vision_callback(respuesta)
         return
 
     # accion_directa (y vault_accion como alias para compatibilidad)
+    emitir_evento("ejecutando", instruccion[:60])
     hablar("Dame un momento, Luigui.")
+    _AUDIT_KEYWORDS = ("audita", "auditar", "corrige", "corregir", "evalúa", "evaluar", "revisa", "tag", "tags")
+    _es_auditoria = any(k in instruccion.lower() for k in _AUDIT_KEYWORDS)
+    _criterio_tags = (
+        "\n\nCRITERIO PARA TAGS NO NORMALIZADOS:"
+        "\n- Si el tag es demasiado específico o ya está cubierto por conceptos relacionados existentes → eliminar."
+        "\n- Si el tag representa una dimensión temática nueva que podría agrupar 2 o más conceptos futuros → "
+        "proponer añadirlo al vocabulario controlado en Plantillas/taxonomia.md y conservarlo en el concepto actual."
+        "\nEl reporte debe incluir una sección 'Tags propuestos para vocabulario controlado: [lista]' "
+        "con justificación de por qué cada tag merece ser añadido."
+    ) if _es_auditoria else ""
+    _ctx = _contexto_archivo_si_referenciado(instruccion)
+    _ctx_prefix = (
+        f"\n\nContexto — archivo leído recientemente ({_ultimo_archivo_leido['ruta']}):\n"
+        f"{_ctx[:2000]}\n"
+    ) if _ctx else ""
     cmd = (
         f"Responde en español. Si es una pregunta o consulta, responde en máximo 3 oraciones "
         f"sin bullets ni listas — la respuesta se leerá en voz alta. "
-        f"Si es una acción sobre el vault, ejecútala y confirma en 1-2 oraciones qué hiciste. "
+        f"Si es una acción sobre el vault, ejecútala y confirma en 1-2 oraciones qué hiciste."
+        f"{_criterio_tags}"
+        f"{_ctx_prefix} "
         f"Instrucción de voz de Luigui: \"{texto_transcrito}\""
     )
     try:
@@ -506,8 +1015,11 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str) -> 
         return
 
     print(f"[Claude output] {resumen}")
-    hablar(resumen if resumen else "Listo, Luigui.")
+    emitir_evento("respondiendo", resumen[:80] if resumen else "Listo.")
+    hablar_respuesta(resumen if resumen else "Listo, Luigui.")
     registrar_en_jarvis_log("ACCION", texto_transcrito, resumen)
+    if vision_callback:
+        vision_callback(resumen or "")
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
