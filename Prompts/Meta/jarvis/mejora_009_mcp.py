@@ -15,10 +15,13 @@ MCP_BASE   = "http://localhost:22360"
 # ── Healthcheck ────────────────────────────────────────────────────────────────
 
 def mcp_disponible() -> bool:
-    """Retorna True si el plugin MCP está corriendo (Obsidian abierto)."""
+    """Retorna True si el plugin MCP está corriendo (Obsidian abierto).
+    GET /sse sin Accept:text/event-stream retorna 406 — servidor vivo pero rechaza el header.
+    200 = conexión SSE establecida. Ambos confirman que el plugin está activo.
+    """
     try:
-        r = requests.get(f"{MCP_BASE}/sse", timeout=2, stream=True)
-        return r.status_code in (200, 400, 405)
+        r = requests.get(f"{MCP_BASE}/sse", timeout=2)
+        return r.status_code in (200, 406)
     except Exception:
         return False
 
