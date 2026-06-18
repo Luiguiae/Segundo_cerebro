@@ -162,9 +162,12 @@ def escuchar() -> str | None:
         return None
 
     recognizer = sr.Recognizer()
+    # device_index=None deja que PortAudio use el default del sistema.
+    # Cuando el daemon llama escuchar(), ya fijó el dispositivo via seleccionar_dispositivo_entrada().
+    # En modo standalone (jarvis.py directo), None es correcto.
     for intento in range(2):
         try:
-            with sr.Microphone() as source:
+            with sr.Microphone(device_index=None) as source:
                 print("Escuchando... (habla ahora)")
                 recognizer.adjust_for_ambient_noise(source, duration=0.05)
                 audio = recognizer.listen(source, timeout=5, phrase_time_limit=15)
