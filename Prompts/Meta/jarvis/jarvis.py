@@ -1011,65 +1011,19 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         return
 
     if intent == "auditar_huerfanos":
-        try:
-            from mejora_009_mcp import mcp_disponible, detectar_huerfanos
-        except ImportError:
-            hablar("El módulo MCP no está disponible.")
-            return
-        if not mcp_disponible():
-            hablar("Obsidian no está abierto. Ábrelo para usar esta función.")
-            return
-        emitir_evento("procesando", "Buscando conceptos huérfanos...")
-        hablar("Un momento, consultando el grafo del vault.")
-        try:
-            huerfanos = detectar_huerfanos()
-        except Exception as _e:
-            hablar(f"Error al consultar el MCP: {_e}")
-            registrar_en_jarvis_log("MCP", instruccion, f"ERROR: {_e}")
-            return
+        from mejora_009_mcp import detectar_huerfanos
+        huerfanos = detectar_huerfanos()
         if not huerfanos:
-            respuesta = "Todos los conceptos tienen al menos un backlink. El vault está bien conectado."
+            hablar("Todos los conceptos tienen al menos un backlink. El vault está bien conectado.")
         else:
-            primeros = ", ".join(huerfanos[:5])
-            resto = f" y {len(huerfanos) - 5} más" if len(huerfanos) > 5 else ""
-            respuesta = f"Encontré {len(huerfanos)} conceptos huérfanos: {primeros}{resto}."
-        hablar_respuesta(respuesta)
-        registrar_en_jarvis_log("MCP_HUERFANOS", instruccion, respuesta)
-        if vision_callback:
-            vision_callback(respuesta)
+            hablar_respuesta(f"Encontré {len(huerfanos)} conceptos huérfanos. Los primeros son: {', '.join(huerfanos[:5])}")
         return
 
     if intent == "buscar_por_tag":
-        try:
-            from mejora_009_mcp import mcp_disponible, buscar_por_tag
-        except ImportError:
-            hablar("El módulo MCP no está disponible.")
-            return
-        if not mcp_disponible():
-            hablar("Obsidian no está abierto. Ábrelo para usar esta función.")
-            return
-        tag = params.get("tag", "").strip()
-        if not tag:
-            hablar("No entendí qué tag quieres buscar. Dímelo de nuevo.")
-            return
-        emitir_evento("procesando", f"Buscando por tag: {tag}")
-        hablar(f"Buscando conceptos con el tag {tag}.")
-        try:
-            resultados = buscar_por_tag(tag)
-        except Exception as _e:
-            hablar(f"Error al consultar el MCP: {_e}")
-            registrar_en_jarvis_log("MCP", instruccion, f"ERROR: {_e}")
-            return
-        if not resultados:
-            respuesta = f"No encontré conceptos con el tag {tag}."
-        else:
-            nombres = ", ".join(Path(r).stem for r in resultados[:5])
-            resto = f" y {len(resultados) - 5} más" if len(resultados) > 5 else ""
-            respuesta = f"Encontré {len(resultados)} conceptos con el tag {tag}: {nombres}{resto}."
-        hablar_respuesta(respuesta)
-        registrar_en_jarvis_log("MCP_TAG", instruccion, respuesta)
-        if vision_callback:
-            vision_callback(respuesta)
+        tag = params.get("tag", "")
+        from mejora_009_mcp import buscar_por_tag
+        resultados = buscar_por_tag(tag)
+        hablar_respuesta(f"Encontré {len(resultados)} conceptos con el tag {tag}: {', '.join(resultados[:5])}")
         return
 
     # accion_directa (y vault_accion como alias para compatibilidad)
