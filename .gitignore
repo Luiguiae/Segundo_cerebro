@@ -23,8 +23,8 @@ Documentos/Presentaciones/exports/
 *.mp4
 *.mov
 
-# Remotion
-remotion/node_modules/
+# Remotion (código fuente del renderer — no pertenece al vault)
+remotion/
 
 # Jarvis runtime
 *.pid
