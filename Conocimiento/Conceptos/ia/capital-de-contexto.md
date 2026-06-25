@@ -34,34 +34,13 @@ fuentes:
     fecha_acceso: 2026-04-18
 ---
 
-# Capital de contexto
-
 ## El concepto
-Los mejores practicantes de IA no tratan los prompts como interacciones desechables —
-construyen un *hoard*: colecciones curadas de prompts de alta calidad, cadenas de
-razonamiento probadas, ejemplos few-shot calibrados, y contextos que producen outputs
-consistentes y confiables. Esta acumulación compone: quien más tiene, más puede
-producir con menos esfuerzo marginal.
-
-Simon Willison nombra el patrón *hoarding* como una de las prácticas centrales de
-los equipos que obtienen resultados sostenidos con IA. La paradoja que el concepto
-expone: tratamos el prompting como trabajo efímero cuando debería tratarse como
-capital acumulable. El hoard de contexto de un equipo experto es tan difícil de
-replicar como el conocimiento tácito institucional — no porque esté protegido, sino
-porque se tarda meses en construirlo con resultados reales.
+Los mejores practicantes de IA no tratan los prompts como interacciones desechables — construyen un *hoard*: colecciones curadas de prompts de alta calidad, cadenas de razonamiento probadas, ejemplos few-shot calibrados, y contextos que producen outputs consistentes y confiables. Esta acumulación compone: quien más tiene, más puede producir con menos esfuerzo marginal. El concepto de *hoarding* implica una comprensión profunda de cómo los contextos se relacionan entre sí y cómo pueden ser combinados para generar resultados óptimos. Simon Willison nombra el patrón *hoarding* como una de las prácticas centrales de los equipos que obtienen resultados sostenidos con IA. La paradoja que el concepto expone: tratamos el prompting como trabajo efímero cuando debería tratarse como capital acumulable. El hoard de contexto de un equipo experto es tan difícil de replicar como el conocimiento tácito institucional — no porque esté protegido, sino porque se tarda meses en construirlo con resultados reales. Además, la calidad y la relevancia del contexto determinan la efectividad del modelo de lenguaje, lo que destaca la importancia de una curación y mantenimiento constantes del hoard.
 
 ## Por qué importa
-Cuando todos los equipos tienen acceso a los mismos modelos de lenguaje, la ventaja
-competitiva migra al contexto que alimenta esos modelos. HBR (Feb 2026) documenta
-este cambio: el diferenciador ya no es qué modelo usas — es la calidad del contexto
-que le proporcionas. Las organizaciones que convirtieron su conocimiento institucional
-en contexto reutilizable y gobernado están separándose del resto.
-
-El capital de contexto es el mecanismo por el cual el conocimiento tácito de un
-equipo se vuelve operacionalmente transferible a los agentes que trabajan con él.
+Cuando todos los equipos tienen acceso a los mismos modelos de lenguaje, la ventaja competitiva migra al contexto que alimenta esos modelos. HBR (Feb 2026) documenta este cambio: el diferenciador ya no es qué modelo usas — es la calidad del contexto que le proporcionas. Las organizaciones que convirtieron su conocimiento institucional en contexto reutilizable y gobernado están separándose del resto. El capital de contexto es el mecanismo por el cual el conocimiento tácito de un equipo se vuelve operacionalmente transferible a los agentes que trabajan con él. Esto permite a las organizaciones escalar sus capacidades y mantener la consistencia en la calidad de sus resultados, incluso cuando los equipos o los modelos cambian. La capacidad de acumular y gestionar efectivamente el capital de contexto se convierte en un factor clave para el éxito en la era de la inteligencia artificial.
 
 ## Datos y evidencia
-
 **Context engineering: la evolución del prompting.**
 En mid-2025, Gartner declaró que "context engineering is in, and prompt engineering
 is out." La distinción es precisa: prompt engineering trata cada interacción como
