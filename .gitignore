@@ -20,3 +20,17 @@ Documentos/Presentaciones/exports/
 *.pdf
 *.pptx
 *.key
+*.mp4
+*.mov
+
+# Remotion
+remotion/node_modules/
+
+# Jarvis runtime
+*.pid
+*.onnx
+*.jpg
+context.md
+
+# DS_Store
+.DS_Store

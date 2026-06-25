@@ -107,10 +107,10 @@ Solo estos tags están permitidos. Si un concepto necesita un tag que no está a
 Jarvis debe proponer agregarlo a esta lista antes de usarlo.
 
 ### Dominio
-`ia`, `diseño`, `producto`, `sistemas`, `conocimiento`, `agentes`, `codigo`, `automatizacion`, `estrategia`, `organizacion`, `prompts`, `educacion`, `habilidades`, `herramientas`, `desarrollo`, `escala`, `startups`, `mvp`, `cultura`, `colonialismo`, `descolonizacion`, `trabajo`, `productividad`, `mcp`, `infraestructura`, `web`, `ux`
+`ia`, `diseño`, `producto`, `sistemas`, `conocimiento`, `agentes`, `codigo`, `automatizacion`, `estrategia`, `organizacion`, `prompts`, `educacion`, `habilidades`, `herramientas`, `desarrollo`, `escala`, `startups`, `mvp`, `cultura`, `colonialismo`, `descolonizacion`, `trabajo`, `productividad`, `mcp`, `infraestructura`, `web`, `ux`, `gobernanza-ia`
 
 ### Proceso
-`captura`, `indexacion`, `activacion`, `correlacion`, `evaluacion`, `iteracion`, `prototipado`, `construccion`, `research`, `validacion`, `aprendizaje`
+`captura`, `indexacion`, `activacion`, `correlacion`, `evaluacion`, `iteracion`, `prototipado`, `construccion`, `research`, `validacion`, `aprendizaje`, `onboarding`
 
 ### Perfil / audiencia
 `disenador`, `builder`, `lider`, `equipo`, `latam`, `liderazgo`, `usuarios`, `roles`
@@ -120,6 +120,9 @@ Jarvis debe proponer agregarlo a esta lista antes de usarlo.
 
 ### Postura epistémica
 `tension`, `paradoja`, `principio`, `patron`, `hipotesis`, `marco`, `poder`, `incertidumbre`, `fundamentos`, `criterio`, `confianza`, `transparencia`, `control`, `etica`
+
+### Estado de lectura
+`no-leido`, `leido`
 
 ---
 

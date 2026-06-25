@@ -236,6 +236,45 @@ Restricciones:
 - Si el input es una ruta a `.md` y el archivo no existe, informa y detente
 - Output siempre en español
 
+### Generar video de concepto
+```
+Jarvis, genera video de [referencia]
+```
+`[referencia]` puede ser:
+- Un **slug** del vault: `ai-evals-como-disciplina`
+- Una **ruta relativa** al vault: `Conocimiento/Conceptos/ia/ai-evals-como-disciplina.md`
+- Una **ruta absoluta** a cualquier `.md`: `/Users/luigui/Desktop/borrador.md`
+- Un **archivo adjunto en el chat**: Luigui pega o arrastra el `.md` → Jarvis lo escribe en `/tmp/[nombre].md` y pasa esa ruta
+
+1. Resuelve la referencia a una ruta de archivo
+2. Si es contenido pegado en el chat: escríbelo en `/tmp/[slug].md` antes de llamar el bridge
+3. Ejecuta:
+   ```bash
+   python3 ~/Documents/Segundo_cerebro/Prompts/Meta/generar_video.py concepto [ruta-o-slug]
+   ```
+4. El video se genera en `Videos/YYYY-MM-DD_[titulo].mp4`
+5. Registra en log: fuente del archivo, ruta de output
+
+Fallback para `.md` sin estructura de vault: si no tiene las secciones `## El concepto`, `## Por qué importa`, `## Tensiones y límites`, el bridge usa los primeros 3 párrafos del cuerpo. El video se genera igual.
+
+### Generar presentación multi-concepto
+```
+Jarvis, genera presentacion "[título]" con [ref1] [ref2] [ref3...]
+```
+Cada `[ref]` puede ser slug, ruta relativa, o ruta absoluta.
+
+1. Ejecuta:
+   ```bash
+   python3 ~/Documents/Segundo_cerebro/Prompts/Meta/generar_video.py presentacion "[título]" [ref1] [ref2] ...
+   ```
+2. El video se genera en `Videos/YYYY-MM-DD_[titulo-slug].mp4`
+3. Registra en log: título, referencias incluidas, ruta de output
+
+Restricciones para ambos comandos:
+- No modifica archivos del vault durante la generación
+- El render tarda 2-5 minutos según la longitud del video
+- Si el render falla, reporta el error en el log y sugiere `npm start` en `remotion/` para debug visual
+
 ---
 
 ## Formato del JARVIS_LOG.md

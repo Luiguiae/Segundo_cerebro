@@ -86,43 +86,23 @@ _hablar_lock = threading.Lock()  # serializa llamadas TTS entre threads
 
 
 def hablar(texto: str) -> None:
-    """TTS con chunking para evitar corte en textos largos (bug pyttsx3/macOS). Thread-safe."""
-    import re
+    """TTS via `say` nativo de macOS. Una sola llamada, sin chunking, thread-safe."""
     global _jarvis_hablando, _last_hablar_end_time, _last_spoken_text
     with _hablar_lock:
         _jarvis_hablando = True
         _last_spoken_text = texto.lower()
         _end_time_seteado = False
         try:
-            import pyttsx3
-
-            LIMITE = 200
-            oraciones = re.split(r'(?<=[.!?])\s+', texto.strip())
-            chunks: list[str] = []
-            chunk_actual = ""
-            for oracion in oraciones:
-                if len(chunk_actual) + len(oracion) < LIMITE:
-                    chunk_actual += (" " if chunk_actual else "") + oracion
-                else:
-                    if chunk_actual:
-                        chunks.append(chunk_actual)
-                    chunk_actual = oracion
-            if chunk_actual:
-                chunks.append(chunk_actual)
-
-            engine = pyttsx3.init()
-            engine.setProperty('voice', 'com.apple.speech.synthesis.voice.monica')
-            engine.setProperty('rate', 150)
-            for chunk in chunks:
-                engine.say(chunk)
-                engine.runAndWait()
-
-            # Marcar fin del TTS ANTES del sleep de CoreAudio.
-            # El eco buffer corre durante el drain, así escuchar() abre el mic
-            # apenas el audio termina (~0.8s) en lugar de 0.5s después.
+            subprocess.run(
+                ["say", "-v", "Mónica", texto.strip()],
+                timeout=60,
+                check=False,
+            )
             _last_hablar_end_time = time.time()
             _end_time_seteado = True
-            time.sleep(0.8)  # CoreAudio drain
+        except subprocess.TimeoutExpired:
+            print(f"[TTS] Timeout — matando say")
+            subprocess.run(["killall", "say"], check=False)
         except Exception as e:
             print(f"[TTS] {texto}")
             print(f"[TTS error] {e}")
@@ -562,14 +542,10 @@ def cargar_contenido_vault_por_pregunta(instruccion: str) -> str:
     return ""
 
 
-def cargar_atlas() -> str:
-    return cargar_contenido_vault_por_pregunta("")
-
-
-# ── Razonamiento profundo — Ollama ────────────────────────────────────────────
+# ── Razonamiento profundo ─────────────────────────────────────────────────────
 
 def cargar_contenido_para_razonamiento(archivos_relevantes: list[str]) -> str:
-    """Carga hasta 3 archivos del vault para contexto de Ollama (max 3000 chars c/u)."""
+    """Carga hasta 3 archivos del vault como contexto para razonamiento (max 3000 chars c/u)."""
     base = CEREBRO_PATH / "Conocimiento"
     contenido = []
 
@@ -600,43 +576,6 @@ def cargar_contenido_para_razonamiento(archivos_relevantes: list[str]) -> str:
             contenido.append(atlas.read_text(encoding="utf-8")[:3000])
 
     return "\n\n---\n\n".join(contenido)
-
-
-# TODO: reactivar con Mac Studio M4 Pro
-# def razonar_con_ollama(pregunta: str, contenido_vault: str) -> str | None:
-#     try:
-#         response = requests.post(
-#             "http://localhost:11434/api/chat",
-#             json={
-#                 "model": "qwen2.5:7b",
-#                 "messages": [
-#                     {
-#                         "role": "system",
-#                         "content": (
-#                             "Eres el cerebro analítico de Jarvis, asistente del Segundo Cerebro de Luigui. "
-#                             "Tienes acceso al contenido del vault. Responde en español, máximo 4 oraciones, "
-#                             "tono directo y útil. Sin listas ni bullets — esto se leerá en voz alta.\n\n"
-#                             f"CONTENIDO DEL VAULT:\n{contenido_vault}"
-#                         ),
-#                     },
-#                     {"role": "user", "content": pregunta},
-#                 ],
-#                 "stream": False,
-#                 "options": {"temperature": 0.3, "num_predict": 200},
-#             },
-#             timeout=120,
-#         )
-#         response.raise_for_status()
-#         return response.json()["message"]["content"].strip()
-#     except requests.exceptions.ConnectionError:
-#         logging.warning("Ollama no está corriendo")
-#         return None
-#     except requests.exceptions.Timeout:
-#         logging.warning("Ollama tardó más de 60s")
-#         return None
-#     except Exception as e:
-#         logging.warning(f"Ollama error: {e}")
-#         return None
 
 
 # ── Acciones — Claude Code ─────────────────────────────────────────────────────
@@ -769,6 +708,24 @@ def _contexto_archivo_si_referenciado(texto: str) -> str | None:
     return None
 
 
+def _ultimo_slug_de_historial() -> str | None:
+    """Busca en el historial de sesión el slug más reciente mencionado por Jarvis.
+    Útil cuando el usuario dice 'léelo' sin especificar archivo después de una consulta."""
+    conceptos_path = CEREBRO_PATH / "Conocimiento" / "Conceptos"
+    slugs_vault = {
+        p.stem for p in conceptos_path.rglob("*.md")
+    }
+    # Recorrer historial en reversa buscando slugs en las respuestas de Jarvis
+    for entrada in reversed(historial_sesion):
+        if entrada.get("role") != "assistant":
+            continue
+        contenido = entrada.get("content", "").lower()
+        for slug in slugs_vault:
+            if slug in contenido:
+                return slug
+    return None
+
+
 def despachar_intent(intent: str, params: dict, texto_transcrito: str, vision_callback=None) -> None:
     """Ejecuta la acción y al terminar dispara _response_complete_callback."""
     print(f"[Dispatch] intent='{intent}' | fs_disponible={_filesystem_disponible} | params={params}", flush=True)
@@ -864,6 +821,24 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         if not _filesystem_disponible:
             hablar("El módulo de filesystem no está disponible.")
             return
+        # Si es una lectura sin archivo especificado, intentar recuperar del historial o contexto
+        _operacion_raw = params.get("operacion", "").strip().lower()
+        if _operacion_raw in ("leer", "lee", "read", "mostrar", "abre"):
+            _archivo_raw = (params.get("archivo", "") or "").strip()
+            _ruta_raw = (params.get("ruta", "") or "").strip()
+            if not _archivo_raw and not _ruta_raw:
+                # Buscar el último slug de vault mencionado en el historial de sesión
+                _slug_recuperado = _ultimo_slug_de_historial()
+                if _slug_recuperado:
+                    params = dict(params, archivo=_slug_recuperado, ruta="conceptos")
+                    print(f"[FS] Léelo sin contexto → recuperado del historial: {_slug_recuperado}", flush=True)
+                elif _ultimo_archivo_leido["ruta"]:
+                    print(f"[FS] Léelo sin contexto → reutilizando último leído: {_ultimo_archivo_leido['ruta']}", flush=True)
+                    hablar_respuesta(_ultimo_archivo_leido["contenido"] or "No hay archivo en contexto.")
+                    return
+                else:
+                    hablar("No sé qué concepto leer. Dime el nombre del concepto.")
+                    return
         emitir_evento("procesando", instruccion[:60])
         print("[FS] Llamando operacion_archivo con params:", params, flush=True)
         try:
