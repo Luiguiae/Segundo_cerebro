@@ -1,6 +1,6 @@
 # Contexto del Segundo Cerebro — Luigui Avila
 
-> Archivo actualizado el 2026-06-20 (auditoría completa + skill presentacion-html). Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
+> Archivo actualizado el 2026-06-25 (3 conceptos nuevos · 2 correlaciones nuevas · Jarvis Server Fase 3 completa). Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
 
 ---
 
@@ -26,21 +26,22 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 
 ## Estado actual del vault
 
-- **70 conceptos activos** (auditoría 2026-06-20: 11 normalizados, todos aprobados Gate 0 + rúbrica)
-- **27 correlaciones documentadas**
+- **73 conceptos activos** (última actualización 2026-06-25)
+- **29 correlaciones documentadas**
 - **10 conceptos más recientes (por fecha de frontmatter):**
-  - `riesgo-geopolitico-del-modelo` (ia · 2026-06-19) — vulnerabilidad estructural de cualquier sistema construido sobre un modelo frontier cerrado: el acceso puede revocarse por directiva gubernamental en horas, sin falla técnica. Precedente: suspensión global de Fable 5 y Mythos 5 el 12-jun-2026
-  - `deuda-cognitiva-organizacional` (organizaciones · 2026-06-19) — costo diferido que se acumula cuando la delegación a la IA pasa del output al pensamiento mismo; erosión de pensamiento crítico, juicio y curiosidad a escala organizacional (BCG 2026: 60% de C-suite ya lo observa)
-  - `soberania-epistemica` (diseno · 2026-06-18) — el derecho y capacidad del diseñador de determinar qué herramientas, procesos y marcos conceptuales usa; resistencia activa a la dependencia acrítica de sistemas que definen qué preguntas son válidas
-  - `poblaciones-sinteticas` (ia · 2026-06-18) — conjuntos de agentes LLM que simulan la distribución estadística de comportamientos de grupos humanos (silicon sampling); distinción clave con usuarios sintéticos: es fenómeno de distribución, no de perfil individual
-  - `impuesto-de-alineacion` (ia · 2026-06-15) — el costo estructural de hacer que los modelos frontier sean seguros y útiles; cada capa de RLHF y filtering consume capacidad y velocidad, creando una brecha entre el potencial del modelo y su comportamiento observable
-  - `representacion-agente` (ia · 2026-06-13) — el problema de identidad y autorización cuando un agente actúa en nombre de una persona ante otros agentes: quién habla, con qué mandato, y cómo se verifica esa relación
-  - `inteligencia-como-utilidad` (ia · 2026-06-13) — la inferencia de LLMs recorre el mismo ciclo de commoditización que la electricidad y el cómputo en la nube; la inteligencia pasa de ventaja competitiva a infraestructura invisible
-  - `ingenieria-agentica` (ia · 2026-06-13) — el paradigma que sucede al vibe coding: diseño de sistemas donde agentes LLM coordinan herramientas y sub-agentes para completar tareas de forma autónoma; el flujo de trabajo como objeto de diseño primario
-  - `presupuesto-ia-como-restriccion` (economia · 2026-06-12) — el costo operativo de los LLMs como restricción de diseño de producto; decisiones de arquitectura guiadas por costo de tokens, latencia y disponibilidad de modelo
-  - `workforce-de-agentes` (organizaciones · 2026-06-10) — el conjunto de agentes IA que una organización despliega con estructura explícita de empleos, roles y accountability; los agentes como fuerza laboral complementaria, no solo herramienta
-- **Correlaciones recientes (2026-06-10):** 10 correlaciones documentadas cubriendo tensiones entre: autoautomatización vs. competencia oculta, conocimiento-LLM vs. metacognición, corrupción silenciosa vs. comprehension debt, cuerpo vs. juicio completo, de-usuario a cliente vs. agencia humana, equipos pequeños vs. comprehension debt, espiral delusional vs. capital de contexto, gobernanza performativa vs. sycophancy, impuesto de verificación vs. pit-stop, inversión sesgo tecnológico vs. filtro de entrada
+  - `gestion-del-tiempo` (ia · 2026-06-25) — capacidad de organizar y priorizar tareas maximizando la productividad; herramientas y técnicas para controlar distracciones y mantener el foco en lo importante. Estado borrador.
+  - `rutina-trabajo-enfocada` (organizaciones · 2026-06-25) — mantener enfoque constante en tareas prioritarias minimizando distracciones; opera mediante disciplina y autoregulación; la rutina como infraestructura de la producción sostenida. Estado borrador.
+  - `el-agente-que-no-para` (ia · 2026-06-20) — el agente autónomo que ejecuta sin pausas ni verificación intermedia; tensión entre eficiencia y control; la ausencia de checkpoints como riesgo de diseño agéntico
+  - `riesgo-geopolitico-del-modelo` (ia · 2026-06-19) — vulnerabilidad estructural de cualquier sistema construido sobre un modelo frontier cerrado: el acceso puede revocarse por directiva gubernamental en horas, sin falla técnica
+  - `deuda-cognitiva-organizacional` (organizaciones · 2026-06-19) — costo diferido que se acumula cuando la delegación a la IA pasa del output al pensamiento mismo; erosión de pensamiento crítico, juicio y curiosidad a escala organizacional
+  - `soberania-epistemica` (diseno · 2026-06-18) — el derecho y capacidad del diseñador de determinar qué herramientas, procesos y marcos conceptuales usa; resistencia activa a la dependencia acrítica
+  - `poblaciones-sinteticas` (ia · 2026-06-18) — conjuntos de agentes LLM que simulan la distribución estadística de comportamientos de grupos humanos (silicon sampling); fenómeno de distribución, no de perfil individual
+  - `impuesto-de-alineacion` (ia · 2026-06-15) — el costo estructural de hacer que los modelos frontier sean seguros y útiles; cada capa de RLHF consume capacidad y velocidad, creando brecha entre potencial y comportamiento observable
+  - `representacion-agente` (ia · 2026-06-13) — el problema de identidad y autorización cuando un agente actúa en nombre de una persona ante otros agentes: quién habla, con qué mandato, y cómo se verifica
+  - `inteligencia-como-utilidad` (ia · 2026-06-13) — la inferencia de LLMs recorre el mismo ciclo de commoditización que la electricidad y el cómputo en la nube; pasa de ventaja competitiva a infraestructura invisible
+- **Correlaciones recientes (2026-06-25):** 2 nuevas — `agentes-ia ↔ capital-de-contexto` (los agentes como generadores y consumidores del capital de contexto organizacional) · `gestion-del-tiempo ↔ capital-de-contexto` (el tiempo como forma de capital de contexto: qué se preserva, qué se pierde)
 - **Skill nueva (2026-06-20):** `/presentacion-html [slug] [formato]` — genera una presentación HTML autocontenida y lista para presentar a partir de cualquier concepto del vault. Formato `business-case` implementado. Plantillas en `Plantillas/presentaciones/`
+- **Jarvis Server (2026-06-25):** Fase 3 completa. FastAPI en VPS con TTS (gTTS → MP3), PWA Android instalable (wake word "Jarvis", AudioContext, Web Speech API). Archivos en `~/Projects/jarvis-server/`. Pendiente: despliegue en Hetzner CX22 + validación E2E en Android.
 - **Mejora-006 activa:** grafo tipado de relaciones. 21+ conceptos con campo `edges:` (tipos: `contradicts`, `requires`, `enables`, `refines`, `extends`, `exemplifies`, `same_mechanism_as`). ATLAS incluye sección "Grafo tipado de relaciones"
 - **Capacidad Remotion activa:** generación de videos animados desde conceptos del vault. Dos composiciones: `ConceptoVideo` y `PresentacionVideo`. Script en `Prompts/Meta/generar_video.py`
 
@@ -52,10 +53,10 @@ Los conceptos viven en `Conocimiento/Conceptos/` organizados en 6 subcarpetas te
 
 ```
 Conocimiento/Conceptos/
-├── ia/             (26 conceptos) — tecnología, modelos, agentes IA
+├── ia/             (28 conceptos) — tecnología, modelos, agentes IA
 ├── diseno/         (13 conceptos) — proceso de diseño, rol del diseñador, UX agéntico
 ├── producto/       (12 conceptos) — construir, medir, iterar productos
-├── organizaciones/ (9 conceptos)  — equipos, roles, transformación organizacional
+├── organizaciones/ (10 conceptos) — equipos, roles, transformación organizacional
 ├── economia/       (5 conceptos)  — mercado laboral, impacto económico de la IA
 └── filosofia/      (5 conceptos)  — pensamiento abstracto, epistemología, marcos
 ```
@@ -72,9 +73,9 @@ Sistemas adicionales:
 
 ---
 
-## Los 70 conceptos activos
+## Los 73 conceptos activos
 
-### ia/ (26 conceptos)
+### ia/ (28 conceptos)
 
 | slug | título |
 |---|---|
@@ -87,9 +88,11 @@ Sistemas adicionales:
 | `comprehension-debt` | Comprehension debt |
 | `conocimiento-autoorganizado-por-llm` | Conocimiento autoorganizado por LLM |
 | `design-system-como-api-para-agentes` | El design system como API para agentes |
+| `el-agente-que-no-para` | El agente que no para |
 | `espectro-autonomia-agente` | Espectro de autonomía del agente |
 | `espiral-delusional` | Espiral delusional |
 | `fabrica-oscura-de-software` | La fábrica oscura de software |
+| `gestion-del-tiempo` | Gestión Efectiva Del Tiempo |
 | `gobernanza-ia-performativa` | Gobernanza de IA performativa |
 | `impuesto-de-alineacion` | El impuesto de alineación |
 | `impuesto-de-verificacion` | El impuesto de verificación |
@@ -140,7 +143,7 @@ Sistemas adicionales:
 | `pmf-perecedero` | PMF perecedero |
 | `restriccion-de-tiempo-como-ventaja` | Restricción de tiempo como ventaja |
 
-### organizaciones/ (9 conceptos)
+### organizaciones/ (10 conceptos)
 
 | slug | título |
 |---|---|
@@ -152,6 +155,7 @@ Sistemas adicionales:
 | `ia-sin-ecosistema` | IA sin ecosistema |
 | `juicio-como-trabajo-completo` | El juicio como trabajo completo |
 | `la-competencia-que-oculta-el-juicio` | La competencia que oculta el juicio |
+| `rutina-trabajo-enfocada` | Rutina De Trabajo Enfocada |
 | `workforce-de-agentes` | Workforce de Agentes |
 
 ### economia/ (5 conceptos)
@@ -176,7 +180,7 @@ Sistemas adicionales:
 
 ---
 
-## Las 27 correlaciones documentadas
+## Las 29 correlaciones documentadas
 
 | archivo | conceptos | descripción breve |
 |---|---|---|
@@ -207,3 +211,5 @@ Sistemas adicionales:
 | `2026-06-10_gobernanza-ia-performativa--sycophancy-como-riesgo-de-diseno` | gobernanza-performativa + sycophancy | La gobernanza que replica el problema que intenta resolver |
 | `2026-06-10_impuesto-de-verificacion--pit-stop-cognitivo` | impuesto-de-verificacion + pit-stop | El pit-stop como pago deliberado del impuesto de verificación |
 | `2026-06-10_inversion-sesgo-tecnologico--ia-como-filtro-de-entrada` | inversion-sesgo + ia-filtro-entrada | La escalera que se desmonta desde los dos extremos |
+| `2026-06-25_agentes-ia--capital-de-contexto` | agentes-ia + capital-de-contexto | Los agentes como generadores y consumidores del capital de contexto organizacional |
+| `2026-06-25_gestion-del-tiempo--capital-de-contexto` | gestion-del-tiempo + capital-de-contexto | El tiempo como forma de capital de contexto: qué se preserva, qué se pierde al delegar |

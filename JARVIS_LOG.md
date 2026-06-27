@@ -2,6 +2,73 @@
 
 ---
 
+### 2026-06-25 — T3.3 PWA interfaz de voz
+
+**Instrucción:** "Procede con T3.3"
+
+**Acciones:**
+- Escrito `pwa/index.html` desde cero — 340 líneas, 12KB, sin frameworks
+- UI: overlay tap-to-start → circulo indicador con 5 estados CSS → textos de estado+transcripción+último intercambio
+- Lógica: escuchar() → activar() → grabar() → procesar() → escuchar()
+- AudioContext desbloqueado en btn click; reproducción vía createBufferSource
+- Wake word: revisión solo de resultados nuevos (e.resultIndex) + restart en onend
+- Timeout de 10s en modo grabando; fallback si /audio falla (muestra texto, continúa)
+
+**Resultados:**
+- HTML válido (python HTMLParser sin errores)
+- JS sintaxis OK (node --check /tmp/jarvis_pwa_check.js)
+- 6957 chars de JS puro en el script inline
+
+**Pendiente para validar:** T3.4 (static serving) + VPS + HTTPS para prueba real en Android
+
+**ATLAS regenerado:** no
+
+---
+
+### 2026-06-25 — T3.1 + T3.2 Fase 3 parcial
+
+**Instrucción:** "Procede con T3.1" / "Procede con T3.2"
+
+**Acciones:**
+- T3.1: implementado `tts_server.py` — `texto_a_mp3()` vía gTTS español 64kbps 24kHz
+- T3.1: agregado `POST /audio` en `jarvis_server.py` — devuelve `audio/mpeg`
+- T3.2: creado `pwa/icon.svg` — monograma "J" sobre #0F1923 con bordes redondeados rx=64
+- T3.2: actualizado `pwa/manifest.json` — campo icons con src=/icon.svg sizes=any purpose=any+maskable
+- T3.2: actualizado `pwa/sw.js` — pass-through con fallback 503 offline, skipWaiting+claim
+
+**Resultados:**
+- POST /audio "Hola Luigui..." → 200 · 23KB audio/mpeg · MPEG ADTS layer III · reproducible
+- POST /audio sin token → 401 · texto vacío → 503
+- manifest.json: JSON válido (python3 -m json.tool sin errores)
+- sw.js: fetch handler con fallback 503 offline · skipWaiting en install
+
+**Nota:** validación del banner de instalación Chrome requiere T3.4 (static serving) + HTTPS en VPS
+
+**ATLAS regenerado:** no
+
+---
+
+### 2026-06-25 — T2.5 Validación end-to-end Fase 2
+
+**Instrucción:** "Jarvis, ejecuta T2.5"
+
+**Acciones:**
+- Creado `tests/test_fase2.sh` — script bash con 7 secciones, 34 verificaciones
+- Corregidos 2 bugs: `(( PASS++ ))` con set -e, `head -n -1` no compatible macOS
+- Ejecutado test completo contra servidor local en :8001
+
+**Resultados:**
+- tests/test_fase2.sh: OK — 34 passed / 0 failed
+- Artefactos creados durante el test (commits verificados en GitHub):
+  - `Conceptos/organizaciones/rutina-trabajo-enfocada.md`: OK (test T3)
+  - `Correlaciones/2026-06-25_agentes-ia--capital-de-contexto.md`: OK (test T4)
+  - `Conceptos/ia/gestion-del-tiempo.md` profundizado: OK (test T5)
+- Último commit verificado: `111706c` — hace < 10 segundos
+
+**ATLAS regenerado:** no (artefactos de test, no vault activo)
+
+---
+
 ### 2026-06-25 — auditoría y limpieza del proyecto
 
 **Instrucción:** "Audita por completo el proyecto en búsqueda de optimización — carpetas, archivos y funciones que no se usan"
@@ -2317,3 +2384,7 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-06-25 09:46 — FILESYSTEM
 **Instrucción:** léelo
 **Resultado:** '/Users/luiguiavilae' es una carpeta, no un archivo.
+
+## 2026-06-25 18:20 — WATCHER
+**Instrucción:** Concepto modificado: gestion-del-tiempo
+**Resultado:** Re-evaluado
