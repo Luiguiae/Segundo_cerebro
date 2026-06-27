@@ -1025,19 +1025,23 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
     if intent == "sincronizar_vault":
         emitir_evento("procesando", "Sincronizando vault...")
         hablar("Sincronizando actualizaciones del servidor online...")
+        _git_env = {**os.environ, "GIT_TERMINAL_PROMPT": "0"}
         try:
             subprocess.run(
                 ["git", "-C", str(CEREBRO_PATH), "fetch", "origin", "main"],
                 capture_output=True, text=True, timeout=30, check=True,
+                stdin=subprocess.DEVNULL, env=_git_env,
             )
             diff = subprocess.run(
                 ["git", "-C", str(CEREBRO_PATH), "diff", "--name-only", "HEAD", "origin/main"],
                 capture_output=True, text=True, timeout=10, check=True,
+                stdin=subprocess.DEVNULL,
             )
             archivos_remotos = [f.strip() for f in diff.stdout.splitlines() if f.strip()]
             pull = subprocess.run(
                 ["git", "-C", str(CEREBRO_PATH), "pull", "origin", "main"],
                 capture_output=True, text=True, timeout=60,
+                stdin=subprocess.DEVNULL, env=_git_env,
             )
             if pull.returncode != 0:
                 hablar("Hubo un problema al sincronizar, Luigui. Revisa la conexión.")
