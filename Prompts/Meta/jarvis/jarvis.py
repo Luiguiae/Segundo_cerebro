@@ -270,6 +270,11 @@ buscar_por_tag: el usuario quiere listar conceptos que tienen un tag específico
   "qué hay en el tag X", "lista los de tag X", "filtra por tag X".
   Params: tag = "el tag que menciona el usuario"
 
+sincronizar_vault: el usuario quiere traer los cambios del servidor remoto (Jarvis VPS) al vault local.
+  Señales: "sincroniza el segundo cerebro", "sincroniza con la nube", "actualiza el vault",
+  "trae los cambios del servidor", "sincroniza el vault", "actualiza desde el servidor".
+  Params: {}
+
 REGLA DE DESAMBIGUACIÓN CRÍTICA: Si el mensaje menciona una ubicación del sistema operativo
 (downloads, descargas, escritorio, desktop, wayta, home, o "carpeta de [nombre]") → clasifica SIEMPRE
 como operacion_archivo, nunca como consulta_simple ni conversacion_libre.
@@ -302,6 +307,9 @@ Para auditar_huerfanos:
 
 Para buscar_por_tag:
 {"intent": "buscar_por_tag", "instruccion": "<texto literal>", "archivos_relevantes": [], "tag": "<tag que mencionó el usuario>"}
+
+Para sincronizar_vault:
+{"intent": "sincronizar_vault", "instruccion": "<texto literal>", "archivos_relevantes": []}
 
 Para razonamiento_profundo incluye en archivos_relevantes las categorías relevantes (ej. ["ia", "producto", "Correlaciones"]).
 Para los demás tipos archivos_relevantes puede ser []."""
@@ -437,6 +445,16 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
         if any(k in t for k in ("profundiza", "investiga más", "investiga mas")):
             return "profundizar_pantalla", _vision_base
         return "ver_pantalla", _vision_base
+
+    SINCRONIZAR = (
+        "sincroniza el segundo cerebro", "sincroniza con la nube",
+        "actualiza el vault", "trae los cambios", "sincroniza el vault",
+        "actualiza desde el servidor",
+    )
+    if any(k in t for k in SINCRONIZAR):
+        return "sincronizar_vault", {"instruccion": texto, "archivos_relevantes": [],
+                                     "accion": "describir", "foco": "", "titulo_candidato": "",
+                                     "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
 
     return "accion_directa", {"instruccion": texto, "archivos_relevantes": [],
                                "accion": "describir", "foco": "", "titulo_candidato": ""}
@@ -1002,6 +1020,43 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         from mejora_009_mcp import buscar_por_tag
         resultados = buscar_por_tag(tag)
         hablar_respuesta(f"Encontré {len(resultados)} conceptos con el tag {tag}: {', '.join(resultados[:5])}")
+        return
+
+    if intent == "sincronizar_vault":
+        emitir_evento("procesando", "Sincronizando vault...")
+        hablar("Sincronizando actualizaciones del servidor online...")
+        try:
+            subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "fetch", "origin", "main"],
+                capture_output=True, text=True, timeout=30, check=True,
+            )
+            diff = subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "diff", "--name-only", "HEAD", "origin/main"],
+                capture_output=True, text=True, timeout=10, check=True,
+            )
+            archivos_remotos = [f.strip() for f in diff.stdout.splitlines() if f.strip()]
+            pull = subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "pull", "origin", "main"],
+                capture_output=True, text=True, timeout=60,
+            )
+            if pull.returncode != 0:
+                hablar("Hubo un problema al sincronizar, Luigui. Revisa la conexión.")
+                registrar_en_jarvis_log("SYNC", instruccion, f"ERROR pull: {pull.stderr[:100]}")
+                return
+            if archivos_remotos:
+                slugs = [Path(f).stem for f in archivos_remotos]
+                n = len(slugs)
+                lista = ", ".join(slugs[:5]) + ("..." if n > 5 else "")
+                hablar(f"Listo Luigui, segundo cerebro actualizado. Se agregaron {n} archivos: {lista}.")
+            else:
+                hablar("El segundo cerebro ya estaba al día, Luigui.")
+            registrar_en_jarvis_log("SYNC", instruccion, f"{len(archivos_remotos)} archivos actualizados")
+        except subprocess.TimeoutExpired:
+            hablar("Hubo un problema al sincronizar, Luigui. Revisa la conexión.")
+            registrar_en_jarvis_log("SYNC", instruccion, "TIMEOUT")
+        except Exception as e:
+            hablar("Hubo un problema al sincronizar, Luigui. Revisa la conexión.")
+            registrar_en_jarvis_log("SYNC", instruccion, f"ERROR: {e}")
         return
 
     # accion_directa (y vault_accion como alias para compatibilidad)
