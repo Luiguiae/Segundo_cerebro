@@ -364,8 +364,12 @@ const wsLabel    = document.getElementById('wsLabel');
 let currentState = 'idle';
 let stateStart   = Date.now();
 let actionLog    = [];
+let _stuckTimer  = null;
+const STUCK_MS   = 90_000; // vuelve a idle si lleva 90s sin actualización
 
 function applyState(tipo, mensaje) {
+  if (_stuckTimer) { clearTimeout(_stuckTimer); _stuckTimer = null; }
+
   const cfg = STATES[tipo] || STATES.idle;
   currentState     = tipo;
   stateStart       = Date.now();
@@ -375,6 +379,10 @@ function applyState(tipo, mensaje) {
   stateLabel.style.color   = cfg.color;
   messageEl.textContent    = mensaje || '';
   messageEl.style.color    = cfg.msgColor;
+
+  if (['ejecutando', 'procesando'].includes(tipo)) {
+    _stuckTimer = setTimeout(() => applyState('idle', 'Esperando wake word...'), STUCK_MS);
+  }
 }
 
 function pushLog(tipo, mensaje, ts) {

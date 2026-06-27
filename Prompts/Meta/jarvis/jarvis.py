@@ -748,6 +748,7 @@ def despachar_intent(intent: str, params: dict, texto_transcrito: str, vision_ca
     """Ejecuta la acción y al terminar dispara _response_complete_callback."""
     print(f"[Dispatch] intent='{intent}' | fs_disponible={_filesystem_disponible} | params={params}", flush=True)
     _despachar_intent_impl(intent, params, texto_transcrito, vision_callback=vision_callback)
+    emitir_evento("idle", "Esperando wake word...")
     if _response_complete_callback:
         import time
         logging.info("[Timer] Callback registrado — reiniciando deadline.")
