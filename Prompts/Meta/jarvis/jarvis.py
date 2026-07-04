@@ -23,6 +23,7 @@ from datetime import datetime
 from pathlib import Path
 
 CEREBRO_PATH = Path.home() / "Documents" / "Segundo_cerebro"
+MEMORIA_PATH = Path(__file__).parent / "memoria.md"
 
 if str(Path(__file__).parent) not in sys.path:
     sys.path.insert(0, str(Path(__file__).parent))
@@ -275,6 +276,12 @@ sincronizar_vault: el usuario quiere traer los cambios del servidor remoto (Jarv
   "trae los cambios del servidor", "sincroniza el vault", "actualiza desde el servidor".
   Params: {}
 
+recordar_hecho: el usuario quiere que Jarvis recuerde o olvide un dato personal suyo
+  (no un concepto del vault, no una acción del sistema — un hecho sobre Luigui).
+  Señales agregar: "recuerda que...", "mi [dato] es...", "anota que...", "no olvides que...".
+  Señales olvidar: "olvida que...", "ya no...", "borra de tu memoria que...".
+  Params: accion = "agregar" | "olvidar", hecho = "el dato tal cual lo dijo el usuario, sin el verbo recuerda/olvida"
+
 REGLA DE DESAMBIGUACIÓN CRÍTICA: Si el mensaje menciona una ubicación del sistema operativo
 (downloads, descargas, escritorio, desktop, wayta, home, o "carpeta de [nombre]") → clasifica SIEMPRE
 como operacion_archivo, nunca como consulta_simple ni conversacion_libre.
@@ -310,6 +317,9 @@ Para buscar_por_tag:
 
 Para sincronizar_vault:
 {"intent": "sincronizar_vault", "instruccion": "<texto literal>", "archivos_relevantes": []}
+
+Para recordar_hecho:
+{"intent": "recordar_hecho", "instruccion": "<texto literal>", "archivos_relevantes": [], "accion": "<agregar|olvidar>", "hecho": "<el dato, sin el verbo>"}
 
 Para razonamiento_profundo incluye en archivos_relevantes las categorías relevantes (ej. ["ia", "producto", "Correlaciones"]).
 Para los demás tipos archivos_relevantes puede ser []."""
@@ -353,6 +363,8 @@ Para los demás tipos archivos_relevantes puede ser []."""
         "titulo_candidato": data.get("titulo_candidato", ""),
         # mcp vault
         "tag": data.get("tag", ""),
+        # memoria personal
+        "hecho": data.get("hecho", ""),
     }
     # Compatibilidad con formato anterior (conversacion_libre usa "mensaje")
     if intent == "conversacion_libre":
@@ -476,6 +488,19 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
                                      "accion": "describir", "foco": "", "titulo_candidato": "",
                                      "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
 
+    RECORDAR = ("recuerda que", "no olvides que", "anota que")
+    OLVIDAR = ("olvida que", "borra de tu memoria que")
+    if any(k in t for k in RECORDAR) or any(k in t for k in OLVIDAR):
+        accion = "olvidar" if any(k in t for k in OLVIDAR) else "agregar"
+        hecho = texto
+        for trig in (OLVIDAR if accion == "olvidar" else RECORDAR):
+            if trig in t:
+                hecho = texto[t.index(trig) + len(trig):].strip()
+                break
+        return "recordar_hecho", {"instruccion": texto, "archivos_relevantes": [],
+                                  "accion": accion, "hecho": hecho, "foco": "", "titulo_candidato": "",
+                                  "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
+
     return "accion_directa", {"instruccion": texto, "archivos_relevantes": [],
                                "accion": "describir", "foco": "", "titulo_candidato": ""}
 
@@ -553,6 +578,19 @@ def responder_con_groq(pregunta: str, historial: list[dict],
     except Exception as e:
         print(f"[Groq error] {e}")
         return "No pude responder en este momento."
+
+
+# ── Memoria personal ──────────────────────────────────────────────────────────
+
+def cargar_memoria() -> str:
+    """Lee memoria.md para inyectar como contexto en Groq. Vacío si no existe aún."""
+    if not MEMORIA_PATH.exists():
+        return ""
+    try:
+        return MEMORIA_PATH.read_text(encoding="utf-8")
+    except Exception as e:
+        logging.warning(f"[Memoria] No se pudo leer memoria.md: {e}")
+        return ""
 
 
 # ── Consulta simple — carga contexto según pregunta ──────────────────────────
@@ -814,7 +852,15 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
     if intent == "conversacion_libre":
         mensaje = params.get("mensaje") or instruccion
         emitir_evento("procesando", "Consultando Groq...")
-        respuesta = responder_con_groq(mensaje, historial_sesion)
+        _memoria = cargar_memoria()
+        _system_conv = (
+            "Eres Jarvis, asistente personal de Luigui. "
+            "Tienes personalidad: directo, inteligente, algo irónico pero amable. "
+            "Respondes en español, máximo 2 oraciones, tono conversacional natural. "
+            "De vez en cuando llama al usuario por su nombre: Luigui. No en cada respuesta."
+            + (f"\n\nMEMORIA — hechos y preferencias conocidas de Luigui (úsalos si son relevantes, no los repitas sin que venga a cuento):\n{_memoria}" if _memoria.strip() else "")
+        )
+        respuesta = responder_con_groq(mensaje, historial_sesion, system_prompt_override=_system_conv)
         print(f"[Conversación] {respuesta}")
         emitir_evento("respondiendo", respuesta[:80])
         hablar_respuesta(respuesta)
@@ -828,12 +874,14 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         hablar("Un momento.")
         atlas = cargar_contenido_vault_por_pregunta(instruccion)
         _ctx = _contexto_archivo_si_referenciado(instruccion)
+        _memoria = cargar_memoria()
         system = (
             "Eres Jarvis, asistente del Segundo Cerebro de Luigui. "
             "Responde en español, máximo 3 oraciones, sin bullets ni listas — "
             "la respuesta se leerá en voz alta.\n\n"
             f"ÍNDICE DEL VAULT:\n{atlas}"
             + (f"\n\nARCHIVO LEÍDO RECIENTEMENTE (úsalo si el usuario lo referencia):\n{_ctx[:3000]}" if _ctx else "")
+            + (f"\n\nMEMORIA — hechos y preferencias conocidas de Luigui:\n{_memoria}" if _memoria.strip() else "")
         )
         respuesta = responder_con_groq(instruccion, historial_sesion, system_prompt_override=system)
         print(f"[Consulta] {respuesta}")
@@ -1100,6 +1148,69 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         except Exception as e:
             hablar("Hubo un problema al sincronizar, Luigui. Revisa la conexión.")
             registrar_en_jarvis_log("SYNC", instruccion, f"ERROR: {e}")
+        return
+
+    if intent == "recordar_hecho":
+        accion = params.get("accion", "agregar")
+        hecho = (params.get("hecho") or "").strip()
+        if not hecho:
+            hablar("No entendí qué querías que recuerde, Luigui.")
+            return
+        try:
+            if MEMORIA_PATH.exists():
+                contenido_actual = MEMORIA_PATH.read_text(encoding="utf-8")
+            else:
+                contenido_actual = (
+                    "# Memoria de Jarvis — Luigui Avila\n\n"
+                    "> Actualizado automáticamente. Jarvis carga este archivo en cada sesión.\n\n"
+                    "## Hechos personales\n\n## Preferencias\n\n## Notas de contexto\n"
+                )
+
+            if accion == "agregar":
+                hoy = datetime.now().strftime("%Y-%m-%d")
+                marcador = "## Hechos personales"
+                idx = contenido_actual.find(marcador)
+                if idx == -1:
+                    nuevo_contenido = contenido_actual.rstrip() + f"\n\n{marcador}\n- [{hoy}] {hecho}\n"
+                else:
+                    fin_seccion = contenido_actual.find("\n## ", idx + len(marcador))
+                    if fin_seccion == -1:
+                        fin_seccion = len(contenido_actual)
+                    antes = contenido_actual[:fin_seccion].rstrip()
+                    despues = contenido_actual[fin_seccion:]
+                    nuevo_contenido = antes + f"\n- [{hoy}] {hecho}\n" + despues
+                MEMORIA_PATH.write_text(nuevo_contenido, encoding="utf-8")
+                hablar("Anotado, lo recordaré.")
+                registrar_en_jarvis_log("MEMORIA", instruccion, f"Agregado: {hecho}")
+            else:
+                # "Olvidar": se le pide a Groq solo la línea exacta a borrar (no el archivo
+                # completo — responder_con_groq trunca a max_tokens=150, insuficiente para
+                # devolver memoria.md entero). Se borra por coincidencia exacta en Python,
+                # nunca reescribiendo el resto del archivo.
+                prompt_olvidar = (
+                    f"Estas son las líneas de memoria.md de Jarvis:\n{contenido_actual}\n\n"
+                    f"El usuario pidió olvidar este dato: \"{hecho}\"\n\n"
+                    "Responde ÚNICAMENTE con la línea EXACTA (tal como aparece en el archivo, "
+                    "empezando con '- [') que corresponde a ese dato. Si ninguna línea corresponde, "
+                    "responde exactamente: NINGUNA"
+                )
+                linea = responder_con_groq(prompt_olvidar, [], system_prompt_override=(
+                    "Eres un asistente que identifica líneas exactas dentro de un archivo de texto. "
+                    "Responde solo con la línea pedida o la palabra NINGUNA — sin explicaciones, sin comillas."
+                )).strip()
+                if linea and linea != "NINGUNA" and linea in contenido_actual:
+                    nuevo_contenido = contenido_actual.replace(linea + "\n", "", 1)
+                    if nuevo_contenido == contenido_actual:
+                        nuevo_contenido = contenido_actual.replace(linea, "", 1)
+                    MEMORIA_PATH.write_text(nuevo_contenido, encoding="utf-8")
+                    hablar("Listo, lo olvidé.")
+                    registrar_en_jarvis_log("MEMORIA", instruccion, f"Olvidado: {linea}")
+                else:
+                    hablar("No encontré eso en mi memoria, Luigui.")
+                    registrar_en_jarvis_log("MEMORIA", instruccion, f"No encontrado para olvidar: {hecho}")
+        except Exception as e:
+            hablar("Hubo un problema al actualizar mi memoria, Luigui.")
+            registrar_en_jarvis_log("MEMORIA", instruccion, f"ERROR: {e}")
         return
 
     # accion_directa (y vault_accion como alias para compatibilidad)
