@@ -17,7 +17,10 @@ Estructura de carpetas:
 ```
 ~/Documents/Segundo_cerebro/
 ├── CLAUDE.md                          ← este archivo (tu identidad)
+├── AGENTS.md                          ← instrucciones para agentes/herramientas MCP
 ├── CONTEXTO_SEGUNDO_CEREBRO.md        ← snapshot del vault para Claude.ai
+├── context.md                         ← contexto de sesión para compactación (Claude Code)
+├── README.md                          ← presentación breve del repositorio
 ├── JARVIS_LOG.md                      ← tu registro de acciones
 ├── Conocimiento/ATLAS.md              ← mapa de relaciones (auto-generado)
 ├── Conocimiento/
@@ -29,8 +32,7 @@ Estructura de carpetas:
 │   │   ├── economia/                  ← mercado, empleo, dinámicas económicas
 │   │   └── filosofia/                 ← pensamiento, epistemología, marcos abstractos
 │   ├── Correlaciones/                 ← correlaciones entre conceptos
-│   └── Fuentes/
-│       ├── YouTube/                   ← transcripciones procesadas
+│   └── Fuentes/                       ← fuentes procesadas
 │       └── Sesiones/                  ← resúmenes de sesiones de trabajo
 ├── Inbox/                             ← scouts y fuentes crudas pendientes de procesar
 ├── Backlog/                           ← ideas de proyectos construibles (SDD pipeline)
@@ -38,15 +40,21 @@ Estructura de carpetas:
 │   ├── _plantilla-idea.md
 │   ├── ideas/                         ← ideas en borrador o maduración
 │   └── listas/                        ← backlog.md, en-construccion.md, completados.md
-├── docs/                              ← planes de implementación para mejoras del vault
 ├── Prompts/
 │   ├── Meta/
-│   │   └── generar_index.py           ← regenera ATLAS.md (recorre subcarpetas con rglob)
+│   │   ├── generar_index.py           ← regenera ATLAS.md (recorre subcarpetas con rglob)
+│   │   └── jarvis/                    ← daemon de voz de Jarvis
 │   └── Presentaciones/
 │       └── prompt-generar-presentacion.md
 ├── Plantillas/
 │   ├── taxonomia.md                   ← ontología del sistema (solo lectura)
-│   └── rubrica.md                     ← criterios de calidad (solo lectura)
+│   ├── rubrica.md                     ← criterios de calidad (solo lectura)
+│   ├── adr-plantilla.md
+│   ├── bench-plantilla.md
+│   ├── prd-plantilla.md
+│   └── presentaciones/                ← plantillas HTML de presentaciones
+├── Videos/                            ← output de generar_video.py (Remotion)
+├── remotion/                          ← proyecto Remotion (en .gitignore; src actualmente vacío/perdido — ver nota en "Generar video de concepto")
 ├── Documentos/
 ├── Proyectos/
 └── Iniciativas/
@@ -237,6 +245,12 @@ Restricciones:
 - Output siempre en español
 
 ### Generar video de concepto
+
+> **Estado: NO funcional.** `remotion/src` está vacío/perdido (no versionado — `remotion/`
+> está en `.gitignore` y nunca se trackeó ahí). `generar_video.py` ya falla con un error
+> claro en vez de crashear crípticamente, pero no puede generar videos hasta reconstruir
+> el proyecto Remotion.
+
 ```
 Jarvis, genera video de [referencia]
 ```
@@ -258,6 +272,11 @@ Jarvis, genera video de [referencia]
 Fallback para `.md` sin estructura de vault: si no tiene las secciones `## El concepto`, `## Por qué importa`, `## Tensiones y límites`, el bridge usa los primeros 3 párrafos del cuerpo. El video se genera igual.
 
 ### Generar presentación multi-concepto
+
+> **Estado: NO funcional.** Mismo problema que "Generar video de concepto" —
+> `remotion/src` está vacío/perdido. `generar_video.py` falla con un error claro
+> en vez de crashear. Para presentaciones hoy, usa la skill `/presentacion-html`.
+
 ```
 Jarvis, genera presentacion "[título]" con [ref1] [ref2] [ref3...]
 ```

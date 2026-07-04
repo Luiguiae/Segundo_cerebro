@@ -1,9 +1,9 @@
 # Prompts del Segundo Cerebro
 
-Este directorio contiene prompts reutilizables para trabajar con Cursor, LLMs y agentes.
+Este directorio contiene prompts reutilizables para trabajar con Claude Code / Jarvis, LLMs y agentes.
 Los prompts están diseñados para ser:
 
-- Copiados directamente en Cursor
+- Copiados directamente en Claude Code / Jarvis
 - Versionados
 - Asociados a decisiones (ADR) y estudios reales
 
@@ -20,3 +20,5 @@ Los prompts están diseñados para ser:
 - Usuarios-sinteticos: simulaciones, prompts de agentes y validación
 - Git: commits, flujos, recuperación
 - Meta: prompts para crear prompts, reglas y validaciones
+- PRDs: documentos de requerimientos de producto
+- Jarvis: prompts operativos del agente Jarvis

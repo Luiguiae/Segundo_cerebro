@@ -139,9 +139,14 @@ def cargar_conceptos(directorio: Path) -> list[dict]:
     """Lee todos los .md en el directorio y devuelve lista de metadatos."""
     conceptos = []
     for archivo in sorted(directorio.rglob("*.md")):
-        texto        = archivo.read_text(encoding="utf-8")
+        try:
+            texto = archivo.read_text(encoding="utf-8")
+        except Exception as e:
+            print(f"AVISO: {archivo} no se pudo leer ({e}), se omite del ATLAS")
+            continue
         meta, cuerpo = parse_frontmatter(texto)
         if not meta:
+            print(f"AVISO: {archivo} tiene frontmatter no parseable, se omite del ATLAS")
             continue
         meta["_archivo"] = archivo.stem
         meta["_ruta"]    = str(archivo.relative_to(directorio.parent.parent))

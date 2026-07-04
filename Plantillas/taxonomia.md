@@ -84,6 +84,26 @@ Los siguientes campos **no pueden aparecer** en conceptos del vault. Si Jarvis l
 | `categoria` | Reemplazado por `familia` |
 | `fuente` (string u objeto) | Reemplazado por `fuentes` (array) |
 
+### Campo opcional: `edges` (grafo tipado de relaciones — mejora-006)
+
+Además de `relacionado` (lista simple de slugs), un concepto puede declarar `edges`:
+una lista de relaciones tipadas hacia otros conceptos, cada una con un `target`, un
+`tipo` de relación, y un `why` que justifica semánticamente la conexión. Es **opcional**
+— no todos los conceptos lo tienen, y su ausencia no es un fallo de Gate 0.
+
+```yaml
+edges:
+  - target: fundamentales-vs-flux
+    tipo: refines
+    why: "disenador-a-constructor amplifica la distinción de fundamentales-vs-flux: la construcción no es una habilidad técnica adicional sino el método por el que el diseñador encarna el criterio necesario para distinguir qué es fundamental de qué es intercambiable en un sistema dado."
+```
+
+Tipos de `tipo` reconocidos por `Prompts/Meta/generar_index.py`: `contradicts`, `requires`,
+`enables`, `refines`, `extends`, `exemplifies`, `same_mechanism_as`, `analogous_to`, `precedes`.
+
+`generar_index.py` lee este campo para construir la sección "Grafo tipado de relaciones"
+en `ATLAS.md`.
+
 ---
 
 ## Familias de conceptos

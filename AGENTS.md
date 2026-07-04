@@ -9,7 +9,7 @@
 - **Propietario:** Luigui Avila (luiguiavilae@gmail.com)
 - **Proyecto:** Segundo Cerebro — infraestructura de conocimiento personal
 - **Idioma:** Español en todo el contenido. Inglés solo en nombres de archivo
-  del sistema (README.md, INDEX.md, AGENTS.md, CLAUDE.md).
+  del sistema (README.md, ATLAS.md, AGENTS.md, CLAUDE.md).
 
 ## Estructura de carpetas
 
@@ -26,9 +26,8 @@ Segundo_cerebro/
 │   └── Correlaciones/      ← relaciones entre conceptos
 ├── Backlog/                ← ideas de proyectos construibles (SDD)
 ├── Inbox/                  ← fuentes sin procesar (NO tocar sin instrucción)
-├── Prompts/Meta/           ← scripts de Jarvis (NO tocar sin instrucción)
-│   └── jarvis/
-└── docs/                   ← planes de mejoras
+└── Prompts/Meta/           ← scripts de Jarvis (NO tocar sin instrucción)
+    └── jarvis/
 ```
 
 ## Zonas de acceso
@@ -40,23 +39,24 @@ Segundo_cerebro/
 | `Backlog/` | ✅ | ✅ | Solo ideas en estado borrador |
 | `Inbox/` | ✅ | ⚠️ | Solo Jarvis scout-nocturno escribe aquí |
 | `Prompts/Meta/jarvis/` | ✅ | ⚠️ | Solo con instrucción explícita |
-| `INDEX.md` | ✅ | ⚠️ | Regenerar con generar_index.py |
+| `Conocimiento/ATLAS.md` | ✅ | ⚠️ | Regenerar con generar_index.py |
 | `AGENTS.md` | ✅ | ⚠️ | Solo con instrucción explícita |
 
 ## Schema obligatorio para conceptos atómicos
 
-Todo archivo en `Conocimiento/Conceptos/[categoria]/` DEBE tener:
+Todo archivo en `Conocimiento/Conceptos/[categoria]/` DEBE seguir la plantilla canónica
+definida en `Plantillas/taxonomia.md`:
 
 ```yaml
 ---
-titulo: [string]
+titulo: "[string]"
 tipo: concepto
-fecha: YYYY-MM-DD
 familia: [string]
-categorias_secundarias: []
-tags: []
-relacionado: []       # solo slugs que existen como archivos reales
-fuentes:
+tags: []               # máximo 5
+relacionado: []        # solo slugs que existen como archivos reales, máximo 3
+fecha: YYYY-MM-DD
+estado: borrador | activo | archivado
+fuentes:               # opcional — obligatorio solo si hay datos verificados
   - titulo: "[string]"
     url: "[url]"
     fecha_acceso: YYYY-MM-DD
@@ -66,12 +66,17 @@ fuentes:
 **Regla crítica sobre `relacionado`:** nunca incluir slugs especulativos.
 Solo referencias a archivos que existen físicamente en el vault.
 
-## Cinco secciones del body (obligatorias)
+## Secciones del body
+
+Obligatorias, siempre:
 
 1. `## El concepto`
 2. `## Por qué importa`
-3. `## Datos y evidencia`
-4. `## Tensiones y límites`
+3. `## Tensiones y límites`
+
+Opcionales — solo si el concepto tiene datos verificados con fuentes externas (Gen-4):
+
+4. `## Datos y evidencia`
 5. `## Ejes investigados`
 
 ## Nombrado de archivos

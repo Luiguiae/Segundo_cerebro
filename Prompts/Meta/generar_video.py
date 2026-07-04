@@ -30,7 +30,10 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
     """Extracts YAML frontmatter and body from a markdown string."""
     if not text.startswith("---"):
         return {}, text
-    end = text.index("\n---", 3)
+    try:
+        end = text.index("\n---", 3)
+    except ValueError:
+        return {}, text
     yaml_block = text[4:end]
     body = text[end + 4:].strip()
     return parse_yaml_simple(yaml_block), body
@@ -195,7 +198,22 @@ def build_presentacion_props(titulo: str, refs: list[str]) -> dict:
 
 # ── Render ────────────────────────────────────────────────────────────────────
 
+def _verificar_remotion_disponible() -> None:
+    """Falla temprano y con mensaje claro si el proyecto remotion/ no está armado,
+    en vez de dejar que `npx remotion render` truene con un error críptico."""
+    entry = REMOTION_DIR / "src" / "index.ts"
+    package_json = REMOTION_DIR / "package.json"
+    if not entry.exists() or not package_json.exists():
+        sys.exit(
+            "ERROR: el proyecto remotion/ no está completo "
+            f"(falta {'src/index.ts' if not entry.exists() else 'package.json'}).\n"
+            "Los comandos 'Jarvis, genera video' y 'genera presentacion' no pueden "
+            "funcionar hasta restaurar remotion/src y remotion/package.json."
+        )
+
+
 def render(composition_id: str, props: dict, output_name: str) -> Path:
+    _verificar_remotion_disponible()
     VIDEOS_DIR.mkdir(exist_ok=True)
     output_path = VIDEOS_DIR / f"{output_name}.mp4"
 
@@ -215,7 +233,7 @@ def render(composition_id: str, props: dict, output_name: str) -> Path:
         ]
         print(f"\n→ Renderizando {composition_id}...")
         print(f"  Output: {output_path}\n")
-        result = subprocess.run(cmd, cwd=str(REMOTION_DIR), check=True)
+        result = subprocess.run(cmd, cwd=str(REMOTION_DIR), check=True, timeout=600)
     finally:
         os.unlink(props_file)
 

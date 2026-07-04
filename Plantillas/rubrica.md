@@ -59,7 +59,7 @@ Debe cumplir **al menos 2 de 3**:
 
 | resultado | qué hace Jarvis |
 |-----------|----------------|
-| **Aprueba** (pasa Gate 1 y Gate 2) | Escribe el archivo, actualiza INDEX, registra en log como `[OK]` |
+| **Aprueba** (pasa Gate 1 y Gate 2) | Escribe el archivo, actualiza ATLAS, registra en log como `[OK]` |
 | **Rechaza** (falla Gate 1 o Gate 2 mínimo) | NO escribe el archivo. Registra en log como `[RECHAZADO]` con criterio específico. Propone qué editar. |
 | **Aprueba con advertencia** (pasa pero con criterios débiles) | Escribe el archivo con `estado: borrador`. Registra en log como `[ADVERTENCIA]`. |
 
@@ -67,21 +67,22 @@ Debe cumplir **al menos 2 de 3**:
 
 ## Registro en JARVIS_LOG.md
 
-Cada evaluación queda registrada con este formato:
+Cada evaluación queda registrada con el formato real definido en `CLAUDE.md`
+("Formato del JARVIS_LOG.md"):
 
 ```markdown
-### YYYY-MM-DD HH:MM — [tipo] nombre-archivo
+### YYYY-MM-DD HH:MM — [comando ejecutado]
 
-**Resultado:** OK | RECHAZADO | ADVERTENCIA
+**Instrucción:** "Jarvis, [lo que pidió Luigui]"
 
-**Criterios evaluados:**
-- Gate 1.1 Atómico: ✓ / ✗ — [nota breve si falla]
-- Gate 1.2 Propio: ✓ / ✗
-- Gate 2.X [criterio]: ✓ / ✗ — [nota breve si falla]
+**Acciones:**
+- [acción 1]
+- [acción 2]
 
-**Acción tomada:** [Escribió archivo / No escribió / Escribió como borrador]
+**Resultados:**
+- [archivo]: [OK | RECHAZADO | ADVERTENCIA] — [razón si no es OK]
 
-**Propuesta de mejora:** [Solo si rechazó o advirtió — qué necesita el concepto]
+**ATLAS regenerado:** sí / no — [N conceptos procesados]
 ```
 
 ---
