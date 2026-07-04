@@ -880,6 +880,115 @@ def _iniciar_dashboard() -> None:
         log(f"[Dashboard] Error al arrancar — continuando sin él: {e}")
 
 
+# ── Saludo proactivo + sync diario al arrancar ────────────────────────────────
+
+_LAST_BOOT_PATH = Path.home() / ".jarvis_last_boot"
+_LAST_SYNC_PATH  = Path.home() / ".jarvis_last_sync"
+
+
+def _leer_timestamp(path: Path) -> str | None:
+    """Lee la primera línea de un archivo de timestamp ISO. None si no existe o está vacío
+    (primer arranque)."""
+    try:
+        lineas = path.read_text(encoding="utf-8").strip().splitlines()
+        return lineas[0] if lineas else None
+    except FileNotFoundError:
+        return None
+    except Exception as e:
+        log(f"[Boot] Error leyendo {path}: {e}")
+        return None
+
+
+def _escribir_timestamp(path: Path) -> None:
+    """Formato 'YYYY-MM-DD HH:MM:SS' (no ISO con 'T'/microsegundos) — verificado que
+    `git log --since` parsea este formato correctamente; el ISO con 'T' lo ignora
+    en silencio y devuelve el historial completo, sin filtrar nada."""
+    try:
+        path.write_text(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n", encoding="utf-8")
+    except Exception as e:
+        log(f"[Boot] Error escribiendo {path}: {e}")
+
+
+def _sync_diario_si_corresponde() -> bool:
+    """Si el vault no se sincronizó hoy, hace git pull silencioso (fetch + pull —
+    sin diff previo: el saludo usa `git log --since` sobre el repo ya actualizado,
+    así que no hace falta reportar los archivos del pull por separado). Nunca
+    bloquea el arranque: cualquier falla se loguea y el daemon sigue igual."""
+    ultimo_sync = _leer_timestamp(_LAST_SYNC_PATH)
+    hoy = datetime.now().date().isoformat()
+    if ultimo_sync and ultimo_sync.startswith(hoy):
+        return False
+    try:
+        _git_env = {**os.environ, "GIT_TERMINAL_PROMPT": "0"}
+        subprocess.run(
+            ["git", "-C", str(CEREBRO_PATH), "fetch", "origin", "main"],
+            capture_output=True, text=True, timeout=30,
+            stdin=subprocess.DEVNULL, env=_git_env,
+        )
+        pull = subprocess.run(
+            ["git", "-C", str(CEREBRO_PATH), "pull", "origin", "main"],
+            capture_output=True, text=True, timeout=30,
+            stdin=subprocess.DEVNULL, env=_git_env,
+        )
+        if pull.returncode != 0:
+            log(f"[Boot] Sync diario: pull falló — {pull.stderr[:150]}")
+            return False
+        _escribir_timestamp(_LAST_SYNC_PATH)
+        log("[Boot] Sync diario completado.")
+        return True
+    except subprocess.TimeoutExpired:
+        log("[Boot] Sync diario: timeout.")
+        return False
+    except Exception as e:
+        log(f"[Boot] Sync diario: error {e}")
+        return False
+
+
+def _slugs_nuevos_desde(desde: str) -> list[str]:
+    """Slugs de archivos .md agregados en Conocimiento/Conceptos desde `desde`
+    (formato aceptado por `git log --since`), filtrados a los que siguen
+    existiendo en disco — un concepto agregado y luego borrado dentro del mismo
+    rango no debe mencionarse como novedad."""
+    resultado = subprocess.run(
+        ["git", "-C", str(CEREBRO_PATH), "log", f"--since={desde}",
+         "--name-only", "--diff-filter=A", "--pretty=format:",
+         "--", "Conocimiento/Conceptos"],
+        capture_output=True, text=True, timeout=15,
+        stdin=subprocess.DEVNULL,
+    )
+    if resultado.returncode != 0:
+        return []
+    candidatos = {f.strip() for f in resultado.stdout.splitlines() if f.strip().endswith(".md")}
+    return sorted(
+        Path(f).stem for f in candidatos
+        if (CEREBRO_PATH / f).exists()
+    )
+
+
+def _saludo_proactivo_y_sync() -> str:
+    """Rutina de arranque: sync diario silencioso + saludo mencionando conceptos
+    nuevos desde el último boot. Nunca lanza — cualquier error cae al saludo estándar."""
+    saludo_estandar = "Jarvis listo. ¿En qué te ayudo?"
+    try:
+        _sync_diario_si_corresponde()
+        ultimo_boot = _leer_timestamp(_LAST_BOOT_PATH)
+        desde = ultimo_boot if ultimo_boot else "24 hours ago"
+        slugs = _slugs_nuevos_desde(desde)
+        _escribir_timestamp(_LAST_BOOT_PATH)
+        if not slugs:
+            return saludo_estandar
+        n = len(slugs)
+        lista = ", ".join(slugs[:5]) + ("..." if n > 5 else "")
+        return (
+            f"Buenos días Luigui. Desde la última vez que hablamos, se agregaron "
+            f"{n} concepto{'s' if n != 1 else ''} nuevo{'s' if n != 1 else ''}: {lista}. "
+            f"¿Quieres que los revisemos?"
+        )
+    except Exception as e:
+        log(f"[Boot] Saludo proactivo: error {e} — usando saludo estándar.")
+        return saludo_estandar
+
+
 def main():
     if not _acquire_pid_lock():
         print(f"[Jarvis] Instancia ya corriendo. Saliendo.", flush=True)
@@ -931,6 +1040,13 @@ def main():
             log("[Vision] Thread de visión iniciado — ojos cerrados. Di 'Jarvis abre los ojos' para activar.")
         except Exception as _ve:
             log(f"[Vision] No disponible — continuando sin vision: {_ve}")
+
+        try:
+            saludo = _saludo_proactivo_y_sync()
+        except Exception as _se:
+            log(f"[Boot] Saludo proactivo falló por completo — usando estándar: {_se}")
+            saludo = "Jarvis listo. ¿En qué te ayudo?"
+        hablar(saludo)
 
         loop_principal(lock_interaccion)
     except Exception as e:
