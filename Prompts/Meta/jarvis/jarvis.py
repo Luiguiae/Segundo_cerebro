@@ -289,6 +289,11 @@ subir_cambios: el usuario quiere publicar los cambios locales del vault al servi
   "push al servidor", "publica los cambios".
   Params: {}
 
+reevaluar_concepto: el usuario quiere que Jarvis vuelva a evaluar un concepto del vault
+  contra la rúbrica de calidad (no confundir con auditar_huerfanos ni accion_directa).
+  Señales: "reevalúa este concepto", "revisa esto contra la rúbrica", "vuelve a evaluar [concepto]".
+  Params: archivo = "slug del concepto si lo menciona, sino vacío (se usa el último leído en la sesión)"
+
 REGLA DE DESAMBIGUACIÓN CRÍTICA: Si el mensaje menciona una ubicación del sistema operativo
 (downloads, descargas, escritorio, desktop, wayta, home, o "carpeta de [nombre]") → clasifica SIEMPRE
 como operacion_archivo, nunca como consulta_simple ni conversacion_libre.
@@ -330,6 +335,9 @@ Para recordar_hecho:
 
 Para subir_cambios:
 {"intent": "subir_cambios", "instruccion": "<texto literal>", "archivos_relevantes": []}
+
+Para reevaluar_concepto:
+{"intent": "reevaluar_concepto", "instruccion": "<texto literal>", "archivos_relevantes": [], "archivo": "<slug o vacío>"}
 
 Para razonamiento_profundo incluye en archivos_relevantes las categorías relevantes (ej. ["ia", "producto", "Correlaciones"]).
 Para los demás tipos archivos_relevantes puede ser []."""
@@ -414,6 +422,15 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
     CASUAL = ("cómo estás", "como estas", "qué hora", "gracias", "de nada", "hola jarvis")
     if any(c in t for c in CASUAL) and len(t.split()) < 6:
         return "conversacion_libre", {"mensaje": texto, "instruccion": texto, "archivos_relevantes": []}
+    # Chequeo ANTES de RAZONAMIENTO: "reevalúa" contiene "evalúa" como substring,
+    # y RAZONAMIENTO tiene "evalúa" en su lista — sin este orden, "reevalúa este
+    # concepto" clasificaría como razonamiento_profundo por accidente.
+    REEVALUAR = ("reevalúa este concepto", "reevalua este concepto", "revisa esto contra la rúbrica",
+                 "revisa esto contra la rubrica", "vuelve a evaluar")
+    if any(k in t for k in REEVALUAR):
+        return "reevaluar_concepto", {"instruccion": texto, "archivos_relevantes": [],
+                                      "accion": "describir", "foco": "", "titulo_candidato": "",
+                                      "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
     RAZONAMIENTO = (
         "qué correlaciones", "que correlaciones", "concepto más débil", "concepto mas debil",
         "qué patrones", "que patrones", "debería explorar", "deberia explorar",
@@ -840,6 +857,12 @@ _response_complete_callback: "callable | None" = None
 
 # Flag que señala al daemon que debe salir del modo escucha activa.
 _salir_escucha: list[bool] = [False]
+
+# Callback que jarvis_daemon.py registra para manejar reevaluar_concepto por voz
+# directa con el flujo conversacional completo (evaluar → reportar → confirmar →
+# guardar → preguntar profundizar) — requiere escuchar_respuesta(), que solo existe
+# a nivel daemon. None si jarvis.py corre standalone (sin el daemon).
+_reevaluar_concepto_callback: "callable | None" = None
 
 
 def _contexto_archivo_si_referenciado(texto: str) -> str | None:
@@ -1343,6 +1366,17 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         except Exception as e:
             hablar("Hubo un problema al actualizar mi memoria, Luigui.")
             registrar_en_jarvis_log("MEMORIA", instruccion, f"ERROR: {e}")
+        return
+
+    if intent == "reevaluar_concepto":
+        slug = (params.get("archivo") or "").strip() or _ultimo_slug_de_historial()
+        if not slug:
+            hablar("No sé qué concepto reevaluar. Dime cuál.")
+            return
+        if _reevaluar_concepto_callback:
+            _reevaluar_concepto_callback(slug)
+        else:
+            hablar("Esa función solo está disponible con el daemon corriendo, Luigui.")
         return
 
     # accion_directa (y vault_accion como alias para compatibilidad)

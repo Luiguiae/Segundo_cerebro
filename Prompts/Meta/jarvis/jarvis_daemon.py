@@ -13,6 +13,7 @@ Logs: Prompts/Meta/jarvis/jarvis.log
 
 import os
 import queue
+import re
 import subprocess
 import sys
 import logging
@@ -111,6 +112,15 @@ try:
 except Exception as e:
     print(f"[ERROR] No pude importar jarvis.py: {e}")
     sys.exit(1)
+
+try:
+    if str(JARVIS_DIR) not in sys.path:
+        sys.path.insert(0, str(JARVIS_DIR))
+    import rubrica_local
+    _rubrica_local_disponible = True
+except Exception as _e_rubrica:
+    _rubrica_local_disponible = False
+    print(f"[Daemon] rubrica_local no disponible: {_e_rubrica}", flush=True)
 
 
 # ── Estado compartido audio ↔ vision ─────────────────────────────────────────
@@ -247,13 +257,143 @@ def _ejecutar_accion_pendiente_con_lock(tipo: str, param: str) -> None:
         _ejecutar_accion_pendiente(tipo, param)
 
 
+# ── Watcher conversacional — evaluar/reportar/confirmar/guardar (mejora-006, Fase 5a) ──
+
+def _resolver_ruta_concepto(param: str) -> "Path | None":
+    """`param` puede ser un slug o una ruta ya completa (como llega desde el watcher,
+    que pasa el path del evento de filesystem)."""
+    p = Path(param)
+    if p.exists():
+        return p
+    conceptos_dir = CEREBRO_PATH / "Conocimiento" / "Conceptos"
+    for candidato in conceptos_dir.rglob(f"{param}.md"):
+        return candidato
+    return None
+
+
+def _dividir_frontmatter(contenido: str) -> tuple[str, str]:
+    """Separa el bloque de frontmatter (con delimitadores '---') del cuerpo, sin
+    parsear campos — se usa para reemplazar quirúrgicamente tags/cuerpo preservando
+    el resto del frontmatter byte a byte."""
+    partes = contenido.split("---", 2)
+    if len(partes) < 3:
+        raise ValueError("El archivo no tiene frontmatter YAML delimitado por '---'.")
+    frontmatter_completo = f"---{partes[1]}---"
+    cuerpo = partes[2].lstrip("\n")
+    return frontmatter_completo, cuerpo
+
+
+def _reemplazar_tags(frontmatter: str, tags_nuevos: list) -> str:
+    """Reemplaza SOLO la línea `tags: [...]` dentro del bloque de frontmatter —
+    nunca toca titulo/familia/relacionado/estado/fuentes/edges."""
+    tags_str = ", ".join(str(t) for t in tags_nuevos)
+    return re.sub(
+        r"^tags:\s*\[.*?\]", f"tags: [{tags_str}]", frontmatter,
+        count=1, flags=re.MULTILINE,
+    )
+
+
+def _guardar_propuesta(ruta: Path, slug: str, resultado: dict) -> bool:
+    """Aplica la propuesta de rubrica_local al archivo: reemplaza tags: (si vienen)
+    sin tocar el resto del frontmatter, y reemplaza el cuerpo completo si Groq
+    propuso uno nuevo. Corre generar_index.py y hace git commit. True si se
+    guardó sin error — nunca lanza."""
+    try:
+        contenido_actual = ruta.read_text(encoding="utf-8")
+        frontmatter, cuerpo_actual = _dividir_frontmatter(contenido_actual)
+
+        propuesta_fm = resultado.get("propuesta_frontmatter") or {}
+        tags_nuevos = propuesta_fm.get("tags")
+        if tags_nuevos:
+            frontmatter = _reemplazar_tags(frontmatter, tags_nuevos)
+
+        cuerpo_nuevo = resultado.get("propuesta_cuerpo") or cuerpo_actual
+        nuevo_contenido = frontmatter + "\n\n" + cuerpo_nuevo.strip() + "\n"
+        ruta.write_text(nuevo_contenido, encoding="utf-8")
+
+        subprocess.run(
+            [sys.executable, str(CEREBRO_PATH / "Prompts" / "Meta" / "generar_index.py")],
+            capture_output=True, text=True, timeout=30,
+        )
+        ruta_relativa = str(ruta.relative_to(CEREBRO_PATH))
+        subprocess.run(
+            ["git", "-C", str(CEREBRO_PATH), "add", ruta_relativa],
+            capture_output=True, text=True, timeout=15, stdin=subprocess.DEVNULL,
+        )
+        subprocess.run(
+            ["git", "-C", str(CEREBRO_PATH), "commit", "-m", f"feat: reevalúa {slug} via Jarvis"],
+            capture_output=True, text=True, timeout=15, stdin=subprocess.DEVNULL,
+        )
+        return True
+    except Exception as e:
+        log(f"[Watcher] Error guardando propuesta para {slug}: {e}")
+        return False
+
+
+def _flujo_evaluacion_conversacional(ruta: Path, slug: str) -> None:
+    """Evalúa un concepto contra la rúbrica real (Groq local, sin Claude Code CLI —
+    permite el diálogo de varios turnos que ejecutar_claude no puede dar), reporta
+    hallazgos por voz, pregunta si guardar, y pregunta si profundizar con fuentes
+    externas (Fase 5b — todavía no implementada, ver más abajo).
+
+    Asume que el caller YA tiene lock_interaccion tomado (tanto
+    _ejecutar_accion_pendiente_con_lock como procesar_comando lo hacen) — no toma
+    el lock de nuevo acá."""
+    if not _rubrica_local_disponible:
+        hablar("El módulo de evaluación no está disponible, Luigui.")
+        registrar_en_jarvis_log("WATCHER", f"Reevaluación: {slug}", "rubrica_local no disponible")
+        return
+
+    hablar(f"Un momento, evaluando {slug} contra la rúbrica...")
+    try:
+        resultado = rubrica_local.evaluar_concepto_con_groq(ruta)
+    except Exception as e:
+        log(f"[Watcher] Error evaluando {slug}: {e}")
+        hablar("Hubo un problema al evaluar el concepto, Luigui.")
+        registrar_en_jarvis_log("WATCHER", f"Reevaluación: {slug}", f"ERROR: {e}")
+        return
+
+    hallazgos = resultado.get("hallazgos") or []
+    hablar(" ".join(hallazgos[:3]) if hallazgos else "No tengo observaciones puntuales.")
+
+    tiene_propuesta = bool(resultado.get("propuesta_frontmatter") or resultado.get("propuesta_cuerpo"))
+    guardado = False
+    if tiene_propuesta:
+        hablar("¿Guardo estos cambios?")
+        respuesta = escuchar_respuesta(timeout=30)
+        if respuesta and any(s in respuesta for s in _AFIRMACIONES):
+            guardado = _guardar_propuesta(ruta, slug, resultado)
+            hablar("Listo, guardé los cambios." if guardado else "Hubo un problema al guardar, Luigui.")
+        else:
+            hablar("Entendido, no guardo nada.")
+
+    hablar("¿Quieres que profundice con fuentes externas?")
+    respuesta2 = escuchar_respuesta(timeout=30)
+    if respuesta2 and any(s in respuesta2 for s in _AFIRMACIONES):
+        # Fase 5b (POST /evaluar del VPS + fusión local) — próximo paso, no implementado aún.
+        hablar("Esa función la agrego en el próximo paso, Luigui — todavía no está lista.")
+        registrar_en_jarvis_log(
+            "WATCHER", f"Reevaluación: {slug}",
+            f"{'Guardado' if guardado else 'Sin guardar'} — profundización pedida, Fase 5b pendiente"
+        )
+    else:
+        hablar("Entendido. ¿En qué más te puedo ayudar?")
+        registrar_en_jarvis_log(
+            "WATCHER", f"Reevaluación: {slug}",
+            f"{'Guardado' if guardado else 'Sin guardar'} — {len(hallazgos)} hallazgos"
+        )
+
+
 def _ejecutar_accion_pendiente(tipo: str, param: str) -> None:
     """Ejecuta la acción del watcher que el usuario acaba de confirmar."""
     if tipo == "reevaluar_concepto":
-        instruccion = f"Re-evalúa el concepto {param} contra la rúbrica y actualiza su estado."
-        output = ejecutar_claude(instruccion)
-        hablar(resumir_output_para_voz(output))
-        registrar_en_jarvis_log("WATCHER", f"Concepto modificado: {param}", "Re-evaluado")
+        ruta = _resolver_ruta_concepto(param)
+        slug = ruta.stem if ruta else param
+        if ruta is None:
+            hablar(f"No encontré el archivo de {param}, Luigui.")
+            registrar_en_jarvis_log("WATCHER", f"Concepto modificado: {param}", "ERROR: archivo no encontrado")
+            return
+        _flujo_evaluacion_conversacional(ruta, slug)
     elif tipo == "evaluar_concepto":
         instruccion = (
             f"Evalúa el concepto {param} contra la rúbrica en Plantillas/rubrica.md, "
@@ -1004,6 +1144,17 @@ def main():
         cargar_rutas_filesystem()
         lock_interaccion = threading.Lock()
         _lock_interaccion_ref[0] = lock_interaccion
+
+        # Habilita "Jarvis, reevalúa este concepto" por voz directa (no solo watcher) —
+        # ver _reevaluar_concepto_callback en jarvis.py. No toma el lock: ya se ejecuta
+        # desde dentro de procesar_comando(), que lo tiene tomado.
+        def _reevaluar_por_voz(slug: str) -> None:
+            ruta = _resolver_ruta_concepto(slug)
+            if ruta is None:
+                hablar(f"No encontré el archivo de {slug}, Luigui.")
+                return
+            _flujo_evaluacion_conversacional(ruta, ruta.stem)
+        _mod._reevaluar_concepto_callback = _reevaluar_por_voz
 
         _conocimiento_path = CEREBRO_PATH / "Conocimiento"
         if _conocimiento_path.exists():
