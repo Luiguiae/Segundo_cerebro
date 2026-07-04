@@ -2,7 +2,7 @@
 """
 jarvis.py — Interfaz de voz para el Segundo Cerebro
 
-Arquitectura: STT → clasificación en 10 intents → tres carriles:
+Arquitectura: STT → clasificación en intents → tres carriles:
   - conversacion_libre / despedirse → Groq directo
   - consulta_simple / razonamiento_profundo → Groq con contexto del vault
   - accion_directa → Claude Code
@@ -198,15 +198,15 @@ def normalizar_texto(texto: str) -> str:
 
 # ── Clasificación binaria — Groq ──────────────────────────────────────────────
 
-def detectar_intent_groq(texto: str, historial: list[dict], indice_vault: str) -> tuple[str, dict]:
-    """Clasifica en conversacion_libre | despedirse | consulta_simple | accion_directa | razonamiento_profundo | operacion_archivo."""
+def detectar_intent_groq(texto: str, historial: list[dict]) -> tuple[str, dict]:
+    """Clasifica en una de las categorías soportadas (ver system_prompt)."""
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         raise ValueError("GROQ_API_KEY no disponible.")
 
     system_prompt = """Eres el clasificador de Jarvis, asistente de voz del Segundo Cerebro de Luigui.
 
-Clasifica el mensaje en UNA de estas diez categorías:
+Clasifica el mensaje en UNA de estas categorías:
 
 conversacion_libre: saludo, pregunta personal a Jarvis, comentario casual que NO involucra el vault ni el filesystem.
   Ejemplos: "cómo estás", "qué hora es", "gracias", "muy bien".
@@ -360,11 +360,30 @@ Para los demás tipos archivos_relevantes puede ser []."""
     return intent, params
 
 
+def _inferir_operacion_archivo(t: str) -> str:
+    """Infiere la operación de filesystem a partir de las keywords del texto —
+    usado por el fallback de keywords cuando Groq no está disponible.
+    Sin esto, mejora_006_filesystem.py rechaza toda operación con 'operacion' vacía."""
+    if any(k in t for k in ("qué hay en", "que hay en", "lista los archivos")):
+        return "listar"
+    if any(k in t for k in ("lee el archivo", "lee el", "lee la")):
+        return "leer"
+    if any(k in t for k in ("crea una carpeta", "crea la carpeta")):
+        return "crear_carpeta"
+    if any(k in t for k in ("mueve el", "mueve la")):
+        return "mover"
+    if any(k in t for k in ("elimina el", "elimina la", "borra el", "borra la")):
+        return "eliminar"
+    if "busca en" in t:
+        return "buscar"
+    return "listar"  # default conservador — solo se mencionó una ubicación, sin verbo de acción
+
+
 def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
     """Fallback si Groq no está disponible: clasificación por keywords."""
     t = texto.lower()
     DESPEDIDAS_FRASES = ("hasta luego", "ya terminé", "ya termine", "modo espera", "te hablo luego")
-    DESPEDIDAS_PALABRAS = {"bye", "chau", "adiós", "adios", "descansa", "para", "detente", "stop"}
+    DESPEDIDAS_PALABRAS = {"bye", "chau", "adiós", "adios", "descansa", "detente", "stop"}
     if any(f in t for f in DESPEDIDAS_FRASES):
         return "despedirse", {"instruccion": texto, "archivos_relevantes": []}
     palabras = set(t.split())
@@ -397,10 +416,11 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
         "de descargas", "en descargas", "del escritorio", "en el escritorio",
         "del desktop", "en el desktop", "de la carpeta", "en la carpeta",
     )
-    _fs_params = {"instruccion": texto, "archivos_relevantes": [],
-                  "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": "",
-                  "accion": "describir", "foco": "", "titulo_candidato": ""}
     if any(k in t for k in FS_KEYWORDS):
+        _fs_params = {"instruccion": texto, "archivos_relevantes": [],
+                      "operacion": _inferir_operacion_archivo(t), "ruta": "", "archivo": "",
+                      "destino": "", "query": "", "extension": "",
+                      "accion": "describir", "foco": "", "titulo_candidato": ""}
         return "operacion_archivo", _fs_params
 
     MCP_HUERFANOS = ("conceptos huérfanos", "conceptos huerfanos", "no están conectados",
@@ -460,8 +480,7 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
                                "accion": "describir", "foco": "", "titulo_candidato": ""}
 
 
-def detectar_intent(texto: str, historial: list[dict] | None = None,
-                    indice_vault: str = "") -> tuple[str, dict]:
+def detectar_intent(texto: str, historial: list[dict] | None = None) -> tuple[str, dict]:
     """Intenta Groq primero; si falla, usa keywords."""
     if historial is None:
         historial = []
@@ -469,7 +488,7 @@ def detectar_intent(texto: str, historial: list[dict] | None = None,
     if texto_normalizado != texto:
         print(f"[Normalización] '{texto}' → '{texto_normalizado}'")
     try:
-        intent, params = detectar_intent_groq(texto_normalizado, historial, indice_vault)
+        intent, params = detectar_intent_groq(texto_normalizado, historial)
         print(f"[Intent via Groq] {intent} | {params}")
         return intent, params
     except Exception as e:
@@ -601,8 +620,9 @@ def cargar_contenido_para_razonamiento(archivos_relevantes: list[str]) -> str:
 def ejecutar_claude(instruccion: str) -> str:
     """Ejecuta claude CLI con la instrucción y devuelve el output."""
     if not _claude_disponible():
-        hablar("Claude Code CLI no está disponible.")
-        sys.exit(1)
+        # Nunca sys.exit aquí: esta función corre dentro de threads del daemon,
+        # no en un proceso standalone — un exit mataría el proceso completo.
+        raise RuntimeError("Claude Code CLI no está disponible.")
 
     env_limpia = {k: v for k, v in os.environ.items()
                   if not k.startswith(("CLAUDE", "CURSOR_SPAWN"))}
@@ -745,9 +765,19 @@ def _ultimo_slug_de_historial() -> str | None:
 
 
 def despachar_intent(intent: str, params: dict, texto_transcrito: str, vision_callback=None) -> None:
-    """Ejecuta la acción y al terminar dispara _response_complete_callback."""
+    """Ejecuta la acción y al terminar dispara _response_complete_callback.
+    Defensa en profundidad: ningún error dentro de _despachar_intent_impl (ni siquiera
+    uno inesperado en un intent futuro) puede tumbar el proceso del daemon completo."""
     print(f"[Dispatch] intent='{intent}' | fs_disponible={_filesystem_disponible} | params={params}", flush=True)
-    _despachar_intent_impl(intent, params, texto_transcrito, vision_callback=vision_callback)
+    try:
+        _despachar_intent_impl(intent, params, texto_transcrito, vision_callback=vision_callback)
+    except Exception as e:
+        print(f"[Dispatch] ERROR no manejado en intent '{intent}': {e}", flush=True)
+        logging.exception(f"[Dispatch] ERROR no manejado en intent '{intent}'")
+        try:
+            hablar("Hubo un error al procesar ese comando, Luigui.")
+        except Exception:
+            pass
     emitir_evento("idle", "Esperando wake word...")
     if _response_complete_callback:
         import time
@@ -771,7 +801,7 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         hablar(
             "Puedo ayudarte con tu Segundo Cerebro de tres formas: "
             "responder preguntas sobre tus conceptos, analizar y razonar sobre el vault "
-            "con Ollama, y ejecutar acciones como crear conceptos, correlacionar o "
+            "con Groq, y ejecutar acciones como crear conceptos, correlacionar o "
             "auditar el vault con Claude Code."
         )
         return
@@ -942,6 +972,10 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
             hablar("Claude tardó demasiado al profundizar.")
             registrar_en_jarvis_log("VISION", instruccion, "TIMEOUT")
             return
+        except RuntimeError:
+            hablar("Claude Code no está disponible, Luigui.")
+            registrar_en_jarvis_log("VISION", instruccion, "ERROR: Claude Code no disponible")
+            return
         except Exception as e:
             hablar("Hubo un error al profundizar el concepto.")
             print(f"[Vision error] {e}")
@@ -973,6 +1007,10 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         except subprocess.TimeoutExpired:
             hablar("Claude tardó demasiado al generar el concepto.")
             registrar_en_jarvis_log("VISION", instruccion, "TIMEOUT")
+            return
+        except RuntimeError:
+            hablar("Claude Code no está disponible, Luigui.")
+            registrar_en_jarvis_log("VISION", instruccion, "ERROR: Claude Code no disponible")
             return
         except Exception as e:
             hablar("Hubo un error al generar el concepto.")
@@ -1096,6 +1134,10 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
     except subprocess.TimeoutExpired:
         hablar("Claude tardó demasiado. Revisa la terminal, Luigui.")
         registrar_en_jarvis_log("ACCION", texto_transcrito, "TIMEOUT")
+        return
+    except RuntimeError:
+        hablar("Claude Code no está disponible, Luigui.")
+        registrar_en_jarvis_log("ACCION", texto_transcrito, "ERROR: Claude Code no disponible")
         return
     except Exception as e:
         hablar("Hubo un error al ejecutar el comando.")

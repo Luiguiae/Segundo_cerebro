@@ -16,9 +16,9 @@ import queue
 import subprocess
 import sys
 import logging
+import logging.handlers
 import threading
 import time
-import requests
 from datetime import datetime
 from pathlib import Path
 
@@ -36,16 +36,11 @@ PID_FILE   = JARVIS_DIR / "jarvis.pid"
 # Cada interacción reinicia el contador. Ajusta según tu preferencia.
 MODO_ESCUCHA_TIMEOUT = 60
 
-# Espejo local — la fuente de verdad es _mod._jarvis_hablando (jarvis.py).
-# Leer siempre vía _mod para que el check refleje el estado real del TTS.
-_jarvis_hablando: bool = False
-
 # Cola de eventos del watcher generados durante una sesión activa.
 # Los callbacks enqueuean aquí; loop_principal drena al salir de modo escucha.
 _watcher_queue: queue.Queue = queue.Queue()
 
-# Ref-boxes para que los callbacks accedan a indice_vault y lock sin globals extra.
-_indice_vault_ref: list = [""]
+# Ref-box para que los callbacks accedan al lock de interacción sin globals extra.
 _lock_interaccion_ref: list = [None]
 
 # Señal para pausar esperar_wake_word() mientras otra sesión tiene el micrófono.
@@ -62,19 +57,28 @@ _accion_pendiente_watcher: list = [None]  # [(tipo, param)] o [None]
 # Se setea al inicio de modo_escucha_activo() y se limpia en su finally.
 _escucha_activa: threading.Event = threading.Event()
 
+# Token de generación de sesión — evita que una sesión de escucha vieja (bloqueada
+# dentro de escuchar() cuando loop_principal fuerza una nueva sesión) pise el estado
+# global que ya pertenece a la sesión nueva al terminar tardíamente.
+_session_counter: list = [0]
+_current_session_id: list = [0]
+
 # Controla si el loop de visión está procesando (ojos abiertos).
 # Comienza en False — se activa con "Jarvis abre los ojos".
 # Cuando está cleared el loop de cámara corre a 1fps sin detección ni gestos.
 _vision_activa: threading.Event = threading.Event()
 
 # ── Logging ────────────────────────────────────────────────────────────────────
+# RotatingFileHandler en vez de un FileHandler simple: el daemon corre indefinidamente
+# en segundo plano — sin rotación, jarvis.log crece sin límite.
 
-logging.basicConfig(
-    filename=str(LOG_PATH),
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
+_log_handler = logging.handlers.RotatingFileHandler(
+    filename=str(LOG_PATH), maxBytes=5_000_000, backupCount=3, encoding="utf-8",
 )
+_log_handler.setFormatter(logging.Formatter(
+    fmt="%(asctime)s [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
+))
+logging.basicConfig(level=logging.INFO, handlers=[_log_handler])
 
 def log(msg: str) -> None:
     logging.info(msg)
@@ -165,26 +169,9 @@ def _vision_solicitar_descanso() -> None:
     log("[Vision] Descanso solicitado — presencia será desactivada.")
 
 
-# ── Índice del vault ──────────────────────────────────────────────────────────
-
-def cargar_indice_vault() -> str:
-    """Construye lista de slugs por categoría para el contexto de Groq.
-    Se llama una vez al arrancar; resultado en variable global."""
-    base = CEREBRO_PATH / "Conocimiento" / "Conceptos"
-    if not base.exists():
-        return ""
-    archivos = sorted(base.glob("**/*.md"))
-    lineas = ["Conceptos disponibles en el vault (slug : categoría):"]
-    for f in archivos:
-        lineas.append(f"- {f.stem} ({f.parent.name})")
-    resultado = "\n".join(lineas)
-    log(f"Índice del vault cargado: {len(archivos)} conceptos.")
-    return resultado
-
-
 def cargar_rutas_filesystem() -> str:
     """Construye resumen de aliases de filesystem para contexto y logging.
-    Mismo patrón que cargar_indice_vault — se llama una vez al arrancar."""
+    Se llama una vez al arrancar, solo por su efecto de loguear los aliases disponibles."""
     try:
         if str(JARVIS_DIR) not in sys.path:
             sys.path.insert(0, str(JARVIS_DIR))
@@ -246,6 +233,18 @@ def _es_eco_de_jarvis(transcripcion: str) -> bool:
     overlap = len(palabras_oidas & palabras_habladas) / len(palabras_oidas)
     log(f"[EcoCheck] overlap={overlap:.2f} oído='{transcripcion[:50]}'")
     return overlap > 0.5
+
+
+def _ejecutar_accion_pendiente_con_lock(tipo: str, param: str) -> None:
+    """Toma lock_interaccion (si ya está disponible) antes de ejecutar la acción confirmada
+    del watcher — mismo patrón que procesar_comando (~línea 648). Sin este lock, un comando
+    de voz simultáneo podría lanzar otro proceso `claude` escribiendo el vault en paralelo."""
+    lock = _lock_interaccion_ref[0]
+    if lock is not None:
+        with lock:
+            _ejecutar_accion_pendiente(tipo, param)
+    else:
+        _ejecutar_accion_pendiente(tipo, param)
 
 
 def _ejecutar_accion_pendiente(tipo: str, param: str) -> None:
@@ -405,7 +404,7 @@ def _activar_modo_escucha_watcher() -> None:
     _pausa_wake_word.set()  # ya seteado por el callback — no-op
     try:
         # silencioso=True: no habla si no escucha nada → evita que Jarvis se escuche a sí mismo
-        modo_escucha_activo(_indice_vault_ref[0], lock, silencioso=True)
+        modo_escucha_activo(lock, silencioso=True)
     finally:
         _pausa_wake_word.clear()
 
@@ -422,7 +421,7 @@ def _activar_escucha_vision() -> None:
         emitir_evento("escuchando", "Di tu comando...")
         _pausa_wake_word.set()
         try:
-            modo_escucha_activo(_indice_vault_ref[0], lock, timeout=30, silencioso=True)
+            modo_escucha_activo(lock, timeout=30, silencioso=True)
         finally:
             _pausa_wake_word.clear()
     threading.Thread(target=_run, daemon=True).start()
@@ -458,7 +457,7 @@ def on_nuevo_concepto(slug: str, path: str) -> None:
         respuesta = escuchar_respuesta(timeout=30)
         if respuesta and any(s in respuesta for s in _AFIRMACIONES):
             _accion_pendiente_watcher[0] = None
-            _ejecutar_accion_pendiente("evaluar_concepto", slug)
+            _ejecutar_accion_pendiente_con_lock("evaluar_concepto", slug)
         else:
             log(f"[Watcher] Evaluación de {slug} no capturada — guardando como pendiente.")
             _accion_pendiente_watcher[0] = ("evaluar_concepto", slug)
@@ -478,7 +477,7 @@ def on_nueva_correlacion(slug: str, path: str) -> None:
         respuesta = escuchar_respuesta(timeout=30)
         if respuesta and any(s in respuesta for s in _AFIRMACIONES):
             _accion_pendiente_watcher[0] = None
-            _ejecutar_accion_pendiente("leer_correlacion", path)
+            _ejecutar_accion_pendiente_con_lock("leer_correlacion", path)
         else:
             log(f"[Watcher] Lectura de correlación {slug} no capturada — guardando como pendiente.")
             _accion_pendiente_watcher[0] = ("leer_correlacion", path)
@@ -497,7 +496,7 @@ def on_concepto_modificado(slug: str, path: str) -> None:
         respuesta = escuchar_respuesta(timeout=30)
         if respuesta and any(s in respuesta for s in _AFIRMACIONES):
             _accion_pendiente_watcher[0] = None
-            _ejecutar_accion_pendiente("reevaluar_concepto", slug)
+            _ejecutar_accion_pendiente_con_lock("reevaluar_concepto", slug)
         else:
             log(f"[Watcher] Re-evaluación de {slug} no capturada — guardando como pendiente.")
             _accion_pendiente_watcher[0] = ("reevaluar_concepto", slug)
@@ -629,7 +628,7 @@ def _es_cerrar_ojos(texto: str) -> bool:
     return any(p in t for p in _CERRAR_OJOS)
 
 
-def procesar_comando(indice_vault: str, lock_interaccion: threading.Lock) -> bool:
+def procesar_comando(lock_interaccion: threading.Lock) -> bool:
     """Escucha un comando y despacha via jarvis.py. Retorna True si hubo comando."""
     texto = escuchar()
     if texto is None:
@@ -678,7 +677,7 @@ def procesar_comando(indice_vault: str, lock_interaccion: threading.Lock) -> boo
             return True
 
         emitir_evento("procesando", texto[:60])
-        intent, params = detectar_intent(texto, historial_sesion, indice_vault)
+        intent, params = detectar_intent(texto, historial_sesion)
         log(f"Intent: {intent} | Params: {params}")
         actualizar_historial(texto, (intent, params))
         despachar_intent(intent, params, texto, vision_callback=_vision_callback)
@@ -688,17 +687,28 @@ def procesar_comando(indice_vault: str, lock_interaccion: threading.Lock) -> boo
 MAX_SILENCIAS = 3  # fallos STT consecutivos antes de volver al modo wake word
 
 
-def modo_escucha_activo(indice_vault: str, lock_interaccion: threading.Lock,
+def modo_escucha_activo(lock_interaccion: threading.Lock,
                         timeout: int = MODO_ESCUCHA_TIMEOUT,
                         silencioso: bool = False,
                         forzar: bool = False) -> None:
     """Mantiene Jarvis en escucha activa por `timeout` segundos.
     El timer se reinicia DESPUÉS de que Mónica termina de hablar, via callback.
     Tras MAX_SILENCIAS fallos STT consecutivos duerme automáticamente.
-    silencioso=True: sale sin hablar al agotar silencios (activación por presencia/watcher)."""
+    silencioso=True: sale sin hablar al agotar silencios (activación por presencia/watcher).
+
+    Token de generación de sesión: si loop_principal fuerza una sesión nueva (forzar=True)
+    mientras esta sigue bloqueada dentro de escuchar() esperando audio, esta sesión vieja
+    puede terminar después de que la nueva ya tomó el control. El finally solo limpia el
+    estado global (_response_complete_callback, _escucha_activa) si `my_id` sigue siendo
+    la sesión vigente — si no, la sesión nueva ya es la dueña y no debe pisarse."""
     if not forzar and _escucha_activa.is_set():
         log("[Escucha] Ya hay sesión activa — activación ignorada.")
         return
+
+    _session_counter[0] += 1
+    my_id = _session_counter[0]
+    _current_session_id[0] = my_id
+
     _escucha_activa.set()
     _deadline = [time.time() + timeout]
     silencias = 0
@@ -709,35 +719,40 @@ def modo_escucha_activo(indice_vault: str, lock_interaccion: threading.Lock,
 
     _mod._response_complete_callback = _reset_timer
     _mod._salir_escucha[0] = False
-    log(f"Modo escucha activo ({MODO_ESCUCHA_TIMEOUT}s). Sin wake word necesario.")
+    log(f"Modo escucha activo ({MODO_ESCUCHA_TIMEOUT}s). Sin wake word necesario. [sesión {my_id}]")
 
-    while time.time() < _deadline[0]:
-        hubo_comando = procesar_comando(indice_vault, lock_interaccion)
+    try:
+        while time.time() < _deadline[0]:
+            hubo_comando = procesar_comando(lock_interaccion)
 
-        if hubo_comando:
-            silencias = 0
-        else:
-            silencias += 1
-            if silencias >= MAX_SILENCIAS:
-                log(f"[Escucha] {MAX_SILENCIAS} silencios consecutivos — durmiendo.")
+            if hubo_comando:
+                silencias = 0
+            else:
+                silencias += 1
+                if silencias >= MAX_SILENCIAS:
+                    log(f"[Escucha] {MAX_SILENCIAS} silencios consecutivos — durmiendo.")
+                    if not silencioso:
+                        hablar("No te escucho, Luigui. Di Jarvis cuando me necesites.")
+                    break
                 if not silencioso:
-                    hablar("No te escucho, Luigui. Di Jarvis cuando me necesites.")
+                    hablar("No te escuché. Intenta de nuevo." if silencias == 1 else "No te escucho bien. Un intento más.")
+
+            if _mod._salir_escucha[0]:
+                log("Modo escucha cerrado por despedida del usuario.")
                 break
-            if not silencioso:
-                hablar("No te escuché. Intenta de nuevo." if silencias == 1 else "No te escucho bien. Un intento más.")
-
-        if _mod._salir_escucha[0]:
-            log("Modo escucha cerrado por despedida del usuario.")
-            break
-
-    _mod._response_complete_callback = None
-    _mod._salir_escucha[0] = False
-    _escucha_activa.clear()
-    emitir_evento("idle", "Esperando wake word...")
-    log("Volviendo al loop de wake word.")
+    finally:
+        if my_id == _current_session_id[0]:
+            _mod._response_complete_callback = None
+            _mod._salir_escucha[0] = False
+            _escucha_activa.clear()
+            emitir_evento("idle", "Esperando wake word...")
+            log(f"Volviendo al loop de wake word. [sesión {my_id}]")
+        else:
+            log(f"[Escucha] Sesión {my_id} finalizó tardíamente — "
+                f"sesión {_current_session_id[0]} ya tomó el control, no piso su estado.")
 
 
-def loop_principal(indice_vault: str, lock_interaccion: threading.Lock) -> None:
+def loop_principal(lock_interaccion: threading.Lock) -> None:
     """Ciclo infinito: espera wake word via STT, ejecuta flujo de escucha activa."""
     log("Daemon iniciado. Di 'Jarvis' para activar.")
 
@@ -777,7 +792,7 @@ def loop_principal(indice_vault: str, lock_interaccion: threading.Lock) -> None:
             _mod._salir_escucha[0] = True   # abortar sesión secundaria activa si existe
             _escucha_activa.clear()          # liberar el flag para la nueva sesión
             hablar("Dime, Luigui.")
-            modo_escucha_activo(indice_vault, lock_interaccion, forzar=True)
+            modo_escucha_activo(lock_interaccion, forzar=True)
             _drain_watcher_queue(lock_interaccion)
             log("Volviendo al loop de wake word.")
     except KeyboardInterrupt:
@@ -785,24 +800,6 @@ def loop_principal(indice_vault: str, lock_interaccion: threading.Lock) -> None:
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
-
-def precargar_ollama() -> None:
-    """Carga qwen2.5:7b en RAM para que la primera consulta real no espere cold start."""
-    try:
-        requests.post(
-            "http://localhost:11434/api/chat",
-            json={
-                "model": "qwen2.5:7b",
-                "messages": [{"role": "user", "content": "hola"}],
-                "stream": False,
-                "options": {"num_predict": 1},
-            },
-            timeout=180,
-        )
-        logging.info("Modelo Ollama precargado en RAM.")
-    except Exception as e:
-        logging.warning(f"Precarga Ollama fallida (no bloqueante): {e}")
-
 
 def diagnosticar_microfono() -> None:
     """Lista los micrófonos disponibles y confirma cuál usa sr.Microphone() por defecto."""
@@ -895,23 +892,24 @@ def main():
     try:
         diagnosticar_microfono()
         seleccionar_dispositivo_entrada()
-        indice_vault     = cargar_indice_vault()
-        rutas_filesystem = cargar_rutas_filesystem()
-        precargar_ollama()
+        cargar_rutas_filesystem()
         lock_interaccion = threading.Lock()
-        _indice_vault_ref[0]    = indice_vault
         _lock_interaccion_ref[0] = lock_interaccion
 
-        handler = VaultEventHandler(
-            on_nuevo_concepto=on_nuevo_concepto,
-            on_nueva_correlacion=on_nueva_correlacion,
-            on_concepto_modificado=on_concepto_modificado,
-            lock_interaccion=lock_interaccion,
-        )
-        observer = Observer()
-        observer.schedule(handler, str(CEREBRO_PATH / "Conocimiento"), recursive=True)
-        observer.start()
-        log("Watcher activo en Conocimiento/")
+        _conocimiento_path = CEREBRO_PATH / "Conocimiento"
+        if _conocimiento_path.exists():
+            handler = VaultEventHandler(
+                on_nuevo_concepto=on_nuevo_concepto,
+                on_nueva_correlacion=on_nueva_correlacion,
+                on_concepto_modificado=on_concepto_modificado,
+                lock_interaccion=lock_interaccion,
+            )
+            observer = Observer()
+            observer.schedule(handler, str(_conocimiento_path), recursive=True)
+            observer.start()
+            log("Watcher activo en Conocimiento/")
+        else:
+            log(f"[Watcher] '{_conocimiento_path}' no existe — arrancando sin watcher del vault.")
 
         # Vision loop — no bloquea el arranque si la cámara o las dependencias no están
         try:
@@ -934,7 +932,7 @@ def main():
         except Exception as _ve:
             log(f"[Vision] No disponible — continuando sin vision: {_ve}")
 
-        loop_principal(indice_vault, lock_interaccion)
+        loop_principal(lock_interaccion)
     except Exception as e:
         log(f"ERROR fatal: {e}")
         try:

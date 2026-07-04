@@ -19,7 +19,7 @@ import socket
 import subprocess
 import threading
 import time
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import websockets
@@ -67,6 +67,15 @@ def _launch_chrome() -> None:
         "--no-first-run",
         "--no-default-browser-check",
     ])
+
+
+def _launch_chrome_seguro() -> None:
+    """Envuelve _launch_chrome() — un binario de Chrome ausente o Popen fallando
+    no debe matar en silencio el thread que lo llama (_open_chrome / watchdog)."""
+    try:
+        _launch_chrome()
+    except Exception as e:
+        print(f"[Dashboard] No se pudo lanzar Chrome: {e}")
 
 
 # ── WebSocket ──────────────────────────────────────────────────────────────────
@@ -128,7 +137,9 @@ class _Handler(BaseHTTPRequestHandler):
 
 
 def _run_http():
-    httpd = HTTPServer(("localhost", HTTP_PORT), _Handler)
+    # ThreadingHTTPServer: un GET lento (ej. sirviendo index.html) no debe bloquear
+    # los POST /event entrantes de jarvis.py — cada request corre en su propio thread.
+    httpd = ThreadingHTTPServer(("localhost", HTTP_PORT), _Handler)
     httpd.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     httpd.serve_forever()
 
@@ -143,17 +154,21 @@ def _open_chrome():
         print("[Dashboard] Chrome ya conectado via WebSocket — no se abre otro.")
         return
     print("[Dashboard] Abriendo Chrome...")
-    _launch_chrome()
+    _launch_chrome_seguro()
 
 
 def _chrome_watchdog():
     """Relanza Chrome si lleva > 12s sin ningún cliente WebSocket conectado."""
     time.sleep(8.0)
-    _last_open = 0.0
+    # Arrancar el reloj AHORA — no en 0.0 — para no considerar de entrada que ya
+    # pasaron >12s. Con _last_open=0.0, el primer chequeo (a los 8s) siempre lanzaba
+    # una segunda ventana de Chrome aunque la primera (_open_chrome, a los 4s) todavía
+    # no hubiera tenido tiempo de conectar su WebSocket en un arranque frío.
+    _last_open = time.time()
     while True:
         if not _clients and (time.time() - _last_open) > 12.0:
             print("[Dashboard] Sin clientes WS — relanzando Chrome...")
-            _launch_chrome()
+            _launch_chrome_seguro()
             _last_open = time.time()
         time.sleep(3)
 

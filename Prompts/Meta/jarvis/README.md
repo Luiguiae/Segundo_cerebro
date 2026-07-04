@@ -8,7 +8,7 @@ Escucha un comando, lo interpreta, lo ejecuta vía `claude` CLI, y responde en v
 ## Instalación de dependencias
 
 ```bash
-pip3 install SpeechRecognition pyttsx3 pyaudio
+pip3 install SpeechRecognition pyaudio requests watchdog
 ```
 
 > **macOS:** `pyaudio` requiere PortAudio. Si falla, instala primero:
@@ -16,6 +16,9 @@ pip3 install SpeechRecognition pyttsx3 pyaudio
 > brew install portaudio
 > pip3 install pyaudio
 > ```
+
+El TTS no usa ninguna librería de Python — `hablar()` invoca el comando nativo
+`say -v Mónica` de macOS directamente vía `subprocess`. Nada que instalar para eso.
 
 ---
 
@@ -68,26 +71,38 @@ CFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3 install pyau
 ## Arquitectura
 
 ```
-VOZ → [STT Google] → texto → detectar_intent() → construir_prompt()
-                                                       ↓
-                                              claude CLI (cwd: Segundo_cerebro/)
-                                                       ↓
-                                              resumir_output() → [TTS pyttsx3] → VOZ
+VOZ → [STT Google, vía speech_recognition] → texto → detectar_intent()
+                                                          ↓
+                              Groq (clasificador) — con fallback a keywords si Groq falla
+                                                          ↓
+                    tres carriles según el intent: Groq directo | mejora_006_filesystem | claude CLI
+                                                          ↓
+                                 resumir_output() → [TTS `say` nativo de macOS] → VOZ
 ```
 
-`listar_conceptos` no invoca Claude Code — lee directamente el filesystem con glob recursivo.
+Las operaciones de archivos (`operacion_archivo`) no invocan Claude Code — se resuelven
+directamente en `mejora_006_filesystem.py`. Las consultas y el razonamiento sobre el vault
+(`consulta_simple`, `razonamiento_profundo`, `conversacion_libre`) tampoco — se resuelven
+con Groq. Solo `accion_directa` y los intents de visión que escriben el vault
+(`profundizar_pantalla`, `capturar_como_concepto`) invocan `claude` CLI.
 
 ---
 
 ## Instalación del daemon (wake word — Mejora 002b)
 
-El daemon corre en segundo plano desde el login y responde al decir **"Hey Jarvis"**.
-Sin API keys — usa OpenWakeWord, completamente local y open source.
+El daemon corre en segundo plano desde el login y responde al decir **"Jarvis"**.
+La detección de wake word NO usa un modelo local de wake-word (OpenWakeWord) — usa
+el mismo STT de Google vía `speech_recognition` que el resto del sistema: escucha
+continuamente en ventanas cortas (`listen(timeout=1)`) y transcribe con
+`recognize_google`; si el texto transcrito contiene alguna de las palabras en
+`WAKE_WORDS` (`"jarvis"`, `"jarvi"`, `"jarvis!"`, `"oye jarvis"`), se activa. Esto
+requiere conexión a internet (la transcripción es un request a la API de Google),
+a cambio de no necesitar modelos ni umbrales de score locales.
 
 ### 1. Instalar dependencias
 
 ```bash
-pip3.11 install openwakeword pyaudio numpy
+pip3.11 install SpeechRecognition pyaudio requests watchdog
 ```
 
 > **macOS (Apple Silicon):** si `pyaudio` falla, instala PortAudio primero:
@@ -96,11 +111,13 @@ pip3.11 install openwakeword pyaudio numpy
 > CFLAGS="-I/opt/homebrew/include" LDFLAGS="-L/opt/homebrew/lib" pip3.11 install pyaudio
 > ```
 
-### 2. Descargar modelos de OpenWakeWord
+### 2. Configurar la API key de Groq
 
-```bash
-python3.11 -c "from openwakeword.utils import download_models; download_models()"
-```
+El daemon usa Groq (`llama-3.3-70b-versatile`) para clasificar intents y responder
+consultas sobre el vault. Exporta `GROQ_API_KEY` en el entorno desde el que arranca
+el LaunchAgent (ej. en el `.plist` o en el perfil de shell que lo lanza). Si Groq no
+responde, el daemon cae a un clasificador por keywords más limitado — no se cae el
+daemon.
 
 ### 3. Instalar y cargar el LaunchAgent
 
@@ -139,12 +156,16 @@ tail -f ~/Documents/Segundo_cerebro/Prompts/Meta/jarvis/jarvis.log
 
 ```
 [BOOT] LaunchAgent → jarvis_daemon.py
-    ↓ loop infinito
-    lee chunks de audio (pyaudio, 16kHz mono)
-    OpenWakeWord.predict(chunk) → score "hey_jarvis" > 0.5
-    Mónica dice "Dime"
-    escuchar() → transcribir() → detectar_intent()
-    construir_prompt() → claude CLI → resumir_output()
-    Mónica lee respuesta
-    ↑ vuelve al loop
+    ↓ loop_principal()
+    esperar_wake_word(): escucha continua (speech_recognition + Google STT),
+        ventanas de listen(timeout=1) — sin bloquear, revisa "jarvis" en el texto
+    Mónica dice "Dime, Luigui" (TTS via `say`)
+    modo_escucha_activo(): ventana de 60s, se reinicia con cada respuesta completa
+        procesar_comando() → escuchar() → detectar_intent() (Groq, fallback keywords)
+        → despachar_intent() → uno de tres carriles (Groq directo | mejora_006_filesystem | claude CLI)
+        → resumir_output_para_voz() → hablar() (TTS via `say`)
+    tras MAX_SILENCIAS silencios seguidos o una despedida, vuelve al loop de wake word
+
+En paralelo: un watcher (watchdog) observa Conocimiento/ y notifica por voz
+cuando aparece o cambia un concepto/correlación, sin que el usuario lo pida.
 ```

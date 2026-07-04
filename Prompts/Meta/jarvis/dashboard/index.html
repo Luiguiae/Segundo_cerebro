@@ -380,7 +380,9 @@ function applyState(tipo, mensaje) {
   messageEl.textContent    = mensaje || '';
   messageEl.style.color    = cfg.msgColor;
 
-  if (['ejecutando', 'procesando'].includes(tipo)) {
+  // Cubre todos los estados no-idle: si el daemon muere a mitad de cualquier
+  // operación (no solo ejecutando/procesando), el dashboard no debe quedar pegado.
+  if (['ejecutando', 'procesando', 'escuchando', 'respondiendo', 'watcher'].includes(tipo)) {
     _stuckTimer = setTimeout(() => applyState('idle', 'Esperando wake word...'), STUCK_MS);
   }
 }
@@ -391,12 +393,25 @@ function pushLog(tipo, mensaje, ts) {
   actionLog.unshift({ time, tipo: tipo.toUpperCase(), msg: (mensaje || '').slice(0, 52) });
   if (actionLog.length > 5) actionLog.pop();
 
-  logList.innerHTML = actionLog.map((l, i) => `
-    <li class="log-item ${i === 0 ? 'fresh' : ''}">
-      <span class="log-time">${l.time}</span>
-      <span class="log-msg">› ${l.msg}</span>
-    </li>
-  `).join('');
+  // Construcción via DOM + textContent (no innerHTML con template string): mensaje/time
+  // vienen de transcripciones de voz o nombres de archivo — pueden contener '<'/'>'/'&'.
+  logList.textContent = '';
+  actionLog.forEach((l, i) => {
+    const li = document.createElement('li');
+    li.className = 'log-item' + (i === 0 ? ' fresh' : '');
+
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'log-time';
+    timeSpan.textContent = l.time;
+
+    const msgSpan = document.createElement('span');
+    msgSpan.className = 'log-msg';
+    msgSpan.textContent = '› ' + l.msg;
+
+    li.appendChild(timeSpan);
+    li.appendChild(msgSpan);
+    logList.appendChild(li);
+  });
 }
 
 // ── Timer ─────────────────────────────────────────────────────────────────────

@@ -15,6 +15,12 @@ __pycache__/
 *.pyc
 *.log
 
+# Secretos — nunca deben trackearse desde ninguna subcarpeta
+**/.env
+**/.env.*
+!**/.env.example
+.git-credentials
+
 # Exports y binarios
 Documentos/Presentaciones/exports/
 *.pdf

@@ -36,6 +36,34 @@ _MAX_BUSCAR = 20     # archivos máximos que buscar_en_archivos recorre
 _RE_FECHA = re.compile(r'^\d{4}(-\d{2}(-\d{2})?)?$')  # YYYY | YYYY-MM | YYYY-MM-DD
 
 
+def _raices_permitidas() -> tuple[Path, ...]:
+    """Raíces absolutas derivadas de RUTAS_CONOCIDAS — únicos directorios donde
+    las operaciones de filesystem están autorizadas a operar."""
+    vistas: list[Path] = []
+    for base in RUTAS_CONOCIDAS.values():
+        p = Path(base).expanduser().resolve()
+        if p not in vistas:
+            vistas.append(p)
+    return tuple(vistas)
+
+
+_RAICES_PERMITIDAS = _raices_permitidas()
+
+
+def _ruta_confinada(p: Path) -> bool:
+    """True si `p` (ya resuelto) está contenido dentro de alguna raíz permitida.
+    Bloquea path traversal (alias + '..') hacia fuera de RUTAS_CONOCIDAS."""
+    try:
+        resuelto = p.resolve()
+    except Exception:
+        return False
+    return any(resuelto == raiz or resuelto.is_relative_to(raiz) for raiz in _RAICES_PERMITIDAS)
+
+
+def _rechazo_fuera_de_alcance(p: Path) -> str:
+    return f"Acceso denegado: '{p}' está fuera de los directorios permitidos."
+
+
 def resolver_ruta(ruta_str: str) -> Path:
     """Convierte alias o ruta relativa/absoluta a Path absoluto dentro de ~/."""
     if not ruta_str:
@@ -68,6 +96,8 @@ def _guardar_en_ruta(origen: Path, destino: Path) -> Path:
 def listar_archivos(ruta: str, extension: str | None = None) -> str:
     """Lista archivos de una carpeta. extension puede ser 'md', 'py', etc."""
     p = resolver_ruta(ruta)
+    if not _ruta_confinada(p):
+        return _rechazo_fuera_de_alcance(p)
     if not p.exists():
         return f"La ruta '{p}' no existe."
     if not p.is_dir():
@@ -94,6 +124,8 @@ def listar_archivos(ruta: str, extension: str | None = None) -> str:
 def leer_archivo(ruta: str) -> str:
     """Lee el contenido de un archivo de texto (max _MAX_LEER chars)."""
     p = resolver_ruta(ruta)
+    if not _ruta_confinada(p):
+        return _rechazo_fuera_de_alcance(p)
     if not p.exists():
         return f"El archivo '{p}' no existe."
     if p.is_dir():
@@ -101,7 +133,7 @@ def leer_archivo(ruta: str) -> str:
 
     EXTENSIONES_TEXTO = {
         ".txt", ".md", ".py", ".js", ".ts", ".json", ".yaml", ".yml",
-        ".toml", ".sh", ".zsh", ".env", ".cfg", ".ini", ".csv",
+        ".toml", ".sh", ".zsh", ".cfg", ".ini", ".csv",
     }
     if p.suffix.lower() not in EXTENSIONES_TEXTO:
         return f"No puedo leer '{p.name}' — solo archivos de texto plano."
@@ -119,6 +151,8 @@ def leer_archivo(ruta: str) -> str:
 def crear_carpeta(ruta: str) -> str:
     """Crea una carpeta (y sus padres) si no existe."""
     p = resolver_ruta(ruta)
+    if not _ruta_confinada(p):
+        return _rechazo_fuera_de_alcance(p)
     if p.exists():
         return f"La carpeta '{p.name}' ya existe en '{p.parent}'."
     try:
@@ -132,6 +166,11 @@ def mover_archivo(origen: str, destino: str) -> str:
     """Mueve un archivo de origen a destino."""
     p_origen  = resolver_ruta(origen)
     p_destino = resolver_ruta(destino)
+
+    if not _ruta_confinada(p_origen):
+        return _rechazo_fuera_de_alcance(p_origen)
+    if not _ruta_confinada(p_destino):
+        return _rechazo_fuera_de_alcance(p_destino)
 
     if not p_origen.exists():
         return f"El origen '{p_origen}' no existe."
@@ -151,6 +190,8 @@ def mover_archivo(origen: str, destino: str) -> str:
 def eliminar_archivo(ruta: str) -> str:
     """Mueve el archivo a ~/.Trash/ — nunca rm permanente."""
     p = resolver_ruta(ruta)
+    if not _ruta_confinada(p):
+        return _rechazo_fuera_de_alcance(p)
     if not p.exists():
         return f"El archivo '{p}' no existe."
 
@@ -208,6 +249,8 @@ def buscar_en_archivos(ruta: str, query: str) -> str:
     """Busca 'query' en archivos de texto dentro de la carpeta (recursivo, max _MAX_BUSCAR).
     Si query tiene formato YYYY-MM-DD (o YYYY-MM, YYYY), busca en el campo fecha: del frontmatter."""
     p = resolver_ruta(ruta)
+    if not _ruta_confinada(p):
+        return _rechazo_fuera_de_alcance(p)
     if not p.exists():
         return f"La ruta '{p}' no existe."
     if not p.is_dir():
