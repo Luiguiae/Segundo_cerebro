@@ -19,7 +19,8 @@ import subprocess
 import sys
 import threading
 import time
-from datetime import datetime
+import re
+from datetime import datetime, timedelta
 from pathlib import Path
 
 CEREBRO_PATH = Path.home() / "Documents" / "Segundo_cerebro"
@@ -282,6 +283,12 @@ recordar_hecho: el usuario quiere que Jarvis recuerde o olvide un dato personal 
   Señales olvidar: "olvida que...", "ya no...", "borra de tu memoria que...".
   Params: accion = "agregar" | "olvidar", hecho = "el dato tal cual lo dijo el usuario, sin el verbo recuerda/olvida"
 
+subir_cambios: el usuario quiere publicar los cambios locales del vault al servidor remoto (GitHub).
+  Es lo opuesto a sincronizar_vault (que TRAE cambios) — este los SUBE.
+  Señales: "sube los cambios", "sube los cambios al servidor", "sincroniza hacia arriba",
+  "push al servidor", "publica los cambios".
+  Params: {}
+
 REGLA DE DESAMBIGUACIÓN CRÍTICA: Si el mensaje menciona una ubicación del sistema operativo
 (downloads, descargas, escritorio, desktop, wayta, home, o "carpeta de [nombre]") → clasifica SIEMPRE
 como operacion_archivo, nunca como consulta_simple ni conversacion_libre.
@@ -320,6 +327,9 @@ Para sincronizar_vault:
 
 Para recordar_hecho:
 {"intent": "recordar_hecho", "instruccion": "<texto literal>", "archivos_relevantes": [], "accion": "<agregar|olvidar>", "hecho": "<el dato, sin el verbo>"}
+
+Para subir_cambios:
+{"intent": "subir_cambios", "instruccion": "<texto literal>", "archivos_relevantes": []}
 
 Para razonamiento_profundo incluye en archivos_relevantes las categorías relevantes (ej. ["ia", "producto", "Correlaciones"]).
 Para los demás tipos archivos_relevantes puede ser []."""
@@ -501,6 +511,15 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
                                   "accion": accion, "hecho": hecho, "foco": "", "titulo_candidato": "",
                                   "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
 
+    SUBIR_CAMBIOS = (
+        "sube los cambios", "sincroniza hacia arriba", "push al servidor",
+        "publica los cambios",
+    )
+    if any(k in t for k in SUBIR_CAMBIOS):
+        return "subir_cambios", {"instruccion": texto, "archivos_relevantes": [],
+                                 "accion": "describir", "foco": "", "titulo_candidato": "",
+                                 "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
+
     return "accion_directa", {"instruccion": texto, "archivos_relevantes": [],
                                "accion": "describir", "foco": "", "titulo_candidato": ""}
 
@@ -597,20 +616,68 @@ def cargar_memoria() -> str:
 
 _LOG_KEYWORDS = ("hoy", "hicimos", "cambios", "actualizaciones", "historial", "hiciste", "resumen del día", "resumen del dia")
 
+_ENCABEZADO_LOG = re.compile(r"^#{2,3} (\d{4}-\d{2}-\d{2})", re.MULTILINE)
+
+
+def _parsear_periodo(instruccion: str):
+    """Reconoce 'ayer'/'hoy'/'esta semana' en la instrucción y devuelve (desde, hasta)
+    como objetos date. None si no hay período explícito — en ese caso
+    cargar_contenido_vault_por_pregunta usa el comportamiento anterior (últimas 100 líneas)."""
+    t = instruccion.lower()
+    hoy = datetime.now().date()
+    if "ayer" in t:
+        ayer = hoy - timedelta(days=1)
+        return (ayer, ayer)
+    if "esta semana" in t or "última semana" in t or "ultima semana" in t:
+        return (hoy - timedelta(days=7), hoy)
+    if "hoy" in t:
+        return (hoy, hoy)
+    return None
+
+
+def _filtrar_log_por_periodo(contenido: str, desde, hasta) -> str:
+    """Filtra las entradas de JARVIS_LOG.md cuyo encabezado de fecha cae dentro de
+    [desde, hasta] inclusive. Reconoce los dos formatos que coexisten en el archivo:
+    '## YYYY-MM-DD HH:MM — TIPO' (registrar_en_jarvis_log) y '### YYYY-MM-DD — texto'
+    (formato documentado en CLAUDE.md, usado por sesiones de Claude Code)."""
+    matches = list(_ENCABEZADO_LOG.finditer(contenido))
+    entradas = []
+    for i, m in enumerate(matches):
+        inicio = m.start()
+        fin = matches[i + 1].start() if i + 1 < len(matches) else len(contenido)
+        try:
+            fecha = datetime.strptime(m.group(1), "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if desde <= fecha <= hasta:
+            entradas.append(contenido[inicio:fin].strip())
+    return "\n\n".join(entradas)
+
+
 def cargar_contenido_vault_por_pregunta(instruccion: str) -> str:
-    """Carga JARVIS_LOG.md (últimas 100 líneas) si la pregunta es sobre historial/cambios,
-    o ATLAS.md si es sobre el índice de conceptos."""
+    """Carga JARVIS_LOG.md si la pregunta es sobre historial/cambios — filtrado por
+    período si se detecta uno explícito (ayer/hoy/esta semana), o las últimas 100
+    líneas si no — o ATLAS.md si es sobre el índice de conceptos."""
     if any(k in instruccion.lower() for k in _LOG_KEYWORDS):
         log_path = CEREBRO_PATH / "JARVIS_LOG.md"
         logging.info(f"[Debug] Buscando JARVIS_LOG en: {log_path}")
         logging.info(f"[Debug] Existe: {log_path.exists()}")
-        if log_path.exists():
-            lineas = log_path.read_text(encoding="utf-8").splitlines()
-            contenido = "\n".join(lineas[-100:])
-            logging.info(f"[Debug] Contenido cargado: {contenido[:100] if contenido else 'VACÍO'}")
-            return contenido
-        logging.info("[Debug] Contenido cargado: VACÍO")
-        return ""
+        if not log_path.exists():
+            logging.info("[Debug] Contenido cargado: VACÍO")
+            return ""
+        contenido_completo = log_path.read_text(encoding="utf-8")
+        periodo = _parsear_periodo(instruccion)
+        if periodo:
+            desde, hasta = periodo
+            filtrado = _filtrar_log_por_periodo(contenido_completo, desde, hasta)
+            if not filtrado.strip():
+                return f"No se encontró ninguna entrada registrada en JARVIS_LOG.md entre {desde} y {hasta}."
+            logging.info(f"[Debug] Log filtrado por período {desde}..{hasta}: {len(filtrado)} chars")
+            return filtrado
+        lineas = contenido_completo.splitlines()
+        contenido = "\n".join(lineas[-100:])
+        logging.info(f"[Debug] Contenido cargado: {contenido[:100] if contenido else 'VACÍO'}")
+        return contenido
     atlas_path = CEREBRO_PATH / "Conocimiento" / "ATLAS.md"
     if atlas_path.exists():
         return atlas_path.read_text(encoding="utf-8")[:4000]
@@ -1147,6 +1214,71 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
             registrar_en_jarvis_log("SYNC", instruccion, "TIMEOUT")
         except Exception as e:
             hablar("Hubo un problema al sincronizar, Luigui. Revisa la conexión.")
+            registrar_en_jarvis_log("SYNC", instruccion, f"ERROR: {e}")
+        return
+
+    if intent == "subir_cambios":
+        emitir_evento("procesando", "Subiendo cambios...")
+        _git_env = {**os.environ, "GIT_TERMINAL_PROMPT": "0"}
+        try:
+            status = subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "status", "--porcelain"],
+                capture_output=True, text=True, timeout=15,
+                stdin=subprocess.DEVNULL,
+            )
+            if not status.stdout.strip():
+                hablar("No había cambios pendientes.")
+                registrar_en_jarvis_log("SYNC", instruccion, "Sin cambios pendientes")
+                return
+
+            hablar("Subiendo los cambios al servidor...")
+            subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "add", "-A"],
+                capture_output=True, text=True, timeout=15,
+                stdin=subprocess.DEVNULL,
+            )
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+            # Sin check=True: si el watcher ya commiteó estos mismos cambios en una
+            # carrera (serializada por lock_interaccion pero posible entre invocaciones),
+            # "nothing to commit" no es un error real — seguimos al pull/push igual.
+            subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "commit", "-m", f"feat: cambios via Jarvis {timestamp}"],
+                capture_output=True, text=True, timeout=15,
+                stdin=subprocess.DEVNULL,
+            )
+
+            pull = subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "pull", "--rebase", "origin", "main"],
+                capture_output=True, text=True, timeout=30,
+                stdin=subprocess.DEVNULL, env=_git_env,
+            )
+            if pull.returncode != 0:
+                subprocess.run(
+                    ["git", "-C", str(CEREBRO_PATH), "rebase", "--abort"],
+                    capture_output=True, text=True, timeout=10,
+                    stdin=subprocess.DEVNULL,
+                )
+                hablar("Hubo un problema al subir los cambios. Revisa la conexión.")
+                registrar_en_jarvis_log("SYNC", instruccion, f"ERROR pull --rebase: {pull.stderr[:150]}")
+                return
+
+            push = subprocess.run(
+                ["git", "-C", str(CEREBRO_PATH), "push", "origin", "main"],
+                capture_output=True, text=True, timeout=30,
+                stdin=subprocess.DEVNULL, env=_git_env,
+            )
+            if push.returncode != 0:
+                hablar("Hubo un problema al subir los cambios. Revisa la conexión.")
+                registrar_en_jarvis_log("SYNC", instruccion, f"ERROR push: {push.stderr[:150]}")
+                return
+
+            hablar("Listo, cambios subidos al servidor.")
+            registrar_en_jarvis_log("SYNC", instruccion, "Cambios subidos correctamente")
+        except subprocess.TimeoutExpired:
+            hablar("Hubo un problema al subir los cambios. Revisa la conexión.")
+            registrar_en_jarvis_log("SYNC", instruccion, "TIMEOUT")
+        except Exception as e:
+            hablar("Hubo un problema al subir los cambios. Revisa la conexión.")
             registrar_en_jarvis_log("SYNC", instruccion, f"ERROR: {e}")
         return
 
