@@ -2,6 +2,31 @@
 
 ---
 
+### 2026-07-04 — auditoría de 3 conceptos pegados en Conceptos/
+
+**Instrucción:** "Audita los 3 archivos que acabo de pegar en la carpeta conceptos"
+
+**Acciones:**
+- Gate 0 — Estructura: los 3 archivos fallaban por campos requeridos ausentes (`estado`) y formato inválido. Normalizados:
+  - `estado` agregado (ausente en los 3)
+  - `relacionado` estaba escrito con la forma rica de `edges` (objetos `slug/tipo/why`) en vez de lista plana de slugs — separado en dos campos: `relacionado` (lista plana) + `edges` (con `tipo` traducido al vocabulario reconocido por `generar_index.py`: extiende→extends, tensiona→contradicts, profundiza→refines, causa→enables)
+  - `titulo` en `alineacion-de-cuatro-partes.md` y `problema-del-referente-para-la-ia.md` era literalmente el slug del archivo, no un título legible — corregido tomando el H1 real del cuerpo
+  - Tags fuera de vocabulario controlado mapeados a equivalentes existentes: `gobernanza`→`gobernanza-ia` (los 3), `etica-ia`→`etica`, `epistemologia`→`fundamentos`; tags sin equivalente claro (`deepmind`, `diseno-de-riesgo`, `metafora`, `ontologia`, `antropomorfismo`, `supuestos-filosoficos`, `adopcion-ia`) removidos sin proponer — son demasiado específicos o nombres propios para vocabulario controlado reusable. `alineacion-de-cuatro-partes.md` sumó el tag `marco` (ya controlado, encaja mejor que proponer uno nuevo)
+  - Verificados los 6 slugs referenciados en `relacionado`/`edges` de los 3 archivos — todos existen como archivos reales, ninguno inventado
+  - `categorias_secundarias` (campo no canónico) se dejó intacto en los 3 — mismo criterio que la sesión anterior: es decisión de Luigui, no de Jarvis
+  - `supuestos-importados-por-ia.md`: normalizado el bloque `fuentes` (campo `autores` plural → `autor`, quitados `publicacion`/`fecha` redundantes con `fecha_acceso`); eliminado el footer `*Relacionado:* [[wiki-links]]` al final del cuerpo — duplicaba `relacionado`/`edges` y no es parte de la estructura canónica
+
+**Resultados (Gate 1 + Gate 2):**
+- `ia/alineacion-de-cuatro-partes.md`: **OK** → `estado: activo` — atómico, propio (aplica el marco a diagnóstico de producto/Wayta IA), tensión real (asimetría de poder en quién define "daño a la sociedad"), relacionable (3 relaciones verificadas), transferible
+- `ia/problema-del-referente-para-la-ia.md`: **ADVERTENCIA** → `estado: borrador` — pasa Gate 1/2 pero "Datos y evidencia" se apoya mucho en re-narrar el caso Gemini/Miami de la fuente sin agregar tanta interpretación propia como los otros dos; el resto (marco de las 3 metáforas, tensión de paternalismo) sí es sólido
+- `filosofia/supuestos-importados-por-ia.md`: **OK** → `estado: activo` — síntesis propia clara (marco de 3 capas: ontológica/epistemológica/ética), tensión real (alineación ≠ elección, deriva filosófica), transferible
+
+**[PROPUESTA]** Falta un tag de Dominio para conceptos de filosofía pura — el vault tiene la subcarpeta `Conceptos/filosofia/` pero ningún tag correspondiente en `taxonomia.md` (a diferencia de `diseño`, `producto`, `ia`, que sí tienen tag propio). Surgió al auditar `problema-del-referente-para-la-ia.md`, cuyo tema central (ontología, metáfora) no tiene tag controlado apto. Propuesta: agregar `filosofia` a la lista de tags de Dominio.
+
+**ATLAS regenerado:** sí — 76 conceptos, 58 tags únicos, 24 con edges, 37 edges tipados
+
+---
+
 ### 2026-07-04 — confirmación de tags propuestos + fix de generar_index.py
 
 **Instrucción:** "confirmo tags" (Luigui confirma las 2 propuestas del 2026-07-04)
@@ -2480,3 +2505,7 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-07-04 12:54 — WATCHER
 **Instrucción:** Nuevo concepto: alineacion-de-cuatro-partes
 **Resultado:** Evaluado y correlacionado
+
+## 2026-07-04 13:03 — WATCHER
+**Instrucción:** Concepto modificado: problema-del-referente-para-la-ia
+**Resultado:** Re-evaluado
