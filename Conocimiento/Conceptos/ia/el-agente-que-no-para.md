@@ -2,7 +2,7 @@
 titulo: El agente que no para
 tipo: concepto
 familia: agencia-ia
-tags: [agentes, ux, validacion]
+tags: [agentes, ux, validacion, autonomia, checkpoints]
 relacionado: [ux-checkpoints, impuesto-de-verificacion, espectro-autonomia-agente]
 fecha: 2026-06-20
 estado: activo

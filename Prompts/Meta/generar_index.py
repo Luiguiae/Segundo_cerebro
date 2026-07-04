@@ -169,7 +169,12 @@ def construir_grafo_relaciones(conceptos: list[dict]) -> dict[str, list[str]]:
     for c in conceptos:
         nombre = c["_archivo"]
         for rel in c.get("relacionado", []):
-            rel_limpio = rel.strip("[]").strip()
+            if isinstance(rel, dict):
+                # Algunos conceptos escriben `relacionado` con la forma rica de `edges`
+                # (slug/tipo/why) en vez de un string plano — toma el slug igual.
+                rel_limpio = str(rel.get("slug") or rel.get("target") or "").strip()
+            else:
+                rel_limpio = str(rel).strip("[]").strip()
             if rel_limpio:
                 grafo[nombre].append(rel_limpio)
     return dict(grafo)

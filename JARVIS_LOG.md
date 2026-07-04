@@ -2,6 +2,25 @@
 
 ---
 
+### 2026-07-04 — confirmación de tags propuestos + fix de generar_index.py
+
+**Instrucción:** "confirmo tags" (Luigui confirma las 2 propuestas del 2026-07-04)
+
+**Acciones:**
+- `autonomia` y `checkpoints` agregados a la lista de tags de Dominio en `Plantillas/taxonomia.md`
+- `ia/el-agente-que-no-para.md`: tags restaurados a `[agentes, ux, validacion, autonomia, checkpoints]` (5, dentro del límite de Gate 0)
+- Al regenerar el ATLAS se encontró un bug no relacionado: `construir_grafo_relaciones` en `generar_index.py` crasheaba con `AttributeError` porque 3 conceptos (`supuestos-importados-por-ia`, `alineacion-de-cuatro-partes`, `problema-del-referente-para-la-ia`) tienen `relacionado` escrito con la forma rica de `edges` (objetos `{slug, tipo, why}`) en vez de una lista plana de strings. Corregido: la función ahora extrae el slug de esos objetos en vez de crashear.
+
+**Resultados:**
+- `Plantillas/taxonomia.md`: OK (edición autorizada explícitamente por Luigui)
+- `ia/el-agente-que-no-para.md`: OK
+- `Prompts/Meta/generar_index.py`: OK — corregido para no crashear ante `relacionado` en formato de objeto
+- **Nota:** los 3 conceptos con `relacionado` en formato objeto no se normalizaron a lista plana de strings — eso es una decisión de contenido aparte, no cubierta por esta corrección puntual
+
+**ATLAS regenerado:** sí — 76 conceptos, 70 tags únicos, 21 con edges, 28 edges tipados
+
+---
+
 ### 2026-07-04 — corrección integral post-auditoría ("Jarvis, corrige todo")
 
 **Instrucción:** "Jarvis, corrige todo" — en respuesta a la auditoría de 4 frentes (documental, código local, servidor VPS, seguridad) ejecutada el mismo día, 42 hallazgos.
@@ -2449,3 +2468,11 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-07-01 14:30 — CONSULTA
 **Instrucción:** cómo se compone normalmente los saldos de un consumo
 **Resultado:** Los saldos de un consumo normalmente se componen de la suma de los débitos y créditos realizados en una cuenta o tarjeta durante un período determinado, como un mes o una factura. Esto incluye gastos, pagos, intereses y cualquier otro movimiento que afecte el saldo.
+
+## 2026-07-04 12:51 — WATCHER
+**Instrucción:** Nuevo concepto: supuestos-importados-por-ia
+**Resultado:** Evaluado y correlacionado
+
+## 2026-07-04 12:51 — WATCHER
+**Instrucción:** Nuevo concepto: problema-del-referente-para-la-ia
+**Resultado:** Evaluado y correlacionado

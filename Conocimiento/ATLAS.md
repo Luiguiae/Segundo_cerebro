@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-07-04 12:19  
-> Total de conceptos: **73**  
+> Generado automáticamente el 2026-07-04 12:51  
+> Total de conceptos: **76**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -34,8 +34,10 @@
 | [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]] | El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento … | `productividad`, `trabajo`, `habilidades`, `principio`, `conocimiento` | activo | 2026-05-23 |
 | [[lo-ilegible-como-senal\|Lo ilegible como señal]] | Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. Evan Tana, socio en South Park … | `diseño`, `ia`, `criterio`, `captura`, `hipotesis` | activo | 2026-04-10 |
 | [[momento-liminal\|El momento liminal]] | Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u… | `liderazgo`, `cambio`, `incertidumbre`, `transicion`, `diseño` | activo | 2026-04-05 |
+| [[supuestos-importados-por-ia\|Supuestos importados por IA]] | > "Integrar un modelo de IA en tu empresa no es adoptar una herramienta. Es adoptar una filosofía — y aceptarla sin lee… | `supuestos-filosoficos`, `adopcion-ia`, `gobernanza`, `epistemologia`, `criterio` | — | 2026-06-25 |
 | [[agentes-ia\|Equipos de agentes IA]] | Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c… | `agentes`, `ia`, `equipo`, `automatizacion`, `escala` | activo | 2026-03-04 |
 | [[ai-evals-como-disciplina\|AI Evals como disciplina de producto]] | AI Evals (evaluaciones de IA) es el conjunto de metodologías estructuradas para medir si un sistema basado en LLMs hace… | `ia`, `producto`, `validacion`, `evaluacion`, `criterio` | activo | 2026-05-18 |
+| [[alineacion-de-cuatro-partes\|alineacion-de-cuatro-partes]] | La alineación de un sistema de IA no se puede evaluar mirando solo la relación entre el modelo y el usuario que tiene e… | `alineacion`, `gobernanza`, `deepmind`, `etica-ia`, `agentes`, `diseno-de-riesgo` | — | 2026-07-03 |
 | [[arnes-del-agente\|Arnés del agente]] | Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla | `agentes`, `ia`, `diseño`, `producto`, `criterio` | activo | 2026-04-20 |
 | [[autoautomatizacion-del-disenador\|La trampa de la autoautomatización]] | La autoautomatización del diseñador es el modo de trabajo con IA en el que un profesional delega no solo la ejecución s… | `ia`, `automatizacion`, `aprendizaje`, `criterio`, `habilidades` | activo | 2026-06-01 |
 | [[automatizacion-vs-ampliacion\|Automatización vs. amplificación: los dos modos de impacto de la IA]] | La IA no afecta el trabajo de una sola manera. Tiene dos modos de impacto | `ia`, `automatizacion`, `roles`, `tension`, `habilidades` | activo | 2026-04-15 |
@@ -43,7 +45,7 @@
 | [[comprehension-debt\|Comprehension debt]] | La deuda de comprensión es la brecha creciente entre el volumen de código que existe en | `ia`, `velocidad`, `conocimiento`, `equipo`, `criterio` | activo | 2026-04-22 |
 | [[conocimiento-autoorganizado-por-llm\|Conocimiento autoorganizado por LLM]] | El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una | `ia`, `conocimiento`, `sistemas`, `agentes`, `tension` | activo | 2026-04-18 |
 | [[design-system-como-api-para-agentes\|El design system como API para agentes]] | El design system no desaparece en la era de las interfaces generativas — cambia de audiencia. Hasta ahora era un catálo… | `agentes`, `ia`, `ux`, `sistemas`, `herramientas` | activo | 2026-05-20 |
-| [[el-agente-que-no-para\|El agente que no para]] | El paradigma dominante de interacción con agentes IA es conversacional: el humano envía un mensaje, el agente responde,… | `agentes`, `ux`, `validacion` | activo | 2026-06-20 |
+| [[el-agente-que-no-para\|El agente que no para]] | El paradigma dominante de interacción con agentes IA es conversacional: el humano envía un mensaje, el agente responde,… | `agentes`, `ux`, `validacion`, `autonomia`, `checkpoints` | activo | 2026-06-20 |
 | [[espectro-autonomia-agente\|Espectro de autonomía del agente]] | "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo | `ia`, `agentes`, `roles`, `criterio`, `poder` | activo | 2026-04-18 |
 | [[espiral-delusional\|Espiral delusional]] | Un chatbot sycophantic no tiene como objetivo convencer a nadie de nada. Solo hace una cosa: validar lo que el usuario … | `ia`, `etica`, `confianza`, `incertidumbre`, `tension` | activo | 2026-04-28 |
 | [[fabrica-oscura-de-software\|La fábrica oscura de software]] | En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros | `ia`, `agentes`, `codigo`, `automatizacion`, `criterio` | activo | 2026-04-18 |
@@ -56,6 +58,7 @@
 | [[legibilidad-de-maquina\|Legibilidad de máquina]] | La competencia entre productos ya no se decide solo por experiencia de usuario humana — | `agentes`, `ia`, `producto`, `estrategia`, `sistemas` | activo | 2026-04-20 |
 | [[orquestacion-de-agentes\|Orquestación de agentes]] | La orquestación de agentes es la disciplina de coordinar múltiples agentes de IA especializados para completar tareas c… | `agentes`, `sistemas`, `control`, `ia`, `estrategia` | activo | 2026-05-25 |
 | [[poblaciones-sinteticas\|Poblaciones sintéticas]] | Una población sintética es un conjunto de agentes generados por LLMs que simulan la distribución estadística de comport… | `ia`, `agentes`, `validacion`, `research`, `diseño` | activo | 2026-06-18 |
+| [[problema-del-referente-para-la-ia\|problema-del-referente-para-la-ia]] | Antes de poder decidir cómo regular, diseñar o convivir con un sistema de IA, hace falta resolver una pregunta que rara… | `filosofia`, `metafora`, `ontologia`, `gobernanza`, `deepmind`, `antropomorfismo` | — | 2026-07-03 |
 | [[representacion-agente\|Representación agente]] | Cuando un agente actúa en nombre de una persona ante otros agentes — negocia, decide, se compromete — el problema de di… | `agentes`, `ia`, `etica`, `control`, `diseño` | activo | 2026-06-13 |
 | [[riesgo-geopolitico-del-modelo\|Riesgo geopolítico del modelo IA]] | El riesgo geopolítico del modelo IA es la vulnerabilidad estructural que hereda cualquier sistema construido sobre un m… | `ia`, `gobernanza-ia`, `infraestructura`, `etica`, `estrategia` | activo | 2026-06-19 |
 | [[spec-driven-development\|Spec-Driven Development]] | Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po… | `codigo`, `construccion`, `ia`, `iteracion`, `estrategia` | activo | 2026-04-07 |
@@ -101,8 +104,12 @@
   → La sycophancy — la tendencia de los modelos de lenguaje a validar lo que el usuario expresa en lugar de responder con p…
 - [[ux-checkpoints\|UX Checkpoints]]
   → En la era de agentes, la filosofía del diseño se invierte: la fricción deliberada es el
+- [[supuestos-importados-por-ia\|Supuestos importados por IA]]
+  → > "Integrar un modelo de IA en tu empresa no es adoptar una herramienta. Es adoptar una filosofía — y aceptarla sin lee…
 - [[agentes-ia\|Equipos de agentes IA]]
   → Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c…
+- [[alineacion-de-cuatro-partes\|alineacion-de-cuatro-partes]]
+  → La alineación de un sistema de IA no se puede evaluar mirando solo la relación entre el modelo y el usuario que tiene e…
 - [[arnes-del-agente\|Arnés del agente]]
   → Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla
 - [[design-system-como-api-para-agentes\|El design system como API para agentes]]
@@ -158,6 +165,8 @@
   → La autoautomatización del diseñador es el modo de trabajo con IA en el que un profesional delega no solo la ejecución s…
 - [[capital-de-contexto\|Capital de contexto]]
   → Los mejores practicantes de IA no tratan los prompts como interacciones desechables — construyen un *hoard*: coleccione…
+- [[problema-del-referente-para-la-ia\|problema-del-referente-para-la-ia]]
+  → Antes de poder decidir cómo regular, diseñar o convivir con un sistema de IA, hace falta resolver una pregunta que rara…
 - [[claridad-antes-de-velocidad\|Claridad antes de velocidad]]
   → Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar…
 
@@ -257,6 +266,9 @@
 
 ## Índice por tags
 
+### `adopcion-ia`
+- [[supuestos-importados-por-ia]]
+
 ### `agentes`
 - [[agencia-humana-como-imperativo-ux]]
 - [[arquitectura-de-confianza]]
@@ -264,6 +276,7 @@
 - [[soberania-epistemica]]
 - [[ux-checkpoints]]
 - [[agentes-ia]]
+- [[alineacion-de-cuatro-partes]]
 - [[arnes-del-agente]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[design-system-como-api-para-agentes]]
@@ -285,6 +298,12 @@
 - [[las-tres-caras-del-producto-agentico]]
 - [[metricas-post-pantalla]]
 
+### `alineacion`
+- [[alineacion-de-cuatro-partes]]
+
+### `antropomorfismo`
+- [[problema-del-referente-para-la-ia]]
+
 ### `aprendizaje`
 - [[metacognicion-del-disenador]]
 - [[autoautomatizacion-del-disenador]]
@@ -303,6 +322,9 @@
 - [[automatizar-mi-propio-trabajo]]
 - [[condicion-redespliegue]]
 
+### `autonomia`
+- [[el-agente-que-no-para]]
+
 ### `builder`
 - [[automatizar-mi-propio-trabajo]]
 
@@ -315,6 +337,9 @@
 
 ### `captura`
 - [[lo-ilegible-como-senal]]
+
+### `checkpoints`
+- [[el-agente-que-no-para]]
 
 ### `codigo`
 - [[fabrica-oscura-de-software]]
@@ -365,6 +390,7 @@
 - [[metacognicion-del-disenador]]
 - [[sycophancy-como-riesgo-de-diseno]]
 - [[lo-ilegible-como-senal]]
+- [[supuestos-importados-por-ia]]
 - [[ai-evals-como-disciplina]]
 - [[arnes-del-agente]]
 - [[autoautomatizacion-del-disenador]]
@@ -384,11 +410,18 @@
 ### `cultura`
 - [[colonialismo-cultural-digital]]
 
+### `deepmind`
+- [[alineacion-de-cuatro-partes]]
+- [[problema-del-referente-para-la-ia]]
+
 ### `desarrollo`
 - [[vibe-coding]]
 
 ### `descolonizacion`
 - [[colonialismo-cultural-digital]]
+
+### `diseno-de-riesgo`
+- [[alineacion-de-cuatro-partes]]
 
 ### `diseño`
 - [[agencia-humana-como-imperativo-ux]]
@@ -418,6 +451,9 @@
 - [[fundamentales-vs-flux]]
 - [[inversion-sesgo-tecnologico]]
 - [[aprendizaje-vicario-mediado-por-agente]]
+
+### `epistemologia`
+- [[supuestos-importados-por-ia]]
 
 ### `equipo`
 - [[agentes-ia]]
@@ -456,13 +492,24 @@
 - [[representacion-agente]]
 - [[riesgo-geopolitico-del-modelo]]
 
+### `etica-ia`
+- [[alineacion-de-cuatro-partes]]
+
 ### `evaluacion`
 - [[ai-evals-como-disciplina]]
 - [[ingenieria-agentica]]
 - [[metricas-post-pantalla]]
 
+### `filosofia`
+- [[problema-del-referente-para-la-ia]]
+
 ### `fundamentos`
 - [[fundamentales-vs-flux]]
+
+### `gobernanza`
+- [[supuestos-importados-por-ia]]
+- [[alineacion-de-cuatro-partes]]
+- [[problema-del-referente-para-la-ia]]
 
 ### `gobernanza-ia`
 - [[impuesto-de-alineacion]]
@@ -566,11 +613,17 @@
 - [[metacognicion-del-disenador]]
 - [[arquitectura-de-inteligencia]]
 
+### `metafora`
+- [[problema-del-referente-para-la-ia]]
+
 ### `mvp`
 - [[mvp-a-prototipo-en-produccion]]
 
 ### `onboarding`
 - [[workforce-de-agentes]]
+
+### `ontologia`
+- [[problema-del-referente-para-la-ia]]
 
 ### `organizacion`
 - [[quien-controla-el-prompt]]
@@ -664,6 +717,9 @@
 ### `startups`
 - [[equipos-pequenos-alto-impacto]]
 
+### `supuestos-filosoficos`
+- [[supuestos-importados-por-ia]]
+
 ### `tension`
 - [[automatizacion-vs-ampliacion]]
 - [[conocimiento-autoorganizado-por-llm]]
@@ -743,6 +799,11 @@
   - [[fabrica-oscura-de-software]]
   - [[spec-driven-development]]
   - [[vibe-coding]]
+
+**[[alineacion-de-cuatro-partes]]** →
+  - [[arquitectura-de-confianza]]
+  - [[gobernanza-ia-performativa]]
+  - [[arnes-del-agente]]
 
 **[[aprendizaje-vicario-mediado-por-agente]]** →
   - [[juicio-como-trabajo-completo]]
@@ -1024,6 +1085,11 @@
   - [[impuesto-de-verificacion]]
   - [[capital-de-contexto]]
 
+**[[problema-del-referente-para-la-ia]]** →
+  - [[arquitectura-de-inteligencia]]
+  - [[sycophancy-como-riesgo-de-diseno]]
+  - [[gobernanza-ia-performativa]]
+
 **[[quien-controla-el-prompt]]** →
   - [[agentes-ia]]
   - [[disenador-a-constructor]]
@@ -1062,6 +1128,11 @@
   - [[vibe-coding]]
   - [[agentes-ia]]
   - [[mvp-a-prototipo-en-produccion]]
+
+**[[supuestos-importados-por-ia]]** →
+  - [[quien-controla-el-prompt]]
+  - [[gobernanza-ia-performativa]]
+  - [[arnes-del-agente]]
 
 **[[sycophancy-como-riesgo-de-diseno]]** →
   - [[espiral-delusional]]
@@ -1164,7 +1235,9 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[colonialismo-cultural-digital]]
 - [[cuerpo-como-infraestructura-cognitiva]]
 - [[lo-ilegible-como-senal]]
+- [[supuestos-importados-por-ia]]
 - [[ai-evals-como-disciplina]]
+- [[alineacion-de-cuatro-partes]]
 - [[arnes-del-agente]]
 - [[autoautomatizacion-del-disenador]]
 - [[comprehension-debt]]
@@ -1180,6 +1253,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[legibilidad-de-maquina]]
 - [[orquestacion-de-agentes]]
 - [[poblaciones-sinteticas]]
+- [[problema-del-referente-para-la-ia]]
 - [[representacion-agente]]
 - [[riesgo-geopolitico-del-modelo]]
 - [[usuarios-sinteticos]]
