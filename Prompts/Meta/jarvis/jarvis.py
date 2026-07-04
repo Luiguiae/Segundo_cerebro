@@ -25,6 +25,7 @@ from pathlib import Path
 
 CEREBRO_PATH = Path.home() / "Documents" / "Segundo_cerebro"
 MEMORIA_PATH = Path(__file__).parent / "memoria.md"
+VPS_URL = "https://jarvis-luigui.duckdns.org"
 
 if str(Path(__file__).parent) not in sys.path:
     sys.path.insert(0, str(Path(__file__).parent))
@@ -835,6 +836,50 @@ def resumir_output_para_voz(output: str, max_chars: int = 600) -> str:
 
 def _claude_disponible() -> bool:
     return subprocess.run(["which", "claude"], capture_output=True).returncode == 0
+
+
+# ── Profundización externa vía VPS (mejora-006, Fase 5b) ─────────────────────
+
+def _profundizar_via_vps(contenido: str) -> dict | None:
+    """Llama a POST /evaluar del VPS para investigar `contenido` con fuentes externas
+    (Tavily + DeepSeek, pipeline Gen-4 completo). Nunca llama a /confirmar — ese
+    endpoint rechaza con 409 si el slug ya existe (ver hallazgo 3 de docs/plan-006.md),
+    y este flujo siempre está enriqueciendo un concepto que YA existe. El guardado
+    real de lo que devuelve esta función pasa por el flujo local de jarvis_daemon.py
+    (escribir → generar_index.py → git commit), nunca por el VPS.
+
+    Retorna el JSON de EvaluarResponse tal cual (con "estado", "concepto_borrador",
+    "resumen_voz", etc.), o None si algo falló — el error ya quedó hablado."""
+    token = os.environ.get("JARVIS_TOKEN")
+    if not token:
+        hablar("No tengo configurado el token del servidor, Luigui.")
+        return None
+
+    try:
+        response = requests.post(
+            f"{VPS_URL}/evaluar",
+            headers={"Authorization": f"Bearer {token}"},
+            json={"tipo": "texto", "contenido": contenido},
+            timeout=120,
+        )
+    except requests.Timeout:
+        hablar("El servidor tardó demasiado, Luigui.")
+        return None
+    except requests.ConnectionError:
+        hablar("No pude conectar con el servidor, Luigui.")
+        return None
+
+    if response.status_code == 401:
+        hablar("El token del servidor no es válido, Luigui.")
+        return None
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as e:
+        hablar("El servidor respondió con un error, Luigui.")
+        logging.warning(f"[Profundizar VPS] HTTP {response.status_code}: {e}")
+        return None
+
+    return response.json()
 
 
 # ── Log ────────────────────────────────────────────────────────────────────────

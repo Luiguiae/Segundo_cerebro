@@ -330,6 +330,101 @@ def _guardar_propuesta(ruta: Path, slug: str, resultado: dict) -> bool:
         return False
 
 
+# ── Profundización externa vía VPS — fusión local (mejora-006, Fase 5b) ──────
+
+def _agregar_fuentes(frontmatter: str, fuentes_nuevas: list) -> str:
+    """Agrega entradas nuevas al bloque `fuentes:` del frontmatter (sin duplicar
+    URLs ya presentes), o crea el campo si no existe — preserva el resto del
+    frontmatter línea por línea, mismo espíritu quirúrgico que _reemplazar_tags."""
+    urls_existentes = set(re.findall(r'url:\s*"?([^"\n]*)"?', frontmatter))
+    hoy = datetime.now().strftime("%Y-%m-%d")
+    entradas = []
+    for f in fuentes_nuevas or []:
+        url = (f.get("url") or "").strip()
+        if not url or url in urls_existentes:
+            continue
+        titulo = str(f.get("titulo", "")).replace('"', "'")
+        fecha_acceso = f.get("fecha_acceso", hoy)
+        entradas.append(f'  - titulo: "{titulo}"\n    url: "{url}"\n    fecha_acceso: {fecha_acceso}')
+        urls_existentes.add(url)
+    if not entradas:
+        return frontmatter
+
+    lineas = frontmatter.split("\n")
+    idx_fuentes = next((i for i, l in enumerate(lineas) if l.startswith("fuentes:")), None)
+    nuevas_lineas = [l for e in entradas for l in e.split("\n")]
+
+    if idx_fuentes is None:
+        idx_cierre = len(lineas) - 1
+        while idx_cierre > 0 and lineas[idx_cierre].strip() != "---":
+            idx_cierre -= 1
+        lineas[idx_cierre:idx_cierre] = ["fuentes:"] + nuevas_lineas
+    else:
+        idx_fin = idx_fuentes + 1
+        while idx_fin < len(lineas) and (lineas[idx_fin].startswith(" ") or lineas[idx_fin].startswith("-")):
+            idx_fin += 1
+        lineas[idx_fin:idx_fin] = nuevas_lineas
+
+    return "\n".join(lineas)
+
+
+def _fusionar_secciones_cuerpo(cuerpo: str, datos_y_evidencia: str, ejes_investigados: str) -> str:
+    """Reemplaza (o agrega al final si no existen) las secciones '## Datos y
+    evidencia' y '## Ejes investigados' del cuerpo — preserva el resto intacto."""
+    def _reemplazar_o_agregar(cuerpo: str, encabezado: str, contenido_nuevo: str) -> str:
+        if not contenido_nuevo:
+            return cuerpo
+        patron = re.compile(rf"^## {re.escape(encabezado)}\n.*?(?=^## |\Z)", re.MULTILINE | re.DOTALL)
+        bloque_nuevo = f"## {encabezado}\n{contenido_nuevo.strip()}\n\n"
+        if patron.search(cuerpo):
+            return patron.sub(bloque_nuevo, cuerpo, count=1)
+        return cuerpo.rstrip() + "\n\n" + bloque_nuevo
+
+    cuerpo = _reemplazar_o_agregar(cuerpo, "Datos y evidencia", datos_y_evidencia)
+    cuerpo = _reemplazar_o_agregar(cuerpo, "Ejes investigados", ejes_investigados)
+    return cuerpo
+
+
+def _guardar_profundizacion(ruta: Path, slug: str, borrador: dict) -> bool:
+    """Fusiona las secciones enriquecidas (Datos y evidencia, Ejes investigados,
+    fuentes) del concepto_borrador devuelto por /evaluar del VPS DENTRO del archivo
+    existente — preserva titulo/familia/tags/relacionado/edges/estado originales.
+    Nunca pasa por /confirmar del VPS (rechaza con 409 porque el slug ya existe,
+    ver hallazgo 3 de docs/plan-006.md). Mismo mecanismo de escritura que
+    _guardar_propuesta: escribir → generar_index.py → git commit. True si se
+    guardó sin error — nunca lanza."""
+    try:
+        contenido_actual = ruta.read_text(encoding="utf-8")
+        frontmatter, cuerpo_actual = _dividir_frontmatter(contenido_actual)
+
+        frontmatter = _agregar_fuentes(frontmatter, borrador.get("fuentes"))
+        cuerpo_nuevo = _fusionar_secciones_cuerpo(
+            cuerpo_actual,
+            borrador.get("datos_y_evidencia", ""),
+            borrador.get("ejes_investigados", ""),
+        )
+        nuevo_contenido = frontmatter + "\n\n" + cuerpo_nuevo.strip() + "\n"
+        ruta.write_text(nuevo_contenido, encoding="utf-8")
+
+        subprocess.run(
+            [sys.executable, str(CEREBRO_PATH / "Prompts" / "Meta" / "generar_index.py")],
+            capture_output=True, text=True, timeout=30,
+        )
+        ruta_relativa = str(ruta.relative_to(CEREBRO_PATH))
+        subprocess.run(
+            ["git", "-C", str(CEREBRO_PATH), "add", ruta_relativa],
+            capture_output=True, text=True, timeout=15, stdin=subprocess.DEVNULL,
+        )
+        subprocess.run(
+            ["git", "-C", str(CEREBRO_PATH), "commit", "-m", f"feat: profundiza {slug} con fuentes externas via Jarvis"],
+            capture_output=True, text=True, timeout=15, stdin=subprocess.DEVNULL,
+        )
+        return True
+    except Exception as e:
+        log(f"[Watcher] Error guardando profundización para {slug}: {e}")
+        return False
+
+
 def _flujo_evaluacion_conversacional(ruta: Path, slug: str) -> None:
     """Evalúa un concepto contra la rúbrica real (Groq local, sin Claude Code CLI —
     permite el diálogo de varios turnos que ejecutar_claude no puede dar), reporta
@@ -370,12 +465,43 @@ def _flujo_evaluacion_conversacional(ruta: Path, slug: str) -> None:
     hablar("¿Quieres que profundice con fuentes externas?")
     respuesta2 = escuchar_respuesta(timeout=30)
     if respuesta2 and any(s in respuesta2 for s in _AFIRMACIONES):
-        # Fase 5b (POST /evaluar del VPS + fusión local) — próximo paso, no implementado aún.
-        hablar("Esa función la agrego en el próximo paso, Luigui — todavía no está lista.")
-        registrar_en_jarvis_log(
-            "WATCHER", f"Reevaluación: {slug}",
-            f"{'Guardado' if guardado else 'Sin guardar'} — profundización pedida, Fase 5b pendiente"
-        )
+        hablar("Investigando con fuentes externas, esto puede tardar un minuto...")
+        cuerpo_para_investigar = ruta.read_text(encoding="utf-8")
+        vps_resultado = _mod._profundizar_via_vps(cuerpo_para_investigar)
+
+        if vps_resultado is None:
+            # El error de conexión/timeout/token ya quedó hablado dentro de _profundizar_via_vps.
+            registrar_en_jarvis_log(
+                "WATCHER", f"Profundización externa: {slug}",
+                f"{'Guardado' if guardado else 'Sin guardar'} — ERROR en llamada al VPS"
+            )
+            return
+
+        if vps_resultado.get("estado") == "candidato_rechazado":
+            hablar(vps_resultado.get("resumen_voz") or "El contenido no pasó la evaluación externa.")
+            registrar_en_jarvis_log(
+                "WATCHER", f"Profundización externa: {slug}",
+                f"{'Guardado' if guardado else 'Sin guardar'} — rechazado por el VPS"
+            )
+            return
+
+        hablar(vps_resultado.get("resumen_voz") or "Encontré información adicional.")
+        hablar("¿Guardo la versión enriquecida?")
+        respuesta3 = escuchar_respuesta(timeout=30)
+        if respuesta3 and any(s in respuesta3 for s in _AFIRMACIONES):
+            borrador = vps_resultado.get("concepto_borrador") or {}
+            guardado_vps = _guardar_profundizacion(ruta, slug, borrador)
+            hablar("Listo, guardé la versión enriquecida." if guardado_vps else "Hubo un problema al guardar, Luigui.")
+            registrar_en_jarvis_log(
+                "WATCHER", f"Profundización externa: {slug}",
+                "Guardado" if guardado_vps else "ERROR al guardar"
+            )
+        else:
+            hablar("Entendido, no guardo la versión enriquecida.")
+            registrar_en_jarvis_log(
+                "WATCHER", f"Profundización externa: {slug}",
+                "Investigado, no guardado por decisión del usuario"
+            )
     else:
         hablar("Entendido. ¿En qué más te puedo ayudar?")
         registrar_en_jarvis_log(

@@ -2,6 +2,28 @@
 
 ---
 
+### 2026-07-04 — mejora-006 Fase 5b — profundización externa vía VPS
+
+**Instrucción:** "Continúa con Fase 5b — profundización vía VPS endpoint /evaluar."
+
+**Acciones:**
+- `_profundizar_via_vps(contenido) -> dict | None` en `jarvis.py` — `POST /evaluar` del VPS (`https://jarvis-luigui.duckdns.org`) con `Authorization: Bearer JARVIS_TOKEN`, `timeout=120`. Maneja sin `JARVIS_TOKEN` configurado, `requests.Timeout`, `requests.ConnectionError`, `401`, y error HTTP genérico — cada uno con mensaje hablado distinto y `None` como retorno. Nunca llama a `/confirmar` (rechaza con 409 si el slug ya existe — el concepto que se profundiza siempre existe ya en el vault).
+- Integrado en `_flujo_evaluacion_conversacional` (`jarvis_daemon.py`): tras "¿guardo los cambios?" (Fase 5a), pregunta "¿quieres que profundice con fuentes externas?" → si sí, llama a `_profundizar_via_vps`, reporta `resumen_voz`, y si `estado == "candidato_aprobado"` pregunta "¿guardo la versión enriquecida?".
+- `_agregar_fuentes(frontmatter, fuentes_nuevas)` y `_fusionar_secciones_cuerpo(cuerpo, datos_y_evidencia, ejes_investigados)` (`jarvis_daemon.py`) — fusión quirúrgica: agregan/reemplazan solo `fuentes:`, `## Datos y evidencia`, `## Ejes investigados`; preservan `titulo`/`familia`/`tags`/`relacionado`/`edges`/`estado` y el resto del cuerpo intactos. `_agregar_fuentes` deduplica por URL.
+- `_guardar_profundizacion(ruta, slug, borrador)` — aplica la fusión, corre `generar_index.py`, `git add` + `git commit -m "feat: profundiza {slug} con fuentes externas via Jarvis"`. Nunca lanza; retorna `False` en error.
+- Pruebas (sandbox aislado, nunca tocan el vault real): 6 casos de `_profundizar_via_vps` (sin token, timeout, conexión, 401, éxito — todos mockeados — más un 401 real contra el VPS en vivo con token incorrecto a propósito) y 8 casos de fusión local en un repo git bare+clone temporal (incluye validación de que el frontmatter resultante es YAML válido con `yaml.safe_load`). Todo pasó.
+
+**Resultados:**
+- `jarvis.py`: OK — `_profundizar_via_vps` agregada, `VPS_URL` como constante.
+- `jarvis_daemon.py`: OK — diálogo de Fase 5b integrado, 3 funciones nuevas de fusión local.
+- mejora-006 completa: Fases 1, 2, 3, 4, 5a, 5b.
+
+**Pendiente:** Luigui debe agregar el valor real de `JARVIS_TOKEN` a `~/Library/Application Support/Jarvis/env` para que el flujo funcione con el daemon real (hoy retorna "no tengo configurado el token" si falta). Redespliegue del VPS con las correcciones de seguridad de hoy sigue pendiente (fuera de alcance de mejora-006).
+
+**ATLAS regenerado:** no aplica — no se tocaron archivos de `Conocimiento/`.
+
+---
+
 ### 2026-07-04 — auditoría de 3 conceptos pegados en Conceptos/
 
 **Instrucción:** "Audita los 3 archivos que acabo de pegar en la carpeta conceptos"
@@ -2509,3 +2531,7 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-07-04 13:03 — WATCHER
 **Instrucción:** Concepto modificado: problema-del-referente-para-la-ia
 **Resultado:** Re-evaluado
+
+## 2026-07-04 13:09 — ACCION
+**Instrucción:** auditoría completa
+**Resultado:** Auditoría completada.
