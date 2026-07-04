@@ -1,5 +1,5 @@
 ---
-titulo: "Rutina De Trabajo Enfocada"
+titulo: "Rutina de trabajo enfocada"
 tipo: concepto
 familia: equipos-impacto
 tags:

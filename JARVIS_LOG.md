@@ -2,6 +2,43 @@
 
 ---
 
+### 2026-07-04 — corrección integral post-auditoría ("Jarvis, corrige todo")
+
+**Instrucción:** "Jarvis, corrige todo" — en respuesta a la auditoría de 4 frentes (documental, código local, servidor VPS, seguridad) ejecutada el mismo día, 42 hallazgos.
+
+**Acciones:**
+- Corregidos directamente: permisos comodín en `.claude/settings.json` (ejecución arbitraria + `additionalDirectories` = home completo), `.gitignore` raíz sin regla `.env`, GROQ_API_KEY hardcodeada en el launcher de Jarvis.app (movida a `~/Library/Application Support/Jarvis/env`, chmod 600), `generar_video.py` ahora falla con mensaje claro en vez de crashear cuando falta `remotion/src`
+- Daemon de voz local: ningún intent puede tumbar el proceso completo (try/except en `despachar_intent`, `mejora_009_mcp` ya no depende de pyyaml); corregida race condition en traspaso de sesiones de escucha; lock en callbacks del watcher; `mejora_006_filesystem` confina todas las operaciones a rutas conocidas (bloquea path traversal, ya no puede leer `.env`); limpieza de código muerto (Ollama, `indice_vault`)
+- Documentación: `AGENTS.md` reescrito como espejo de `taxonomia.md`; eliminada plantilla zombi `concepto-atomico.md`; documentado el campo `edges:` en `taxonomia.md`; unificado formato de log en `rubrica.md`; eliminado `generar_presentacion.py` (roto, sin uso); estructura de carpetas de `CLAUDE.md` sincronizada con el disco
+- Servidor VPS (`jarvis-server`, repo separado): cerrada la fuga del token en `GET /`; SSRF bloqueado en `/evaluar`; `git_sync.py` con lock de archivo + pull-rebase antes de push; endpoints pesados movidos a `asyncio.to_thread`; constantes de taxonomía consolidadas en `vault_schema.py` nuevo; dependencias pineadas
+
+**Resultados:**
+- Ambos repos (`Segundo_cerebro`, `jarvis-server`): OK — todo el código Python validado con `ast.parse`, cambios verificados en vivo donde fue posible (curl contra el servidor, pruebas del parser de frontmatter contra el vault real)
+- Fuera de alcance de esta sesión (decisión de Luigui, no de Jarvis): rotar la GROQ_API_KEY en el dashboard de Groq; restaurar o descartar definitivamente `remotion/src` (código fuente perdido, no recuperable de git); las 2 propuestas `[PROPUESTA]` de tags nuevos; los 7 conceptos con `categorias_secundarias` (campo prohibido, no tocados); extraer `jarvis_core` compartido y CI (mejoras nuevas, no correcciones — quedaron fuera del alcance de "corrige todo")
+
+**ATLAS regenerado:** sí — 73 conceptos, 0 avisos
+
+---
+
+### 2026-07-04 — corrección de tags fuera de vocabulario controlado
+
+**Instrucción:** "Jarvis, corrige todo" (auditoría de coherencia documental — hallazgo: tags fuera de vocabulario controlado en `el-agente-que-no-para.md`)
+
+**Acciones:**
+- `ia/el-agente-que-no-para.md`: tag `ux-agentico` → `ux` (equivalente ya usado como normalización en `diseno/soberania-epistemica`, ver entrada 2026-06-20); tag `verificacion` → `validacion` (equivalente en vocabulario de Proceso)
+- Tags `autonomia` y `checkpoints` removidos del archivo — sin equivalente claro en la lista controlada de `taxonomia.md`
+
+**Resultados:**
+- `ia/el-agente-que-no-para.md`: OK — tags → `[agentes, ux, validacion]`
+
+**[PROPUESTA]** Tag `autonomia` no está en la lista controlada de `taxonomia.md` y no tiene equivalente claro (`poder`/`control` son adyacentes pero no sinónimos — de hecho `espectro-autonomia-agente.md`, que trata exactamente de autonomía, tampoco usa un tag `autonomia`). Se usaba en `el-agente-que-no-para.md` para describir la autonomía de agentes de larga duración (Kimi K2.6 Goal Mode). Propuesta: agregar `autonomia` a la lista de tags de Dominio en `taxonomia.md`.
+
+**[PROPUESTA]** Tag `checkpoints` no está en la lista controlada de `taxonomia.md` y no tiene equivalente claro (`control` es más amplio; el concepto trata específicamente de puntos de pausa/validación intermedia en agentes de larga duración). Se usaba en `el-agente-que-no-para.md`. Propuesta: agregar `checkpoints` a la lista de tags de Dominio en `taxonomia.md`.
+
+**ATLAS regenerado:** sí
+
+---
+
 ### 2026-06-25 — T3.3 PWA interfaz de voz
 
 **Instrucción:** "Procede con T3.3"
@@ -2388,3 +2425,27 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-06-25 18:20 — WATCHER
 **Instrucción:** Concepto modificado: gestion-del-tiempo
 **Resultado:** Re-evaluado
+
+## 2026-06-27 14:12 — WATCHER
+**Instrucción:** Concepto modificado: test-concepto-005b
+**Resultado:** Re-evaluado
+
+## 2026-06-27 15:50 — ACCION
+**Instrucción:** sincronizar el baúl
+**Resultado:** ATLAS regenerado: 73 conceptos procesados. No se pudo actualizar CONTEXTO_SEGUNDO_CEREBRO.md por falta de permiso — el vault está sincronizado pero el archivo de contexto mantiene la fecha del 2026-06-25.
+
+## 2026-06-27 15:53 — ACCION
+**Instrucción:** primer equipos al terreno
+**Resultado:** "Primeros equipos al terreno" es el principio de desplegar personas con autonomía real antes de tener todo planificado — el aprendizaje ocurre en el campo, no en la sala de reuniones. Organizaciones que ejecutan este principio reducen el ciclo teoría-validación y generan contexto real que ningún análisis previo puede reemplazar. Es la base de culturas que iterar rápido: la información valiosa solo existe cuando alguien está en contacto directo con el problema.
+
+## 2026-07-01 08:21 — CONSULTA
+**Instrucción:** diseñador automatización versus
+**Resultado:** El diseñador en la era de la automatización se enfrenta a un cambio significativo en su rol, pasando de ser el principal creador de soluciones a ser un colaborador que trabaja junto con la inteligencia artificial y otros sistemas automatizados. Esto implica una transición hacia el diseño de procesos y la creación de sistemas que puedan aprender y adaptarse, en lugar de simplemente diseñar productos o interfaces estáticos.
+
+## 2026-07-01 14:24 — CONSULTA
+**Instrucción:** fue la muerte de la semana pasada en el segundo
+**Resultado:** Lo siento, pero no tengo información sobre un evento específico que haya ocurrido la semana pasada en el Segundo Cerebro. ¿Podrías proporcionar más contexto o detalles sobre lo que estás buscando? Estoy aquí para ayudarte.
+
+## 2026-07-01 14:30 — CONSULTA
+**Instrucción:** cómo se compone normalmente los saldos de un consumo
+**Resultado:** Los saldos de un consumo normalmente se componen de la suma de los débitos y créditos realizados en una cuenta o tarjeta durante un período determinado, como un mes o una factura. Esto incluye gastos, pagos, intereses y cualquier otro movimiento que afecte el saldo.

@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-06-20 13:40  
-> Total de conceptos: **70**  
+> Generado automáticamente el 2026-07-04 12:19  
+> Total de conceptos: **73**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -39,13 +39,15 @@
 | [[arnes-del-agente\|Arnés del agente]] | Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla | `agentes`, `ia`, `diseño`, `producto`, `criterio` | activo | 2026-04-20 |
 | [[autoautomatizacion-del-disenador\|La trampa de la autoautomatización]] | La autoautomatización del diseñador es el modo de trabajo con IA en el que un profesional delega no solo la ejecución s… | `ia`, `automatizacion`, `aprendizaje`, `criterio`, `habilidades` | activo | 2026-06-01 |
 | [[automatizacion-vs-ampliacion\|Automatización vs. amplificación: los dos modos de impacto de la IA]] | La IA no afecta el trabajo de una sola manera. Tiene dos modos de impacto | `ia`, `automatizacion`, `roles`, `tension`, `habilidades` | activo | 2026-04-15 |
-| [[capital-de-contexto\|Capital de contexto]] | Los mejores practicantes de IA no tratan los prompts como interacciones desechables — | `ia`, `conocimiento`, `prompts`, `estrategia`, `criterio` | activo | 2026-04-18 |
+| [[capital-de-contexto\|Capital de contexto]] | Los mejores practicantes de IA no tratan los prompts como interacciones desechables — construyen un *hoard*: coleccione… | `ia`, `conocimiento`, `prompts`, `estrategia`, `criterio` | activo | 2026-04-18 |
 | [[comprehension-debt\|Comprehension debt]] | La deuda de comprensión es la brecha creciente entre el volumen de código que existe en | `ia`, `velocidad`, `conocimiento`, `equipo`, `criterio` | activo | 2026-04-22 |
 | [[conocimiento-autoorganizado-por-llm\|Conocimiento autoorganizado por LLM]] | El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una | `ia`, `conocimiento`, `sistemas`, `agentes`, `tension` | activo | 2026-04-18 |
 | [[design-system-como-api-para-agentes\|El design system como API para agentes]] | El design system no desaparece en la era de las interfaces generativas — cambia de audiencia. Hasta ahora era un catálo… | `agentes`, `ia`, `ux`, `sistemas`, `herramientas` | activo | 2026-05-20 |
+| [[el-agente-que-no-para\|El agente que no para]] | El paradigma dominante de interacción con agentes IA es conversacional: el humano envía un mensaje, el agente responde,… | `agentes`, `ux`, `validacion` | activo | 2026-06-20 |
 | [[espectro-autonomia-agente\|Espectro de autonomía del agente]] | "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo | `ia`, `agentes`, `roles`, `criterio`, `poder` | activo | 2026-04-18 |
 | [[espiral-delusional\|Espiral delusional]] | Un chatbot sycophantic no tiene como objetivo convencer a nadie de nada. Solo hace una cosa: validar lo que el usuario … | `ia`, `etica`, `confianza`, `incertidumbre`, `tension` | activo | 2026-04-28 |
 | [[fabrica-oscura-de-software\|La fábrica oscura de software]] | En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros | `ia`, `agentes`, `codigo`, `automatizacion`, `criterio` | activo | 2026-04-18 |
+| [[gestion-del-tiempo\|Gestión efectiva del tiempo]] | La gestión efectiva del tiempo se refiere a la capacidad de organizar y priorizar tareas de manera que se maximice la p… | `productividad` | borrador | 2026-06-25 |
 | [[gobernanza-ia-performativa\|Gobernanza de IA performativa]] | Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració… | `ia`, `organizacion`, `estrategia`, `tension`, `cambio` | activo | 2026-04-15 |
 | [[impuesto-de-alineacion\|El impuesto de alineación]] | El impuesto de alineación (*alignment tax*) es la degradación cuantificable de rendimiento que sufren los modelos de le… | `ia`, `agentes`, `gobernanza-ia`, `etica`, `control` | activo | 2026-06-15 |
 | [[impuesto-de-verificacion\|El impuesto de verificación]] | El Impuesto de Verificación (*Verification Tax*) es la carga cognitiva oculta que genera la IA cuando delega la ejecuci… | `ia`, `organizacion`, `criterio`, `trabajo`, `control` | activo | 2026-04-28 |
@@ -68,6 +70,7 @@
 | [[ia-sin-ecosistema\|IA sin ecosistema]] | La IA generativa no falla porque los modelos son insuficientes. Falla porque las organizaciones tratan la tecnología co… | `ia`, `estrategia`, `organizacion`, `sistemas`, `tension` | activo | 2026-04-24 |
 | [[juicio-como-trabajo-completo\|El juicio como trabajo completo]] | Cuando los agentes de IA hacen todo el trabajo preparatorio — construyen timelines, analizan casos, redactan resúmenes,… | `ia`, `roles`, `transicion`, `organizacion`, `trabajo` | activo | 2026-04-24 |
 | [[la-competencia-que-oculta-el-juicio\|La competencia que oculta el juicio]] | Existe una trampa estructural en el desarrollo de carrera de trabajadores de conocimiento: cuanto mejor ejecutas en tu … | `organizacion`, `roles`, `criterio`, `liderazgo`, `tension` | activo | 2026-05-06 |
+| [[rutina-trabajo-enfocada\|Rutina de trabajo enfocada]] | La rutina de trabajo enfocada se refiere a la capacidad de mantener un enfoque constante en las tareas y proyectos impo… | `trabajo`, `productividad` | borrador | 2026-06-25 |
 | [[workforce-de-agentes\|Workforce de Agentes]] | Un *workforce de agentes* es el conjunto de agentes IA que una organización despliega con estructura explícita de emple… | `agentes`, `organizacion`, `gobernanza-ia`, `trabajo`, `onboarding` | activo | 2026-06-10 |
 | [[claridad-antes-de-velocidad\|Claridad antes de velocidad]] | Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar… | `estrategia`, `velocidad`, `ia`, `tension`, `principio` | activo | 2026-04-06 |
 | [[confianza-a-traves-de-velocidad\|Confianza a través de velocidad]] | La lógica tradicional de calidad y confianza es lineal: primero haces algo perfecto, luego lo lanzas, y la calidad cons… | `diseño`, `velocidad`, `producto`, `iteracion`, `principio` | activo | 2026-04-10 |
@@ -104,6 +107,8 @@
   → Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla
 - [[design-system-como-api-para-agentes\|El design system como API para agentes]]
   → El design system no desaparece en la era de las interfaces generativas — cambia de audiencia. Hasta ahora era un catálo…
+- [[el-agente-que-no-para\|El agente que no para]]
+  → El paradigma dominante de interacción con agentes IA es conversacional: el humano envía un mensaje, el agente responde,…
 - [[espectro-autonomia-agente\|Espectro de autonomía del agente]]
   → "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo
 - [[espiral-delusional\|Espiral delusional]]
@@ -152,7 +157,7 @@
 - [[autoautomatizacion-del-disenador\|La trampa de la autoautomatización]]
   → La autoautomatización del diseñador es el modo de trabajo con IA en el que un profesional delega no solo la ejecución s…
 - [[capital-de-contexto\|Capital de contexto]]
-  → Los mejores practicantes de IA no tratan los prompts como interacciones desechables —
+  → Los mejores practicantes de IA no tratan los prompts como interacciones desechables — construyen un *hoard*: coleccione…
 - [[claridad-antes-de-velocidad\|Claridad antes de velocidad]]
   → Los equipos que adoptan IA están yendo más rápido, pero no están haciendo mejor trabajo. La razón: no había un estándar…
 
@@ -164,6 +169,8 @@
   → Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante…
 - [[la-competencia-que-oculta-el-juicio\|La competencia que oculta el juicio]]
   → Existe una trampa estructural en el desarrollo de carrera de trabajadores de conocimiento: cuanto mejor ejecutas en tu …
+- [[rutina-trabajo-enfocada\|Rutina de trabajo enfocada]]
+  → La rutina de trabajo enfocada se refiere a la capacidad de mantener un enfoque constante en las tareas y proyectos impo…
 - [[copiloto-de-producto\|Copiloto de producto]]
   → En Le Mans el piloto no puede ver el mapa completo de la carrera — el copiloto navega.
 - [[pmf-perecedero\|PMF perecedero]]
@@ -173,6 +180,8 @@
 
 - [[conocimiento-autoorganizado-por-llm\|Conocimiento autoorganizado por LLM]]
   → El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una
+- [[gestion-del-tiempo\|Gestión efectiva del tiempo]]
+  → La gestión efectiva del tiempo se refiere a la capacidad de organizar y priorizar tareas de manera que se maximice la p…
 - [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]]
   → Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab…
 
@@ -258,6 +267,7 @@
 - [[arnes-del-agente]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[design-system-como-api-para-agentes]]
+- [[el-agente-que-no-para]]
 - [[espectro-autonomia-agente]]
 - [[fabrica-oscura-de-software]]
 - [[impuesto-de-alineacion]]
@@ -595,6 +605,8 @@
 
 ### `productividad`
 - [[cuerpo-como-infraestructura-cognitiva]]
+- [[gestion-del-tiempo]]
+- [[rutina-trabajo-enfocada]]
 - [[corrupcion-silenciosa-por-delegacion]]
 
 ### `producto`
@@ -667,6 +679,7 @@
 - [[cuerpo-como-infraestructura-cognitiva]]
 - [[impuesto-de-verificacion]]
 - [[juicio-como-trabajo-completo]]
+- [[rutina-trabajo-enfocada]]
 - [[workforce-de-agentes]]
 
 ### `transicion`
@@ -692,9 +705,11 @@
 - [[soberania-epistemica]]
 - [[ux-checkpoints]]
 - [[design-system-como-api-para-agentes]]
+- [[el-agente-que-no-para]]
 
 ### `validacion`
 - [[ai-evals-como-disciplina]]
+- [[el-agente-que-no-para]]
 - [[poblaciones-sinteticas]]
 - [[usuarios-sinteticos]]
 
@@ -844,6 +859,11 @@
   - [[usuarios-sinteticos]]
   - [[quien-controla-el-prompt]]
 
+**[[el-agente-que-no-para]]** →
+  - [[ux-checkpoints]]
+  - [[impuesto-de-verificacion]]
+  - [[espectro-autonomia-agente]]
+
 **[[el-moat-del-gusto]]** →
   - [[fundamentales-vs-flux]]
   - [[disenador-a-constructor]]
@@ -883,6 +903,11 @@
   - [[disenador-a-constructor]]
   - [[momento-liminal]]
   - [[vibe-coding]]
+
+**[[gestion-del-tiempo]]** →
+  - [[claridad-antes-de-velocidad]]
+  - [[diseno-dos-velocidades]]
+  - [[confianza-a-traves-de-velocidad]]
 
 **[[gobernanza-ia-performativa]]** →
   - [[agentes-ia]]
@@ -1019,6 +1044,10 @@
   - [[arquitectura-de-confianza]]
   - [[capital-de-contexto]]
 
+**[[rutina-trabajo-enfocada]]** →
+  - [[disenador-a-constructor]]
+  - [[equipos-pequenos-alto-impacto]]
+
 **[[senal-anticipada-mercado-laboral]]** →
   - [[ia-como-filtro-de-entrada]]
   - [[momento-liminal]]
@@ -1141,7 +1170,9 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[comprehension-debt]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[design-system-como-api-para-agentes]]
+- [[el-agente-que-no-para]]
 - [[espiral-delusional]]
+- [[gestion-del-tiempo]]
 - [[impuesto-de-alineacion]]
 - [[impuesto-de-verificacion]]
 - [[ingenieria-agentica]]
@@ -1160,6 +1191,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[ia-sin-ecosistema]]
 - [[juicio-como-trabajo-completo]]
 - [[la-competencia-que-oculta-el-juicio]]
+- [[rutina-trabajo-enfocada]]
 - [[workforce-de-agentes]]
 - [[corrupcion-silenciosa-por-delegacion]]
 - [[las-tres-caras-del-producto-agentico]]

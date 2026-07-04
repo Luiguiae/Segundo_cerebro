@@ -1,6 +1,6 @@
 # Contexto del Segundo Cerebro — Luigui Avila
 
-> Archivo actualizado el 2026-06-25 (3 conceptos nuevos · 2 correlaciones nuevas · Jarvis Server Fase 3 completa). Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
+> Archivo actualizado el 2026-07-04 (corrección integral post-auditoría: seguridad, estabilidad del daemon de voz y coherencia documental — ver JARVIS_LOG.md). Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
 
 ---
 
@@ -19,14 +19,14 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 - **Comandos de vault**: agrega conceptos, correlaciona, audita, actualiza ATLAS
 - **Watcher proactivo**: detecta cambios en archivos del vault en tiempo real y sugiere acciones (re-evaluar conceptos modificados, evaluar nuevos, leer correlaciones). Si el usuario no confirma inmediatamente, la acción queda pendiente y se ejecuta cuando dice "sí" en el siguiente ciclo de escucha
 - **Visión de pantalla** (mejora-007): Jarvis puede ver y describir lo que hay en pantalla, profundizar el contenido o capturarlo como concepto. Usa screenshot + Claude Vision como primario, AppleScript como fallback. Lee el tab activo del browser (no el primero en la lista)
-- **Filesystem** (mejora-006): lee, lista y navega archivos del sistema con aliases de rutas conocidas
+- **Filesystem** (mejora-006 · filesystem): lee, lista y navega archivos del sistema con aliases de rutas conocidas
 - **TTS con chunking**: respuestas largas se parten en chunks de ≤200 chars por oración para evitar corte de audio (bug pyttsx3/macOS). `hablar_respuesta()` trunca respuestas de vault a 600 chars con gracia
 
 ---
 
 ## Estado actual del vault
 
-- **73 conceptos activos** (última actualización 2026-06-25)
+- **73 conceptos** (71 activos, 2 borrador) (última actualización 2026-06-25)
 - **29 correlaciones documentadas**
 - **10 conceptos más recientes (por fecha de frontmatter):**
   - `gestion-del-tiempo` (ia · 2026-06-25) — capacidad de organizar y priorizar tareas maximizando la productividad; herramientas y técnicas para controlar distracciones y mantener el foco en lo importante. Estado borrador.
@@ -42,7 +42,7 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 - **Correlaciones recientes (2026-06-25):** 2 nuevas — `agentes-ia ↔ capital-de-contexto` (los agentes como generadores y consumidores del capital de contexto organizacional) · `gestion-del-tiempo ↔ capital-de-contexto` (el tiempo como forma de capital de contexto: qué se preserva, qué se pierde)
 - **Skill nueva (2026-06-20):** `/presentacion-html [slug] [formato]` — genera una presentación HTML autocontenida y lista para presentar a partir de cualquier concepto del vault. Formato `business-case` implementado. Plantillas en `Plantillas/presentaciones/`
 - **Jarvis Server (2026-06-25):** Fase 3 completa. FastAPI en VPS con TTS (gTTS → MP3), PWA Android instalable (wake word "Jarvis", AudioContext, Web Speech API). Archivos en `~/Projects/jarvis-server/`. Pendiente: despliegue en Hetzner CX22 + validación E2E en Android.
-- **Mejora-006 activa:** grafo tipado de relaciones. 21+ conceptos con campo `edges:` (tipos: `contradicts`, `requires`, `enables`, `refines`, `extends`, `exemplifies`, `same_mechanism_as`). ATLAS incluye sección "Grafo tipado de relaciones"
+- **Mejora-006 (grafo tipado) activa:** grafo tipado de relaciones. 21+ conceptos con campo `edges:` (tipos: `contradicts`, `requires`, `enables`, `refines`, `extends`, `exemplifies`, `same_mechanism_as`). ATLAS incluye sección "Grafo tipado de relaciones". Nota: el número "mejora-006" también se usa para la feature de Filesystem del daemon de voz (ver arriba) — son dos iniciativas distintas que comparten numeración.
 - **Capacidad Remotion activa:** generación de videos animados desde conceptos del vault. Dos composiciones: `ConceptoVideo` y `PresentacionVideo`. Script en `Prompts/Meta/generar_video.py`
 
 ---
@@ -73,7 +73,7 @@ Sistemas adicionales:
 
 ---
 
-## Los 73 conceptos activos
+## Los 73 conceptos (71 activos, 2 borrador)
 
 ### ia/ (28 conceptos)
 

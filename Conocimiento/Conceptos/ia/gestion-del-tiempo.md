@@ -1,5 +1,5 @@
 ---
-titulo: "Gestión Efectiva Del Tiempo"
+titulo: "Gestión efectiva del tiempo"
 tipo: concepto
 familia: sistemas-conocimiento
 tags:
