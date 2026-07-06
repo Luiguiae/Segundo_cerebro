@@ -760,24 +760,7 @@ def on_nuevo_concepto(slug: str, path: str) -> None:
     titulo = leer_titulo_frontmatter(path) or slug
     log(f"[Watcher] Nuevo concepto detectado: {slug}")
     emitir_evento("watcher", f"Nuevo concepto: {titulo}")
-    _pausa_wake_word.set()
-    time.sleep(1.5)  # esperar que listen(timeout=1) expire y el mic se cierre
-    try:
-        hablar(
-            f"Identifico un nuevo concepto: {titulo}. "
-            f"¿Quieres que lo evalúe contra la rúbrica y actualice el INDEX?"
-        )
-        respuesta = escuchar_respuesta(timeout=30)
-        if respuesta and any(s in respuesta for s in _AFIRMACIONES):
-            _accion_pendiente_watcher[0] = None
-            _ejecutar_accion_pendiente_con_lock("evaluar_concepto", slug)
-        else:
-            log(f"[Watcher] Evaluación de {slug} no capturada — guardando como pendiente.")
-            _accion_pendiente_watcher[0] = ("evaluar_concepto", slug)
-    except Exception as e:
-        log(f"[Watcher] Error en on_nuevo_concepto: {e}")
-    finally:
-        _activar_modo_escucha_watcher()  # limpia _pausa_wake_word en su propio finally
+    hablar("Nuevo concepto detectado en el vault.")
 
 
 def on_nueva_correlacion(slug: str, path: str) -> None:
@@ -802,21 +785,7 @@ def on_nueva_correlacion(slug: str, path: str) -> None:
 
 def on_concepto_modificado(slug: str, path: str) -> None:
     log(f"[Watcher] Concepto modificado: {slug}")
-    _pausa_wake_word.set()
-    time.sleep(1.5)
-    try:
-        hablar(f"Detecté cambios en {slug}. ¿Quieres que lo re-evalúe?")
-        respuesta = escuchar_respuesta(timeout=30)
-        if respuesta and any(s in respuesta for s in _AFIRMACIONES):
-            _accion_pendiente_watcher[0] = None
-            _ejecutar_accion_pendiente_con_lock("reevaluar_concepto", slug)
-        else:
-            log(f"[Watcher] Re-evaluación de {slug} no capturada — guardando como pendiente.")
-            _accion_pendiente_watcher[0] = ("reevaluar_concepto", slug)
-    except Exception as e:
-        log(f"[Watcher] Error en on_concepto_modificado: {e}")
-    finally:
-        _activar_modo_escucha_watcher()
+    hablar("Concepto modificado detectado en el vault.")
 
 
 # ── Wake word via STT ─────────────────────────────────────────────────────────
