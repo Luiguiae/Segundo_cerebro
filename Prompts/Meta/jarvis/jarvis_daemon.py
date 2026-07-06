@@ -586,6 +586,7 @@ def escuchar_respuesta(timeout: int = 30) -> str | None:
 
 class VaultEventHandler(FileSystemEventHandler):
     _eventos_recientes: list = []  # timestamps de eventos recientes
+    _CONCEPTOS_PATH = str(CEREBRO_PATH / "Conocimiento" / "Conceptos")
 
     def __init__(self, on_nuevo_concepto, on_nueva_correlacion,
                  on_concepto_modificado, lock_interaccion):
@@ -594,16 +595,21 @@ class VaultEventHandler(FileSystemEventHandler):
         self._on_concepto_modificado = on_concepto_modificado
         self.lock_interaccion        = lock_interaccion
         self._timers: dict           = {}
+        self._conceptos_pendientes: set = set()   # .md acumulados para auto-regenerar el ATLAS
+        self._index_timer             = None       # timer compartido (no por-path) del auto-index
+        self._index_lock              = threading.Lock()  # serializa ejecuciones de generar_index.py
 
     def on_created(self, event):
         if event.is_directory or not event.src_path.endswith(".md"):
             return
         self._debounce(event.src_path, self._handle_created)
+        self._debounce_auto_index(event.src_path)
 
     def on_modified(self, event):
         if event.is_directory or not event.src_path.endswith(".md"):
             return
         self._debounce(event.src_path, self._handle_modified)
+        self._debounce_auto_index(event.src_path)
 
     def _debounce(self, path, handler):
         if path in self._timers:
@@ -645,6 +651,47 @@ class VaultEventHandler(FileSystemEventHandler):
             return
         if "Conceptos" in path:
             self._on_concepto_modificado(Path(path).stem, path)
+
+    def _debounce_auto_index(self, path: str) -> None:
+        """Acumula archivos .md tocados en Conocimiento/Conceptos/ y, tras 3s sin
+        actividad nueva, regenera el ATLAS automáticamente (independiente del flujo
+        conversacional de _handle_created/_handle_modified — corre siempre, sin
+        pedir confirmación por voz)."""
+        if not path.startswith(self._CONCEPTOS_PATH):
+            return
+        self._conceptos_pendientes.add(path)
+        if self._index_timer is not None:
+            self._index_timer.cancel()
+        self._index_timer = threading.Timer(3.0, self._ejecutar_auto_index)
+        self._index_timer.start()
+
+    def _ejecutar_auto_index(self) -> None:
+        archivos = sorted(self._conceptos_pendientes)
+        self._conceptos_pendientes = set()
+        if not archivos:
+            return
+        # Si generar_index.py de un batch anterior sigue corriendo, esperar a que
+        # termine antes de lanzar esta ejecución (no se omite, solo se serializa).
+        with self._index_lock:
+            n = len(archivos)
+            if n == 1:
+                hablar("Detecté un nuevo concepto en el vault. Ejecutando generar index para actualizar el Atlas.")
+            else:
+                hablar(f"Detecté {n} nuevos conceptos en el vault. Ejecutando generar index para actualizar el Atlas.")
+            try:
+                resultado = subprocess.run(
+                    ["python3.11", "Prompts/Meta/generar_index.py"],
+                    cwd=str(CEREBRO_PATH),
+                    capture_output=True, text=True, timeout=60,
+                )
+                if resultado.returncode == 0:
+                    hablar("Atlas actualizado.")
+                else:
+                    log(f"[Watcher] generar_index.py falló (código {resultado.returncode}): {resultado.stderr[:300]}")
+                    hablar("Error al actualizar el Atlas. Revisa el log.")
+            except Exception as e:
+                log(f"[Watcher] Error ejecutando auto-index: {e}")
+                hablar("Error al actualizar el Atlas. Revisa el log.")
 
 
 # ── Watcher proactivo — callbacks ─────────────────────────────────────────────
