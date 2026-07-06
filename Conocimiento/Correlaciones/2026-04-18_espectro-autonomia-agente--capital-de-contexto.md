@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [espectro-autonomia-agente, capital-de-contexto]
 fecha: 2026-04-18
 tags: [ia, agentes, conocimiento, criterio, estrategia]
-estado: activo
+estado: borrador
 ---
 
 # El precio de entrada para cada posición

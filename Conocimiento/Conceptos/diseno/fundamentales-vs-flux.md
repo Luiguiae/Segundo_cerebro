@@ -12,7 +12,7 @@ edges:
     tipo: same_mechanism_as
     why: "Ambos conceptos proponen la misma línea divisoria con distinto vocabulario: lo amplificable coincide con lo fundamental; lo automatizable coincide con lo flux. El mecanismo subyacente es idéntico: distinguir lo que requiere criterio situacional de lo que es procedimiento repetible."
 fecha: 2026-04-05
-estado: activo
+estado: borrador
 fuentes:
   - titulo: "Finding Our Way, ep. 68 — Dan Saffer, Jesse James Garrett, Peter Merholz"
     url: "https://findingourway.design/2026/03/14/68-ai-and-design-fundamentals-and-the-future-ft-dan-saffer/"

@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-07-04 13:02  
-> Total de conceptos: **76**  
+> Generado automáticamente el 2026-07-06 09:52  
+> Total de conceptos: **80**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -18,12 +18,13 @@
 | [[diseno-dos-velocidades\|Diseño en dos velocidades]] | El trabajo de diseño en la era de la IA se estratifica en dos modos que coexisten y requieren mentalidades completament… | `diseño`, `ia`, `velocidad`, `construccion`, `criterio` | activo | 2026-04-10 |
 | [[diseno-uxui-y-ia\|Diseño UX/UI con IA]] | La integración de IA en el flujo UX/UI no agrega herramientas a un proceso existente — reconfigura el proceso mismo. Cu… | `diseño`, `ia`, `producto`, `criterio`, `herramientas` | activo | 2026-04-04 |
 | [[el-moat-del-gusto\|El moat del gusto]] | Durante años, el gusto fue el argumento más sólido para defender el rol del diseñador: la IA puede generar, pero no pue… | `ia`, `diseño`, `criterio`, `estrategia`, `transicion` | activo | 2026-04-24 |
-| [[fundamentales-vs-flux\|Fundamentales vs. flux]] | Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m… | `diseño`, `educacion`, `habilidades`, `fundamentos`, `criterio` | activo | 2026-04-05 |
+| [[fundamentales-vs-flux\|Fundamentales vs. flux]] | Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m… | `diseño`, `educacion`, `habilidades`, `fundamentos`, `criterio` | borrador | 2026-04-05 |
 | [[metacognicion-del-disenador\|Metacognición del diseñador]] | Hay una diferencia entre pensar bien y saber cómo uno piensa. La metacognición — la capacidad de observar el propio pro… | `diseño`, `criterio`, `aprendizaje`, `marco`, `ia` | activo | 2026-04-24 |
 | [[quien-controla-el-prompt\|Quien controla el prompt controla el producto]] | En el flujo de trabajo tradicional, quien controlaba las especificaciones controlaba el producto. Diseño definía la exp… | `diseño`, `estrategia`, `organizacion`, `poder`, `prompts` | activo | 2026-04-05 |
 | [[soberania-epistemica\|Soberanía epistémica]] | La soberanía epistémica es la capacidad de un individuo de mantener el control sobre la *estructura* de su propio razon… | `ux`, `diseño`, `etica`, `control`, `agentes` | activo | 2026-06-18 |
 | [[sycophancy-como-riesgo-de-diseno\|Sycophancy como riesgo de diseño]] | La sycophancy — la tendencia de los modelos de lenguaje a validar lo que el usuario expresa en lugar de responder con p… | `ia`, `diseño`, `etica`, `confianza`, `criterio` | activo | 2026-04-28 |
 | [[ux-checkpoints\|UX Checkpoints]] | En la era de agentes, la filosofía del diseño se invierte: la fricción deliberada es el | `diseño`, `ux`, `agentes`, `confianza`, `control` | activo | 2026-04-21 |
+| [[costo-marginal-cero-como-disruptor\|Costo marginal cero como disruptor de moats]] | Muchos de los moats competitivos más duraderos de los últimos 30 años no se construyeron sobre tecnología superior ni s… | `ia`, `agentes`, `estrategia`, `automatizacion` | activo | 2026-07-05 |
 | [[ia-como-filtro-de-entrada\|IA como filtro de entrada al mercado laboral]] | La IA generativa no destruye empleo de manera uniforme: lo filtra por nivel de | `ia`, `automatizacion`, `transicion`, `habilidades`, `roles` | activo | 2026-04-15 |
 | [[inversion-sesgo-tecnologico\|La inversión del sesgo tecnológico]] | Las olas anteriores de automatización siguieron un patrón consistente: afectaban | `ia`, `automatizacion`, `educacion`, `habilidades`, `transicion` | activo | 2026-04-16 |
 | [[marea-creciente-de-automatizacion\|Marea creciente de automatización]] | La automatización por IA no ocurre como una ola que golpea súbitamente tareas específicas y deja el resto intacto — ocu… | `automatizacion`, `trabajo`, `ia`, `cambio`, `transicion` | activo | 2026-05-19 |
@@ -31,9 +32,10 @@
 | [[senal-anticipada-mercado-laboral\|Señal anticipada en el mercado laboral]] | Ciertos grupos de trabajadores o tipos de rol absorben el impacto de una | `ia`, `transicion`, `patron`, `cambio`, `roles` | activo | 2026-04-15 |
 | [[arquitectura-de-inteligencia\|Arquitectura de inteligencia]] | El trabajo del diseñador — y de cualquier profesional del conocimiento — no es producir artefactos: es ayudar a persona… | `conocimiento`, `ia`, `sistemas`, `estrategia`, `marco` | activo | 2026-04-06 |
 | [[colonialismo-cultural-digital\|Colonialismo cultural digital]] | El colonialismo cultural digital no es solo extracción de datos ni control de | `colonialismo`, `descolonizacion`, `poder`, `sistemas`, `cultura` | activo | 2026-04-04 |
-| [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]] | El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento … | `productividad`, `trabajo`, `habilidades`, `principio`, `conocimiento` | activo | 2026-05-23 |
+| [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]] | El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento … | `productividad`, `trabajo`, `habilidades`, `principio`, `conocimiento` | borrador | 2026-05-23 |
 | [[lo-ilegible-como-senal\|Lo ilegible como señal]] | Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. Evan Tana, socio en South Park … | `diseño`, `ia`, `criterio`, `captura`, `hipotesis` | activo | 2026-04-10 |
 | [[momento-liminal\|El momento liminal]] | Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u… | `liderazgo`, `cambio`, `incertidumbre`, `transicion`, `diseño` | activo | 2026-04-05 |
+| [[presencia-como-condicion-del-valor\|La presencia como condición del valor]] | Puedes saber si alguien vive en un Airbnb apenas entras. No por la calidad de los muebles ni por su precio: por el caos… | `diseño`, `ia`, `criterio` | activo | 2026-07-05 |
 | [[supuestos-importados-por-ia\|Supuestos importados por IA]] | > "Integrar un modelo de IA en tu empresa no es adoptar una herramienta. Es adoptar una filosofía — y aceptarla sin lee… | `criterio`, `gobernanza-ia`, `fundamentos` | activo | 2026-06-25 |
 | [[agentes-ia\|Equipos de agentes IA]] | Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c… | `agentes`, `ia`, `equipo`, `automatizacion`, `escala` | activo | 2026-03-04 |
 | [[ai-evals-como-disciplina\|AI Evals como disciplina de producto]] | AI Evals (evaluaciones de IA) es el conjunto de metodologías estructuradas para medir si un sistema basado en LLMs hace… | `ia`, `producto`, `validacion`, `evaluacion`, `criterio` | activo | 2026-05-18 |
@@ -47,7 +49,7 @@
 | [[design-system-como-api-para-agentes\|El design system como API para agentes]] | El design system no desaparece en la era de las interfaces generativas — cambia de audiencia. Hasta ahora era un catálo… | `agentes`, `ia`, `ux`, `sistemas`, `herramientas` | activo | 2026-05-20 |
 | [[el-agente-que-no-para\|El agente que no para]] | El paradigma dominante de interacción con agentes IA es conversacional: el humano envía un mensaje, el agente responde,… | `agentes`, `ux`, `validacion`, `autonomia`, `checkpoints` | activo | 2026-06-20 |
 | [[espectro-autonomia-agente\|Espectro de autonomía del agente]] | "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo | `ia`, `agentes`, `roles`, `criterio`, `poder` | activo | 2026-04-18 |
-| [[espiral-delusional\|Espiral delusional]] | Un chatbot sycophantic no tiene como objetivo convencer a nadie de nada. Solo hace una cosa: validar lo que el usuario … | `ia`, `etica`, `confianza`, `incertidumbre`, `tension` | activo | 2026-04-28 |
+| [[espiral-delusional\|Espiral delusional]] | Un chatbot sycophantic no tiene como objetivo convencer a nadie de nada. Solo hace una cosa: validar lo que el usuario … | `ia`, `etica`, `confianza`, `incertidumbre`, `tension` | borrador | 2026-04-28 |
 | [[fabrica-oscura-de-software\|La fábrica oscura de software]] | En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros | `ia`, `agentes`, `codigo`, `automatizacion`, `criterio` | activo | 2026-04-18 |
 | [[gestion-del-tiempo\|Gestión efectiva del tiempo]] | La gestión efectiva del tiempo se refiere a la capacidad de organizar y priorizar tareas de manera que se maximice la p… | `productividad` | borrador | 2026-06-25 |
 | [[gobernanza-ia-performativa\|Gobernanza de IA performativa]] | Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració… | `ia`, `organizacion`, `estrategia`, `tension`, `cambio` | activo | 2026-04-15 |
@@ -62,14 +64,16 @@
 | [[representacion-agente\|Representación agente]] | Cuando un agente actúa en nombre de una persona ante otros agentes — negocia, decide, se compromete — el problema de di… | `agentes`, `ia`, `etica`, `control`, `diseño` | activo | 2026-06-13 |
 | [[riesgo-geopolitico-del-modelo\|Riesgo geopolítico del modelo IA]] | El riesgo geopolítico del modelo IA es la vulnerabilidad estructural que hereda cualquier sistema construido sobre un m… | `ia`, `gobernanza-ia`, `infraestructura`, `etica`, `estrategia` | activo | 2026-06-19 |
 | [[spec-driven-development\|Spec-Driven Development]] | Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po… | `codigo`, `construccion`, `ia`, `iteracion`, `estrategia` | activo | 2026-04-07 |
-| [[usuarios-sinteticos\|Usuarios sintéticos]] | Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con … | `research`, `validacion`, `producto`, `usuarios`, `diseño` | activo | 2026-03-04 |
+| [[usuarios-sinteticos\|Usuarios sintéticos]] | Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con … | `research`, `validacion`, `producto`, `usuarios`, `diseño` | borrador | 2026-03-04 |
 | [[vibe-coding\|Vibe coding]] | Vibe coding es un modo de construir software donde el punto de partida no es la estructura técnica sino la intención, e… | `construccion`, `herramientas`, `desarrollo`, `producto`, `velocidad` | activo | 2026-03-04 |
 | [[web-bifurcada\|Web bifurcada]] | La web está desarrollando dos capas paralelas e incompatibles: una diseñada para humanos | `agentes`, `ia`, `producto`, `sistemas`, `herramientas` | activo | 2026-04-20 |
 | [[aprendizaje-vicario-mediado-por-agente\|Aprendizaje vicario mediado por agente]] | El aprendizaje vicario mediado por agente es el proceso por el cual miembros de un equipo | `aprendizaje`, `agentes`, `organizacion`, `roles`, `educacion` | activo | 2026-05-13 |
 | [[automatizar-mi-propio-trabajo\|Mi trabajo es automatizar mi trabajo]] | Geoff Charles, CPO de Ramp, lo dice sin rodeos: *"my job is to automate my job — and all our jobs is to automate our jo… | `ia`, `automatizacion`, `organizacion`, `builder`, `principio` | activo | 2026-04-10 |
+| [[cambio-como-estado-permanente\|El cambio como estado permanente]] | La gestión del cambio organizacional se diseñó como un proyecto: hay un estado A, hay una intervención, hay un estado B… | `ia`, `agentes`, `cambio`, `liderazgo`, `organizacion` | activo | 2026-07-05 |
 | [[condicion-redespliegue\|La condición del redespliegue]] | Los modelos de impacto económico de la IA generativa — incluyendo la proyección | `ia`, `automatizacion`, `organizacion`, `sistemas`, `transicion` | activo | 2026-04-16 |
+| [[cultura-de-tinkering\|Cultura de tinkering como ventaja competitiva]] | Hay dos formas de adoptar IA en una organización. La primera es top-down: la empresa elige herramientas, define polític… | `ia`, `cultura`, `liderazgo`, `organizacion`, `equipo` | activo | 2026-06-22 |
 | [[deuda-cognitiva-organizacional\|Deuda cognitiva organizacional]] | Hay una diferencia entre delegar una tarea a una herramienta y delegar el pensamiento que produce esa tarea. La primera… | `ia`, `habilidades`, `diseño`, `organizacion`, `aprendizaje` | activo | 2026-06-19 |
-| [[equipos-pequenos-alto-impacto\|Equipos pequeños de alto impacto]] | Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante… | `equipo`, `producto`, `velocidad`, `organizacion`, `startups` | activo | 2026-03-04 |
+| [[equipos-pequenos-alto-impacto\|Equipos pequeños de alto impacto]] | Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante… | `equipo`, `producto`, `velocidad`, `organizacion`, `startups` | borrador | 2026-03-04 |
 | [[ia-sin-ecosistema\|IA sin ecosistema]] | La IA generativa no falla porque los modelos son insuficientes. Falla porque las organizaciones tratan la tecnología co… | `ia`, `estrategia`, `organizacion`, `sistemas`, `tension` | activo | 2026-04-24 |
 | [[juicio-como-trabajo-completo\|El juicio como trabajo completo]] | Cuando los agentes de IA hacen todo el trabajo preparatorio — construyen timelines, analizan casos, redactan resúmenes,… | `ia`, `roles`, `transicion`, `organizacion`, `trabajo` | activo | 2026-04-24 |
 | [[la-competencia-que-oculta-el-juicio\|La competencia que oculta el juicio]] | Existe una trampa estructural en el desarrollo de carrera de trabajadores de conocimiento: cuanto mejor ejecutas en tu … | `organizacion`, `roles`, `criterio`, `liderazgo`, `tension` | activo | 2026-05-06 |
@@ -79,7 +83,7 @@
 | [[confianza-a-traves-de-velocidad\|Confianza a través de velocidad]] | La lógica tradicional de calidad y confianza es lineal: primero haces algo perfecto, luego lo lanzas, y la calidad cons… | `diseño`, `velocidad`, `producto`, `iteracion`, `principio` | activo | 2026-04-10 |
 | [[copiloto-de-producto\|Copiloto de producto]] | En Le Mans el piloto no puede ver el mapa completo de la carrera — el copiloto navega. | `roles`, `producto`, `ia`, `agentes`, `equipo` | activo | 2026-04-18 |
 | [[corrupcion-silenciosa-por-delegacion\|Corrupción silenciosa por delegación]] | Cuando un LLM edita documentos de forma continua en nombre del usuario, introduce errores dispersos pero severos que se… | `agentes`, `confianza`, `control`, `criterio`, `productividad` | activo | 2026-05-15 |
-| [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]] | Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab… | `ia`, `producto`, `agentes`, `conocimiento`, `criterio` | activo | 2026-04-10 |
+| [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]] | Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab… | `ia`, `producto`, `agentes`, `conocimiento`, `criterio` | borrador | 2026-04-10 |
 | [[feedback-que-escala\|El feedback que escala]] | Hay dos tipos de feedback. Solo uno escala. | `ia`, `sistemas`, `liderazgo`, `criterio`, `organizacion` | activo | 2026-04-10 |
 | [[las-tres-caras-del-producto-agentico\|Las tres caras del producto agéntico]] | Un producto en la era de agentes puede existir en tres modos estructuralmente distintos, | `producto`, `agentes`, `ia`, `diseño`, `estrategia` | activo | 2026-04-20 |
 | [[metricas-post-pantalla\|Métricas post-pantalla]] | Las métricas de engagement clásicas — time on site, page views, bounce rate, conversión | `producto`, `evaluacion`, `agentes`, `ia`, `criterio` | activo | 2026-04-20 |
@@ -159,6 +163,8 @@
   → El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento …
 - [[lo-ilegible-como-senal\|Lo ilegible como señal]]
   → Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. Evan Tana, socio en South Park …
+- [[presencia-como-condicion-del-valor\|La presencia como condición del valor]]
+  → Puedes saber si alguien vive en un Airbnb apenas entras. No por la calidad de los muebles ni por su precio: por el caos…
 - [[ai-evals-como-disciplina\|AI Evals como disciplina de producto]]
   → AI Evals (evaluaciones de IA) es el conjunto de metodologías estructuradas para medir si un sistema basado en LLMs hace…
 - [[autoautomatizacion-del-disenador\|La trampa de la autoautomatización]]
@@ -174,6 +180,8 @@
 
 - [[usuarios-sinteticos\|Usuarios sintéticos]]
   → Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con …
+- [[cultura-de-tinkering\|Cultura de tinkering como ventaja competitiva]]
+  → Hay dos formas de adoptar IA en una organización. La primera es top-down: la empresa elige herramientas, define polític…
 - [[equipos-pequenos-alto-impacto\|Equipos pequeños de alto impacto]]
   → Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante…
 - [[la-competencia-que-oculta-el-juicio\|La competencia que oculta el juicio]]
@@ -208,6 +216,8 @@
   → Durante años, el gusto fue el argumento más sólido para defender el rol del diseñador: la IA puede generar, pero no pue…
 - [[fundamentales-vs-flux\|Fundamentales vs. flux]]
   → Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m…
+- [[costo-marginal-cero-como-disruptor\|Costo marginal cero como disruptor de moats]]
+  → Muchos de los moats competitivos más duraderos de los últimos 30 años no se construyeron sobre tecnología superior ni s…
 - [[ia-como-filtro-de-entrada\|IA como filtro de entrada al mercado laboral]]
   → La IA generativa no destruye empleo de manera uniforme: lo filtra por nivel de
 - [[inversion-sesgo-tecnologico\|La inversión del sesgo tecnológico]]
@@ -230,6 +240,8 @@
   → El aprendizaje vicario mediado por agente es el proceso por el cual miembros de un equipo
 - [[automatizar-mi-propio-trabajo\|Mi trabajo es automatizar mi trabajo]]
   → Geoff Charles, CPO de Ramp, lo dice sin rodeos: *"my job is to automate my job — and all our jobs is to automate our jo…
+- [[cambio-como-estado-permanente\|El cambio como estado permanente]]
+  → La gestión del cambio organizacional se diseñó como un proyecto: hay un estado A, hay una intervención, hay un estado B…
 - [[condicion-redespliegue\|La condición del redespliegue]]
   → Los modelos de impacto económico de la IA generativa — incluyendo la proyección
 - [[deuda-cognitiva-organizacional\|Deuda cognitiva organizacional]]
@@ -272,6 +284,7 @@
 - [[de-usuario-a-cliente-servido]]
 - [[soberania-epistemica]]
 - [[ux-checkpoints]]
+- [[costo-marginal-cero-como-disruptor]]
 - [[agentes-ia]]
 - [[alineacion-de-cuatro-partes]]
 - [[arnes-del-agente]]
@@ -288,6 +301,7 @@
 - [[representacion-agente]]
 - [[web-bifurcada]]
 - [[aprendizaje-vicario-mediado-por-agente]]
+- [[cambio-como-estado-permanente]]
 - [[workforce-de-agentes]]
 - [[copiloto-de-producto]]
 - [[corrupcion-silenciosa-por-delegacion]]
@@ -303,6 +317,7 @@
 - [[mvp-a-prototipo-en-produccion]]
 
 ### `automatizacion`
+- [[costo-marginal-cero-como-disruptor]]
 - [[ia-como-filtro-de-entrada]]
 - [[inversion-sesgo-tecnologico]]
 - [[marea-creciente-de-automatizacion]]
@@ -324,6 +339,7 @@
 - [[senal-anticipada-mercado-laboral]]
 - [[momento-liminal]]
 - [[gobernanza-ia-performativa]]
+- [[cambio-como-estado-permanente]]
 - [[pmf-perecedero]]
 
 ### `captura`
@@ -381,6 +397,7 @@
 - [[metacognicion-del-disenador]]
 - [[sycophancy-como-riesgo-de-diseno]]
 - [[lo-ilegible-como-senal]]
+- [[presencia-como-condicion-del-valor]]
 - [[supuestos-importados-por-ia]]
 - [[ai-evals-como-disciplina]]
 - [[arnes-del-agente]]
@@ -401,6 +418,7 @@
 
 ### `cultura`
 - [[colonialismo-cultural-digital]]
+- [[cultura-de-tinkering]]
 
 ### `desarrollo`
 - [[vibe-coding]]
@@ -424,6 +442,7 @@
 - [[ux-checkpoints]]
 - [[lo-ilegible-como-senal]]
 - [[momento-liminal]]
+- [[presencia-como-condicion-del-valor]]
 - [[arnes-del-agente]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
@@ -440,6 +459,7 @@
 ### `equipo`
 - [[agentes-ia]]
 - [[comprehension-debt]]
+- [[cultura-de-tinkering]]
 - [[equipos-pequenos-alto-impacto]]
 - [[copiloto-de-producto]]
 - [[pit-stop-cognitivo]]
@@ -451,6 +471,7 @@
 ### `estrategia`
 - [[el-moat-del-gusto]]
 - [[quien-controla-el-prompt]]
+- [[costo-marginal-cero-como-disruptor]]
 - [[presupuesto-ia-como-restriccion]]
 - [[arquitectura-de-inteligencia]]
 - [[capital-de-contexto]]
@@ -521,6 +542,7 @@
 - [[el-moat-del-gusto]]
 - [[metacognicion-del-disenador]]
 - [[sycophancy-como-riesgo-de-diseno]]
+- [[costo-marginal-cero-como-disruptor]]
 - [[ia-como-filtro-de-entrada]]
 - [[inversion-sesgo-tecnologico]]
 - [[marea-creciente-de-automatizacion]]
@@ -528,6 +550,7 @@
 - [[senal-anticipada-mercado-laboral]]
 - [[arquitectura-de-inteligencia]]
 - [[lo-ilegible-como-senal]]
+- [[presencia-como-condicion-del-valor]]
 - [[agentes-ia]]
 - [[ai-evals-como-disciplina]]
 - [[arnes-del-agente]]
@@ -553,7 +576,9 @@
 - [[spec-driven-development]]
 - [[web-bifurcada]]
 - [[automatizar-mi-propio-trabajo]]
+- [[cambio-como-estado-permanente]]
 - [[condicion-redespliegue]]
+- [[cultura-de-tinkering]]
 - [[deuda-cognitiva-organizacional]]
 - [[ia-sin-ecosistema]]
 - [[juicio-como-trabajo-completo]]
@@ -584,6 +609,8 @@
 
 ### `liderazgo`
 - [[momento-liminal]]
+- [[cambio-como-estado-permanente]]
+- [[cultura-de-tinkering]]
 - [[la-competencia-que-oculta-el-juicio]]
 - [[feedback-que-escala]]
 
@@ -605,7 +632,9 @@
 - [[impuesto-de-verificacion]]
 - [[aprendizaje-vicario-mediado-por-agente]]
 - [[automatizar-mi-propio-trabajo]]
+- [[cambio-como-estado-permanente]]
 - [[condicion-redespliegue]]
+- [[cultura-de-tinkering]]
 - [[deuda-cognitiva-organizacional]]
 - [[equipos-pequenos-alto-impacto]]
 - [[ia-sin-ecosistema]]
@@ -810,6 +839,11 @@
   - [[agentes-ia]]
   - [[fundamentales-vs-flux]]
 
+**[[cambio-como-estado-permanente]]** →
+  - [[ia-sin-ecosistema]]
+  - [[condicion-redespliegue]]
+  - [[cultura-de-tinkering]]
+
 **[[capital-de-contexto]]** →
   - [[quien-controla-el-prompt]]
   - [[feedback-que-escala]]
@@ -855,10 +889,20 @@
   - [[espectro-autonomia-agente]]
   - [[pit-stop-cognitivo]]
 
+**[[costo-marginal-cero-como-disruptor]]** →
+  - [[inteligencia-como-utilidad]]
+  - [[ia-sin-ecosistema]]
+  - [[presupuesto-ia-como-restriccion]]
+
 **[[cuerpo-como-infraestructura-cognitiva]]** →
   - [[pit-stop-cognitivo]]
   - [[arquitectura-de-inteligencia]]
   - [[claridad-antes-de-velocidad]]
+
+**[[cultura-de-tinkering]]** →
+  - [[automatizar-mi-propio-trabajo]]
+  - [[deuda-cognitiva-organizacional]]
+  - [[ia-sin-ecosistema]]
 
 **[[de-usuario-a-cliente-servido]]** →
   - [[disenador-a-constructor]]
@@ -1050,6 +1094,11 @@
   - [[sycophancy-como-riesgo-de-diseno]]
   - [[colonialismo-cultural-digital]]
 
+**[[presencia-como-condicion-del-valor]]** →
+  - [[el-moat-del-gusto]]
+  - [[automatizar-mi-propio-trabajo]]
+  - [[confianza-a-traves-de-velocidad]]
+
 **[[presupuesto-ia-como-restriccion]]** →
   - [[ia-sin-ecosistema]]
   - [[impuesto-de-verificacion]]
@@ -1207,6 +1256,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[soberania-epistemica]]
 - [[sycophancy-como-riesgo-de-diseno]]
 - [[ux-checkpoints]]
+- [[costo-marginal-cero-como-disruptor]]
 - [[inversion-sesgo-tecnologico]]
 - [[marea-creciente-de-automatizacion]]
 - [[presupuesto-ia-como-restriccion]]
@@ -1214,6 +1264,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[colonialismo-cultural-digital]]
 - [[cuerpo-como-infraestructura-cognitiva]]
 - [[lo-ilegible-como-senal]]
+- [[presencia-como-condicion-del-valor]]
 - [[ai-evals-como-disciplina]]
 - [[arnes-del-agente]]
 - [[autoautomatizacion-del-disenador]]
@@ -1235,7 +1286,9 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[usuarios-sinteticos]]
 - [[web-bifurcada]]
 - [[aprendizaje-vicario-mediado-por-agente]]
+- [[cambio-como-estado-permanente]]
 - [[condicion-redespliegue]]
+- [[cultura-de-tinkering]]
 - [[deuda-cognitiva-organizacional]]
 - [[equipos-pequenos-alto-impacto]]
 - [[ia-sin-ecosistema]]

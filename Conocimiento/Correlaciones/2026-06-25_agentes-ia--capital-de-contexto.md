@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [agentes-ia, capital-de-contexto]
 fecha: 2026-06-25
 tags: [agentes, ia, conocimiento, estrategia, criterio]
-estado: activo
+estado: borrador
 ---
 
 # La Tensión entre Equipos de Agentes IA y Capital de Contexto

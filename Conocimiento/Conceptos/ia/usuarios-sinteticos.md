@@ -5,7 +5,7 @@ familia: equipos-impacto
 tags: [research, validacion, producto, usuarios, diseño]
 relacionado: [disenador-a-constructor, mvp-a-prototipo-en-produccion, agentes-ia]
 fecha: 2026-03-04
-estado: activo
+estado: borrador
 ---
 
 ## El concepto

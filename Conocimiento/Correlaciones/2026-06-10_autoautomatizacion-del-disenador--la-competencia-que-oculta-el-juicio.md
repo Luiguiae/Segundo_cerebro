@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [autoautomatizacion-del-disenador, la-competencia-que-oculta-el-juicio]
 fecha: 2026-06-10
 tags: [ia, criterio, roles, tension, no-leido]
-estado: activo
+estado: borrador
 ---
 
 # La trampa sin señal de alarma

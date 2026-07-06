@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [gobernanza-ia-performativa, sycophancy-como-riesgo-de-diseno]
 fecha: 2026-06-10
 tags: [ia, etica, organizacion, tension, no-leido]
-estado: activo
+estado: borrador
 ---
 
 # Dos capas de apariencia, cero de enforcement

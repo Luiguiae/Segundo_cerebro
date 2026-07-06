@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [aprendizaje-vicario-mediado-por-agente, feedback-que-escala]
 fecha: 2026-05-13
 tags: [ia, sistemas, aprendizaje, organizacion, criterio]
-estado: activo
+estado: borrador
 ---
 
 # El aprendizaje que no se codifica desaparece

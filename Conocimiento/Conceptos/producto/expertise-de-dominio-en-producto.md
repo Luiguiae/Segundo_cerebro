@@ -9,7 +9,7 @@ edges:
     tipo: requires
     why: "El expertise de dominio no se vuelve legible hasta que se intenta automatizar. La automatización del propio trabajo es el mecanismo de externalización del expertise tácito: fuerza al experto a articular qué hace exactamente y por qué, convirtiendo conocimiento implícito en estructura transferible."
 fecha: 2026-04-10
-estado: activo
+estado: borrador
 fuentes:
   - titulo: "Lenny's Podcast — Geoff Charles, CPO de Ramp"
     url: "https://www.youtube.com/watch?v=RBqT2PHWdBg"

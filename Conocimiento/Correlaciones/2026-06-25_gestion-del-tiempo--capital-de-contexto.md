@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [gestion-del-tiempo, capital-de-contexto]
 fecha: 2026-06-25
 tags: [productividad, conocimiento, estrategia, criterio, tension]
-estado: activo
+estado: borrador
 ---
 
 # La Tensión entre Gestión del Tiempo y Capital de Contexto

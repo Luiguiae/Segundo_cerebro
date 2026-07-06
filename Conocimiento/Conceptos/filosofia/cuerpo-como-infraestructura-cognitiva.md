@@ -5,7 +5,7 @@ familia: epistemologia-practica
 tags: [productividad, trabajo, habilidades, principio, conocimiento]
 relacionado: [pit-stop-cognitivo, arquitectura-de-inteligencia, claridad-antes-de-velocidad]
 fecha: 2026-05-23
-estado: activo
+estado: borrador
 fuentes:
   - titulo: "Brain motion is driven by mechanical coupling with the abdomen"
     url: "https://www.nature.com/articles/s41593-026-02279-z"

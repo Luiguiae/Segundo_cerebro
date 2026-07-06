@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [equipos-pequenos-alto-impacto, comprehension-debt]
 fecha: 2026-06-10
 tags: [ia, equipo, criterio, tension, no-leido]
-estado: activo
+estado: borrador
 ---
 
 # El modelo de éxito lleva el riesgo incorporado

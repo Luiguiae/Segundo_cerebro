@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [ia-como-filtro-de-entrada, agentes-ia]
 fecha: 2026-04-15
 tags: [ia, automatizacion, roles, tension, transicion]
-estado: activo
+estado: borrador
 ---
 
 # El multiplicador que cierra la puerta
