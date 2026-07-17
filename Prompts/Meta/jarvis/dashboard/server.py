@@ -13,6 +13,7 @@ Chrome se abre en modo app al arrancar y se mantiene vivo:
 
 import atexit
 import asyncio
+import fcntl
 import json
 import os
 import socket
@@ -34,28 +35,102 @@ _loop: asyncio.AbstractEventLoop | None = None
 
 
 # ── Singleton del servidor ────────────────────────────────────────────────────
+# flock() sobre un fd mantenido abierto toda la vida del proceso — el kernel
+# libera el lock automáticamente al morir el proceso por cualquier motivo, sin
+# depender de que jarvis_daemon.py's_iniciar_dashboard() lea un PID en un
+# archivo que alguien pudo borrar mientras el dueño seguía vivo (ver el mismo
+# fix, con la misma justificación, en jarvis_daemon.py::_acquire_pid_lock).
+
+_pid_lock_fd: "int | None" = None
+
 
 def _acquire_pid_lock() -> bool:
+    global _pid_lock_fd
+    fd = os.open(str(PID_FILE), os.O_CREAT | os.O_RDWR, 0o644)
     try:
-        fd = os.open(str(PID_FILE), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
-        os.write(fd, str(os.getpid()).encode())
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
         os.close(fd)
-        return True
-    except FileExistsError:
-        try:
-            pid = int(PID_FILE.read_text().strip())
-            os.kill(pid, 0)
-            return False
-        except (ProcessLookupError, ValueError, OSError):
-            PID_FILE.unlink(missing_ok=True)
-            return _acquire_pid_lock()
+        return False
+    os.ftruncate(fd, 0)
+    os.write(fd, str(os.getpid()).encode())
+    os.fsync(fd)
+    _pid_lock_fd = fd
+    return True
 
 
 def _release_pid_lock() -> None:
-    PID_FILE.unlink(missing_ok=True)
+    global _pid_lock_fd
+    if _pid_lock_fd is None:
+        return
+    try:
+        fcntl.flock(_pid_lock_fd, fcntl.LOCK_UN)
+        os.close(_pid_lock_fd)
+    except Exception:
+        pass
+    _pid_lock_fd = None
 
 
 # ── Chrome — ventana única persistente ───────────────────────────────────────
+#
+# La verificación de "¿ya hay una ventana de Jarvis abierta?" NO puede basarse en
+# si hay un cliente WebSocket conectado (heurística anterior): una ventana puede
+# seguir abierta con el WS momentáneamente caído (Mac que durmió, el servidor de
+# dashboard se reinició pero Chrome no) y el chequeo la daba por "cerrada",
+# abriendo una segunda ventana. Tampoco alcanza con trackear el PID del proceso
+# que lanza `--app=...`: si Chrome ya estaba corriendo, ese proceso solo reenvía
+# la apertura a la instancia existente y puede salir casi de inmediato, sin que
+# su PID represente la ventana real. La fuente de verdad es el propio Chrome,
+# consultado vía AppleScript — mismo mecanismo que ya usa mejora_007_vision.py.
+
+_VENTANA_JARVIS_SCRIPT = '''
+set chromeRunning to false
+tell application "System Events"
+    if exists (application process "Google Chrome") then set chromeRunning to true
+end tell
+if not chromeRunning then return "0"
+tell application "Google Chrome"
+    set ventanasJarvis to {}
+    repeat with w in windows
+        try
+            if URL of active tab of w contains "localhost:7777" then
+                set end of ventanasJarvis to w
+            end if
+        end try
+    end repeat
+    set n to count of ventanasJarvis
+    if n > 1 then
+        repeat with i from 2 to n
+            try
+                close (item i of ventanasJarvis)
+            end try
+        end repeat
+    end if
+    return (n as string)
+end tell
+'''
+
+
+def _normalizar_ventanas_jarvis() -> int:
+    """Cuenta las ventanas de Chrome que muestran el dashboard de Jarvis
+    (URL localhost:7777) y cierra cualquier duplicado, dejando como máximo una.
+    Retorna cuántas había ANTES de cerrar duplicados (0 si Chrome ni siquiera
+    está corriendo, -1 si no se pudo verificar — ej. permiso de automatización
+    no otorgado). El caller debe tratar -1 como "no abrir, por las dudas": es
+    preferible quedarse sin ventana temporalmente a arriesgar un duplicado."""
+    try:
+        resultado = subprocess.run(
+            ["osascript", "-e", _VENTANA_JARVIS_SCRIPT],
+            capture_output=True, text=True, timeout=10,
+        )
+        if resultado.returncode != 0:
+            print(f"[Dashboard] No pude verificar ventanas de Chrome: {resultado.stderr.strip()[:200]}")
+            return -1
+        return int(resultado.stdout.strip())
+    except Exception as e:
+        print(f"[Dashboard] Error verificando ventanas de Chrome: {e}")
+        return -1
+
 
 def _launch_chrome() -> None:
     subprocess.Popen([
@@ -147,30 +222,31 @@ def _run_http():
 # ── Chrome ─────────────────────────────────────────────────────────────────────
 
 def _open_chrome():
-    """Abre Chrome solo si no hay clientes WebSocket conectados.
-    Espera 4s para que Chrome existente reconecte (frontend reintenta cada 2.5s)."""
-    time.sleep(4.0)
-    if _clients:
-        print("[Dashboard] Chrome ya conectado via WebSocket — no se abre otro.")
+    """Abre Chrome solo si no hay ya una ventana del dashboard — verificado contra
+    las ventanas reales de Chrome (_normalizar_ventanas_jarvis), no contra si el
+    WebSocket ya reconectó. Si -1 (no se pudo verificar), no abre — prefiere
+    quedarse sin ventana a arriesgar un duplicado."""
+    time.sleep(1.5)  # margen para que HTTP/WS estén arriba antes de la primera consulta
+    n = _normalizar_ventanas_jarvis()
+    if n != 0:
+        print(f"[Dashboard] Ventana de Jarvis ya existe (n={n}, normalizado a máx. 1) — no se abre otra.")
         return
     print("[Dashboard] Abriendo Chrome...")
     _launch_chrome_seguro()
 
 
 def _chrome_watchdog():
-    """Relanza Chrome si lleva > 12s sin ningún cliente WebSocket conectado."""
-    time.sleep(8.0)
-    # Arrancar el reloj AHORA — no en 0.0 — para no considerar de entrada que ya
-    # pasaron >12s. Con _last_open=0.0, el primer chequeo (a los 8s) siempre lanzaba
-    # una segunda ventana de Chrome aunque la primera (_open_chrome, a los 4s) todavía
-    # no hubiera tenido tiempo de conectar su WebSocket en un arranque frío.
-    _last_open = time.time()
+    """Cada 10s verifica cuántas ventanas de Jarvis hay realmente abiertas en
+    Chrome: si hay 0, relanza; si hay más de 1 (ej. tras un reinicio del backend
+    mientras una ventana huérfana seguía abierta), _normalizar_ventanas_jarvis ya
+    las cerró y deja como máximo una — acá no hace falta acción adicional."""
+    time.sleep(6.0)
     while True:
-        if not _clients and (time.time() - _last_open) > 12.0:
-            print("[Dashboard] Sin clientes WS — relanzando Chrome...")
+        n = _normalizar_ventanas_jarvis()
+        if n == 0:
+            print("[Dashboard] Ninguna ventana de Jarvis abierta — relanzando Chrome...")
             _launch_chrome_seguro()
-            _last_open = time.time()
-        time.sleep(3)
+        time.sleep(10)
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────

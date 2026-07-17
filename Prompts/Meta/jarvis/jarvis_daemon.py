@@ -11,6 +11,7 @@ Conocimiento/ y notifica en voz sin que el usuario lo pida.
 Logs: Prompts/Meta/jarvis/jarvis.log
 """
 
+import fcntl
 import os
 import queue
 import re
@@ -1102,46 +1103,75 @@ def diagnosticar_microfono() -> None:
         log(f"[Mic] Error en diagnóstico: {e}")
 
 
+_pid_lock_fd: "int | None" = None  # mantenido abierto todo el ciclo de vida del proceso
+
+
 def _acquire_pid_lock() -> bool:
     """Devuelve True si esta instancia puede continuar; False si ya hay otra corriendo.
-    Usa O_CREAT|O_EXCL para creación atómica — elimina la race condition entre
-    procesos que arrancan simultáneamente (ej. múltiples shells abriendo .zshrc)."""
+    Usa flock() sobre un file descriptor que se mantiene abierto durante toda la
+    vida del proceso — el kernel libera el lock automáticamente al morir el
+    proceso por CUALQUIER motivo (exit limpio, excepción, SIGTERM, SIGKILL,
+    crash), sin depender de que el código de cleanup llegue a correr.
+
+    El diseño anterior (crear el archivo con O_CREAT|O_EXCL y comprobar el PID
+    leído contra os.kill(pid, 0) en cada arranque) tiene una ventana real: si
+    algo borra jarvis.pid mientras el proceso dueño sigue vivo — un `rm` manual,
+    otro script, una limpieza mal dirigida — el siguiente arranque encuentra el
+    archivo ausente y adquiere el lock igual, aunque el daemon original nunca
+    dejó de correr. Se reprodujo exactamente eso en vivo: dos y hasta tres
+    procesos jarvis_daemon.py corriendo en simultáneo. flock() no tiene esa
+    ventana: la exclusión la garantiza el kernel sobre el file descriptor, no
+    un valor de texto que cualquiera puede pisar."""
+    global _pid_lock_fd
+    fd = os.open(str(PID_FILE), os.O_CREAT | os.O_RDWR, 0o644)
     try:
-        fd = os.open(str(PID_FILE), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
-        os.write(fd, str(os.getpid()).encode())
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
         os.close(fd)
-        return True
-    except FileExistsError:
-        try:
-            existing_pid = int(PID_FILE.read_text().strip())
-            os.kill(existing_pid, 0)
-            return False  # proceso vivo → ya hay un daemon
-        except (ProcessLookupError, ValueError, OSError):
-            PID_FILE.unlink(missing_ok=True)
-            return _acquire_pid_lock()  # reintento único tras stale file
+        return False
+    os.ftruncate(fd, 0)
+    os.write(fd, str(os.getpid()).encode())
+    os.fsync(fd)
+    _pid_lock_fd = fd
+    return True
 
 
 def _release_pid_lock() -> None:
+    global _pid_lock_fd
+    if _pid_lock_fd is None:
+        return
     try:
-        PID_FILE.unlink(missing_ok=True)
+        fcntl.flock(_pid_lock_fd, fcntl.LOCK_UN)
+        os.close(_pid_lock_fd)
     except Exception:
         pass
+    _pid_lock_fd = None
 
 
 def _iniciar_dashboard() -> None:
     """Arranca el dashboard solo si no está ya corriendo.
-    Si está vivo, lo deja en paz para preservar la ventana de Chrome existente."""
+    Si está vivo, lo deja en paz para preservar la ventana de Chrome existente.
+
+    Detecta "¿está vivo?" intentando tomar el mismo flock() no bloqueante que
+    dashboard/server.py mantiene abierto toda su vida — no leyendo un PID de
+    texto y probando os.kill(pid, 0), que falla si algo borra dashboard.pid
+    mientras el servidor sigue corriendo (ver la misma corrección en
+    _acquire_pid_lock más arriba)."""
     _dashboard_path = JARVIS_DIR / "dashboard" / "server.py"
     _dashboard_pid  = JARVIS_DIR / "dashboard" / "dashboard.pid"
 
-    if _dashboard_pid.exists():
-        try:
-            pid = int(_dashboard_pid.read_text().strip())
-            os.kill(pid, 0)
-            log(f"[Dashboard] Ya corriendo (PID {pid}) — ventana de Chrome preservada.")
-            return
-        except (ProcessLookupError, ValueError, OSError):
-            pass  # PID file obsoleto — arrancar nuevo
+    _fd = os.open(str(_dashboard_pid), os.O_CREAT | os.O_RDWR, 0o644)
+    try:
+        fcntl.flock(_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        os.close(_fd)
+        log("[Dashboard] Ya corriendo — ventana de Chrome preservada.")
+        return
+    else:
+        # Nadie lo tenía tomado → el dashboard no está vivo. Soltar de inmediato:
+        # este lock es del servidor, el daemon solo lo usó para verificar.
+        fcntl.flock(_fd, fcntl.LOCK_UN)
+        os.close(_fd)
 
     # Libera solo puertos del dashboard (no 8765/8766 que no usa)
     subprocess.run(

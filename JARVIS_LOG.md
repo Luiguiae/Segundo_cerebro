@@ -2,6 +2,39 @@
 
 ---
 
+### 2026-07-17 14:15 — fix: ventanas duplicadas del dashboard de Jarvis
+
+**Instrucción:** "Siempre se abren más de una ventana de JARVIS... solo debe existir una ventana activa de JARVIS, no debemos permitir que se abran o existan más de una ventana de Jarvis"
+
+**Diagnóstico (en `~/Library/Logs/jarvis.log`, 131k líneas de historial):**
+- 38 eventos "Dashboard iniciado" a lo largo del historial — cada uno abre una ventana nueva de Chrome vía `_launch_chrome()`, sin cerrar ninguna anterior que hubiera quedado huérfana.
+- Causa raíz 1: `_open_chrome()`/`_chrome_watchdog()` decidían "¿ya hay ventana?" mirando si había un cliente WebSocket conectado — una ventana puede seguir abierta con el WS momentáneamente caído (Mac que durmió, backend reiniciado) y el chequeo la daba por cerrada, abriendo una segunda.
+- Causa raíz 2: el lock de instancia única (`jarvis.pid`/`dashboard.pid`) se verificaba leyendo el PID como texto y probando `os.kill(pid, 0)` — reproducido en vivo: bajo SIGKILL (crash duro, sin tiempo de correr el cleanup) o si algo borra el archivo de lock mientras el dueño sigue vivo, esa verificación falla y permiten instancias concurrentes. Confirmado con un stress test de 5 lanzamientos manuales simultáneos contra el código viejo antes del fix.
+- `launchd` (`~/Library/LaunchAgents/com.segundocerebro.jarvis.plist`) tenía `KeepAlive: true` sin condición — cualquier salida (incluida la salida limpia por "instancia ya corriendo") disparaba un relanzamiento inmediato. 2599 líneas de "[Jarvis] Instancia ya corriendo. Saliendo." en el log.
+
+**Acciones:**
+- `dashboard/server.py`: nueva `_normalizar_ventanas_jarvis()` — cuenta las ventanas reales de Chrome con URL `localhost:7777` vía AppleScript (mismo mecanismo que ya usa `mejora_007_vision.py`) y cierra cualquier duplicado dejando como máximo una. Reemplaza la heurística de cliente WebSocket en `_open_chrome()` y `_chrome_watchdog()` — ahora consultan el estado real de las ventanas, no una señal indirecta.
+- `jarvis_daemon.py` y `dashboard/server.py`: el lock de instancia única pasa de "crear archivo + leer PID + `os.kill(pid,0)`" a `fcntl.flock()` sobre un file descriptor mantenido abierto toda la vida del proceso — el kernel libera el lock automáticamente ante cualquier tipo de muerte del proceso (exit limpio, excepción, SIGTERM, SIGKILL), sin depender de que el cleanup llegue a correr. `_iniciar_dashboard()` verifica el dashboard de la misma forma (intenta tomar el mismo flock que mantiene `server.py`).
+- `com.segundocerebro.jarvis.plist`: `KeepAlive` pasa de `true` a `{SuccessfulExit: false}` — launchd solo relanza ante una salida anormal (crash), no ante cualquier salida.
+
+**Verificación (en el daemon real, no en aislado):**
+- flock: proceso A toma el lock y duerme; proceso B intenta tomarlo → bloqueado correctamente; A muere por SIGKILL (crash duro simulado); proceso nuevo lo adquiere de inmediato sin intervención manual.
+- Ventana: se abrió una segunda ventana de Chrome a propósito apuntando a `localhost:7777`; `_normalizar_ventanas_jarvis()` la detectó y cerró, dejando exactamente 1 — la ventana original (producción) sobrevivió intacta.
+- Reinicio completo del daemon + dashboard (kill de ambos procesos, relanzado via `launchctl`): la ventana de Chrome existente se preservó sin abrir una nueva.
+- Stress test: 5 lanzamientos manuales concurrentes de `Jarvis.app` mientras la instancia legítima corría → los 5 rechazados ("Instancia ya corriendo"), la ventana se mantuvo en 1, el daemon original sin interrupciones.
+
+**Resultados:**
+- `Prompts/Meta/jarvis/dashboard/server.py`: OK
+- `Prompts/Meta/jarvis/jarvis_daemon.py`: OK
+- `~/Library/LaunchAgents/com.segundocerebro.jarvis.plist`: OK (fuera del repo — archivo de configuración de macOS)
+- Daemon y dashboard relanzados en vivo con el fix aplicado; queda 1 sola ventana de Chrome, confirmada.
+
+**Nota:** el fix no protege contra alguien borrando manualmente `jarvis.pid`/`dashboard.pid` mientras el proceso dueño sigue vivo (un `rm` directo crea un inodo nuevo, y `flock` protege por inodo) — eso reproduce el bug incluso con el fix. Bajo operación normal (crashes, sueño/despertar de la Mac, relanzamientos de `launchd`) nadie borra esos archivos, así que no es un caso real; se documenta para no repetir el error en una futura sesión de debugging.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`.
+
+---
+
 ### 2026-07-06 09:51 — audita el vault
 
 **Instrucción:** "Jarvis, audita el vault"
@@ -2622,3 +2655,23 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-07-06 09:56 — CONSULTA
 **Instrucción:** de diseño
 **Resultado:** No pude responder en este momento.
+
+## 2026-07-17 12:12 — CONSULTA
+**Instrucción:** qué es lo último que hemos hecho en el segundo cerebro
+**Resultado:** Lo último que hemos hecho en el Segundo Cerebro es cargar el índice del VAULT y la memoria de Luigui, que incluye información sobre los conceptos y notas de contexto.
+
+## 2026-07-17 12:12 — SYNC
+**Instrucción:** falta sincronizar con jar
+**Resultado:** 0 archivos actualizados
+
+## 2026-07-17 12:12 — ACCION
+**Instrucción:** gracias jarvis me lees un concepto
+**Resultado:** ¿Cuál concepto quieres que te lea? Dime el nombre o tema y te lo leo completo.
+
+## 2026-07-17 12:13 — ACCION
+**Instrucción:** uno relacionado
+**Resultado:** No entendí la instrucción completa — "uno relacionado" puede referirse a un concepto específico, a un campo del vault, o a algo que se cortó. ¿Puedes repetir la instrucción completa?
+
+## 2026-07-17 12:14 — ACCION
+**Instrucción:** lee un concepto
+**Resultado:** "Expertise de dominio como infraestructura de producto." Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y uno que hace el trabajo del usuario: el segundo requiere expertise real en el dominio, no solo buena interfaz. En la era de los agentes B2B, lo que diferencia un agente útil de uno peligroso es si ese conocimiento de dominio está bien codificado en el sistema — una interfaz bonita sobre ignorancia de dominio produce confianza sin fundamento, que es lo más peligroso que puede hacer un agente.
