@@ -1148,7 +1148,7 @@ def _release_pid_lock() -> None:
     _pid_lock_fd = None
 
 
-def _iniciar_dashboard() -> None:
+def _iniciar_dashboard(silencioso: bool = False) -> None:
     """Arranca el dashboard solo si no está ya corriendo.
     Si está vivo, lo deja en paz para preservar la ventana de Chrome existente.
 
@@ -1156,7 +1156,12 @@ def _iniciar_dashboard() -> None:
     dashboard/server.py mantiene abierto toda su vida — no leyendo un PID de
     texto y probando os.kill(pid, 0), que falla si algo borra dashboard.pid
     mientras el servidor sigue corriendo (ver la misma corrección en
-    _acquire_pid_lock más arriba)."""
+    _acquire_pid_lock más arriba).
+
+    silencioso=True (usado por _dashboard_watchdog, que llama esto cada 30s):
+    no loguea el caso "ya está vivo" — evita spamear el log con una línea idéntica
+    cada 30 segundos durante días de uptime del daemon. Si de verdad hace falta
+    relanzarlo, eso SÍ se loguea siempre, silencioso o no."""
     _dashboard_path = JARVIS_DIR / "dashboard" / "server.py"
     _dashboard_pid  = JARVIS_DIR / "dashboard" / "dashboard.pid"
 
@@ -1165,7 +1170,8 @@ def _iniciar_dashboard() -> None:
         fcntl.flock(_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
         os.close(_fd)
-        log("[Dashboard] Ya corriendo — ventana de Chrome preservada.")
+        if not silencioso:
+            log("[Dashboard] Ya corriendo — ventana de Chrome preservada.")
         return
     else:
         # Nadie lo tenía tomado → el dashboard no está vivo. Soltar de inmediato:
@@ -1186,10 +1192,29 @@ def _iniciar_dashboard() -> None:
 
     try:
         subprocess.Popen(["/usr/local/bin/python3.11", str(_dashboard_path)])
-        log("Dashboard iniciado en http://localhost:7777")
+        log("Dashboard iniciado en http://localhost:7777" + (" (relanzado por watchdog)" if silencioso else ""))
         time.sleep(1.2)
     except Exception as e:
         log(f"[Dashboard] Error al arrancar — continuando sin él: {e}")
+
+
+def _dashboard_watchdog() -> None:
+    """_iniciar_dashboard() solo corría una vez, al arrancar el daemon. Si el
+    servidor del dashboard moría DESPUÉS (crash, kill externo, lo que sea) nadie
+    lo notaba — el daemon principal podía seguir vivo días enteros (es un proceso
+    de larga duración, no se reinicia solo) mientras el dashboard llevaba horas
+    muerto y la ventana de Chrome, preservada a propósito por el fix de ventanas
+    duplicadas, quedaba mostrando el último estado que alcanzó a ver antes de
+    que el WebSocket se cortara. Reproducido en vivo: con el daemon corriendo
+    desde el arranque, el dashboard llevaba caído un buen rato sin que nada lo
+    relanzara. _iniciar_dashboard() ya es idempotente (detecta "vivo" vía flock
+    y no hace nada) — correrla en un loop es seguro."""
+    while True:
+        time.sleep(30)
+        try:
+            _iniciar_dashboard(silencioso=True)
+        except Exception as e:
+            log(f"[Dashboard] Error en watchdog: {e}")
 
 
 # ── Saludo proactivo + sync diario al arrancar ────────────────────────────────
@@ -1308,6 +1333,7 @@ def main():
 
     log("=== Jarvis Daemon arrancando ===")
     _iniciar_dashboard()
+    threading.Thread(target=_dashboard_watchdog, daemon=True).start()
 
     observer = None
     try:

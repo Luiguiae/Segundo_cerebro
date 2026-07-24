@@ -32,6 +32,9 @@ PID_FILE       = DASHBOARD_DIR / "dashboard.pid"
 
 _clients: set = set()
 _loop: asyncio.AbstractEventLoop | None = None
+_ultimo_evento: dict | None = None  # último /event recibido — hidrata clientes que
+                                     # se conectan o reconectan, para que nunca vean
+                                     # un estado congelado de antes de la desconexión
 
 
 # ── Singleton del servidor ────────────────────────────────────────────────────
@@ -157,6 +160,16 @@ def _launch_chrome_seguro() -> None:
 
 async def _ws_handler(websocket):
     _clients.add(websocket)
+    # Hidratar de inmediato con el último estado conocido — sin esto, un cliente
+    # que se conecta (o reconecta tras una caída) solo se entera de eventos
+    # FUTUROS y se queda mostrando lo último que vio antes de desconectarse hasta
+    # que llegue el próximo evento real, que puede tardar minutos si el daemon
+    # está simplemente esperando wake word sin generar eventos.
+    if _ultimo_evento is not None:
+        try:
+            await websocket.send(json.dumps(_ultimo_evento))
+        except Exception:
+            pass
     try:
         await websocket.wait_closed()
     finally:
@@ -196,10 +209,12 @@ class _Handler(BaseHTTPRequestHandler):
             self.end_headers()
 
     def do_POST(self):
+        global _ultimo_evento
         if self.path == "/event":
             length = int(self.headers.get("Content-Length", 0))
             try:
                 data = json.loads(self.rfile.read(length))
+                _ultimo_evento = data
                 broadcast_from_thread(data)
             except Exception:
                 pass

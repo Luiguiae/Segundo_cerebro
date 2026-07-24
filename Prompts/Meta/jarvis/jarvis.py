@@ -68,13 +68,17 @@ _CONTEXT_REFS = (
 # ── Dashboard ──────────────────────────────────────────────────────────────────
 
 def emitir_evento(tipo: str, mensaje: str) -> None:
-    """Envía evento al dashboard via HTTP POST. Fire-and-forget: nunca bloquea Jarvis."""
+    """Envía evento al dashboard via HTTP POST. Fire-and-forget: nunca bloquea Jarvis.
+    timeout=2.0, no 0.1 — un POST local a un servidor con threads bajo carga puede
+    perfectamente tardar más de 100ms; con ese timeout, el evento "idle" que cierra
+    una interacción se pierde en silencio y el dashboard queda congelado mostrando
+    el estado anterior (ejecutando/procesando) hasta el timeout de 90s del frontend."""
     try:
         requests.post(
             "http://localhost:7777/event",
             json={"tipo": tipo, "mensaje": mensaje,
                   "timestamp": datetime.now().isoformat()},
-            timeout=0.1,
+            timeout=2.0,
         )
     except Exception:
         pass

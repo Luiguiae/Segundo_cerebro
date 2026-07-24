@@ -2,6 +2,36 @@
 
 ---
 
+### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
+
+**Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
+
+**Diagnóstico — tres bugs distintos, todos confirmados en el servidor real:**
+1. `emitir_evento()` en `jarvis.py` posteaba al dashboard con `timeout=0.1` (100ms) — un POST local a un `ThreadingHTTPServer` bajo carga puede tardar más que eso; si el evento "idle" que cierra una interacción se pierde en silencio, el dashboard nunca se entera de que la acción terminó.
+2. El servidor del dashboard no tenía memoria de estado: un cliente que se conecta o reconecta (Mac que durmió, servidor reiniciado, red inestable) solo se entera de eventos FUTUROS — se queda mostrando lo último que alcanzó a ver, con un cronómetro que sigue corriendo del lado del cliente dando la ilusión de actividad real. Solo había un timeout de 90s en el frontend como red de seguridad, que fuerza "idle" por las dudas, sin confirmar si eso es cierto.
+3. Reproducido en vivo mientras se investigaba: el proceso del dashboard llevaba caído un buen rato (crash o kill externo) sin que nadie lo notara — `_iniciar_dashboard()` solo corría una vez al arrancar el daemon principal, que lleva días corriendo sin reiniciarse. La ventana de Chrome, preservada a propósito por el fix de ventanas duplicadas de la sesión anterior, quedó mostrando el último estado real con el WebSocket muerto.
+
+**Acciones:**
+- `jarvis.py`: `emitir_evento()` sube el timeout de 0.1s a 2.0s.
+- `dashboard/server.py`: nuevo `_ultimo_evento` — el servidor recuerda el último evento recibido y lo envía de inmediato a cualquier cliente que se conecta o reconecta (`_ws_handler`), en vez de dejarlo a ciegas hasta el próximo evento real.
+- `dashboard/index.html`: nuevo estado visual `desconectado` (anillo gris, "SIN CONEXIÓN") que se activa en `ws.onclose` — reemplaza el anillo "ejecutando" congelado con algo honesto en vez de una animación que sugiere trabajo en curso. Excluido a propósito del timeout de 90s: mientras no hay conexión no hay forma de saber el estado real, y forzar "idle" sería inventar una certeza que no existe. Sale de ese estado solo con un mensaje real del servidor (la hidratación al reconectar).
+- `jarvis_daemon.py`: nuevo `_dashboard_watchdog()` — corre `_iniciar_dashboard()` (ya idempotente) cada 30s en un thread de fondo, en vez de solo una vez al arrancar. Si el dashboard muere en cualquier momento de una sesión de días, se relanza solo. `_iniciar_dashboard()` gana un parámetro `silencioso` para no spamear el log cada 30s cuando todo está bien — solo loguea cuando de verdad relanza algo.
+
+**Verificación (en el servidor real, no aislado):**
+- Confirmado con un cliente WS de prueba: al conectar después de un evento ya enviado, recibe ese evento de inmediato sin pedir nada. Un segundo cliente que conecta después de un evento más nuevo recibe el más nuevo — la hidratación nunca sirve un estado viejo cacheado.
+- El dashboard real llevaba caído desde antes de esta sesión (0 procesos en el puerto 7777, `dashboard.pid` con PID stale) mientras la ventana de Chrome del usuario seguía abierta — reproduce exactamente el bug reportado. Reinicio completo del stack, ventana preservada (1 sola), recargada para tomar el JS nuevo.
+
+**Resultados:**
+- `Prompts/Meta/jarvis/jarvis.py`: OK
+- `Prompts/Meta/jarvis/dashboard/server.py`: OK
+- `Prompts/Meta/jarvis/dashboard/index.html`: OK
+- `Prompts/Meta/jarvis/jarvis_daemon.py`: OK
+- Daemon, dashboard y ventana relanzados en vivo con el fix aplicado.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`.
+
+---
+
 ### 2026-07-17 14:15 — fix: ventanas duplicadas del dashboard de Jarvis
 
 **Instrucción:** "Siempre se abren más de una ventana de JARVIS... solo debe existir una ventana activa de JARVIS, no debemos permitir que se abran o existan más de una ventana de Jarvis"
@@ -2675,3 +2705,7 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-07-17 12:14 — ACCION
 **Instrucción:** lee un concepto
 **Resultado:** "Expertise de dominio como infraestructura de producto." Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y uno que hace el trabajo del usuario: el segundo requiere expertise real en el dominio, no solo buena interfaz. En la era de los agentes B2B, lo que diferencia un agente útil de uno peligroso es si ese conocimiento de dominio está bien codificado en el sistema — una interfaz bonita sobre ignorancia de dominio produce confianza sin fundamento, que es lo más peligroso que puede hacer un agente.
+
+## 2026-07-24 11:20 — ACCION
+**Instrucción:** agregue dos nuevos conceptos a favor cuáles son
+**Resultado:** Los dos conceptos nuevos son "LLM como motor de plausibilidad" (filosofía) y "El límite de las jaulas digitales" (ia), ambos del 2026-07-14 y aún sin guardar en el vault (siguen como untracked en git). Se relacionan entre sí y con "arnés del agente".

@@ -325,6 +325,18 @@ const STATES = {
     `,
   },
 
+  desconectado: {
+    label: 'SIN CONEXIÓN',
+    color: '#555555',
+    msgColor: '#555555',
+    svg: `
+      <circle fill="none" stroke="#222222" stroke-width="1.5" cx="90" cy="90" r="60"/>
+      <circle fill="#3a3a3a" cx="90" cy="90" r="6">
+        <animate attributeName="opacity" values="0.25;0.7;0.25" dur="1.6s" repeatCount="indefinite"/>
+      </circle>
+    `,
+  },
+
   watcher: {
     label: 'WATCHER',
     color: '#8b5cf6',
@@ -382,6 +394,10 @@ function applyState(tipo, mensaje) {
 
   // Cubre todos los estados no-idle: si el daemon muere a mitad de cualquier
   // operación (no solo ejecutando/procesando), el dashboard no debe quedar pegado.
+  // 'desconectado' queda afuera a propósito: mientras el WebSocket esté caído no
+  // hay forma de saber el estado real, y forzar 'idle' tras 90s sería inventar
+  // una certeza que no existe. Se sale de 'desconectado' solo con un mensaje real
+  // del servidor — al reconectar, el servidor hidrata con el último estado real.
   if (['ejecutando', 'procesando', 'escuchando', 'respondiendo', 'watcher'].includes(tipo)) {
     _stuckTimer = setTimeout(() => applyState('idle', 'Esperando wake word...'), STUCK_MS);
   }
@@ -450,6 +466,11 @@ function connect() {
   ws.onclose = () => {
     wsDot.classList.remove('connected');
     wsLabel.textContent = 'offline';
+    // Sin esto, el dashboard se queda mostrando el último anillo animado
+    // (ej. "ejecutando" con su cronómetro corriendo en el cliente) como si
+    // Jarvis siguiera trabajando, cuando en realidad ya ni sabemos qué está
+    // pasando — la conexión que traería esa información está caída.
+    applyState('desconectado', 'Reconectando con Jarvis...');
     setTimeout(connect, 2500);
   };
 
