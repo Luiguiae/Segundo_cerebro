@@ -2,6 +2,34 @@
 
 ---
 
+### 2026-07-24 00:00 — Profundizador-2: deuda-oculta-de-la-infraestructura-ia
+
+**Instrucción:** Tarea programada — Profundizador-2 (concepto 2 del Scout 2026-07-24)
+
+**Acciones:**
+- Leído Issue #66 "🔍 Scout [2026-07-24] — 3 candidatos" en GitHub
+- Extraído CONCEPTO 2: `deuda-oculta-de-la-infraestructura-ia` (score 23/30)
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` y verificado slugs en `relacionado`
+- Ejes investigados: (1) estructura contable SPV/Enron, (2) riesgo sistémico BIS, (3) brecha capex-ingresos ROI
+- Búsquedas web: 3 queries, 9 fuentes encontradas, 5 sólidas incorporadas al .md
+- Gate 0 — Estructura: PASA (campos obligatorios completos, ningún campo prohibido, tags ≤5, relacionado ≤3 con slugs verificados, 3 secciones obligatorias presentes)
+- Gate 1 — Universales: PASA (atómico, propio, frontmatter completo, nombre correcto)
+- Gate 2 — Concepto (4/4): PASA (no es resumen, tiene tensión interna, relacionable, transferible)
+- Modo contingencia activado: Gmail MCP no puede enviar, solo crear drafts. Draft creado en bandeja de borradores.
+- [PROPUESTA] Tags nuevos usados no están en la lista controlada — se usaron solo tags existentes: ia, infraestructura, estrategia, tension, incertidumbre
+- Concepto instalado directamente al vault (estado: borrador, pendiente revisión de Luigui)
+- Aviso de contingencia creado en `Inbox/2026-07-24-profundizador-2-contingencia.md`
+
+**Resultados:**
+- `Conocimiento/Conceptos/economia/deuda-oculta-de-la-infraestructura-ia.md`: OK (borrador) — 3 ejes investigados, 5 fuentes sólidas incorporadas
+- `Inbox/2026-07-24-profundizador-2-contingencia.md`: OK — aviso de contingencia para revisión manual
+- Draft Gmail: OK — creado en borradores con .md completo y bloque de instalación
+- `JARVIS_LOG.md`: actualizado
+
+**ATLAS regenerado:** no — el concepto está en borrador; regenerar tras revisión de Luigui
+
+---
+
 ### 2026-07-17 14:15 — fix: ventanas duplicadas del dashboard de Jarvis
 
 **Instrucción:** "Siempre se abren más de una ventana de JARVIS... solo debe existir una ventana activa de JARVIS, no debemos permitir que se abran o existan más de una ventana de Jarvis"
