@@ -916,7 +916,13 @@ def actualizar_repo() -> str:
     cuelgue el daemon (bug real de esta sesión); pull --rebase antes del push
     evita un rechazo no-fast-forward si el remoto tiene commits que la laptop
     no tiene. Sin check=True en add/commit: si el watcher ya commiteó estos
-    mismos cambios en una carrera, "nothing to commit" no es un error real."""
+    mismos cambios en una carrera, "nothing to commit" no es un error real.
+
+    "Cambios pendientes" no es solo `git status --porcelain` (sin commitear) —
+    también hay que revisar `git log origin/main..HEAD` (commits locales ya
+    hechos, ej. por Claude Code directamente, que nunca se pushearon). Sin este
+    segundo check, esos commits quedaban invisibles y la función respondía
+    "no hay cambios pendientes" con un push real todavía por hacer."""
     vault_path = str(CEREBRO_PATH)
     _git_env = {**os.environ, "GIT_TERMINAL_PROMPT": "0"}
 
@@ -926,22 +932,31 @@ def actualizar_repo() -> str:
             capture_output=True, text=True, timeout=30,
             stdin=subprocess.DEVNULL,
         )
-        if not status.stdout.strip():
+        unpushed = subprocess.run(
+            ["git", "-C", vault_path, "log", "origin/main..HEAD", "--oneline"],
+            capture_output=True, text=True, timeout=30,
+            stdin=subprocess.DEVNULL,
+        )
+        hay_cambios_sin_commitear = bool(status.stdout.strip())
+        hay_commits_sin_pushear = bool(unpushed.stdout.strip())
+
+        if not hay_cambios_sin_commitear and not hay_commits_sin_pushear:
             return "No hay cambios pendientes en el vault."
 
-        subprocess.run(
-            ["git", "-C", vault_path, "add", "."],
-            capture_output=True, text=True, timeout=30,
-            stdin=subprocess.DEVNULL,
-        )
+        if hay_cambios_sin_commitear:
+            subprocess.run(
+                ["git", "-C", vault_path, "add", "."],
+                capture_output=True, text=True, timeout=30,
+                stdin=subprocess.DEVNULL,
+            )
 
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
-        mensaje = f"sync: actualización desde laptop {timestamp}"
-        subprocess.run(
-            ["git", "-C", vault_path, "commit", "-m", mensaje],
-            capture_output=True, text=True, timeout=30,
-            stdin=subprocess.DEVNULL,
-        )
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+            mensaje = f"sync: actualización desde laptop {timestamp}"
+            subprocess.run(
+                ["git", "-C", vault_path, "commit", "-m", mensaje],
+                capture_output=True, text=True, timeout=30,
+                stdin=subprocess.DEVNULL,
+            )
 
         pull = subprocess.run(
             ["git", "-C", vault_path, "pull", "--rebase", "origin", "main"],
@@ -962,7 +977,9 @@ def actualizar_repo() -> str:
             stdin=subprocess.DEVNULL, env=_git_env, check=True,
         )
 
-        return "Listo, vault sincronizado con GitHub."
+        if hay_cambios_sin_commitear:
+            return "Listo, vault sincronizado con GitHub."
+        return "Listo, subí los cambios pendientes a GitHub."
 
     except subprocess.CalledProcessError as e:
         return f"Error al actualizar el repo: {e.stderr or e.stdout or str(e)}"
