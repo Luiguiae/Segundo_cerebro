@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-07-06 09:52  
-> Total de conceptos: **80**  
+> Generado automáticamente el 2026-07-24 11:19  
+> Total de conceptos: **82**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -33,6 +33,7 @@
 | [[arquitectura-de-inteligencia\|Arquitectura de inteligencia]] | El trabajo del diseñador — y de cualquier profesional del conocimiento — no es producir artefactos: es ayudar a persona… | `conocimiento`, `ia`, `sistemas`, `estrategia`, `marco` | activo | 2026-04-06 |
 | [[colonialismo-cultural-digital\|Colonialismo cultural digital]] | El colonialismo cultural digital no es solo extracción de datos ni control de | `colonialismo`, `descolonizacion`, `poder`, `sistemas`, `cultura` | activo | 2026-04-04 |
 | [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]] | El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento … | `productividad`, `trabajo`, `habilidades`, `principio`, `conocimiento` | borrador | 2026-05-23 |
+| [[llm-como-motor-de-plausibilidad\|LLM como motor de plausibilidad]] | Zeynep Tufekci lo formula con precisión quirúrgica: los modelos de lenguaje no son máquinas de razonamiento. Son **moto… | `ia`, `epistemologia`, `llm`, `razonamiento`, `limites`, `filosofia`, `riesgo` | — | 2026-07-14 |
 | [[lo-ilegible-como-senal\|Lo ilegible como señal]] | Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. Evan Tana, socio en South Park … | `diseño`, `ia`, `criterio`, `captura`, `hipotesis` | activo | 2026-04-10 |
 | [[momento-liminal\|El momento liminal]] | Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u… | `liderazgo`, `cambio`, `incertidumbre`, `transicion`, `diseño` | activo | 2026-04-05 |
 | [[presencia-como-condicion-del-valor\|La presencia como condición del valor]] | Puedes saber si alguien vive en un Airbnb apenas entras. No por la calidad de los muebles ni por su precio: por el caos… | `diseño`, `ia`, `criterio` | activo | 2026-07-05 |
@@ -58,6 +59,7 @@
 | [[ingenieria-agentica\|Ingeniería agéntica]] | La ingeniería agéntica es el paradigma que sucede al vibe coding. En lugar de escribir código o prompts directamente, e… | `ia`, `agentes`, `evaluacion`, `sistemas`, `construccion` | activo | 2026-06-13 |
 | [[inteligencia-como-utilidad\|Inteligencia como utilidad]] | La inferencia de modelos de lenguaje de gran escala atraviesa el mismo ciclo que recorrieron la electricidad, el cómput… | `ia`, `infraestructura`, `estrategia`, `poder`, `sistemas` | activo | 2026-06-13 |
 | [[legibilidad-de-maquina\|Legibilidad de máquina]] | La competencia entre productos ya no se decide solo por experiencia de usuario humana — | `agentes`, `ia`, `producto`, `estrategia`, `sistemas` | activo | 2026-04-20 |
+| [[limite-de-las-jaulas-digitales\|El límite de las jaulas digitales]] | A medida que se acumula evidencia de que las respuestas erróneas y los jailbreaks son parte inevitable de la tecnología… | `ia`, `agentes`, `arnes`, `diseño`, `limites`, `gofai`, `riesgo`, `seguridad` | — | 2026-07-14 |
 | [[orquestacion-de-agentes\|Orquestación de agentes]] | La orquestación de agentes es la disciplina de coordinar múltiples agentes de IA especializados para completar tareas c… | `agentes`, `sistemas`, `control`, `ia`, `estrategia` | activo | 2026-05-25 |
 | [[poblaciones-sinteticas\|Poblaciones sintéticas]] | Una población sintética es un conjunto de agentes generados por LLMs que simulan la distribución estadística de comport… | `ia`, `agentes`, `validacion`, `research`, `diseño` | activo | 2026-06-18 |
 | [[problema-del-referente-para-la-ia\|El problema del referente para la IA]] | Antes de poder decidir cómo regular, diseñar o convivir con un sistema de IA, hace falta resolver una pregunta que rara… | `gobernanza-ia`, `etica`, `criterio`, `incertidumbre` | borrador | 2026-07-03 |
@@ -134,6 +136,8 @@
   → La inferencia de modelos de lenguaje de gran escala atraviesa el mismo ciclo que recorrieron la electricidad, el cómput…
 - [[legibilidad-de-maquina\|Legibilidad de máquina]]
   → La competencia entre productos ya no se decide solo por experiencia de usuario humana —
+- [[limite-de-las-jaulas-digitales\|El límite de las jaulas digitales]]
+  → A medida que se acumula evidencia de que las respuestas erróneas y los jailbreaks son parte inevitable de la tecnología…
 - [[orquestacion-de-agentes\|Orquestación de agentes]]
   → La orquestación de agentes es la disciplina de coordinar múltiples agentes de IA especializados para completar tareas c…
 - [[poblaciones-sinteticas\|Poblaciones sintéticas]]
@@ -161,6 +165,8 @@
   → El colonialismo cultural digital no es solo extracción de datos ni control de
 - [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]]
   → El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento …
+- [[llm-como-motor-de-plausibilidad\|LLM como motor de plausibilidad]]
+  → Zeynep Tufekci lo formula con precisión quirúrgica: los modelos de lenguaje no son máquinas de razonamiento. Son **moto…
 - [[lo-ilegible-como-senal\|Lo ilegible como señal]]
   → Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. Evan Tana, socio en South Park …
 - [[presencia-como-condicion-del-valor\|La presencia como condición del valor]]
@@ -296,6 +302,7 @@
 - [[impuesto-de-alineacion]]
 - [[ingenieria-agentica]]
 - [[legibilidad-de-maquina]]
+- [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
@@ -315,6 +322,9 @@
 - [[aprendizaje-vicario-mediado-por-agente]]
 - [[deuda-cognitiva-organizacional]]
 - [[mvp-a-prototipo-en-produccion]]
+
+### `arnes`
+- [[limite-de-las-jaulas-digitales]]
 
 ### `automatizacion`
 - [[costo-marginal-cero-como-disruptor]]
@@ -444,6 +454,7 @@
 - [[momento-liminal]]
 - [[presencia-como-condicion-del-valor]]
 - [[arnes-del-agente]]
+- [[limite-de-las-jaulas-digitales]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
 - [[usuarios-sinteticos]]
@@ -455,6 +466,9 @@
 - [[fundamentales-vs-flux]]
 - [[inversion-sesgo-tecnologico]]
 - [[aprendizaje-vicario-mediado-por-agente]]
+
+### `epistemologia`
+- [[llm-como-motor-de-plausibilidad]]
 
 ### `equipo`
 - [[agentes-ia]]
@@ -502,6 +516,9 @@
 - [[ingenieria-agentica]]
 - [[metricas-post-pantalla]]
 
+### `filosofia`
+- [[llm-como-motor-de-plausibilidad]]
+
 ### `fundamentos`
 - [[fundamentales-vs-flux]]
 - [[supuestos-importados-por-ia]]
@@ -513,6 +530,9 @@
 - [[problema-del-referente-para-la-ia]]
 - [[riesgo-geopolitico-del-modelo]]
 - [[workforce-de-agentes]]
+
+### `gofai`
+- [[limite-de-las-jaulas-digitales]]
 
 ### `habilidades`
 - [[fundamentales-vs-flux]]
@@ -549,6 +569,7 @@
 - [[presupuesto-ia-como-restriccion]]
 - [[senal-anticipada-mercado-laboral]]
 - [[arquitectura-de-inteligencia]]
+- [[llm-como-motor-de-plausibilidad]]
 - [[lo-ilegible-como-senal]]
 - [[presencia-como-condicion-del-valor]]
 - [[agentes-ia]]
@@ -569,6 +590,7 @@
 - [[ingenieria-agentica]]
 - [[inteligencia-como-utilidad]]
 - [[legibilidad-de-maquina]]
+- [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
@@ -613,6 +635,13 @@
 - [[cultura-de-tinkering]]
 - [[la-competencia-que-oculta-el-juicio]]
 - [[feedback-que-escala]]
+
+### `limites`
+- [[llm-como-motor-de-plausibilidad]]
+- [[limite-de-las-jaulas-digitales]]
+
+### `llm`
+- [[llm-como-motor-de-plausibilidad]]
 
 ### `marco`
 - [[metacognicion-del-disenador]]
@@ -686,9 +715,16 @@
 - [[quien-controla-el-prompt]]
 - [[capital-de-contexto]]
 
+### `razonamiento`
+- [[llm-como-motor-de-plausibilidad]]
+
 ### `research`
 - [[poblaciones-sinteticas]]
 - [[usuarios-sinteticos]]
+
+### `riesgo`
+- [[llm-como-motor-de-plausibilidad]]
+- [[limite-de-las-jaulas-digitales]]
 
 ### `roles`
 - [[de-usuario-a-cliente-servido]]
@@ -701,6 +737,9 @@
 - [[juicio-como-trabajo-completo]]
 - [[la-competencia-que-oculta-el-juicio]]
 - [[copiloto-de-producto]]
+
+### `seguridad`
+- [[limite-de-las-jaulas-digitales]]
 
 ### `sistemas`
 - [[arquitectura-de-inteligencia]]
@@ -1044,6 +1083,18 @@
   - [[colonialismo-cultural-digital]]
   - [[lo-ilegible-como-senal]]
 
+**[[limite-de-las-jaulas-digitales]]** →
+  - [[llm-como-motor-de-plausibilidad]]
+  - [[arnes-del-agente]]
+  - [[espectro-autonomia-agente]]
+  - [[gobernanza-ia-performativa]]
+
+**[[llm-como-motor-de-plausibilidad]]** →
+  - [[arnes-del-agente]]
+  - [[limite-de-las-jaulas-digitales]]
+  - [[sycophancy-como-riesgo-de-diseno]]
+  - [[espiral-delusional]]
+
 **[[lo-ilegible-como-senal]]** →
   - [[arquitectura-de-inteligencia]]
   - [[momento-liminal]]
@@ -1263,6 +1314,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[arquitectura-de-inteligencia]]
 - [[colonialismo-cultural-digital]]
 - [[cuerpo-como-infraestructura-cognitiva]]
+- [[llm-como-motor-de-plausibilidad]]
 - [[lo-ilegible-como-senal]]
 - [[presencia-como-condicion-del-valor]]
 - [[ai-evals-como-disciplina]]
@@ -1279,6 +1331,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[ingenieria-agentica]]
 - [[inteligencia-como-utilidad]]
 - [[legibilidad-de-maquina]]
+- [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
