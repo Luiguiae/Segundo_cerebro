@@ -294,6 +294,15 @@ subir_cambios: el usuario quiere publicar los cambios locales del vault al servi
   "push al servidor", "publica los cambios".
   Params: {}
 
+actualizar_repo: el usuario quiere hacer git add, commit y push del vault local al repositorio en GitHub.
+  NO confundir con sincronizar_vault (ese TRAE cambios del servidor, este los SUBE — dirección opuesta).
+  Es funcionalmente equivalente a subir_cambios pero es un intent separado a propósito, con su propio
+  mensaje de commit ("sync: ..."); si el mensaje es ambiguo entre subir_cambios y actualizar_repo,
+  preferí actualizar_repo solo si dice literalmente "repo" o "GitHub".
+  Señales: "actualiza el repo de segundo cerebro", "actualiza el repo", "push a GitHub",
+  "sube a GitHub", "haz push".
+  Params: {}
+
 reevaluar_concepto: el usuario quiere que Jarvis vuelva a evaluar un concepto del vault
   contra la rúbrica de calidad (no confundir con auditar_huerfanos ni accion_directa).
   Señales: "reevalúa este concepto", "revisa esto contra la rúbrica", "vuelve a evaluar [concepto]".
@@ -340,6 +349,9 @@ Para recordar_hecho:
 
 Para subir_cambios:
 {"intent": "subir_cambios", "instruccion": "<texto literal>", "archivos_relevantes": []}
+
+Para actualizar_repo:
+{"intent": "actualizar_repo", "instruccion": "<texto literal>", "archivos_relevantes": []}
 
 Para reevaluar_concepto:
 {"intent": "reevaluar_concepto", "instruccion": "<texto literal>", "archivos_relevantes": [], "archivo": "<slug o vacío>"}
@@ -541,6 +553,14 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
         return "subir_cambios", {"instruccion": texto, "archivos_relevantes": [],
                                  "accion": "describir", "foco": "", "titulo_candidato": "",
                                  "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
+
+    ACTUALIZAR_REPO = (
+        "actualiza el repo", "push a github", "sube a github", "haz push",
+    )
+    if any(k in t for k in ACTUALIZAR_REPO):
+        return "actualizar_repo", {"instruccion": texto, "archivos_relevantes": [],
+                                   "accion": "describir", "foco": "", "titulo_candidato": "",
+                                   "operacion": "", "ruta": "", "archivo": "", "destino": "", "query": "", "extension": ""}
 
     return "accion_directa", {"instruccion": texto, "archivos_relevantes": [],
                                "accion": "describir", "foco": "", "titulo_candidato": ""}
@@ -884,6 +904,72 @@ def _profundizar_via_vps(contenido: str) -> dict | None:
         return None
 
     return response.json()
+
+
+# ── Actualizar repo (push directo a GitHub) ───────────────────────────────────
+
+def actualizar_repo() -> str:
+    """Hace git add, commit y push del vault local a GitHub. Intent separado de
+    subir_cambios (mismo destino, distinto trigger/mensaje de commit — pedido
+    explícito) pero con las mismas protecciones ya probadas ahí:
+    GIT_TERMINAL_PROMPT=0 + stdin=DEVNULL evitan que un prompt de credenciales
+    cuelgue el daemon (bug real de esta sesión); pull --rebase antes del push
+    evita un rechazo no-fast-forward si el remoto tiene commits que la laptop
+    no tiene. Sin check=True en add/commit: si el watcher ya commiteó estos
+    mismos cambios en una carrera, "nothing to commit" no es un error real."""
+    vault_path = str(CEREBRO_PATH)
+    _git_env = {**os.environ, "GIT_TERMINAL_PROMPT": "0"}
+
+    try:
+        status = subprocess.run(
+            ["git", "-C", vault_path, "status", "--porcelain"],
+            capture_output=True, text=True, timeout=30,
+            stdin=subprocess.DEVNULL,
+        )
+        if not status.stdout.strip():
+            return "No hay cambios pendientes en el vault."
+
+        subprocess.run(
+            ["git", "-C", vault_path, "add", "."],
+            capture_output=True, text=True, timeout=30,
+            stdin=subprocess.DEVNULL,
+        )
+
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        mensaje = f"sync: actualización desde laptop {timestamp}"
+        subprocess.run(
+            ["git", "-C", vault_path, "commit", "-m", mensaje],
+            capture_output=True, text=True, timeout=30,
+            stdin=subprocess.DEVNULL,
+        )
+
+        pull = subprocess.run(
+            ["git", "-C", vault_path, "pull", "--rebase", "origin", "main"],
+            capture_output=True, text=True, timeout=30,
+            stdin=subprocess.DEVNULL, env=_git_env,
+        )
+        if pull.returncode != 0:
+            subprocess.run(
+                ["git", "-C", vault_path, "rebase", "--abort"],
+                capture_output=True, text=True, timeout=10,
+                stdin=subprocess.DEVNULL,
+            )
+            return f"Error al actualizar el repo: {pull.stderr[:200] or pull.stdout[:200]}"
+
+        push = subprocess.run(
+            ["git", "-C", vault_path, "push", "origin", "main"],
+            capture_output=True, text=True, timeout=60,
+            stdin=subprocess.DEVNULL, env=_git_env, check=True,
+        )
+
+        return "Listo, vault sincronizado con GitHub."
+
+    except subprocess.CalledProcessError as e:
+        return f"Error al actualizar el repo: {e.stderr or e.stdout or str(e)}"
+    except subprocess.TimeoutExpired:
+        return "El push tardó demasiado. Verifica tu conexión a internet."
+    except Exception as e:
+        return f"Error inesperado: {str(e)}"
 
 
 # ── Log ────────────────────────────────────────────────────────────────────────
@@ -1352,6 +1438,12 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         except Exception as e:
             hablar("Hubo un problema al subir los cambios. Revisa la conexión.")
             registrar_en_jarvis_log("SYNC", instruccion, f"ERROR: {e}")
+        return
+
+    if intent == "actualizar_repo":
+        emitir_evento("procesando", "Actualizando repo...")
+        resultado = actualizar_repo()
+        hablar(resultado)
         return
 
     if intent == "recordar_hecho":
