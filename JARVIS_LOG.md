@@ -2,6 +2,31 @@
 
 ---
 
+### 2026-07-25 02:30 — Profundizador-1: asimetria-de-guardrails
+
+**Instrucción:** Tarea programada — Profundizador del Segundo Cerebro. Issue Scout #67 (2026-07-25).
+
+**Acciones:**
+- Leído Issue #67 "🔍 Scout [2026-07-25] — 1 candidato": CONCEPTO 1 = asimetria-de-guardrails (score 24/30)
+- Leído CONTEXTO_SEGUNDO_CEREBRO.md para referencias existentes en el vault
+- Identificados 3 ejes de investigación: (1) guardrail asymmetry como concepto documentado, (2) detalles del incidente HF julio 2026, (3) EchoGram y la asimetría desde el lado atacante
+- Lanzadas búsquedas web por cada eje — 7+ fuentes sólidas encontradas en total
+- Generado concepto completo: 5 secciones + frontmatter con 5 fuentes
+- Draft Gmail creado (ID: r-6577365454077041836) en luiguiavilae@gmail.com — pendiente envío manual (MCP solo soporta create_draft)
+- Activado modo contingencia: concepto instalado directamente en vault
+- Creado archivo de notificación en Inbox/
+
+**Resultados:**
+- `Conocimiento/Conceptos/ia/asimetria-de-guardrails.md`: OK — instalado en contingencia
+- `Inbox/2026-07-25-profundizador-1-contingencia.md`: OK — notificación de contingencia
+- Gmail draft: CREADO (no enviado automáticamente) — ID r-6577365454077041836
+- relacionado verificado: gobernanza-ia-performativa ✓, riesgo-geopolitico-del-modelo ✓, arquitectura-de-confianza ✓
+- Gate 0: PASA — todos los campos requeridos presentes, ningún campo prohibido, tags ≤5, relacionado ≤3 con slugs existentes, 3 secciones obligatorias presentes
+
+**ATLAS regenerado:** pendiente (Python no disponible en entorno remoto — regenerar localmente con `python3 Prompts/Meta/generar_index.py`)
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
