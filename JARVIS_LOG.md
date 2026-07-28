@@ -2,6 +2,34 @@
 
 ---
 
+### 2026-07-28 03:12 — scout nocturno
+
+**Instrucción:** "búsqueda nocturna: encontrar señales intelectuales nuevas, scorear candidatos, crear Issue en GitHub con TOP 3, enviar mail resumen"
+
+**Acciones:**
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` (80 conceptos, 6 familias) como base para detectar huecos.
+- PRIORIDAD 1 — Gmail: revisados newsletters `newer_than:2d`. Solo `mail.joinsuperhuman.ai` tuvo correos en la ventana (2), 100% noticias/lanzamientos de producto (Opus 5, ChatGPT Work) — descartados por regla, sin tensión real. `thebatch@deeplearning.ai` último correo del 2026-07-24 (fuera de ventana). `iterativethinking.substack.com`, `aifordesigners.substack.com`, `uxuniversity.substack.com` — sin correos encontrados.
+- PRIORIDAD 2 — Web: Lenny's Podcast/Newsletter, petermerholz.com, Stratechery (en vacaciones esta semana), TLDR AI, arXiv (cs.AI/cs.HC/cs.MA), X (@karpathy).
+- Scoreados todos los candidatos (tensión + hueco + relevancia, umbral 15/30). 6 candidatos calificaron.
+- Creado Issue #70 en GitHub con TOP 3 + 3 pendientes.
+- Intentado envío de mail resumen vía Gmail — la integración MCP de esta sesión solo expone `create_draft`, no envío directo. Activado **modo contingencia**: borrador creado en Gmail + resumen espejo guardado en `Inbox/2026-07-28-scout-summary.md`.
+
+**Resultados:**
+- Issue #70 (https://github.com/Luiguiae/Segundo_cerebro/issues/70): OK — 6 candidatos, TOP 3 marcado
+- `Inbox/2026-07-28-scout-summary.md`: OK — respaldo de contingencia
+- Mail vía Gmail: ADVERTENCIA — solo borrador, sin capacidad de envío directo en esta sesión; requiere envío manual o reconexión con permisos de envío
+
+**TOP 3:**
+1. `soledad-del-trabajo-con-agentes` — 24/30 — Lenny's Podcast (Fiona Fung, 2026-06-21)
+2. `pensamiento-sistemico-como-ventaja-agentica` — 21/30 — Lenny's Podcast (Elizabeth Stone, 2026-07-19)
+3. `agencia-sobre-adopcion-de-ia-en-diseno` — 20/30 — petermerholz.com (2026-07-23)
+
+**Pendientes:** `idea-file-como-unidad-de-intercambio` (21/30), `bifurcacion-emocional-de-la-fuerza-laboral-tech` (20/30), `delegacion-vs-direccion-en-tiempo-real` (17/30)
+
+**ATLAS regenerado:** no aplica — no se creó ningún concepto en `Conocimiento/`, solo candidatos para revisión.
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
