@@ -2,6 +2,28 @@
 
 ---
 
+### 2026-07-29 04:xx — scout nocturno
+
+**Instrucción:** Búsqueda nocturna automatizada — encontrar señales intelectuales nuevas, scorear candidatos, crear Issue con TOP 3, enviar mail resumen.
+
+**Acciones:**
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` para no proponer variantes de conceptos ya activos.
+- Prioridad 1 (Gmail, últimas 24h): búsqueda exacta contra las 5 newsletters configuradas — 0 resultados. Ampliada a 72h para descartar falla del conector — sigue en 0 para 4 de 5; UX University apareció bajo dominio distinto (`newsletter.uxuniversity.io` en vez de `uxuniversity.substack.com`), ~32h de antigüedad.
+- Prioridad 2 (web): revisados Stratechery (de vacación), Lenny's Podcast, Finding Our Way, arxiv (cs.AI/cs.HC/cs.MA), X (@karpathy, @peterme, @joulee). Varios candidatos descartados por antigüedad (Jenny Wen — marzo 2026, Dan Shipper — mayo 2026) o por duplicar contenido ya activo en el vault (Dianne Penn "evals reemplazan al PRD" duplica `ai-evals-como-disciplina`).
+- `arxiv.org` bloqueó el fetch de abstracts completos (403 vía WebFetch y curl directo) — los 2 candidatos de arxiv se scorearon con información de búsqueda web, no con el abstract original.
+- 4 candidatos superaron el umbral de 15/30. Issue #71 creado en GitHub con TOP 3 + 1 pendiente.
+- Mail resumen: Gmail conectado y funcional para lectura/búsqueda, pero el conector de esta sesión solo expone `create_draft`, no envío. Se dejó el resumen como borrador en Gmail (`r2558027686467158711`) en vez de enviado — no se activó modo contingencia porque no es una falla de Gmail, es una limitación de herramientas disponibles.
+
+**Resultados:**
+- `moral-hazard-en-sistemas-multiagente`: candidato TOP 3 — 25/30
+- `paradoja-de-la-transparencia-en-confianza-ia`: candidato TOP 3 — 23/30 (tensiona el concepto activo `arquitectura-de-confianza`, candidato a correlación futura)
+- `agotamiento-detras-del-entusiasmo-por-ia-en-diseno`: candidato TOP 3 — 22/30
+- `mcp-vs-a2a-comparativa-coordinacion`: candidato pendiente — 17/30, sin abstract confirmado
+
+**ATLAS regenerado:** no — este scout no crea ni modifica archivos en `Conocimiento/`, solo reporta candidatos.
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
