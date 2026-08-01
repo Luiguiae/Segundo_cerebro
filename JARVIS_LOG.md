@@ -2,6 +2,31 @@
 
 ---
 
+### 2026-08-01 (madrugada) — Scout nocturno
+
+**Instrucción:** Búsqueda nocturna automatizada (schedule) — encontrar señales intelectuales nuevas, scorear candidatos, crear Issue con TOP 3, enviar mail resumen.
+
+**Acciones:**
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` (80 conceptos, 6 familias) como contexto de deduplicación
+- Gmail: buscados los 5 newsletters de PRIORIDAD 1 en ventana 24-48h — solo llegó 1 correo (Superhuman AI, 31 jul), revisado completo, sin candidatos (100% noticias/lanzamientos)
+- Web (PRIORIDAD 2): Stratechery, Lenny's Podcast/Newsletter, Pacing the Frontier, TLDR AI, arXiv (cs.HC), X (@karpathy, @lennysan)
+- Revisados los 4 scouts anteriores en `Inbox/` para descartar duplicados — detectado y descartado 1 duplicado exacto (`bifurcacion-emocional-de-la-fuerza-laboral-tech`, ya pendiente desde Issue #70)
+- Scoreados todos los candidatos (tensión + hueco + relevancia /30), descartado lo <15/30
+- Creado Issue #74 con TOP 3 + 2 candidatos pendientes (score ≥15)
+- Creado borrador en Gmail (sin tool de envío directo disponible esta sesión) y copia de respaldo en `Inbox/2026-08-01-scout-summary.md`
+
+**Resultados:**
+- `dilema-de-accion-colectiva-en-pausar-la-ia` (ia) — 21/30 — candidato TOP 3, no guardado como concepto (solo propuesta)
+- `filo-irregular-de-la-capacidad-emergente` (ia) — 21/30 — candidato TOP 3, no guardado como concepto (solo propuesta)
+- `confianza-explicabilidad-para-usuarios-ciegos-en-la-era-agentica` (diseno) — 17/30 — candidato TOP 3, no guardado como concepto (solo propuesta)
+- `guion-de-zuckerberg-para-justificar-el-capex-de-ia` (economia) — 15/30 — pendiente, no guardado
+- `agencia-sobre-habilidades-como-ventaja-en-la-era-ia` (organizaciones) — 16/30 — pendiente, no guardado
+- Mail resumen: ADVERTENCIA — quedó como borrador, no enviado (sin tool de envío en esta sesión)
+
+**ATLAS regenerado:** no — ningún archivo en `Conocimiento/` fue creado ni modificado esta noche (el Scout solo propone, no escribe conceptos)
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
