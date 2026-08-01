@@ -2,6 +2,31 @@
 
 ---
 
+### 2026-08-01 — Profundizador-2: filo-irregular-de-la-capacidad-emergente
+
+**Instrucción:** Tarea programada — profundizar CONCEPTO 2 del Scout 2026-08-01 (Issue #74)
+
+**Acciones:**
+- Leído Issue #74 ("🔍 Scout [2026-08-01] — 5 candidatos") — extraído CONCEPTO 2
+- Leído CONTEXTO_SEGUNDO_CEREBRO.md para verificar relacionados existentes
+- Leída taxonomia.md y rubrica.md
+- Gate 0: PASS (todos los campos requeridos presentes, ningún campo prohibido, tags ≤ 5, relacionado ≤ 3 y verificados, 3 secciones obligatorias presentes)
+- Gate 1: PASS (atómico, propio, frontmatter completo, nombre de archivo correcto)
+- Gate 2: PASS — 4/4 (no es resumen, tiene tensión interna real, relacionable, transferible)
+- 3 ejes investigados: (1) evidencia empírica del filo — 4 fuentes sólidas; (2) consecuencias para product planning — 3 fuentes; (3) evals como metodología de respuesta — 3 fuentes
+- Borrador de Gmail creado (ID: r-8918087638021338840) — Gmail sin herramienta de envío directo, modo contingencia activado
+- Concepto instalado en vault: Conocimiento/Conceptos/ia/filo-irregular-de-la-capacidad-emergente.md
+- Notificación de contingencia: Inbox/2026-08-01-profundizador-2-contingencia.md
+
+**Resultados:**
+- `Conocimiento/Conceptos/ia/filo-irregular-de-la-capacidad-emergente.md`: OK — estado: borrador, pasa Gate 0 + Gate 1 + Gate 2
+- `Inbox/2026-08-01-profundizador-2-contingencia.md`: OK — notificación de modo contingencia
+- Gmail draft: OK — ID r-8918087638021338840 (requiere envío manual)
+
+**ATLAS regenerado:** pendiente — requiere generar_index.py en el vault local de macOS (no disponible en el entorno remoto)
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
