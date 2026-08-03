@@ -2,6 +2,26 @@
 
 ---
 
+### 2026-08-03 00:20 — Scout nocturno
+
+**Instrucción:** tarea programada — scouting de señales intelectuales últimas 24h, scoring, Issue de GitHub con TOP 3, mail resumen.
+
+**Acciones:**
+- Gmail PRIORIDAD 1: solo 2 de 5 newsletters con correo en la ventana revisada (The Batch, Superhuman). Iterative Thinking, AI First Designer y UX University sin correo — segunda noche consecutiva (ver Issue #75 de ayer).
+- PRIORIDAD 2 vía búsqueda web: Unit 42 (DeepSeek/Hermes Agent, ciberataque autónomo a 460+ sistemas), CHI 2026 (estudio de campo sobre reubicación del esfuerzo cognitivo del diseñador), cobertura de EO 14409 (plazo vencido sin entregables), Stratechery (capex de Meta en IA).
+- 5 candidatos con score ≥15/30. TOP 3 + 2 pendientes escritos en Issue #76.
+- **Detectado solapamiento con Issue #75 (abierto, sin procesar):** CONCEPTO 1 y 2 de esta noche son la misma tensión que #75-CONCEPTO-1 ("asimetría del guardrail de seguridad") con casos nuevos, no un concepto distinto. Anotado como comentario en #76 — decisión de consolidación queda para Luigui.
+- Mail resumen: el conector de Gmail de esta sesión solo expone `create_draft`, no envío directo (mismo límite que 2026-08-02). Se dejó un borrador en la bandeja + se guardó el resumen en `Inbox/2026-08-03-scout-summary.md` (modo contingencia parcial).
+
+**Resultados:**
+- Issue #76: OK — 5 candidatos (3 TOP + 2 pendientes)
+- Borrador de Gmail: OK (creado, no enviado — sin herramienta de envío disponible)
+- `Inbox/2026-08-03-scout-summary.md`: OK — creado como respaldo
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`.
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
