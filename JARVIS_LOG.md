@@ -2,6 +2,31 @@
 
 ---
 
+### 2026-08-09 23:00 — Profundizador-2: agrega incentivo-de-sobreconsumo-de-tokens
+
+**Instrucción:** Tarea automatizada — Profundizador-2 (CONCEPTO 2 del Scout)
+
+**Acciones:**
+- Leído Issue #82 (Scout 2026-08-09): 0 candidatos nuevos; referencia a Issue #81 como fuente de los candidatos del período
+- Leído Issue #81 (Scout 2026-08-08): extraído CONCEPTO 2 — `incentivo-de-sobreconsumo-de-tokens` (22/30)
+- Leído CONTEXTO_SEGUNDO_CEREBRO.md para validar slugs en `relacionado:`
+- Verificado: concepto no existía en vault (economia/ tenía 6 conceptos antes)
+- Ejes investigados: (1) incentivo financiero institucional — Meta/Claudeonomics, Amazon/Kirorank, Uber; (2) punto de retorno decreciente — arXiv:2605.09104, datos de 22k developers; (3) estrategias para equipos pequeños — arquitecturas modulares, AI wallets
+- Fuentes sólidas encontradas: 6 (4 por eje 1, 2 por eje 2, 2 por eje 3)
+- Concepto escrito en `Conocimiento/Conceptos/economia/incentivo-de-sobreconsumo-de-tokens.md`
+- ATLAS regenerado: 84 conceptos
+- Contingencia activada: Gmail no tiene `send`, solo `create_draft` — draft creado (ID: r-5656776033427328114) + archivo en `Inbox/2026-08-09-profundizador-2-contingencia.md`
+- Commit y push a branch `claude/epic-euler-w7at38`
+
+**Resultados:**
+- `incentivo-de-sobreconsumo-de-tokens.md`: OK — instalado en economia/
+- Draft Gmail: OK — creado, pendiente de send manual si se requiere
+- Contingencia: OK — `Inbox/2026-08-09-profundizador-2-contingencia.md`
+
+**ATLAS regenerado:** sí — 84 conceptos procesados
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
