@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-07-24 11:19  
-> Total de conceptos: **82**  
+> Generado automáticamente el 2026-08-09 07:14  
+> Total de conceptos: **84**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -26,6 +26,7 @@
 | [[ux-checkpoints\|UX Checkpoints]] | En la era de agentes, la filosofía del diseño se invierte: la fricción deliberada es el | `diseño`, `ux`, `agentes`, `confianza`, `control` | activo | 2026-04-21 |
 | [[costo-marginal-cero-como-disruptor\|Costo marginal cero como disruptor de moats]] | Muchos de los moats competitivos más duraderos de los últimos 30 años no se construyeron sobre tecnología superior ni s… | `ia`, `agentes`, `estrategia`, `automatizacion` | activo | 2026-07-05 |
 | [[ia-como-filtro-de-entrada\|IA como filtro de entrada al mercado laboral]] | La IA generativa no destruye empleo de manera uniforme: lo filtra por nivel de | `ia`, `automatizacion`, `transicion`, `habilidades`, `roles` | activo | 2026-04-15 |
+| [[incentivo-de-sobreconsumo-de-tokens\|El incentivo oculto detrás del tokenmaxxing]] | Los laboratorios de IA que monetizan por consumo de tokens tienen un incentivo financiero estructural para promover el … | `ia`, `estrategia`, `trabajo`, `organizacion`, `productividad` | activo | 2026-08-09 |
 | [[inversion-sesgo-tecnologico\|La inversión del sesgo tecnológico]] | Las olas anteriores de automatización siguieron un patrón consistente: afectaban | `ia`, `automatizacion`, `educacion`, `habilidades`, `transicion` | activo | 2026-04-16 |
 | [[marea-creciente-de-automatizacion\|Marea creciente de automatización]] | La automatización por IA no ocurre como una ola que golpea súbitamente tareas específicas y deja el resto intacto — ocu… | `automatizacion`, `trabajo`, `ia`, `cambio`, `transicion` | activo | 2026-05-19 |
 | [[presupuesto-ia-como-restriccion\|El presupuesto de IA como restricción operativa]] | La IA fue adoptada como multiplicador de productividad que se pagaría a sí misma. En 2026 se convirtió en el principal … | `ia`, `infraestructura`, `organizacion`, `estrategia`, `trabajo` | activo | 2026-06-12 |
@@ -61,6 +62,7 @@
 | [[legibilidad-de-maquina\|Legibilidad de máquina]] | La competencia entre productos ya no se decide solo por experiencia de usuario humana — | `agentes`, `ia`, `producto`, `estrategia`, `sistemas` | activo | 2026-04-20 |
 | [[limite-de-las-jaulas-digitales\|El límite de las jaulas digitales]] | A medida que se acumula evidencia de que las respuestas erróneas y los jailbreaks son parte inevitable de la tecnología… | `ia`, `agentes`, `arnes`, `diseño`, `limites`, `gofai`, `riesgo`, `seguridad` | — | 2026-07-14 |
 | [[orquestacion-de-agentes\|Orquestación de agentes]] | La orquestación de agentes es la disciplina de coordinar múltiples agentes de IA especializados para completar tareas c… | `agentes`, `sistemas`, `control`, `ia`, `estrategia` | activo | 2026-05-25 |
+| [[paradoja-de-la-confianza-y-adopcion\|La paradoja de la confianza y adopción en código generado por IA]] | En 2025-2026, la adopción de herramientas de IA para programar alcanzó entre el 84% y el 91% de los desarrolladores act… | `ia`, `confianza`, `codigo`, `tension`, `criterio` | borrador | 2026-08-05 |
 | [[poblaciones-sinteticas\|Poblaciones sintéticas]] | Una población sintética es un conjunto de agentes generados por LLMs que simulan la distribución estadística de comport… | `ia`, `agentes`, `validacion`, `research`, `diseño` | activo | 2026-06-18 |
 | [[problema-del-referente-para-la-ia\|El problema del referente para la IA]] | Antes de poder decidir cómo regular, diseñar o convivir con un sistema de IA, hace falta resolver una pregunta que rara… | `gobernanza-ia`, `etica`, `criterio`, `incertidumbre` | borrador | 2026-07-03 |
 | [[representacion-agente\|Representación agente]] | Cuando un agente actúa en nombre de una persona ante otros agentes — negocia, decide, se compromete — el problema de di… | `agentes`, `ia`, `etica`, `control`, `diseño` | activo | 2026-06-13 |
@@ -226,6 +228,8 @@
   → Muchos de los moats competitivos más duraderos de los últimos 30 años no se construyeron sobre tecnología superior ni s…
 - [[ia-como-filtro-de-entrada\|IA como filtro de entrada al mercado laboral]]
   → La IA generativa no destruye empleo de manera uniforme: lo filtra por nivel de
+- [[incentivo-de-sobreconsumo-de-tokens\|El incentivo oculto detrás del tokenmaxxing]]
+  → Los laboratorios de IA que monetizan por consumo de tokens tienen un incentivo financiero estructural para promover el …
 - [[inversion-sesgo-tecnologico\|La inversión del sesgo tecnológico]]
   → Las olas anteriores de automatización siguieron un patrón consistente: afectaban
 - [[marea-creciente-de-automatizacion\|Marea creciente de automatización]]
@@ -242,6 +246,8 @@
   → Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració…
 - [[impuesto-de-verificacion\|El impuesto de verificación]]
   → El Impuesto de Verificación (*Verification Tax*) es la carga cognitiva oculta que genera la IA cuando delega la ejecuci…
+- [[paradoja-de-la-confianza-y-adopcion\|La paradoja de la confianza y adopción en código generado por IA]]
+  → En 2025-2026, la adopción de herramientas de IA para programar alcanzó entre el 84% y el 91% de los desarrolladores act…
 - [[aprendizaje-vicario-mediado-por-agente\|Aprendizaje vicario mediado por agente]]
   → El aprendizaje vicario mediado por agente es el proceso por el cual miembros de un equipo
 - [[automatizar-mi-propio-trabajo\|Mi trabajo es automatizar mi trabajo]]
@@ -360,6 +366,7 @@
 
 ### `codigo`
 - [[fabrica-oscura-de-software]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[spec-driven-development]]
 
 ### `colonialismo`
@@ -370,6 +377,7 @@
 - [[sycophancy-como-riesgo-de-diseno]]
 - [[ux-checkpoints]]
 - [[espiral-delusional]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[corrupcion-silenciosa-por-delegacion]]
 
 ### `conocimiento`
@@ -417,6 +425,7 @@
 - [[espectro-autonomia-agente]]
 - [[fabrica-oscura-de-software]]
 - [[impuesto-de-verificacion]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[problema-del-referente-para-la-ia]]
 - [[la-competencia-que-oculta-el-juicio]]
 - [[corrupcion-silenciosa-por-delegacion]]
@@ -486,6 +495,7 @@
 - [[el-moat-del-gusto]]
 - [[quien-controla-el-prompt]]
 - [[costo-marginal-cero-como-disruptor]]
+- [[incentivo-de-sobreconsumo-de-tokens]]
 - [[presupuesto-ia-como-restriccion]]
 - [[arquitectura-de-inteligencia]]
 - [[capital-de-contexto]]
@@ -564,6 +574,7 @@
 - [[sycophancy-como-riesgo-de-diseno]]
 - [[costo-marginal-cero-como-disruptor]]
 - [[ia-como-filtro-de-entrada]]
+- [[incentivo-de-sobreconsumo-de-tokens]]
 - [[inversion-sesgo-tecnologico]]
 - [[marea-creciente-de-automatizacion]]
 - [[presupuesto-ia-como-restriccion]]
@@ -592,6 +603,7 @@
 - [[legibilidad-de-maquina]]
 - [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
 - [[riesgo-geopolitico-del-modelo]]
@@ -656,6 +668,7 @@
 
 ### `organizacion`
 - [[quien-controla-el-prompt]]
+- [[incentivo-de-sobreconsumo-de-tokens]]
 - [[presupuesto-ia-como-restriccion]]
 - [[gobernanza-ia-performativa]]
 - [[impuesto-de-verificacion]]
@@ -688,6 +701,7 @@
 - [[confianza-a-traves-de-velocidad]]
 
 ### `productividad`
+- [[incentivo-de-sobreconsumo-de-tokens]]
 - [[cuerpo-como-infraestructura-cognitiva]]
 - [[gestion-del-tiempo]]
 - [[rutina-trabajo-enfocada]]
@@ -763,11 +777,13 @@
 - [[conocimiento-autoorganizado-por-llm]]
 - [[espiral-delusional]]
 - [[gobernanza-ia-performativa]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[ia-sin-ecosistema]]
 - [[la-competencia-que-oculta-el-juicio]]
 - [[claridad-antes-de-velocidad]]
 
 ### `trabajo`
+- [[incentivo-de-sobreconsumo-de-tokens]]
 - [[marea-creciente-de-automatizacion]]
 - [[presupuesto-ia-como-restriccion]]
 - [[cuerpo-como-infraestructura-cognitiva]]
@@ -1048,6 +1064,11 @@
   - [[automatizacion-vs-ampliacion]]
   - [[condicion-redespliegue]]
 
+**[[incentivo-de-sobreconsumo-de-tokens]]** →
+  - [[presupuesto-ia-como-restriccion]]
+  - [[quien-controla-el-prompt]]
+  - [[capital-de-contexto]]
+
 **[[ingenieria-agentica]]** →
   - [[vibe-coding]]
   - [[spec-driven-development]]
@@ -1129,6 +1150,11 @@
   - [[arnes-del-agente]]
   - [[espectro-autonomia-agente]]
   - [[gobernanza-ia-performativa]]
+
+**[[paradoja-de-la-confianza-y-adopcion]]** →
+  - [[comprehension-debt]]
+  - [[impuesto-de-verificacion]]
+  - [[arquitectura-de-confianza]]
 
 **[[pit-stop-cognitivo]]** →
   - [[vibe-coding]]
@@ -1308,6 +1334,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[sycophancy-como-riesgo-de-diseno]]
 - [[ux-checkpoints]]
 - [[costo-marginal-cero-como-disruptor]]
+- [[incentivo-de-sobreconsumo-de-tokens]]
 - [[inversion-sesgo-tecnologico]]
 - [[marea-creciente-de-automatizacion]]
 - [[presupuesto-ia-como-restriccion]]
@@ -1333,6 +1360,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[legibilidad-de-maquina]]
 - [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
 - [[riesgo-geopolitico-del-modelo]]
