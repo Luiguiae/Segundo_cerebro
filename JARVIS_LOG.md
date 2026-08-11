@@ -2,6 +2,25 @@
 
 ---
 
+### 2026-08-11 03:00 — scout nocturno
+
+**Instrucción:** búsqueda nocturna automatizada — scorear candidatos, crear Issue con TOP 3, enviar mail resumen.
+
+**Acciones:**
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` para contexto de conceptos/familias activas.
+- Gmail PRIORIDAD 1 (deeplearning.ai, mail.joinsuperhuman.ai, iterativethinking.substack.com, aifordesigners.substack.com, uxuniversity.substack.com): solo llegó "Superhuman" en 24h, contenido casi enteramente noticias de producto — descartado por regla de noticias/lanzamientos.
+- Ante señal insuficiente, revisado el resto del inbox de newsletters de 24h (no estrictamente la lista): UX University (vía researchbookmark@substack.com), "The Code" (Superhuman), a16z, Adrian Solca. 4 candidatos superaron 15/30 — no fue necesario ir a PRIORIDAD 2 (fuentes web).
+- Creado Issue #84 en GitHub con TOP 3 + 1 candidato pendiente.
+- Intentado envío de mail resumen: el servidor Gmail conectado en esta sesión solo expone `create_draft`, no una herramienta de envío directo. Se creó el borrador (id `r6468891709433362363`) y, en modo contingencia parcial, se guardó el mismo resumen en `Inbox/2026-08-11-scout-summary.md`.
+
+**Resultados:**
+- Issue #84: OK — 4 candidatos scoreados (economia-de-la-intencion 24/30, friccion-como-entregable-estrategico 23/30, comoditizacion-del-modelo-computer-use 22/30, literalismo-agentico-como-riesgo-operativo 19/30 pendiente). Ningún concepto escrito en el vault todavía — el scout solo propone, no crea conceptos.
+- Mail: ADVERTENCIA — no se pudo enviar, solo se dejó borrador. Respaldo escrito en `Inbox/`.
+
+**ATLAS regenerado:** no — no se tocó `Conocimiento/` en esta corrida.
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
