@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-08-19 09:23  
-> Total de conceptos: **87**  
+> Generado automáticamente el 2026-08-19 09:26  
+> Total de conceptos: **88**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -64,6 +64,7 @@
 | [[legibilidad-de-maquina\|Legibilidad de máquina]] | La competencia entre productos ya no se decide solo por experiencia de usuario humana — | `agentes`, `ia`, `producto`, `estrategia`, `sistemas` | activo | 2026-04-20 |
 | [[limite-de-las-jaulas-digitales\|El límite de las jaulas digitales]] | A medida que se acumula evidencia de que las respuestas erróneas y los jailbreaks son parte inevitable de la tecnología… | `ia`, `agentes`, `diseño`, `control`, `fundamentos` | activo | 2026-07-14 |
 | [[orquestacion-de-agentes\|Orquestación de agentes]] | La orquestación de agentes es la disciplina de coordinar múltiples agentes de IA especializados para completar tareas c… | `agentes`, `sistemas`, `control`, `ia`, `estrategia` | activo | 2026-05-25 |
+| [[paradoja-de-la-confianza-y-adopcion\|La paradoja de la confianza y adopción en código generado por IA]] | En 2025-2026, la adopción de herramientas de IA para programar alcanzó entre el 84% y el 91% de los desarrolladores act… | `ia`, `confianza`, `codigo`, `tension`, `criterio` | borrador | 2026-08-05 |
 | [[poblaciones-sinteticas\|Poblaciones sintéticas]] | Una población sintética es un conjunto de agentes generados por LLMs que simulan la distribución estadística de comport… | `ia`, `agentes`, `validacion`, `research`, `diseño` | activo | 2026-06-18 |
 | [[problema-del-referente-para-la-ia\|El problema del referente para la IA]] | Antes de poder decidir cómo regular, diseñar o convivir con un sistema de IA, hace falta resolver una pregunta que rara… | `gobernanza-ia`, `etica`, `criterio`, `incertidumbre` | borrador | 2026-07-03 |
 | [[representacion-agente\|Representación agente]] | Cuando un agente actúa en nombre de una persona ante otros agentes — negocia, decide, se compromete — el problema de di… | `agentes`, `ia`, `etica`, `control`, `diseño` | activo | 2026-06-13 |
@@ -257,6 +258,8 @@
   → Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració…
 - [[impuesto-de-verificacion\|El impuesto de verificación]]
   → El Impuesto de Verificación (*Verification Tax*) es la carga cognitiva oculta que genera la IA cuando delega la ejecuci…
+- [[paradoja-de-la-confianza-y-adopcion\|La paradoja de la confianza y adopción en código generado por IA]]
+  → En 2025-2026, la adopción de herramientas de IA para programar alcanzó entre el 84% y el 91% de los desarrolladores act…
 - [[aprendizaje-vicario-mediado-por-agente\|Aprendizaje vicario mediado por agente]]
   → El aprendizaje vicario mediado por agente es el proceso por el cual miembros de un equipo
 - [[automatizar-mi-propio-trabajo\|Mi trabajo es automatizar mi trabajo]]
@@ -377,6 +380,7 @@
 
 ### `codigo`
 - [[fabrica-oscura-de-software]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[spec-driven-development]]
 
 ### `colonialismo`
@@ -388,6 +392,7 @@
 - [[ux-checkpoints]]
 - [[llm-como-motor-de-plausibilidad]]
 - [[espiral-delusional]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[corrupcion-silenciosa-por-delegacion]]
 
 ### `conocimiento`
@@ -441,6 +446,7 @@
 - [[espectro-autonomia-agente]]
 - [[fabrica-oscura-de-software]]
 - [[impuesto-de-verificacion]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[problema-del-referente-para-la-ia]]
 - [[terminal-como-interfaz-optima-para-agentes]]
 - [[la-competencia-que-oculta-el-juicio]]
@@ -620,6 +626,7 @@
 - [[legibilidad-de-maquina]]
 - [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
 - [[riesgo-geopolitico-del-modelo]]
@@ -779,6 +786,7 @@
 - [[conocimiento-autoorganizado-por-llm]]
 - [[espiral-delusional]]
 - [[gobernanza-ia-performativa]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[ia-sin-ecosistema]]
 - [[la-competencia-que-oculta-el-juicio]]
 - [[claridad-antes-de-velocidad]]
@@ -1160,6 +1168,11 @@
   - [[espectro-autonomia-agente]]
   - [[gobernanza-ia-performativa]]
 
+**[[paradoja-de-la-confianza-y-adopcion]]** →
+  - [[comprehension-debt]]
+  - [[impuesto-de-verificacion]]
+  - [[arquitectura-de-confianza]]
+
 **[[pit-stop-cognitivo]]** →
   - [[vibe-coding]]
   - [[claridad-antes-de-velocidad]]
@@ -1378,6 +1391,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[legibilidad-de-maquina]]
 - [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
+- [[paradoja-de-la-confianza-y-adopcion]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
 - [[riesgo-geopolitico-del-modelo]]

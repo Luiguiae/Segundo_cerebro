@@ -25,7 +25,9 @@
 - Auditoría de rúbrica completa (Gate 1+2) sigue pendiente desde 2026-07-06 — el conteo de hoy es estructural, no de contenido
 - Posible que existan más archivos con Gate 0 roto fuera de `ia/` y `filosofia/` — no se auditó el resto de carpetas más allá de extraer `titulo`/`estado`
 
-**ATLAS regenerado:** sí — 87 conceptos procesados
+**Nota de push:** `origin/main` tenía 10 commits que el local no tenía (local llevaba desde antes del 2026-07-28 sin `git pull`) — incluían `paradoja-de-la-confianza-y-adopcion.md` (instalado directo por el Scout, Gate 0 limpio) y 9 resúmenes de Scout en `Inbox/`. Merge limpio, sin conflictos (ninguno tocaba los archivos de esta sesión). Conteo final ajustado a **88 conceptos** tras el merge. ATLAS regenerado de nuevo post-merge.
+
+**ATLAS regenerado:** sí — 88 conceptos procesados
 
 ---
 

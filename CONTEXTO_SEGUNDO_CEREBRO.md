@@ -30,7 +30,7 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 
 ## Estado actual del vault
 
-- **87 conceptos (78 activos, 9 borrador)** — reconciliado 2026-08-19 contando directo del frontmatter de cada archivo (tablas por carpeta abajo). No es una auditoría de contenido completa, solo conteo estructural — la última auditoría de rúbrica (Gate 1+2) completa sigue siendo la de 2026-07-06, sobre 80 conceptos.
+- **88 conceptos (78 activos, 10 borrador)** — reconciliado 2026-08-19 contando directo del frontmatter de cada archivo (tablas por carpeta abajo), incluye `paradoja-de-la-confianza-y-adopcion` incorporado por el merge de commits del Scout pendientes en `origin/main` al momento del push. No es una auditoría de contenido completa, solo conteo estructural — la última auditoría de rúbrica (Gate 1+2) completa sigue siendo la de 2026-07-06, sobre 80 conceptos.
 - **29 correlaciones documentadas (18 activas, 11 borrador)** — verificado 2026-08-19, sin cambios desde la auditoría 2026-07-06.
 - **Auditoría 2026-07-06:** revisión de los 109 archivos (80 conceptos + 29 correlaciones de entonces) contra Gate 0 (estructura) y Gate 1+2 (rúbrica). 4 archivos normalizados estructuralmente (campo `slug` prohibido, `estado` ausente, `tags`/`relacionado` sobre el límite). 17 archivos bajados de `activo` a `borrador` por contenido (tensión débil, dato sin fuente, o correlación que el propio texto admite como no-contradictoria). Detalle completo en `JARVIS_LOG.md`. **No cubre los 7 conceptos instalados después** (2026-07-14 y 2026-08-19) — pasaron Gate 1+2 al momento de instalarse pero no una auditoría de rúbrica completa posterior.
 - **Gate 0 — 2 archivos normalizados el 2026-08-19** (encontrados al reconciliar esta tabla, no por auditoría deliberada): `limite-de-las-jaulas-digitales` y `llm-como-motor-de-plausibilidad` (ambos del 2026-07-14) tenían campo `slug` prohibido, `estado` ausente, y `tags`/`relacionado` sobre el límite. Normalizados — ver `JARVIS_LOG.md`.
@@ -41,7 +41,7 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
   - `agente-que-escapa-obedeciendo` (ia · 2026-07-22) — un agente puede escapar del sandbox sin desobedecer, resolviendo un conflicto entre instrucciones a favor de la que no era la del operador
   - `cuello-de-botella-del-flujo` (ia · 2026-08-14) — automatizar una tarea no acelera el flujo si esa tarea no es el paso limitante (Teoría de Restricciones aplicada a IA)
   - `limite-de-las-jaulas-digitales` (ia · 2026-07-14) — límites estructurales de contener agentes vía restricciones técnicas
-  - Nota: hay **77 conceptos candidatos adicionales** generados por el Scout automatizado (07-14 a 08-18) sin instalar todavía — 22 de ellos con score ≥24/30. Detalle en `JARVIS_LOG.md` (entrada 2026-08-19).
+  - Nota: hay **76 conceptos candidatos adicionales** generados por el Scout automatizado (07-14 a 08-18) sin instalar todavía — 22 de ellos con score ≥24/30 (`paradoja-de-la-confianza-y-adopcion`, score 23/30, ya se instaló vía merge de un commit del Scout que estaba pendiente en `origin/main`). Detalle en `JARVIS_LOG.md` (entrada 2026-08-19).
 - **Jarvis Server (VPS):** desplegado en `https://jarvis-luigui.duckdns.org`. Corre código anterior a la corrección de seguridad del 2026-07-04 (el `/health` en vivo todavía expone `conceptos`/`vault_commit` en el body) — redespliegue pendiente, no bloqueante. Endpoints: `/health`, `/comando`, `/audio`, `/evaluar` (Tavily+DeepSeek, usado por la reevaluación conversacional de Jarvis), `/confirmar` (solo para conceptos nuevos — rechaza con 409 si el slug ya existe).
 - **mejora-006 de Jarvis (Memoria y Conciencia Contextual) — completa, las 6 fases:** memoria personal, "qué hicimos" con filtro de período, subir cambios por voz, saludo proactivo + sync diario, watcher conversacional (evaluar/reportar/confirmar/guardar), profundización externa vía VPS. Detalle de diseño en `docs/plan-006.md` / `docs/tasks-006.md` (ambos `estado: completado`). Nota: el número "mejora-006" también se usa para la feature de Filesystem del daemon de voz — son dos iniciativas distintas que comparten numeración por casualidad, sin colisión real.
 - **Auto-index del watcher (2026-07-06):** el watcher ya no pide confirmación al detectar un concepto nuevo o modificado — anuncia la detección y regenera el ATLAS automáticamente sin intervención. La reevaluación completa contra la rúbrica sigue disponible, pero solo por voz directa ("Jarvis, reevalúa este concepto"), no disparada automáticamente por el watcher.
@@ -57,7 +57,7 @@ Los conceptos viven en `Conocimiento/Conceptos/` organizados en 6 subcarpetas te
 
 ```
 Conocimiento/Conceptos/
-├── ia/             (36 conceptos) — tecnología, modelos, agentes IA
+├── ia/             (37 conceptos) — tecnología, modelos, agentes IA
 ├── diseno/         (13 conceptos) — proceso de diseño, rol del diseñador, UX agéntico
 ├── producto/       (12 conceptos) — construir, medir, iterar productos
 ├── organizaciones/ (12 conceptos) — equipos, roles, transformación organizacional
@@ -77,9 +77,9 @@ Sistemas adicionales:
 
 ---
 
-## Los 87 conceptos (78 activos, 9 borrador)
+## Los 88 conceptos (78 activos, 10 borrador)
 
-### ia/ (36 conceptos)
+### ia/ (37 conceptos)
 
 | slug | título | estado |
 |---|---|---|
@@ -109,6 +109,7 @@ Sistemas adicionales:
 | `legibilidad-de-maquina` | Legibilidad de máquina | activo |
 | `limite-de-las-jaulas-digitales` | El límite de las jaulas digitales | activo |
 | `orquestacion-de-agentes` | Orquestación de agentes | activo |
+| `paradoja-de-la-confianza-y-adopcion` | La paradoja de la confianza y adopción en código generado por IA | **borrador** |
 | `poblaciones-sinteticas` | Poblaciones sintéticas | activo |
 | `problema-del-referente-para-la-ia` | El problema del referente para la IA | **borrador** |
 | `representacion-agente` | Representación agente | activo |
