@@ -1,11 +1,11 @@
 ---
 titulo: El límite de las jaulas digitales
-slug: limite-de-las-jaulas-digitales
 tipo: concepto
 fecha: 2026-07-14
 familia: agencia-ia
-tags: [ia, agentes, arnes, diseño, limites, gofai, riesgo, seguridad]
-relacionado: [llm-como-motor-de-plausibilidad, arnes-del-agente, espectro-autonomia-agente, gobernanza-ia-performativa]
+estado: activo
+tags: [ia, agentes, diseño, control, fundamentos]
+relacionado: [llm-como-motor-de-plausibilidad, arnes-del-agente, espectro-autonomia-agente]
 fuentes:
   - titulo: "The Unstoppable Force of A.I. Hype Is Meeting One Immovable Fact — Zeynep Tufekci"
     url: "https://www.nytimes.com/2026/06/30/opinion/ai-agents-steal-jobs-employment.html"

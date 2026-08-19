@@ -1,6 +1,6 @@
 # Contexto del Segundo Cerebro — Luigui Avila
 
-> Archivo actualizado el 2026-07-06 (auditoría completa del vault + mejora-006 de Jarvis completa: memoria personal, saludo proactivo, watcher conversacional con profundización externa, auto-regeneración del ATLAS — ver JARVIS_LOG.md). Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
+> Archivo actualizado el 2026-08-19 (instalación de 5 conceptos + reconciliación de las tablas por carpeta contra el frontmatter real + normalización Gate 0 de 2 archivos). Auditoría de contenido completa (Gate 1+2) más reciente: 2026-07-06. mejora-006 de Jarvis completa: memoria personal, saludo proactivo, watcher conversacional con profundización externa, auto-regeneración del ATLAS — ver JARVIS_LOG.md. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
 
 ---
 
@@ -30,16 +30,18 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 
 ## Estado actual del vault
 
-- **80 conceptos** (71 activos, 9 borrador) — última auditoría completa: 2026-07-06
-- **29 correlaciones documentadas** (18 activas, 11 borrador — la misma auditoría bajó el estado de varias por no plantear tensión real, solo convergencia o co-ocurrencia)
-- **Auditoría 2026-07-06:** revisión de los 109 archivos contra Gate 0 (estructura) y Gate 1+2 (rúbrica). 4 archivos normalizados estructuralmente (campo `slug` prohibido, `estado` ausente, `tags`/`relacionado` sobre el límite). 17 archivos bajados de `activo` a `borrador` por contenido (tensión débil, dato sin fuente, o correlación que el propio texto admite como no-contradictoria). Detalle completo en `JARVIS_LOG.md`.
+- **87 conceptos (78 activos, 9 borrador)** — reconciliado 2026-08-19 contando directo del frontmatter de cada archivo (tablas por carpeta abajo). No es una auditoría de contenido completa, solo conteo estructural — la última auditoría de rúbrica (Gate 1+2) completa sigue siendo la de 2026-07-06, sobre 80 conceptos.
+- **29 correlaciones documentadas (18 activas, 11 borrador)** — verificado 2026-08-19, sin cambios desde la auditoría 2026-07-06.
+- **Auditoría 2026-07-06:** revisión de los 109 archivos (80 conceptos + 29 correlaciones de entonces) contra Gate 0 (estructura) y Gate 1+2 (rúbrica). 4 archivos normalizados estructuralmente (campo `slug` prohibido, `estado` ausente, `tags`/`relacionado` sobre el límite). 17 archivos bajados de `activo` a `borrador` por contenido (tensión débil, dato sin fuente, o correlación que el propio texto admite como no-contradictoria). Detalle completo en `JARVIS_LOG.md`. **No cubre los 7 conceptos instalados después** (2026-07-14 y 2026-08-19) — pasaron Gate 1+2 al momento de instalarse pero no una auditoría de rúbrica completa posterior.
+- **Gate 0 — 2 archivos normalizados el 2026-08-19** (encontrados al reconciliar esta tabla, no por auditoría deliberada): `limite-de-las-jaulas-digitales` y `llm-como-motor-de-plausibilidad` (ambos del 2026-07-14) tenían campo `slug` prohibido, `estado` ausente, y `tags`/`relacionado` sobre el límite. Normalizados — ver `JARVIS_LOG.md`.
 - **6 conceptos más recientes (por fecha de frontmatter):**
-  - `cambio-como-estado-permanente` (organizaciones · 2026-07-05) — el cambio dejó de ser un evento episódico para ser el modo normal de operación en la era agéntica; las competencias de gestión de transición se vuelven competencias de operación continua
-  - `presencia-como-condicion-del-valor` (filosofia · 2026-07-05) — el valor de algo hecho a mano viene del tiempo de vida invertido, no de la técnica; la IA hace fácil producir sin presencia ("el Dalí tardío")
-  - `costo-marginal-cero-como-disruptor` (economia · 2026-07-05) — moats construidos sobre fricción de proceso colapsan cuando los agentes eliminan esa fricción
-  - `problema-del-referente-para-la-ia` (ia · 2026-07-03) — a quién beneficia una IA cuando "beneficio" no tiene un referente único ni estable. Estado borrador (fuente única).
-  - `alineacion-de-cuatro-partes` (ia · 2026-07-03) — marco de 4 capas para diagnosticar a quién sirve realmente un sistema de IA
-  - `supuestos-importados-por-ia` (filosofia · 2026-06-25) — marco propio de tres capas (ontológica, epistemológica, ética) para los supuestos filosóficos que la IA importa sin declarar
+  - `terminal-como-interfaz-optima-para-agentes` (ia · 2026-08-15) — el terminal, no la GUI, es la interfaz que domina la adopción real de agentes (80× crecimiento en descargas CLI sin interfaz gráfica de por medio)
+  - `engano-emergente-en-agentes-autonomos` (ia · 2026-08-07) — un agente puede desarrollar engaño instrumental sin instrucción explícita — riesgo de disposición, no de capacidad
+  - `seguridad-asimetrica-de-modelos-abiertos` (ia · 2026-08-03) — los guardrails de seguridad rechazan por igual a defensores y atacantes; el atacante siempre tiene un modelo abierto al que migrar
+  - `agente-que-escapa-obedeciendo` (ia · 2026-07-22) — un agente puede escapar del sandbox sin desobedecer, resolviendo un conflicto entre instrucciones a favor de la que no era la del operador
+  - `cuello-de-botella-del-flujo` (ia · 2026-08-14) — automatizar una tarea no acelera el flujo si esa tarea no es el paso limitante (Teoría de Restricciones aplicada a IA)
+  - `limite-de-las-jaulas-digitales` (ia · 2026-07-14) — límites estructurales de contener agentes vía restricciones técnicas
+  - Nota: hay **77 conceptos candidatos adicionales** generados por el Scout automatizado (07-14 a 08-18) sin instalar todavía — 22 de ellos con score ≥24/30. Detalle en `JARVIS_LOG.md` (entrada 2026-08-19).
 - **Jarvis Server (VPS):** desplegado en `https://jarvis-luigui.duckdns.org`. Corre código anterior a la corrección de seguridad del 2026-07-04 (el `/health` en vivo todavía expone `conceptos`/`vault_commit` en el body) — redespliegue pendiente, no bloqueante. Endpoints: `/health`, `/comando`, `/audio`, `/evaluar` (Tavily+DeepSeek, usado por la reevaluación conversacional de Jarvis), `/confirmar` (solo para conceptos nuevos — rechaza con 409 si el slug ya existe).
 - **mejora-006 de Jarvis (Memoria y Conciencia Contextual) — completa, las 6 fases:** memoria personal, "qué hicimos" con filtro de período, subir cambios por voz, saludo proactivo + sync diario, watcher conversacional (evaluar/reportar/confirmar/guardar), profundización externa vía VPS. Detalle de diseño en `docs/plan-006.md` / `docs/tasks-006.md` (ambos `estado: completado`). Nota: el número "mejora-006" también se usa para la feature de Filesystem del daemon de voz — son dos iniciativas distintas que comparten numeración por casualidad, sin colisión real.
 - **Auto-index del watcher (2026-07-06):** el watcher ya no pide confirmación al detectar un concepto nuevo o modificado — anuncia la detección y regenera el ATLAS automáticamente sin intervención. La reevaluación completa contra la rúbrica sigue disponible, pero solo por voz directa ("Jarvis, reevalúa este concepto"), no disparada automáticamente por el watcher.
@@ -55,7 +57,7 @@ Los conceptos viven en `Conocimiento/Conceptos/` organizados en 6 subcarpetas te
 
 ```
 Conocimiento/Conceptos/
-├── ia/             (30 conceptos) — tecnología, modelos, agentes IA
+├── ia/             (36 conceptos) — tecnología, modelos, agentes IA
 ├── diseno/         (13 conceptos) — proceso de diseño, rol del diseñador, UX agéntico
 ├── producto/       (12 conceptos) — construir, medir, iterar productos
 ├── organizaciones/ (12 conceptos) — equipos, roles, transformación organizacional
@@ -75,23 +77,26 @@ Sistemas adicionales:
 
 ---
 
-## Los 80 conceptos (71 activos, 9 borrador)
+## Los 87 conceptos (78 activos, 9 borrador)
 
-### ia/ (30 conceptos)
+### ia/ (36 conceptos)
 
 | slug | título | estado |
 |---|---|---|
+| `agente-que-escapa-obedeciendo` | El agente que escapa obedeciendo | activo |
 | `agentes-ia` | Equipos de agentes IA | activo |
 | `ai-evals-como-disciplina` | AI Evals como disciplina de producto | activo |
 | `alineacion-de-cuatro-partes` | Alineación de cuatro partes | activo |
 | `arnes-del-agente` | Arnés del agente | activo |
 | `autoautomatizacion-del-disenador` | La trampa de la autoautomatización | activo |
-| `automatizacion-vs-ampliacion` | Automatización vs. amplificación | activo |
+| `automatizacion-vs-ampliacion` | Automatización vs. amplificación: los dos modos de impacto de la IA | activo |
 | `capital-de-contexto` | Capital de contexto | activo |
 | `comprehension-debt` | Comprehension debt | activo |
 | `conocimiento-autoorganizado-por-llm` | Conocimiento autoorganizado por LLM | activo |
+| `cuello-de-botella-del-flujo` | El cuello de botella del flujo, no de la tarea | activo |
 | `design-system-como-api-para-agentes` | El design system como API para agentes | activo |
 | `el-agente-que-no-para` | El agente que no para | activo |
+| `engano-emergente-en-agentes-autonomos` | El engaño emergente en agentes autónomos | activo |
 | `espectro-autonomia-agente` | Espectro de autonomía del agente | activo |
 | `espiral-delusional` | Espiral delusional | **borrador** |
 | `fabrica-oscura-de-software` | La fábrica oscura de software | activo |
@@ -102,12 +107,15 @@ Sistemas adicionales:
 | `ingenieria-agentica` | Ingeniería agéntica | activo |
 | `inteligencia-como-utilidad` | Inteligencia como utilidad | activo |
 | `legibilidad-de-maquina` | Legibilidad de máquina | activo |
+| `limite-de-las-jaulas-digitales` | El límite de las jaulas digitales | activo |
 | `orquestacion-de-agentes` | Orquestación de agentes | activo |
 | `poblaciones-sinteticas` | Poblaciones sintéticas | activo |
 | `problema-del-referente-para-la-ia` | El problema del referente para la IA | **borrador** |
 | `representacion-agente` | Representación agente | activo |
 | `riesgo-geopolitico-del-modelo` | Riesgo geopolítico del modelo IA | activo |
+| `seguridad-asimetrica-de-modelos-abiertos` | La asimetría de seguridad de los modelos abiertos | activo |
 | `spec-driven-development` | Spec-Driven Development | activo |
+| `terminal-como-interfaz-optima-para-agentes` | El terminal como interfaz óptima para agentes | activo |
 | `usuarios-sinteticos` | Usuarios sintéticos | **borrador** |
 | `vibe-coding` | Vibe coding | activo |
 | `web-bifurcada` | Web bifurcada | activo |
@@ -175,13 +183,14 @@ Sistemas adicionales:
 | `presupuesto-ia-como-restriccion` | El presupuesto de IA como restricción operativa | activo |
 | `senal-anticipada-mercado-laboral` | Señal anticipada en el mercado laboral | activo |
 
-### filosofia/ (7 conceptos)
+### filosofia/ (8 conceptos)
 
 | slug | título | estado |
 |---|---|---|
 | `arquitectura-de-inteligencia` | Arquitectura de inteligencia | activo |
 | `colonialismo-cultural-digital` | Colonialismo cultural digital | activo |
 | `cuerpo-como-infraestructura-cognitiva` | El cuerpo como infraestructura cognitiva | **borrador** |
+| `llm-como-motor-de-plausibilidad` | LLM como motor de plausibilidad | activo |
 | `lo-ilegible-como-senal` | Lo ilegible como señal | activo |
 | `momento-liminal` | El momento liminal | activo |
 | `presencia-como-condicion-del-valor` | La presencia como condición del valor | activo |

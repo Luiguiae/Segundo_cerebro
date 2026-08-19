@@ -2,6 +2,64 @@
 
 ---
 
+### 2026-08-19 00:15 — reconciliar tablas de CONTEXTO_SEGUNDO_CEREBRO.md + normalizar Gate 0 en 2 archivos existentes
+
+**Instrucción:** "Jarvis, reconcilia la tabla desactualizada. Luego realiza el commit y el push"
+
+**Acciones:**
+- Reconstruidas por completo las 6 tablas por carpeta (`ia/`, `diseno/`, `producto/`, `organizaciones/`, `economia/`, `filosofia/`) en `CONTEXTO_SEGUNDO_CEREBRO.md`, extrayendo `titulo`/`estado` directo del frontmatter de los 87 archivos — no a mano, con script. La tabla `ia/` estaba desactualizada desde antes de esta sesión (le faltaban 6 conceptos ya instalados previamente, no solo los 5 de esta sesión).
+- Al reconciliar se detectaron **2 archivos existentes que fallan Gate 0** (no relacionado a la instalación de hoy): `limite-de-las-jaulas-digitales.md` y `llm-como-motor-de-plausibilidad.md` (ambos 2026-07-14) — campo `slug` prohibido presente, `estado` ausente, `tags` con 7–8 items (máx 5), `relacionado` con 4 items (máx 3). Por Regla 9 ("al auditar, si Gate 0 falla en un archivo existente, normaliza y registra"), se corrigieron ambos:
+  - `limite-de-las-jaulas-digitales.md`: quitado `slug`, agregado `estado: activo`, `tags` recortado a `[ia, agentes, diseño, control, fundamentos]`, `relacionado` recortado a `[llm-como-motor-de-plausibilidad, arnes-del-agente, espectro-autonomia-agente]` (se mantuvieron los 2 conceptos referenciados explícitamente en el cuerpo).
+  - `llm-como-motor-de-plausibilidad.md`: quitado `slug`, agregado `estado: activo`, `tags` recortado a `[ia, fundamentos, incertidumbre, criterio, confianza]`, `relacionado` recortado a `[arnes-del-agente, limite-de-las-jaulas-digitales, espiral-delusional]`.
+  - Contenido de ambos ya pasaba Gate 1+2 sin advertencias — no requirió reescritura de cuerpo.
+- Conteo real verificado: **87 conceptos (78 activos, 9 borrador)**, **29 correlaciones (18 activas, 11 borrador, sin cambios)**.
+- ATLAS regenerado tras las correcciones.
+- Commit + push a `main`.
+
+**Resultados:**
+- `CONTEXTO_SEGUNDO_CEREBRO.md`: OK — tablas reconciliadas, header y resumen actualizados
+- `limite-de-las-jaulas-digitales.md`: OK — normalizado Gate 0
+- `llm-como-motor-de-plausibilidad.md`: OK — normalizado Gate 0
+
+**Pendiente:**
+- Auditoría de rúbrica completa (Gate 1+2) sigue pendiente desde 2026-07-06 — el conteo de hoy es estructural, no de contenido
+- Posible que existan más archivos con Gate 0 roto fuera de `ia/` y `filosofia/` — no se auditó el resto de carpetas más allá de extraer `titulo`/`estado`
+
+**ATLAS regenerado:** sí — 87 conceptos procesados
+
+---
+
+### 2026-08-19 00:00 — instalar 5 conceptos candidatos (top score ≥25/30, revisión manual)
+
+**Instrucción:** "Jarvis, instala los top 5 candidatos: mergea las 2 ramas existentes y crea los otros 3 desde el email"
+
+**Contexto:** Auditoría de Gmail (Sent/Inbox/Drafts, 07-14 a 08-18) encontró 82 conceptos generados por el Scout automatizado y nunca instalados en el vault. Al investigar por qué 2 de los top 5 ya aparecían marcados como "instalado en modo contingencia", se descubrió que existen 71 ramas remotas `origin/claude/*` sin mergear (abril–agosto 2026) — el pipeline de instalación real no es solo el email, es también estas ramas huérfanas de GitHub. Pendiente auditarlas todas en una sesión aparte.
+
+**Acciones:**
+- `seguridad-asimetrica-de-modelos-abiertos.md`: recuperado de `origin/claude/quirky-edison-f9oimv` (no del email — el archivo de la rama ya estaba limpio, sin URLs de redirect de Gmail)
+- `engano-emergente-en-agentes-autonomos.md`: recuperado de `origin/claude/quirky-edison-pn24co`
+- `cuello-de-botella-del-flujo.md`, `agente-que-escapa-obedeciendo.md`, `terminal-como-interfaz-optima-para-agentes.md`: reconstruidos desde el bloque markdown de sus respectivos emails (Sent/Drafts), limpiando URLs de redirect `google.com/url?q=`
+- Gate 0 aplicado a los 5: estructura, campos y 3 secciones obligatorias OK. `relacionado` verificado contra `find` — todos los slugs referenciados existen.
+- **Normalización de taxonomía (los 5 archivos originales del Scout no seguían `taxonomia.md`):** `familia: ia` (valor inválido) corregido a `familia: agencia-ia` en 4 de los 5 (el 5º, `cuello-de-botella-del-flujo`, ya traía `agencia-ia` correcto). Tags fuera de la lista controlada (`alineacion`, `ciberseguridad`, `specification-gaming`, `sandbox`, `ux-agentico`, etc.) remapeados a tags controlados existentes, reusando el patrón de tags de los conceptos `relacionado` de cada uno para mantener consistencia. `estado` normalizado a `activo` en los 2 que llegaron como `borrador` — pasaron Gate 1 + Gate 2 sin advertencias.
+- Se agregó heading `# Título` faltante en `cuello-de-botella-del-flujo.md` (el email no lo traía; el resto del vault sí lo usa antes de `## El concepto`).
+- ATLAS regenerado.
+
+**Resultados:**
+- `seguridad-asimetrica-de-modelos-abiertos.md`: OK (Score Scout 27/30)
+- `cuello-de-botella-del-flujo.md`: OK (Score Scout 26/30)
+- `agente-que-escapa-obedeciendo.md`: OK (Score Scout 26/30)
+- `engano-emergente-en-agentes-autonomos.md`: OK (Score Scout 26/30)
+- `terminal-como-interfaz-optima-para-agentes.md`: OK (Score Scout 25/30)
+
+**Pendiente:**
+- 77 conceptos candidatos restantes sin instalar (22 con score ≥24/30 identificados; el resto sin revisar en detalle)
+- Auditar las 71 ramas `origin/claude/*` sin mergear — probablemente contienen más conceptos ya terminados que evitarían reconstruir desde email
+- Confirmar con Luigui si conviene arreglar el Gmail MCP para que el Scout pueda usar `familia`/tags controlados directamente y evitar esta normalización manual en cada instalación
+
+**ATLAS regenerado:** sí — 87 conceptos procesados (82 + 5 nuevos)
+
+---
+
 ### 2026-07-24 11:33 — fix: dashboard se queda congelado tras una interacción por voz
 
 **Instrucción:** "Converse con Jarvis, me indico que habian 2 nuevos conceptos, le dije chau Jarvis, me respondio y el Ui se quedo asi" (screenshot: anillo "EJECUTANDO" congelado, indicador "offline", cronómetro corriendo)
@@ -2709,3 +2767,11 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-07-24 11:20 — ACCION
 **Instrucción:** agregue dos nuevos conceptos a favor cuáles son
 **Resultado:** Los dos conceptos nuevos son "LLM como motor de plausibilidad" (filosofía) y "El límite de las jaulas digitales" (ia), ambos del 2026-07-14 y aún sin guardar en el vault (siguen como untracked en git). Se relacionan entre sí y con "arnés del agente".
+
+## 2026-07-24 12:26 — SYNC
+**Instrucción:** actualiza el repo
+**Resultado:** Sin cambios pendientes
+
+## 2026-07-24 12:31 — ACCION
+**Instrucción:** mejorar
+**Resultado:** No tengo suficiente contexto para saber qué mejorar. ¿Te refieres a un concepto del vault, a una presentación, a un texto que quieres pegar, o a algo del sistema Jarvis en sí?

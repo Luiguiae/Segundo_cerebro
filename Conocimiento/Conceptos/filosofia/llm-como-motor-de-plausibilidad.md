@@ -1,11 +1,11 @@
 ---
 titulo: LLM como motor de plausibilidad
-slug: llm-como-motor-de-plausibilidad
 tipo: concepto
 fecha: 2026-07-14
 familia: epistemologia-practica
-tags: [ia, epistemologia, llm, razonamiento, limites, filosofia, riesgo]
-relacionado: [arnes-del-agente, limite-de-las-jaulas-digitales, sycophancy-como-riesgo-de-diseno, espiral-delusional]
+estado: activo
+tags: [ia, fundamentos, incertidumbre, criterio, confianza]
+relacionado: [arnes-del-agente, limite-de-las-jaulas-digitales, espiral-delusional]
 fuentes:
   - titulo: "The Unstoppable Force of A.I. Hype Is Meeting One Immovable Fact — Zeynep Tufekci"
     url: "https://www.nytimes.com/2026/06/30/opinion/ai-agents-steal-jobs-employment.html"
