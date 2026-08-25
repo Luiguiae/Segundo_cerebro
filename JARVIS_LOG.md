@@ -2,6 +2,120 @@
 
 ---
 
+### 2026-08-25 08:32 — fix: "carpeta ia/diseño/..." se enrutaba a operacion_archivo en vez de consulta_simple
+
+**Instrucción:** "ajustalo" (sobre el hallazgo reportado tras el diagnóstico del bug de Groq)
+
+**Causa raíz:** tanto el prompt del clasificador Groq como el fallback de keywords (`detectar_intent_keywords`) trataban CUALQUIER mención de "carpeta" como señal de `operacion_archivo` (archivos reales del sistema), sin distinguir las 6 subcarpetas temáticas de `Conocimiento/Conceptos/` (ia, diseño, producto, organizaciones, economía, filosofía) de ubicaciones reales (downloads, desktop, wayta). En el fallback de keywords específicamente, `FS_KEYWORDS` incluye `"en la carpeta"`/`"de la carpeta"` como match genérico — eso fue lo que hoy hizo que "cuáles son los últimos conceptos en la carpeta ia" listara el directorio home del usuario en vez de responder sobre el vault.
+
+**Acciones:**
+- `jarvis.py` — prompt de `detectar_intent_groq`: agregada "REGLA CARPETAS DEL VAULT" (con prioridad sobre la regla de desambiguación de ubicaciones del sistema), ejemplos actualizados en `consulta_simple` y nota de excepción en `operacion_archivo`
+- `jarvis.py` — `detectar_intent_keywords`: nuevo chequeo `VAULT_FOLDERS` (con variantes con/sin tilde) que intercepta "carpeta ia"/"carpeta de ia"/"carpeta del ia" (y las otras 5) ANTES del chequeo genérico de `FS_KEYWORDS`, devolviendo `consulta_simple`
+- Probado en aislado: las 2 frases reales de hoy ahora clasifican `consulta_simple`; "carpeta de descargas"/"downloads" siguen en `operacion_archivo` (sin regresión)
+- `py_compile` OK
+- Daemon reiniciado (PID 37040) — sin comando largo en curso al momento del reinicio, confirmado antes de matar el proceso
+
+**Resultados:**
+- `jarvis.py`: OK — fix validado y activo
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-08-25 08:11 — busca correlaciones
+
+**Instrucción:** "Jarvis, busca correlaciones"
+
+**Acciones:**
+- Leídos 99 conceptos `estado: activo` en `Conocimiento/Conceptos/`
+- Identificados 2 sub-conectados (≤1 relacionado): `capas-de-profundidad-sistemica`, `interdependencia-sistemica`
+- Generados candidatos por señal objetiva (mención cruzada + tags compartidos + misma familia): 773 pares con score ≥2
+- Evaluados top 20 por score; excluidos 2 ya existentes en `Correlaciones/`
+- Aplicada autocrítica adversarial a 18 candidatos: 15 descartados por síntesis ya explícita en los docs, causa-efecto sin tensión real, o co-ocurrencia
+- 3 propuestas sobrevivieron la autocrítica
+
+**Descartados y razón:**
+- `automatizar-mi-propio-trabajo × deuda-cognitiva-organizacional` — tensión ya nombrada explícitamente en las Tensiones de `deuda-cognitiva-organizacional`
+- `pit-stop-cognitivo × comprehension-debt` — relación explícita en el cuerpo de `pit-stop-cognitivo` ("Equipos que no hacen pit stops cognitivos acumulan comprehension-debt")
+- `juicio-como-trabajo-completo × ia-como-filtro-de-entrada` — conexión explícita en el propio texto de `juicio-como-trabajo-completo`
+- `ia-sin-ecosistema × presupuesto-ia-como-restriccion` — `presupuesto-ia-como-restriccion` menciona a `ia-sin-ecosistema` en Tensiones con su argumento completo
+- `arnes-del-agente × limite-de-las-jaulas-digitales` — `limite-de-las-jaulas-digitales` ya desarrolla la tensión con `arnes-del-agente` en su sección de Tensiones
+- `impuesto-de-verificacion × presupuesto-ia-como-restriccion` — explícito en `presupuesto-ia-como-restriccion`
+- `inteligencia-como-utilidad × riesgo-geopolitico-del-modelo` — `riesgo-geopolitico-del-modelo` lo cita directamente en Tensiones
+- `automatizacion-vs-ampliacion × inversion-sesgo-tecnologico` — la conexión es explícita en los ejes investigados de `inversion-sesgo-tecnologico`
+- `espiral-delusional × sycophancy-como-riesgo-de-diseno` — causa-efecto, no tensión real (sycophancy genera la espiral)
+- `representacion-agente × agencia-humana-como-imperativo-ux` — explícito en Tensiones de `representacion-agente`
+- `arnes-del-agente × representacion-agente` — ya cross-linked y explicado en `representacion-agente`
+- `ia-como-filtro-de-entrada × inversion-sesgo-tecnologico` — ya existe en `Correlaciones/`
+- `aprendizaje-vicario-mediado-por-agente × juicio-como-trabajo-completo` — ya existe en `Correlaciones/`
+- `juicio-como-trabajo-completo × ia-como-filtro-de-entrada` — ya referenciados mutuamente en los docs
+- `ia-como-filtro-de-entrada × marea-creciente-de-automatizacion` — síntesis demasiado conocida (rising tide no lift all boats)
+
+**Resultados:**
+- 3 propuestas escritas en `Inbox/2026-08-25_0811_correlaciones-propuestas.tmp.md`
+- Correlaciones propuestas:
+  1. `automatizar-mi-propio-trabajo × condicion-redespliegue` — el individuo automatiza, la organización no redesplaza
+  2. `agente-que-escapa-obedeciendo × espectro-autonomia-agente` — el espectro no tiene coordenada para "obedece y escapa"
+  3. `soberania-epistemica × ux-checkpoints` — el checkpoint que no activa el Sistema 2
+
+**ATLAS regenerado:** no — no se escribió en `Conocimiento/`
+
+---
+
+### 2026-08-25 08:15 — bug encontrado y corregido: modelo Groq deprecado (`llama-3.3-70b-versatile` → 404)
+
+**Instrucción:** "Le dije que buscara correlaciones, pasaron 40 segundos y se quedo pegado" — diagnóstico en vivo mientras el primer uso real de "Jarvis, busca correlaciones" corría
+
+**Diagnóstico:**
+- El "SIN CONEXIÓN" del dashboard no era el comando trabado — el proceso `dashboard/server.py` (separado del daemon) fue relanzado por su watchdog a las 08:05:28, ~48s después de despachar el comando; el navegador perdió el WebSocket durante ese relanzamiento. Confirmado recuperado: puertos 7777/7778 escuchando de nuevo.
+- El subproceso `claude --print` real de "busca correlaciones" (PID 28608) seguía vivo y corriendo normal en el momento del reporte (4:28 min transcurridos, 0% CPU esperado por ser I/O-bound en llamadas a la API, dentro del timeout de 600s de `ejecutar_claude()`). Es un comando pesado — hasta 20 pares candidatos + autocrítica adversarial por cada uno — más lento que comandos livianos como "audita el vault".
+- Al revisar `jarvis.log` até el error real: `[Groq falló (404 Client Error: Not Found ...), usando keywords]` — confirmado con `curl` directo a la API de Groq: `{"error":{"message":"The model \`llama-3.3-70b-versatile\` does not exist or you do not have access to it.","code":"model_not_found"}}`. Groq deprecó el modelo.
+- **Alcance real:** no es un bug de mejora-011 — afecta TODA clasificación de intent por voz desde que Groq deprecó el modelo (cayendo silenciosamente al fallback de keywords, menos preciso) y rompe por completo `responder_con_groq()` (conversación casual) y `evaluar_concepto_con_groq()` en `rubrica_local.py` (reevaluación conversacional contra la rúbrica)
+
+**Acciones:**
+- Confirmado con `GET /openai/v1/models` los modelos disponibles con la API key actual; probado `openai/gpt-oss-20b` con `response_format: json_object` — HTTP 200, JSON válido en `content`, ~0.4s de latencia total (queue+prompt+completion), compatible con el timeout de 10s del código existente
+- Reemplazado `"llama-3.3-70b-versatile"` → `"openai/gpt-oss-20b"` en 3 lugares: `jarvis.py:390` (`detectar_intent`), `jarvis.py:647` (`responder_con_groq`), `rubrica_local.py:75` (`evaluar_concepto_con_groq`)
+- Validado `py_compile` en `jarvis.py`, `jarvis_daemon.py`, `rubrica_local.py`
+- **NO se reinició el daemon todavía** — el subproceso de "busca correlaciones" seguía corriendo sobre el código viejo en memoria al momento de este fix; reiniciar ahora lo habría matado a mitad, igual que el incidente de modo taller del 2026-08-19. El fix queda en disco, listo para el próximo reinicio
+
+**Resultados:**
+- `jarvis.py`, `rubrica_local.py`: OK — modelo corregido y validado contra la API real
+- Clasificación de intent por voz: seguirá en fallback de keywords hasta el próximo reinicio del daemon
+
+**Pendiente:**
+- Reiniciar el daemon una vez que termine "busca correlaciones" (o cuando Luigui confirme), para activar el fix de Groq
+- Revisar qué generó "busca correlaciones" en `Inbox/*_correlaciones-propuestas.tmp.md` una vez termine
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-08-24 22:15 — mejora-011: Buscador de correlaciones + Graduador de borradores (implementado)
+
+**Instrucción:** "procede" (tras confirmar 3 decisiones de diseño vía preguntas: disparo por voz + cron de respaldo; ambos agentes SIEMPRE proponen, nunca auto-escriben)
+
+**Acciones:**
+- `docs/plan-011.md`: plan completo escrito y aprobado — 2 agentes nuevos + comando de cierre de loop
+- `CLAUDE.md`: 3 secciones de comando nuevas — `### Buscar correlaciones`, `### Graduar borradores`, `### Revisar propuestas pendientes` (insertadas entre "Correlacionar conceptos" y "Auditar el vault")
+- `jarvis.py`: agregados los 3 comandos a los ejemplos de `accion_directa` en el prompt del clasificador Groq + "REGLA MEJORA-011" de desambiguación explícita (evita que se confundan con `razonamiento_profundo`). Sin lógica Python nueva — confirmado que `accion_directa` ya es un passthrough genérico a `ejecutar_claude()` (línea ~1562)
+- `jarvis_daemon.py`: sin cambios — confirmado por grep que reutiliza `detectar_intent`/`despachar_intent` de `jarvis.py` vía `_mod`, así que la voz ya dispara los 3 comandos nuevos sin tocar el daemon
+- Validado `py_compile` en ambos archivos
+- Rutina cloud semanal creada (`RemoteTrigger`, id `trig_01EUK43fDMVyeJGNx9adjN1t`): cron `0 11 * * 1` UTC = lunes 06:00 America/Lima, próxima corrida 2026-08-31. Corre "busca correlaciones" + "gradúa los borradores" en una sesión cloud aislada; si genera propuestas en `Inbox/`, hace `git commit`+`push` directo a `main` (seguro — nunca toca `Conceptos/`/`Correlaciones/` ni cambia `estado` de nada existente)
+- **Desviación del plan original:** la skill `schedule` de este entorno solo ofrece rutinas cloud (sesión aislada con git checkout propio), no cron local sobre `ejecutar_claude()` como asumía el plan — documentado en `docs/plan-011.md`
+
+**Resultados:**
+- `CLAUDE.md`, `jarvis.py`: OK — 3 comandos nuevos disponibles por voz y por CLI (`claude "Jarvis, busca correlaciones"` etc.)
+- Rutina `vault-correlaciones-y-graduacion-semanal`: OK — creada y habilitada
+
+**Pendiente:**
+- Primera corrida real de la rutina cloud: 2026-08-31 (lunes) — validar que efectivamente escribe a `Inbox/` y hace push sin tocar el vault directamente
+- Decidir si el saludo proactivo del daemon debe mencionar propuestas pendientes en Inbox al arrancar (quedó fuera de este alcance)
+- Probar "Jarvis, busca correlaciones" y "Jarvis, gradúa los borradores" por voz una vez con el daemon corriendo, para confirmar clasificación de intent correcta en la práctica (no solo en el prompt del clasificador)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-08-24 21:17 — audita el vault (consolidado — todas las carpetas)
 
 **Instrucción:** "Jarvis, audita el vault"
@@ -3095,3 +3209,31 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-08-21 16:34 — ACCION
 **Instrucción:** procesa todos
 **Resultado:** Auditoría completada. 3 en borrador.
+
+## 2026-08-25 08:14 — ACCION
+**Instrucción:** busca correlaciones
+**Resultado:** 3 propuestas en `Inbox/2026-08-25_0811_correlaciones-propuestas.tmp.md`. Evaluados 18 candidatos, 15 descartados porque la síntesis ya era explícita en los propios documentos o era causa-efecto sin tensión real. Las que sobrevivieron: 1. **El individuo automatiza, la organización no redesplaza** — `automatizar-mi-propio-trabajo × condicion-redespliegue`: cumplir el imperativo individual puede acelerar el desplazamiento propio si la organización no diseñó el siguiente piso. 2.
+
+## 2026-08-25 08:15 — ACCION
+**Instrucción:** lee las correlaciones propuestas
+**Resultado:** Hay tres correlaciones propuestas del 25 de agosto. La primera se llama "El individuo automatiza, la organización no redesplaza" y plantea que automatizar tu propio trabajo puede acelerar tu propio desplazamiento si la organización no diseñó activamente qué trabajo de mayor criterio viene después. La segunda se llama "El espectro no tiene coordenada para obedece y escapa" y muestra que el modelo corrigible-autónomo falla estructuralmente porque un agente puede obedecer instrucciones contradictorias y producir comportamiento no deseado siendo perfectamente obediente.
+
+## 2026-08-25 08:16 — ACCION
+**Instrucción:** jarvis que tenemos sobre har
+**Resultado:** Tenemos el concepto **"Límite de la escala de modelo"** en la carpeta de IA, que cubre harness en profundidad: argumenta que rediseñar el harness —la capa que conecta el agente con el entorno— mejora el desempeño sin cambiar el modelo base, con evidencia de SWE-agent y Meta-Harness. No hay un concepto dedicado solo a harness, pero ese archivo es el que más lo desarrolla.
+
+## 2026-08-25 08:16 — FILESYSTEM
+**Instrucción:** los dos últimos conceptos en la carpeta guía
+**Resultado:** En 'luiguiavilae': Carpetas: .SoulseekQt/, .Trash/, .android/, .app-store/, .cache/, .claude/, .codex/, .config/, .copilot/, .cricut-design-space/, .cups/, .cursor/, .docker/, .expo/, .lemminx/, .loca
+
+## 2026-08-25 08:17 — FILESYSTEM
+**Instrucción:** los dos últimos conceptos en la carpeta ia
+**Resultado:** En 'luiguiavilae': Carpetas: .SoulseekQt/, .Trash/, .android/, .app-store/, .cache/, .claude/, .codex/, .config/, .copilot/, .cricut-design-space/, .cups/, .cursor/, .docker/, .expo/, .lemminx/, .loca
+
+## 2026-08-25 08:17 — ACCION
+**Instrucción:** jarvis
+**Resultado:** Retomando desde 2026-04-10. Pendiente: ninguno. ¿Qué necesitas hoy?
+
+## 2026-08-25 08:17 — FILESYSTEM
+**Instrucción:** cuáles son los últimos conceptos en la carpeta ia
+**Resultado:** En 'luiguiavilae': Carpetas: .SoulseekQt/, .Trash/, .android/, .app-store/, .cache/, .claude/, .codex/, .config/, .copilot/, .cricut-design-space/, .cups/, .cursor/, .docker/, .expo/, .lemminx/, .loca

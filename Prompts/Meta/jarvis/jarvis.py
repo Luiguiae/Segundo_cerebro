@@ -234,10 +234,12 @@ despedirse: el usuario quiere terminar la sesión de escucha activa.
 
 consulta_simple: pregunta sobre los CONCEPTOS o el historial del vault del Segundo Cerebro. Solo aplica cuando la pregunta es sobre conocimiento guardado en el vault, no sobre archivos del sistema operativo.
   Ejemplos: "cuántos conceptos tengo", "qué conceptos hay en producto", "lista mis correlaciones", "cuál es el más reciente",
-  "qué hemos hecho hoy", "qué cambios se hicieron", "qué actualizaciones hubo", "cuéntame el resumen del día".
+  "qué hemos hecho hoy", "qué cambios se hicieron", "qué actualizaciones hubo", "cuéntame el resumen del día",
+  "qué hay en la carpeta ia", "los últimos conceptos en la carpeta ia", "carpeta de diseño" (ver REGLA CARPETAS DEL VAULT).
 
 accion_directa: instrucción que modifica el vault o ejecuta una tarea concreta en el Segundo Cerebro.
-  Ejemplos: "crea un concepto sobre X", "correlaciona X con Y", "audita el vault", "profundiza X", "procesa esta fuente".
+  Ejemplos: "crea un concepto sobre X", "correlaciona X con Y", "audita el vault", "profundiza X", "procesa esta fuente",
+  "busca correlaciones", "gradúa los borradores", "revisa propuestas pendientes".
 
 razonamiento_profundo: análisis, evaluación o recomendaciones que requieren leer el contenido completo de los conceptos.
   Ejemplos: "qué correlaciones me faltan", "cuál es el concepto más débil", "qué patrones ves en mis conceptos de IA",
@@ -246,6 +248,8 @@ razonamiento_profundo: análisis, evaluación o recomendaciones que requieren le
 operacion_archivo: el usuario quiere operar sobre archivos o carpetas reales de su computadora (NO conceptos del vault).
   Señales fuertes: menciona "carpeta", "directorio", "archivo" junto con una ubicación del sistema operativo.
   Ubicaciones del sistema operativo reconocidas: downloads, descargas, desktop, escritorio, wayta, documentos, vault, home.
+  EXCEPCIÓN — ver REGLA CARPETAS DEL VAULT: "carpeta ia/diseño/producto/organizaciones/economía/filosofía"
+  (las 6 subcarpetas temáticas de Conceptos/) NO cuentan como ubicación del sistema operativo.
   Frases que activan este intent: "qué hay en", "lista los archivos de", "lee el [archivo]", "abre el archivo",
   "crea una carpeta", "mueve el [archivo]", "elimina el [archivo]", "borra el [archivo]", "busca en [carpeta]".
   Ejemplos (TODOS estos son operacion_archivo, no consulta_simple):
@@ -320,11 +324,24 @@ reevaluar_concepto: el usuario quiere que Jarvis vuelva a evaluar un concepto de
   Params: archivo = "slug del concepto si lo menciona, sino vacío (se usa el último leído en la sesión)"
 
 REGLA DE DESAMBIGUACIÓN CRÍTICA: Si el mensaje menciona una ubicación del sistema operativo
-(downloads, descargas, escritorio, desktop, wayta, home, o "carpeta de [nombre]") → clasifica SIEMPRE
+(downloads, descargas, escritorio, desktop, wayta, home) → clasifica SIEMPRE
 como operacion_archivo, nunca como consulta_simple ni conversacion_libre.
+
+REGLA CARPETAS DEL VAULT: "carpeta ia", "carpeta diseño"/"diseno", "carpeta producto",
+"carpeta organizaciones", "carpeta economía"/"economia", "carpeta filosofía"/"filosofia" (las 6
+subcarpetas temáticas de Conocimiento/Conceptos/) NO son ubicaciones del sistema operativo — son
+categorías del vault. Esta regla tiene prioridad sobre la anterior. "qué hay en la carpeta ia",
+"últimos conceptos en la carpeta ia", "carpeta de diseño" → SIEMPRE consulta_simple. Solo es
+operacion_archivo si además hay lenguaje explícito de archivo real del sistema operativo sobre
+esa ruta (ej. "abre el archivo X.md de la carpeta ia", "mueve el PDF de la carpeta ia a downloads").
 
 REGLA PANTALLA: "profundiza esto" o "profundiza lo que estoy leyendo" → profundizar_pantalla (NO accion_directa).
 "guarda esto como concepto" → capturar_como_concepto. "qué estoy viendo" → ver_pantalla.
+
+REGLA MEJORA-011: "busca correlaciones", "gradúa los borradores"/"gradua borradores", y "revisa propuestas
+pendientes" → SIEMPRE accion_directa, aunque suenen a pregunta ("¿qué correlaciones me faltan?" sigue siendo
+razonamiento_profundo — la diferencia es que estos 3 son comandos imperativos que escriben propuestas al Inbox,
+no solo un análisis leído en voz alta).
 
 Responde ÚNICAMENTE con JSON válido.
 
@@ -381,7 +398,7 @@ Para los demás tipos archivos_relevantes puede ser []."""
             "Content-Type": "application/json",
         },
         json={
-            "model": "llama-3.3-70b-versatile",
+            "model": "openai/gpt-oss-20b",
             "messages": mensajes,
             "temperature": 0,
             "response_format": {"type": "json_object"},
@@ -471,6 +488,16 @@ def detectar_intent_keywords(texto: str) -> tuple[str, dict]:
         "lista mis", "cuál es el más reciente", "cual es el mas reciente",
     )
     if any(c in t for c in CONSULTA):
+        return "consulta_simple", {"instruccion": texto, "archivos_relevantes": []}
+    # REGLA CARPETAS DEL VAULT: "carpeta ia/diseño/producto/..." son las 6 subcarpetas
+    # temáticas de Conceptos/, no ubicaciones del sistema operativo — deben ganarle a
+    # FS_KEYWORDS (que de otro modo captura "en la carpeta ia" vía "en la carpeta").
+    # Encontrado en producción 2026-08-25: "los últimos conceptos en la carpeta ia" se
+    # enrutaba a operacion_archivo y listaba el home del usuario en vez del vault.
+    VAULT_FOLDERS = ("ia", "diseno", "diseño", "producto", "organizaciones",
+                      "economia", "economía", "filosofia", "filosofía")
+    if any(f"carpeta {f}" in t or f"carpeta de {f}" in t or f"carpeta del {f}" in t
+           for f in VAULT_FOLDERS):
         return "consulta_simple", {"instruccion": texto, "archivos_relevantes": []}
     FS_KEYWORDS = (
         # frases de acción
@@ -638,7 +665,7 @@ def responder_con_groq(pregunta: str, historial: list[dict],
                 "Content-Type": "application/json",
             },
             json={
-                "model": "llama-3.3-70b-versatile",
+                "model": "openai/gpt-oss-20b",
                 "messages": mensajes,
                 "temperature": 0.3,
                 "max_tokens": 150,

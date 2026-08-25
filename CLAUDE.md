@@ -160,6 +160,61 @@ Jarvis, correlaciona [concepto-a] y [concepto-b]
 4. Si aprueba: escribe en `Correlaciones/`, regenera ATLAS, registra en log
 5. Si rechaza: reporta la razón específica (co-ocurrencia vs. tensión real, etc.)
 
+### Buscar correlaciones
+
+```
+Jarvis, busca correlaciones
+```
+(mejora-011 — nunca escribe directo a `Correlaciones/`, siempre propone)
+
+1. Lee todos los conceptos `estado: activo` en `Conceptos/`
+2. Identifica sub-conectados: conceptos con 0 o 1 entradas en `relacionado`
+3. Genera candidatos de pareja por señales objetivas (NO evalúes todos los pares posibles):
+   - misma `familia`
+   - ≥2 tags compartidos
+   - mención cruzada literal en el cuerpo de uno hacia el otro
+   - Tope: máximo 20 candidatos por corrida, priorizados por señal más fuerte (mención cruzada > ≥3 tags compartidos > familia+tags)
+4. Por cada candidato, redacta la correlación completa (estructura: `## La tensión` / `## El insight no obvio` / `## El límite`, igual que "Correlacionar conceptos")
+5. **Autocrítica adversarial antes de proponer** — para cada borrador, responde explícitamente:
+   - ¿El título podría ser "[A] y [B]" sin perder nada? → si sí, descarta (no es tensión real, es co-ocurrencia)
+   - ¿Alguien que leyó los dos conceptos por separado ya sabe esta conclusión? → si sí, descarta (síntesis obvia)
+   - Solo sobreviven los candidatos que pasan ambas preguntas
+6. Escribe `Inbox/YYYY-MM-DD_HHMM_correlaciones-propuestas.tmp.md` con las que sobreviven: contenido completo listo para copiar + 1 línea de justificación de la tensión real por cada una
+7. Si no sobrevive ningún candidato, NO crea el archivo — reporta "0 propuestas" en el log
+8. Registra en `JARVIS_LOG.md`: candidatos evaluados, cuántos sobrevivieron la autocrítica, cuántos se descartaron y por qué
+
+### Graduar borradores
+
+```
+Jarvis, gradúa los borradores
+```
+(mejora-011 — nunca actualiza `estado` directo, siempre propone)
+
+1. Lista todo `estado: borrador` en `Conceptos/` y `Correlaciones/`
+2. Por cada uno, busca en `JARVIS_LOG.md` la entrada de auditoría más reciente que lo tocó, para identificar el criterio específico que falló. Si no hay razón registrada, repórtalo como "sin diagnóstico, requiere revisión manual" y NO lo toques.
+3. Salta archivos con un intento de graduación registrado en `JARVIS_LOG.md` en los últimos 14 días (busca por nombre de archivo + "graduador") — evita reintentar en loop sobre un borrador irrecuperable
+4. Corre profundización dirigida SOLO al hueco específico que falló (no una reescritura genérica) — mismo motor que "Profundizar concepto", acotado a 1-2 ejes
+5. Re-evalúa Gate 2 sobre la versión enriquecida
+6. Si ahora pasa (≥3/4 concepto, 3/3 correlación): añádelo a `Inbox/YYYY-MM-DD_HHMM_borradores-graduados.tmp.md` — diff antes/después, qué cambió, evaluación Gate 2 nueva
+7. Si sigue sin pasar: dentro del mismo `.tmp.md`, sección "sin graduar" — qué se intentó y qué sigue faltando
+8. Si ningún borrador califica para revisión (todos saltados o sin diagnóstico), NO crea el archivo — reporta en el log
+9. Registra en `JARVIS_LOG.md`: cuántos se revisaron, cuántos se graduaron, cuántos siguen sin graduar
+
+### Revisar propuestas pendientes
+
+```
+Jarvis, revisa propuestas pendientes
+```
+(mejora-011 — cierra el loop de "Buscar correlaciones" y "Graduar borradores")
+
+1. Lista todos los `Inbox/*_correlaciones-propuestas.tmp.md` y `Inbox/*_borradores-graduados.tmp.md`
+2. Si no hay ninguno, reporta "sin propuestas pendientes" y detente
+3. Presenta cada propuesta a Luigui (resumen corto si es por voz; contenido completo si es en sesión de texto) y espera confirmación explícita antes de escribir cualquier cambio
+4. Al aprobar una correlación: escríbela en `Correlaciones/` con `estado: activo` (ya pasó Gate 1+2 al proponerse)
+5. Al aprobar una graduación: sobrescribe el concepto/correlación original con el contenido enriquecido y `estado: activo`
+6. Al aprobar o descartar cada item, quítalo del `.tmp.md` correspondiente; si el archivo queda vacío, bórralo
+7. Si hubo escrituras: regenera ATLAS, registra en log
+
 ### Auditar el vault
 ```
 Jarvis, audita el vault

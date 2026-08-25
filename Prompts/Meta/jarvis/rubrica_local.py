@@ -72,7 +72,7 @@ def evaluar_concepto_con_groq(ruta: Path) -> dict:
             "Content-Type": "application/json",
         },
         json={
-            "model": "llama-3.3-70b-versatile",
+            "model": "openai/gpt-oss-20b",
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": f"Concepto a evaluar (archivo: {ruta.name}):\n\n{contenido}"},
