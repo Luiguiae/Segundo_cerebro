@@ -3,7 +3,6 @@ titulo: "Inteligencia como utilidad"
 tipo: concepto
 fecha: 2026-06-13
 familia: agencia-ia
-categorias_secundarias: [economia]
 tags: [ia, infraestructura, estrategia, poder, sistemas]
 estado: activo
 relacionado: [ia-sin-ecosistema, capital-de-contexto, arnes-del-agente]

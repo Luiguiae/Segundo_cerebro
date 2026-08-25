@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-08-19 09:26  
-> Total de conceptos: **88**  
+> Generado automáticamente el 2026-08-24 21:17  
+> Total de conceptos: **101**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -16,9 +16,11 @@
 | [[de-usuario-a-cliente-servido\|De usuario a cliente servido]] | Durante treinta años, el diseño digital operó bajo una premisa implícita: hay un humano | `diseño`, `ux`, `agentes`, `roles`, `historia` | activo | 2026-04-21 |
 | [[disenador-a-constructor\|Del diseñador al constructor]] | La evolución del rol del diseñador desde un perfil que entrega especificaciones hacia uno que construye directamente el… | `diseño`, `construccion`, `roles`, `producto`, `ia` | activo | 2026-03-04 |
 | [[diseno-dos-velocidades\|Diseño en dos velocidades]] | El trabajo de diseño en la era de la IA se estratifica en dos modos que coexisten y requieren mentalidades completament… | `diseño`, `ia`, `velocidad`, `construccion`, `criterio` | activo | 2026-04-10 |
+| [[diseno-sistemico-como-cambio-de-alcance\|El diseño sistémico como cambio de alcance]] | El enfoque sistémico en diseño no es una técnica adicional que se añade al proceso —es un cambio de qué se considera de… | `diseño`, `sistemas`, `marco`, `cambio` | activo | 2026-08-21 |
 | [[diseno-uxui-y-ia\|Diseño UX/UI con IA]] | La integración de IA en el flujo UX/UI no agrega herramientas a un proceso existente — reconfigura el proceso mismo. Cu… | `diseño`, `ia`, `producto`, `criterio`, `herramientas` | activo | 2026-04-04 |
 | [[el-moat-del-gusto\|El moat del gusto]] | Durante años, el gusto fue el argumento más sólido para defender el rol del diseñador: la IA puede generar, pero no pue… | `ia`, `diseño`, `criterio`, `estrategia`, `transicion` | activo | 2026-04-24 |
-| [[fundamentales-vs-flux\|Fundamentales vs. flux]] | Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m… | `diseño`, `educacion`, `habilidades`, `fundamentos`, `criterio` | borrador | 2026-04-05 |
+| [[fundamentales-vs-flux\|Fundamentales vs. flux]] | Cuando una tecnología disrumpe una disciplina, el primer instinto es preguntar qué herramientas aprender. La pregunta m… | `diseño`, `educacion`, `habilidades`, `fundamentos`, `criterio` | activo | 2026-04-05 |
+| [[ilusion-de-omnipotencia-del-disenador\|La ilusión de omnipotencia del diseñador]] | Intervenir en un sistema complejo puede hacer creer al diseñador que tiene más alcance y control del que realmente tien… | `diseño`, `sistemas`, `tension`, `poder` | activo | 2026-08-21 |
 | [[metacognicion-del-disenador\|Metacognición del diseñador]] | Hay una diferencia entre pensar bien y saber cómo uno piensa. La metacognición — la capacidad de observar el propio pro… | `diseño`, `criterio`, `aprendizaje`, `marco`, `ia` | activo | 2026-04-24 |
 | [[quien-controla-el-prompt\|Quien controla el prompt controla el producto]] | En el flujo de trabajo tradicional, quien controlaba las especificaciones controlaba el producto. Diseño definía la exp… | `diseño`, `estrategia`, `organizacion`, `poder`, `prompts` | activo | 2026-04-05 |
 | [[soberania-epistemica\|Soberanía epistémica]] | La soberanía epistémica es la capacidad de un individuo de mantener el control sobre la *estructura* de su propio razon… | `ux`, `diseño`, `etica`, `control`, `agentes` | activo | 2026-06-18 |
@@ -31,13 +33,22 @@
 | [[presupuesto-ia-como-restriccion\|El presupuesto de IA como restricción operativa]] | La IA fue adoptada como multiplicador de productividad que se pagaría a sí misma. En 2026 se convirtió en el principal … | `ia`, `infraestructura`, `organizacion`, `estrategia`, `trabajo` | activo | 2026-06-12 |
 | [[senal-anticipada-mercado-laboral\|Señal anticipada en el mercado laboral]] | Ciertos grupos de trabajadores o tipos de rol absorben el impacto de una | `ia`, `transicion`, `patron`, `cambio`, `roles` | activo | 2026-04-15 |
 | [[arquitectura-de-inteligencia\|Arquitectura de inteligencia]] | El trabajo del diseñador — y de cualquier profesional del conocimiento — no es producir artefactos: es ayudar a persona… | `conocimiento`, `ia`, `sistemas`, `estrategia`, `marco` | activo | 2026-04-06 |
+| [[capas-de-profundidad-sistemica\|Capas de profundidad sistémica]] | Todo sistema puede leerse en al menos tres niveles de profundidad: la capa material o digital —lo que el consumidor toc… | `sistemas`, `diseño`, `marco`, `patron` | activo | 2026-08-21 |
 | [[colonialismo-cultural-digital\|Colonialismo cultural digital]] | El colonialismo cultural digital no es solo extracción de datos ni control de | `colonialismo`, `descolonizacion`, `poder`, `sistemas`, `cultura` | activo | 2026-04-04 |
-| [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]] | El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento … | `productividad`, `trabajo`, `habilidades`, `principio`, `conocimiento` | borrador | 2026-05-23 |
+| [[colonizar-el-manana-con-hoy\|Colonizar el mañana con la idea de hoy]] | Cuando una organización imagina "el futuro", casi siempre imagina una versión mejorada, más eficiente o más deseable de… | `futuros`, `diseño`, `estrategia`, `epistemologia`, `agencia` | activo | 2026-07-27 |
+| [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]] | El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento … | `productividad`, `trabajo`, `habilidades`, `principio`, `conocimiento` | activo | 2026-05-23 |
+| [[granularidad-como-decision-de-mapeo\|La granularidad como decisión de mapeo]] | Mapear un sistema requiere decidir explícitamente cuánto nivel de detalle vale la pena capturar. La granularidad no es … | `sistemas`, `criterio`, `marco`, `diseño` | activo | 2026-08-21 |
+| [[infraestructura-visible-cuando-falla\|La infraestructura se vuelve visible cuando falla]] | Las capas de un sistema —servicio, mantenimiento, infraestructura subyacente— permanecen invisibles mientras funcionan … | `sistemas`, `infraestructura`, `tension`, `patron` | activo | 2026-08-21 |
+| [[interdependencia-sistemica\|Interdependencia sistémica]] | Ningún componente de un sistema tiene impacto aislado. Modificar una pieza —un proceso, una política, un servicio— acti… | `sistemas`, `tension`, `patron`, `marco` | activo | 2026-08-21 |
+| [[invisibilizacion-de-actores-naturales\|Invisibilización de los actores naturales en el sistema]] | Cuando se mapea un sistema sociotécnico, los recursos y actores naturales —agua, territorio, biodiversidad, suelo— tien… | `sistemas`, `diseño`, `tension`, `poder` | activo | 2026-08-21 |
 | [[llm-como-motor-de-plausibilidad\|LLM como motor de plausibilidad]] | Zeynep Tufekci lo formula con precisión quirúrgica: los modelos de lenguaje no son máquinas de razonamiento. Son **moto… | `ia`, `fundamentos`, `incertidumbre`, `criterio`, `confianza` | activo | 2026-07-14 |
 | [[lo-ilegible-como-senal\|Lo ilegible como señal]] | Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. Evan Tana, socio en South Park … | `diseño`, `ia`, `criterio`, `captura`, `hipotesis` | activo | 2026-04-10 |
 | [[momento-liminal\|El momento liminal]] | Un momento liminal es el espacio entre lo que ya no funciona y lo que todavía no ha tomado forma. No es una crisis ni u… | `liderazgo`, `cambio`, `incertidumbre`, `transicion`, `diseño` | activo | 2026-04-05 |
 | [[presencia-como-condicion-del-valor\|La presencia como condición del valor]] | Puedes saber si alguien vive en un Airbnb apenas entras. No por la calidad de los muebles ni por su precio: por el caos… | `diseño`, `ia`, `criterio` | activo | 2026-07-05 |
+| [[sistema-de-mentalidades-futuras\|Sistema de mentalidades futuras]] | No existe una sola manera correcta de pensar sobre el futuro. Existen seis, y la pregunta útil no es "¿está bien hecho … | `futuros`, `foresight`, `mentalidad`, `estrategia`, `diseño` | activo | 2026-07-27 |
 | [[supuestos-importados-por-ia\|Supuestos importados por IA]] | > "Integrar un modelo de IA en tu empresa no es adoptar una herramienta. Es adoptar una filosofía — y aceptarla sin lee… | `criterio`, `gobernanza-ia`, `fundamentos` | activo | 2026-06-25 |
+| [[visibilidad-relativa-al-observador\|La visibilidad es relativa al observador]] | Lo que es invisible para un actor en un sistema puede ser perfectamente visible para otro que opera desde una capa dist… | `sistemas`, `tension`, `poder`, `patron` | activo | 2026-08-21 |
+| [[agente-como-carpeta\|El agente como carpeta]] | Durante los primeros dos años de agentes de IA en producción, la pregunta de diseño dominante era conductual: qué puede… | `ia`, `agentes`, `arquitectura`, `diseño`, `arnes` | activo | 2026-08-17 |
 | [[agente-que-escapa-obedeciendo\|El agente que escapa obedeciendo]] | Un agente de IA puede escapar de su sandbox sin desobedecer ninguna instrucción. Eso es exactamente lo que hizo el mode… | `ia`, `agentes`, `gobernanza-ia`, `control`, `poder` | activo | 2026-07-22 |
 | [[agentes-ia\|Equipos de agentes IA]] | Un equipo de agentes IA es un conjunto de modelos especializados que trabajan de forma coordinada bajo un orquestador c… | `agentes`, `ia`, `equipo`, `automatizacion`, `escala` | activo | 2026-03-04 |
 | [[ai-evals-como-disciplina\|AI Evals como disciplina de producto]] | AI Evals (evaluaciones de IA) es el conjunto de metodologías estructuradas para medir si un sistema basado en LLMs hace… | `ia`, `producto`, `validacion`, `evaluacion`, `criterio` | activo | 2026-05-18 |
@@ -53,26 +64,28 @@
 | [[el-agente-que-no-para\|El agente que no para]] | El paradigma dominante de interacción con agentes IA es conversacional: el humano envía un mensaje, el agente responde,… | `agentes`, `ux`, `validacion`, `autonomia`, `checkpoints` | activo | 2026-06-20 |
 | [[engano-emergente-en-agentes-autonomos\|El engaño emergente en agentes autónomos]] | El engaño emergente en agentes autónomos describe el fenómeno por el cual un agente de IA —entrenado para ser útil y al… | `ia`, `agentes`, `gobernanza-ia`, `control`, `incertidumbre` | activo | 2026-08-07 |
 | [[espectro-autonomia-agente\|Espectro de autonomía del agente]] | "Human in the loop" es una trampa conceptual binaria: sugiere que existe solo un modo | `ia`, `agentes`, `roles`, `criterio`, `poder` | activo | 2026-04-18 |
-| [[espiral-delusional\|Espiral delusional]] | Un chatbot sycophantic no tiene como objetivo convencer a nadie de nada. Solo hace una cosa: validar lo que el usuario … | `ia`, `etica`, `confianza`, `incertidumbre`, `tension` | borrador | 2026-04-28 |
+| [[espiral-delusional\|Espiral delusional]] | Un chatbot sycophantic no tiene como objetivo convencer a nadie de nada. Solo hace una cosa: validar lo que el usuario … | `ia`, `etica`, `confianza`, `incertidumbre`, `tension` | activo | 2026-04-28 |
 | [[fabrica-oscura-de-software\|La fábrica oscura de software]] | En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros | `ia`, `agentes`, `codigo`, `automatizacion`, `criterio` | activo | 2026-04-18 |
 | [[gestion-del-tiempo\|Gestión efectiva del tiempo]] | La gestión efectiva del tiempo se refiere a la capacidad de organizar y priorizar tareas de manera que se maximice la p… | `productividad` | borrador | 2026-06-25 |
 | [[gobernanza-ia-performativa\|Gobernanza de IA performativa]] | Cuando una organización construye las capas visibles de gobernanza de IA — política de uso, comité de ética, declaració… | `ia`, `organizacion`, `estrategia`, `tension`, `cambio` | activo | 2026-04-15 |
+| [[identidad-criptografica-como-arnes\|Identidad criptográfica como arnés]] | La práctica más común para desplegar agentes de IA en un flujo de trabajo real es entregarles las credenciales de un hu… | `ia`, `agentes`, `identidad`, `arnes`, `seguridad` | activo | 2026-07-27 |
 | [[impuesto-de-alineacion\|El impuesto de alineación]] | El impuesto de alineación (*alignment tax*) es la degradación cuantificable de rendimiento que sufren los modelos de le… | `ia`, `agentes`, `gobernanza-ia`, `etica`, `control` | activo | 2026-06-15 |
 | [[impuesto-de-verificacion\|El impuesto de verificación]] | El Impuesto de Verificación (*Verification Tax*) es la carga cognitiva oculta que genera la IA cuando delega la ejecuci… | `ia`, `organizacion`, `criterio`, `trabajo`, `control` | activo | 2026-04-28 |
 | [[ingenieria-agentica\|Ingeniería agéntica]] | La ingeniería agéntica es el paradigma que sucede al vibe coding. En lugar de escribir código o prompts directamente, e… | `ia`, `agentes`, `evaluacion`, `sistemas`, `construccion` | activo | 2026-06-13 |
 | [[inteligencia-como-utilidad\|Inteligencia como utilidad]] | La inferencia de modelos de lenguaje de gran escala atraviesa el mismo ciclo que recorrieron la electricidad, el cómput… | `ia`, `infraestructura`, `estrategia`, `poder`, `sistemas` | activo | 2026-06-13 |
 | [[legibilidad-de-maquina\|Legibilidad de máquina]] | La competencia entre productos ya no se decide solo por experiencia de usuario humana — | `agentes`, `ia`, `producto`, `estrategia`, `sistemas` | activo | 2026-04-20 |
+| [[limite-de-la-escala-de-modelo\|El límite de la escala de modelo]] | Durante años, la estrategia dominante para mejorar un sistema de IA fue simple: modelo más grande, más datos, más cómpu… | `ia`, `agentes`, `escalamiento`, `benchmarks`, `limites` | activo | 2026-08-24 |
 | [[limite-de-las-jaulas-digitales\|El límite de las jaulas digitales]] | A medida que se acumula evidencia de que las respuestas erróneas y los jailbreaks son parte inevitable de la tecnología… | `ia`, `agentes`, `diseño`, `control`, `fundamentos` | activo | 2026-07-14 |
 | [[orquestacion-de-agentes\|Orquestación de agentes]] | La orquestación de agentes es la disciplina de coordinar múltiples agentes de IA especializados para completar tareas c… | `agentes`, `sistemas`, `control`, `ia`, `estrategia` | activo | 2026-05-25 |
-| [[paradoja-de-la-confianza-y-adopcion\|La paradoja de la confianza y adopción en código generado por IA]] | En 2025-2026, la adopción de herramientas de IA para programar alcanzó entre el 84% y el 91% de los desarrolladores act… | `ia`, `confianza`, `codigo`, `tension`, `criterio` | borrador | 2026-08-05 |
+| [[paradoja-de-la-confianza-y-adopcion\|La paradoja de la confianza y adopción en código generado por IA]] | En 2025-2026, la adopción de herramientas de IA para programar alcanzó entre el 84% y el 91% de los desarrolladores act… | `ia`, `confianza`, `codigo`, `tension`, `criterio` | activo | 2026-08-05 |
 | [[poblaciones-sinteticas\|Poblaciones sintéticas]] | Una población sintética es un conjunto de agentes generados por LLMs que simulan la distribución estadística de comport… | `ia`, `agentes`, `validacion`, `research`, `diseño` | activo | 2026-06-18 |
-| [[problema-del-referente-para-la-ia\|El problema del referente para la IA]] | Antes de poder decidir cómo regular, diseñar o convivir con un sistema de IA, hace falta resolver una pregunta que rara… | `gobernanza-ia`, `etica`, `criterio`, `incertidumbre` | borrador | 2026-07-03 |
+| [[problema-del-referente-para-la-ia\|El problema del referente para la IA]] | Antes de poder decidir cómo regular, diseñar o convivir con un sistema de IA, hace falta resolver una pregunta que rara… | `gobernanza-ia`, `etica`, `criterio`, `incertidumbre` | activo | 2026-07-03 |
 | [[representacion-agente\|Representación agente]] | Cuando un agente actúa en nombre de una persona ante otros agentes — negocia, decide, se compromete — el problema de di… | `agentes`, `ia`, `etica`, `control`, `diseño` | activo | 2026-06-13 |
 | [[riesgo-geopolitico-del-modelo\|Riesgo geopolítico del modelo IA]] | El riesgo geopolítico del modelo IA es la vulnerabilidad estructural que hereda cualquier sistema construido sobre un m… | `ia`, `gobernanza-ia`, `infraestructura`, `etica`, `estrategia` | activo | 2026-06-19 |
 | [[seguridad-asimetrica-de-modelos-abiertos\|La asimetría de seguridad de los modelos abiertos]] | La "seguridad por rechazo" es asimétrica por diseño: los controles de alineación en modelos comerciales bloquean a defe… | `ia`, `gobernanza-ia`, `etica`, `estrategia`, `control` | activo | 2026-08-03 |
 | [[spec-driven-development\|Spec-Driven Development]] | Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po… | `codigo`, `construccion`, `ia`, `iteracion`, `estrategia` | activo | 2026-04-07 |
 | [[terminal-como-interfaz-optima-para-agentes\|El terminal como interfaz óptima para agentes]] | La investigación en UX de agentes asume que una interfaz gráfica es el destino natural de la colaboración humano-agente… | `ia`, `agentes`, `ux`, `herramientas`, `criterio` | activo | 2026-08-15 |
-| [[usuarios-sinteticos\|Usuarios sintéticos]] | Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con … | `research`, `validacion`, `producto`, `usuarios`, `diseño` | borrador | 2026-03-04 |
+| [[usuarios-sinteticos\|Usuarios sintéticos]] | Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con … | `research`, `validacion`, `producto`, `usuarios`, `diseño` | activo | 2026-03-04 |
 | [[vibe-coding\|Vibe coding]] | Vibe coding es un modo de construir software donde el punto de partida no es la estructura técnica sino la intención, e… | `construccion`, `herramientas`, `desarrollo`, `producto`, `velocidad` | activo | 2026-03-04 |
 | [[web-bifurcada\|Web bifurcada]] | La web está desarrollando dos capas paralelas e incompatibles: una diseñada para humanos | `agentes`, `ia`, `producto`, `sistemas`, `herramientas` | activo | 2026-04-20 |
 | [[aprendizaje-vicario-mediado-por-agente\|Aprendizaje vicario mediado por agente]] | El aprendizaje vicario mediado por agente es el proceso por el cual miembros de un equipo | `aprendizaje`, `agentes`, `organizacion`, `roles`, `educacion` | activo | 2026-05-13 |
@@ -81,7 +94,7 @@
 | [[condicion-redespliegue\|La condición del redespliegue]] | Los modelos de impacto económico de la IA generativa — incluyendo la proyección | `ia`, `automatizacion`, `organizacion`, `sistemas`, `transicion` | activo | 2026-04-16 |
 | [[cultura-de-tinkering\|Cultura de tinkering como ventaja competitiva]] | Hay dos formas de adoptar IA en una organización. La primera es top-down: la empresa elige herramientas, define polític… | `ia`, `cultura`, `liderazgo`, `organizacion`, `equipo` | activo | 2026-06-22 |
 | [[deuda-cognitiva-organizacional\|Deuda cognitiva organizacional]] | Hay una diferencia entre delegar una tarea a una herramienta y delegar el pensamiento que produce esa tarea. La primera… | `ia`, `habilidades`, `diseño`, `organizacion`, `aprendizaje` | activo | 2026-06-19 |
-| [[equipos-pequenos-alto-impacto\|Equipos pequeños de alto impacto]] | Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante… | `equipo`, `producto`, `velocidad`, `organizacion`, `startups` | borrador | 2026-03-04 |
+| [[equipos-pequenos-alto-impacto\|Equipos pequeños de alto impacto]] | Un equipo pequeño de alto impacto es una unidad de 2-10 personas que, potenciada por IA, puede alcanzar resultados ante… | `equipo`, `producto`, `velocidad`, `organizacion`, `startups` | activo | 2026-03-04 |
 | [[ia-sin-ecosistema\|IA sin ecosistema]] | La IA generativa no falla porque los modelos son insuficientes. Falla porque las organizaciones tratan la tecnología co… | `ia`, `estrategia`, `organizacion`, `sistemas`, `tension` | activo | 2026-04-24 |
 | [[juicio-como-trabajo-completo\|El juicio como trabajo completo]] | Cuando los agentes de IA hacen todo el trabajo preparatorio — construyen timelines, analizan casos, redactan resúmenes,… | `ia`, `roles`, `transicion`, `organizacion`, `trabajo` | activo | 2026-04-24 |
 | [[la-competencia-que-oculta-el-juicio\|La competencia que oculta el juicio]] | Existe una trampa estructural en el desarrollo de carrera de trabajadores de conocimiento: cuanto mejor ejecutas en tu … | `organizacion`, `roles`, `criterio`, `liderazgo`, `tension` | activo | 2026-05-06 |
@@ -91,7 +104,7 @@
 | [[confianza-a-traves-de-velocidad\|Confianza a través de velocidad]] | La lógica tradicional de calidad y confianza es lineal: primero haces algo perfecto, luego lo lanzas, y la calidad cons… | `diseño`, `velocidad`, `producto`, `iteracion`, `principio` | activo | 2026-04-10 |
 | [[copiloto-de-producto\|Copiloto de producto]] | En Le Mans el piloto no puede ver el mapa completo de la carrera — el copiloto navega. | `roles`, `producto`, `ia`, `agentes`, `equipo` | activo | 2026-04-18 |
 | [[corrupcion-silenciosa-por-delegacion\|Corrupción silenciosa por delegación]] | Cuando un LLM edita documentos de forma continua en nombre del usuario, introduce errores dispersos pero severos que se… | `agentes`, `confianza`, `control`, `criterio`, `productividad` | activo | 2026-05-15 |
-| [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]] | Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab… | `ia`, `producto`, `agentes`, `conocimiento`, `criterio` | borrador | 2026-04-10 |
+| [[expertise-de-dominio-en-producto\|Expertise de dominio como infraestructura de producto]] | Hay una diferencia fundamental entre un producto que ayuda al usuario a hacer su trabajo y un producto que hace el trab… | `ia`, `producto`, `agentes`, `conocimiento`, `criterio` | activo | 2026-04-10 |
 | [[feedback-que-escala\|El feedback que escala]] | Hay dos tipos de feedback. Solo uno escala. | `ia`, `sistemas`, `liderazgo`, `criterio`, `organizacion` | activo | 2026-04-10 |
 | [[las-tres-caras-del-producto-agentico\|Las tres caras del producto agéntico]] | Un producto en la era de agentes puede existir en tres modos estructuralmente distintos, | `producto`, `agentes`, `ia`, `diseño`, `estrategia` | activo | 2026-04-20 |
 | [[metricas-post-pantalla\|Métricas post-pantalla]] | Las métricas de engagement clásicas — time on site, page views, bounce rate, conversión | `producto`, `evaluacion`, `agentes`, `ia`, `criterio` | activo | 2026-04-20 |
@@ -118,6 +131,8 @@
   → En la era de agentes, la filosofía del diseño se invierte: la fricción deliberada es el
 - [[supuestos-importados-por-ia\|Supuestos importados por IA]]
   → > "Integrar un modelo de IA en tu empresa no es adoptar una herramienta. Es adoptar una filosofía — y aceptarla sin lee…
+- [[agente-como-carpeta\|El agente como carpeta]]
+  → Durante los primeros dos años de agentes de IA en producción, la pregunta de diseño dominante era conductual: qué puede…
 - [[agente-que-escapa-obedeciendo\|El agente que escapa obedeciendo]]
   → Un agente de IA puede escapar de su sandbox sin desobedecer ninguna instrucción. Eso es exactamente lo que hizo el mode…
 - [[agentes-ia\|Equipos de agentes IA]]
@@ -140,6 +155,8 @@
   → Un chatbot sycophantic no tiene como objetivo convencer a nadie de nada. Solo hace una cosa: validar lo que el usuario …
 - [[fabrica-oscura-de-software\|La fábrica oscura de software]]
   → En los años 80, FANUC construyó en Japón una fábrica donde robots fabricaban otros
+- [[identidad-criptografica-como-arnes\|Identidad criptográfica como arnés]]
+  → La práctica más común para desplegar agentes de IA en un flujo de trabajo real es entregarles las credenciales de un hu…
 - [[impuesto-de-alineacion\|El impuesto de alineación]]
   → El impuesto de alineación (*alignment tax*) es la degradación cuantificable de rendimiento que sufren los modelos de le…
 - [[ingenieria-agentica\|Ingeniería agéntica]]
@@ -148,6 +165,8 @@
   → La inferencia de modelos de lenguaje de gran escala atraviesa el mismo ciclo que recorrieron la electricidad, el cómput…
 - [[legibilidad-de-maquina\|Legibilidad de máquina]]
   → La competencia entre productos ya no se decide solo por experiencia de usuario humana —
+- [[limite-de-la-escala-de-modelo\|El límite de la escala de modelo]]
+  → Durante años, la estrategia dominante para mejorar un sistema de IA fue simple: modelo más grande, más datos, más cómpu…
 - [[limite-de-las-jaulas-digitales\|El límite de las jaulas digitales]]
   → A medida que se acumula evidencia de que las respuestas erróneas y los jailbreaks son parte inevitable de la tecnología…
 - [[orquestacion-de-agentes\|Orquestación de agentes]]
@@ -173,20 +192,40 @@
 
 ### `epistemologia-practica`
 
+- [[diseno-sistemico-como-cambio-de-alcance\|El diseño sistémico como cambio de alcance]]
+  → El enfoque sistémico en diseño no es una técnica adicional que se añade al proceso —es un cambio de qué se considera de…
+- [[ilusion-de-omnipotencia-del-disenador\|La ilusión de omnipotencia del diseñador]]
+  → Intervenir en un sistema complejo puede hacer creer al diseñador que tiene más alcance y control del que realmente tien…
 - [[metacognicion-del-disenador\|Metacognición del diseñador]]
   → Hay una diferencia entre pensar bien y saber cómo uno piensa. La metacognición — la capacidad de observar el propio pro…
 - [[arquitectura-de-inteligencia\|Arquitectura de inteligencia]]
   → El trabajo del diseñador — y de cualquier profesional del conocimiento — no es producir artefactos: es ayudar a persona…
+- [[capas-de-profundidad-sistemica\|Capas de profundidad sistémica]]
+  → Todo sistema puede leerse en al menos tres niveles de profundidad: la capa material o digital —lo que el consumidor toc…
 - [[colonialismo-cultural-digital\|Colonialismo cultural digital]]
   → El colonialismo cultural digital no es solo extracción de datos ni control de
+- [[colonizar-el-manana-con-hoy\|Colonizar el mañana con la idea de hoy]]
+  → Cuando una organización imagina "el futuro", casi siempre imagina una versión mejorada, más eficiente o más deseable de…
 - [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]]
   → El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento …
+- [[granularidad-como-decision-de-mapeo\|La granularidad como decisión de mapeo]]
+  → Mapear un sistema requiere decidir explícitamente cuánto nivel de detalle vale la pena capturar. La granularidad no es …
+- [[infraestructura-visible-cuando-falla\|La infraestructura se vuelve visible cuando falla]]
+  → Las capas de un sistema —servicio, mantenimiento, infraestructura subyacente— permanecen invisibles mientras funcionan …
+- [[interdependencia-sistemica\|Interdependencia sistémica]]
+  → Ningún componente de un sistema tiene impacto aislado. Modificar una pieza —un proceso, una política, un servicio— acti…
+- [[invisibilizacion-de-actores-naturales\|Invisibilización de los actores naturales en el sistema]]
+  → Cuando se mapea un sistema sociotécnico, los recursos y actores naturales —agua, territorio, biodiversidad, suelo— tien…
 - [[llm-como-motor-de-plausibilidad\|LLM como motor de plausibilidad]]
   → Zeynep Tufekci lo formula con precisión quirúrgica: los modelos de lenguaje no son máquinas de razonamiento. Son **moto…
 - [[lo-ilegible-como-senal\|Lo ilegible como señal]]
   → Hay ideas que generan energía antes de tener forma. No se pueden explicar bien todavía. Evan Tana, socio en South Park …
 - [[presencia-como-condicion-del-valor\|La presencia como condición del valor]]
   → Puedes saber si alguien vive en un Airbnb apenas entras. No por la calidad de los muebles ni por su precio: por el caos…
+- [[sistema-de-mentalidades-futuras\|Sistema de mentalidades futuras]]
+  → No existe una sola manera correcta de pensar sobre el futuro. Existen seis, y la pregunta útil no es "¿está bien hecho …
+- [[visibilidad-relativa-al-observador\|La visibilidad es relativa al observador]]
+  → Lo que es invisible para un actor en un sistema puede ser perfectamente visible para otro que opera desde una capa dist…
 - [[ai-evals-como-disciplina\|AI Evals como disciplina de producto]]
   → AI Evals (evaluaciones de IA) es el conjunto de metodologías estructuradas para medir si un sistema basado en LLMs hace…
 - [[autoautomatizacion-del-disenador\|La trampa de la autoautomatización]]
@@ -302,6 +341,9 @@
 
 ## Índice por tags
 
+### `agencia`
+- [[colonizar-el-manana-con-hoy]]
+
 ### `agentes`
 - [[agencia-humana-como-imperativo-ux]]
 - [[arquitectura-de-confianza]]
@@ -309,6 +351,7 @@
 - [[soberania-epistemica]]
 - [[ux-checkpoints]]
 - [[costo-marginal-cero-como-disruptor]]
+- [[agente-como-carpeta]]
 - [[agente-que-escapa-obedeciendo]]
 - [[agentes-ia]]
 - [[alineacion-de-cuatro-partes]]
@@ -320,9 +363,11 @@
 - [[engano-emergente-en-agentes-autonomos]]
 - [[espectro-autonomia-agente]]
 - [[fabrica-oscura-de-software]]
+- [[identidad-criptografica-como-arnes]]
 - [[impuesto-de-alineacion]]
 - [[ingenieria-agentica]]
 - [[legibilidad-de-maquina]]
+- [[limite-de-la-escala-de-modelo]]
 - [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
 - [[poblaciones-sinteticas]]
@@ -345,6 +390,13 @@
 - [[deuda-cognitiva-organizacional]]
 - [[mvp-a-prototipo-en-produccion]]
 
+### `arnes`
+- [[agente-como-carpeta]]
+- [[identidad-criptografica-como-arnes]]
+
+### `arquitectura`
+- [[agente-como-carpeta]]
+
 ### `automatizacion`
 - [[costo-marginal-cero-como-disruptor]]
 - [[ia-como-filtro-de-entrada]]
@@ -361,10 +413,14 @@
 ### `autonomia`
 - [[el-agente-que-no-para]]
 
+### `benchmarks`
+- [[limite-de-la-escala-de-modelo]]
+
 ### `builder`
 - [[automatizar-mi-propio-trabajo]]
 
 ### `cambio`
+- [[diseno-sistemico-como-cambio-de-alcance]]
 - [[marea-creciente-de-automatizacion]]
 - [[senal-anticipada-mercado-laboral]]
 - [[momento-liminal]]
@@ -433,6 +489,7 @@
 - [[fundamentales-vs-flux]]
 - [[metacognicion-del-disenador]]
 - [[sycophancy-como-riesgo-de-diseno]]
+- [[granularidad-como-decision-de-mapeo]]
 - [[llm-como-motor-de-plausibilidad]]
 - [[lo-ilegible-como-senal]]
 - [[presencia-como-condicion-del-valor]]
@@ -473,17 +530,25 @@
 - [[de-usuario-a-cliente-servido]]
 - [[disenador-a-constructor]]
 - [[diseno-dos-velocidades]]
+- [[diseno-sistemico-como-cambio-de-alcance]]
 - [[diseno-uxui-y-ia]]
 - [[el-moat-del-gusto]]
 - [[fundamentales-vs-flux]]
+- [[ilusion-de-omnipotencia-del-disenador]]
 - [[metacognicion-del-disenador]]
 - [[quien-controla-el-prompt]]
 - [[soberania-epistemica]]
 - [[sycophancy-como-riesgo-de-diseno]]
 - [[ux-checkpoints]]
+- [[capas-de-profundidad-sistemica]]
+- [[colonizar-el-manana-con-hoy]]
+- [[granularidad-como-decision-de-mapeo]]
+- [[invisibilizacion-de-actores-naturales]]
 - [[lo-ilegible-como-senal]]
 - [[momento-liminal]]
 - [[presencia-como-condicion-del-valor]]
+- [[sistema-de-mentalidades-futuras]]
+- [[agente-como-carpeta]]
 - [[arnes-del-agente]]
 - [[limite-de-las-jaulas-digitales]]
 - [[poblaciones-sinteticas]]
@@ -498,6 +563,9 @@
 - [[inversion-sesgo-tecnologico]]
 - [[aprendizaje-vicario-mediado-por-agente]]
 
+### `epistemologia`
+- [[colonizar-el-manana-con-hoy]]
+
 ### `equipo`
 - [[agentes-ia]]
 - [[comprehension-debt]]
@@ -510,12 +578,17 @@
 ### `escala`
 - [[agentes-ia]]
 
+### `escalamiento`
+- [[limite-de-la-escala-de-modelo]]
+
 ### `estrategia`
 - [[el-moat-del-gusto]]
 - [[quien-controla-el-prompt]]
 - [[costo-marginal-cero-como-disruptor]]
 - [[presupuesto-ia-como-restriccion]]
 - [[arquitectura-de-inteligencia]]
+- [[colonizar-el-manana-con-hoy]]
+- [[sistema-de-mentalidades-futuras]]
 - [[capital-de-contexto]]
 - [[cuello-de-botella-del-flujo]]
 - [[gobernanza-ia-performativa]]
@@ -547,11 +620,18 @@
 - [[ingenieria-agentica]]
 - [[metricas-post-pantalla]]
 
+### `foresight`
+- [[sistema-de-mentalidades-futuras]]
+
 ### `fundamentos`
 - [[fundamentales-vs-flux]]
 - [[llm-como-motor-de-plausibilidad]]
 - [[supuestos-importados-por-ia]]
 - [[limite-de-las-jaulas-digitales]]
+
+### `futuros`
+- [[colonizar-el-manana-con-hoy]]
+- [[sistema-de-mentalidades-futuras]]
 
 ### `gobernanza-ia`
 - [[supuestos-importados-por-ia]]
@@ -603,6 +683,7 @@
 - [[llm-como-motor-de-plausibilidad]]
 - [[lo-ilegible-como-senal]]
 - [[presencia-como-condicion-del-valor]]
+- [[agente-como-carpeta]]
 - [[agente-que-escapa-obedeciendo]]
 - [[agentes-ia]]
 - [[ai-evals-como-disciplina]]
@@ -619,11 +700,13 @@
 - [[espiral-delusional]]
 - [[fabrica-oscura-de-software]]
 - [[gobernanza-ia-performativa]]
+- [[identidad-criptografica-como-arnes]]
 - [[impuesto-de-alineacion]]
 - [[impuesto-de-verificacion]]
 - [[ingenieria-agentica]]
 - [[inteligencia-como-utilidad]]
 - [[legibilidad-de-maquina]]
+- [[limite-de-la-escala-de-modelo]]
 - [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
 - [[paradoja-de-la-confianza-y-adopcion]]
@@ -651,6 +734,9 @@
 - [[pmf-perecedero]]
 - [[restriccion-de-tiempo-como-ventaja]]
 
+### `identidad`
+- [[identidad-criptografica-como-arnes]]
+
 ### `incertidumbre`
 - [[llm-como-motor-de-plausibilidad]]
 - [[momento-liminal]]
@@ -660,6 +746,7 @@
 
 ### `infraestructura`
 - [[presupuesto-ia-como-restriccion]]
+- [[infraestructura-visible-cuando-falla]]
 - [[inteligencia-como-utilidad]]
 - [[riesgo-geopolitico-del-modelo]]
 
@@ -675,10 +762,20 @@
 - [[la-competencia-que-oculta-el-juicio]]
 - [[feedback-que-escala]]
 
+### `limites`
+- [[limite-de-la-escala-de-modelo]]
+
 ### `marco`
+- [[diseno-sistemico-como-cambio-de-alcance]]
 - [[metacognicion-del-disenador]]
 - [[arquitectura-de-inteligencia]]
+- [[capas-de-profundidad-sistemica]]
+- [[granularidad-como-decision-de-mapeo]]
+- [[interdependencia-sistemica]]
 - [[alineacion-de-cuatro-partes]]
+
+### `mentalidad`
+- [[sistema-de-mentalidades-futuras]]
 
 ### `mvp`
 - [[mvp-a-prototipo-en-produccion]]
@@ -706,10 +803,17 @@
 
 ### `patron`
 - [[senal-anticipada-mercado-laboral]]
+- [[capas-de-profundidad-sistemica]]
+- [[infraestructura-visible-cuando-falla]]
+- [[interdependencia-sistemica]]
+- [[visibilidad-relativa-al-observador]]
 
 ### `poder`
+- [[ilusion-de-omnipotencia-del-disenador]]
 - [[quien-controla-el-prompt]]
 - [[colonialismo-cultural-digital]]
+- [[invisibilizacion-de-actores-naturales]]
+- [[visibilidad-relativa-al-observador]]
 - [[agente-que-escapa-obedeciendo]]
 - [[espectro-autonomia-agente]]
 - [[inteligencia-como-utilidad]]
@@ -764,9 +868,20 @@
 - [[la-competencia-que-oculta-el-juicio]]
 - [[copiloto-de-producto]]
 
+### `seguridad`
+- [[identidad-criptografica-como-arnes]]
+
 ### `sistemas`
+- [[diseno-sistemico-como-cambio-de-alcance]]
+- [[ilusion-de-omnipotencia-del-disenador]]
 - [[arquitectura-de-inteligencia]]
+- [[capas-de-profundidad-sistemica]]
 - [[colonialismo-cultural-digital]]
+- [[granularidad-como-decision-de-mapeo]]
+- [[infraestructura-visible-cuando-falla]]
+- [[interdependencia-sistemica]]
+- [[invisibilizacion-de-actores-naturales]]
+- [[visibilidad-relativa-al-observador]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[design-system-como-api-para-agentes]]
 - [[ingenieria-agentica]]
@@ -782,6 +897,11 @@
 - [[equipos-pequenos-alto-impacto]]
 
 ### `tension`
+- [[ilusion-de-omnipotencia-del-disenador]]
+- [[infraestructura-visible-cuando-falla]]
+- [[interdependencia-sistemica]]
+- [[invisibilizacion-de-actores-naturales]]
+- [[visibilidad-relativa-al-observador]]
 - [[automatizacion-vs-ampliacion]]
 - [[conocimiento-autoorganizado-por-llm]]
 - [[espiral-delusional]]
@@ -853,6 +973,11 @@
   - [[ux-checkpoints]]
   - [[comprehension-debt]]
 
+**[[agente-como-carpeta]]** →
+  - [[arnes-del-agente]]
+  - [[spec-driven-development]]
+  - [[espectro-autonomia-agente]]
+
 **[[agente-que-escapa-obedeciendo]]** →
   - [[impuesto-de-alineacion]]
   - [[espectro-autonomia-agente]]
@@ -913,6 +1038,9 @@
   - [[condicion-redespliegue]]
   - [[cultura-de-tinkering]]
 
+**[[capas-de-profundidad-sistemica]]** →
+  - [[arquitectura-de-inteligencia]]
+
 **[[capital-de-contexto]]** →
   - [[quien-controla-el-prompt]]
   - [[feedback-que-escala]]
@@ -927,6 +1055,11 @@
   - [[quien-controla-el-prompt]]
   - [[agentes-ia]]
   - [[disenador-a-constructor]]
+
+**[[colonizar-el-manana-con-hoy]]** →
+  - [[arquitectura-de-inteligencia]]
+  - [[momento-liminal]]
+  - [[sistema-de-mentalidades-futuras]]
 
 **[[comprehension-debt]]** →
   - [[pit-stop-cognitivo]]
@@ -1003,6 +1136,10 @@
   - [[mvp-a-prototipo-en-produccion]]
   - [[quien-controla-el-prompt]]
 
+**[[diseno-sistemico-como-cambio-de-alcance]]** →
+  - [[disenador-a-constructor]]
+  - [[fundamentales-vs-flux]]
+
 **[[diseno-uxui-y-ia]]** →
   - [[disenador-a-constructor]]
   - [[usuarios-sinteticos]]
@@ -1068,6 +1205,10 @@
   - [[quien-controla-el-prompt]]
   - [[arquitectura-de-inteligencia]]
 
+**[[granularidad-como-decision-de-mapeo]]** →
+  - [[claridad-antes-de-velocidad]]
+  - [[arquitectura-de-inteligencia]]
+
 **[[ia-como-filtro-de-entrada]]** →
   - [[disenador-a-constructor]]
   - [[momento-liminal]]
@@ -1077,6 +1218,16 @@
   - [[gobernanza-ia-performativa]]
   - [[condicion-redespliegue]]
   - [[capital-de-contexto]]
+
+**[[identidad-criptografica-como-arnes]]** →
+  - [[representacion-agente]]
+  - [[arnes-del-agente]]
+  - [[workforce-de-agentes]]
+
+**[[ilusion-de-omnipotencia-del-disenador]]** →
+  - [[disenador-a-constructor]]
+  - [[metacognicion-del-disenador]]
+  - [[soberania-epistemica]]
 
 **[[impuesto-de-alineacion]]** →
   - [[gobernanza-ia-performativa]]
@@ -1088,6 +1239,10 @@
   - [[automatizacion-vs-ampliacion]]
   - [[condicion-redespliegue]]
 
+**[[infraestructura-visible-cuando-falla]]** →
+  - [[arquitectura-de-inteligencia]]
+  - [[momento-liminal]]
+
 **[[ingenieria-agentica]]** →
   - [[vibe-coding]]
   - [[spec-driven-development]]
@@ -1098,10 +1253,17 @@
   - [[capital-de-contexto]]
   - [[arnes-del-agente]]
 
+**[[interdependencia-sistemica]]** →
+  - [[arquitectura-de-inteligencia]]
+
 **[[inversion-sesgo-tecnologico]]** →
   - [[ia-como-filtro-de-entrada]]
   - [[automatizacion-vs-ampliacion]]
   - [[fundamentales-vs-flux]]
+
+**[[invisibilizacion-de-actores-naturales]]** →
+  - [[colonialismo-cultural-digital]]
+  - [[soberania-epistemica]]
 
 **[[juicio-como-trabajo-completo]]** →
   - [[ia-como-filtro-de-entrada]]
@@ -1122,6 +1284,11 @@
   - [[web-bifurcada]]
   - [[colonialismo-cultural-digital]]
   - [[lo-ilegible-como-senal]]
+
+**[[limite-de-la-escala-de-modelo]]** →
+  - [[agente-como-carpeta]]
+  - [[llm-como-motor-de-plausibilidad]]
+  - [[arnes-del-agente]]
 
 **[[limite-de-las-jaulas-digitales]]** →
   - [[llm-como-motor-de-plausibilidad]]
@@ -1237,6 +1404,11 @@
   - [[momento-liminal]]
   - [[gobernanza-ia-performativa]]
 
+**[[sistema-de-mentalidades-futuras]]** →
+  - [[diseno-dos-velocidades]]
+  - [[colonizar-el-manana-con-hoy]]
+  - [[claridad-antes-de-velocidad]]
+
 **[[soberania-epistemica]]** →
   - [[ux-checkpoints]]
   - [[agencia-humana-como-imperativo-ux]]
@@ -1276,6 +1448,10 @@
   - [[disenador-a-constructor]]
   - [[agentes-ia]]
   - [[mvp-a-prototipo-en-produccion]]
+
+**[[visibilidad-relativa-al-observador]]** →
+  - [[soberania-epistemica]]
+  - [[arquitectura-de-inteligencia]]
 
 **[[web-bifurcada]]** →
   - [[agentes-ia]]
@@ -1357,8 +1533,10 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[arquitectura-de-confianza]]
 - [[de-usuario-a-cliente-servido]]
 - [[diseno-dos-velocidades]]
+- [[diseno-sistemico-como-cambio-de-alcance]]
 - [[diseno-uxui-y-ia]]
 - [[el-moat-del-gusto]]
+- [[ilusion-de-omnipotencia-del-disenador]]
 - [[metacognicion-del-disenador]]
 - [[soberania-epistemica]]
 - [[sycophancy-como-riesgo-de-diseno]]
@@ -1368,11 +1546,20 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[marea-creciente-de-automatizacion]]
 - [[presupuesto-ia-como-restriccion]]
 - [[arquitectura-de-inteligencia]]
+- [[capas-de-profundidad-sistemica]]
 - [[colonialismo-cultural-digital]]
+- [[colonizar-el-manana-con-hoy]]
 - [[cuerpo-como-infraestructura-cognitiva]]
+- [[granularidad-como-decision-de-mapeo]]
+- [[infraestructura-visible-cuando-falla]]
+- [[interdependencia-sistemica]]
+- [[invisibilizacion-de-actores-naturales]]
 - [[llm-como-motor-de-plausibilidad]]
 - [[lo-ilegible-como-senal]]
 - [[presencia-como-condicion-del-valor]]
+- [[sistema-de-mentalidades-futuras]]
+- [[visibilidad-relativa-al-observador]]
+- [[agente-como-carpeta]]
 - [[agente-que-escapa-obedeciendo]]
 - [[ai-evals-como-disciplina]]
 - [[arnes-del-agente]]
@@ -1384,11 +1571,13 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[engano-emergente-en-agentes-autonomos]]
 - [[espiral-delusional]]
 - [[gestion-del-tiempo]]
+- [[identidad-criptografica-como-arnes]]
 - [[impuesto-de-alineacion]]
 - [[impuesto-de-verificacion]]
 - [[ingenieria-agentica]]
 - [[inteligencia-como-utilidad]]
 - [[legibilidad-de-maquina]]
+- [[limite-de-la-escala-de-modelo]]
 - [[limite-de-las-jaulas-digitales]]
 - [[orquestacion-de-agentes]]
 - [[paradoja-de-la-confianza-y-adopcion]]

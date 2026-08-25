@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [corrupcion-silenciosa-por-delegacion, comprehension-debt]
 fecha: 2026-06-10
 tags: [ia, criterio, velocidad, control, no-leido]
-estado: borrador
+estado: activo
 ---
 
 # El modo de supervisión que hace invisible la degradación

@@ -5,7 +5,7 @@ familia: equipos-impacto
 tags: [equipo, producto, velocidad, organizacion, startups]
 relacionado: [disenador-a-constructor, vibe-coding, agentes-ia]
 fecha: 2026-03-04
-estado: borrador
+estado: activo
 ---
 
 ## El concepto

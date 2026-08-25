@@ -3,7 +3,7 @@ titulo: "La paradoja de la confianza y adopción en código generado por IA"
 tipo: concepto
 fecha: 2026-08-05
 familia: transicion-ia
-estado: borrador
+estado: activo
 tags: [ia, confianza, codigo, tension, criterio]
 relacionado: [comprehension-debt, impuesto-de-verificacion, arquitectura-de-confianza]
 fuentes:

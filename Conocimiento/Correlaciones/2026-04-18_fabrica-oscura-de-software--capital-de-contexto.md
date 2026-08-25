@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [fabrica-oscura-de-software, capital-de-contexto]
 fecha: 2026-04-18
 tags: [ia, agentes, conocimiento, criterio, automatizacion]
-estado: borrador
+estado: activo
 ---
 
 # El único activo que queda

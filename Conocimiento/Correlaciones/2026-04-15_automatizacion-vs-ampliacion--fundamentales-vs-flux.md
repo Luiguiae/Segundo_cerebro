@@ -4,7 +4,7 @@ tipo: correlacion
 conceptos: [automatizacion-vs-ampliacion, fundamentales-vs-flux]
 fecha: 2026-04-15
 tags: [ia, habilidades, educacion, tension, fundamentos]
-estado: borrador
+estado: activo
 ---
 
 # La misma línea divisoria, dos mapas

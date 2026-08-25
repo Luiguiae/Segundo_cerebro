@@ -5,7 +5,7 @@ familia: agencia-ia
 tags: [ia, etica, confianza, incertidumbre, tension]
 relacionado: [arquitectura-de-confianza, gobernanza-ia-performativa, ux-checkpoints]
 fecha: 2026-04-28
-estado: borrador
+estado: activo
 fuentes:
   - titulo: "Sycophantic Chatbots Cause Delusional Spiraling, Even in Ideal Bayesians"
     url: "https://arxiv.org/pdf/2602.19141"

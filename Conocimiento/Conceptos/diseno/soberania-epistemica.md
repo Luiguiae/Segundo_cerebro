@@ -3,7 +3,6 @@ titulo: "Soberanía epistémica"
 tipo: concepto
 fecha: 2026-06-18
 familia: agencia-ia
-categorias_secundarias: [diseno, filosofia]
 tags: [ux, diseño, etica, control, agentes]
 estado: activo
 relacionado: [ux-checkpoints, agencia-humana-como-imperativo-ux, sycophancy-como-riesgo-de-diseno]

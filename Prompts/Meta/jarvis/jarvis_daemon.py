@@ -30,6 +30,7 @@ from watchdog.events import FileSystemEventHandler
 CEREBRO_PATH = Path.home() / "Documents" / "Segundo_cerebro"
 JARVIS_DIR   = CEREBRO_PATH / "Prompts" / "Meta" / "jarvis"
 LOG_PATH     = JARVIS_DIR / "jarvis.log"
+INBOX_PATH   = CEREBRO_PATH / "Inbox"
 
 WAKE_WORD  = "jarvis"
 PID_FILE   = JARVIS_DIR / "jarvis.pid"
@@ -37,6 +38,11 @@ PID_FILE   = JARVIS_DIR / "jarvis.pid"
 # Segundos que Jarvis permanece en modo escucha activa tras el wake word.
 # Cada interacción reinicia el contador. Ajusta según tu preferencia.
 MODO_ESCUCHA_TIMEOUT = 60
+
+# Mejora 010 — Modo Taller: mapeo de conceptos atómicos desde conversación en vivo.
+# Ver docs/plan-010.md para el diseño completo.
+TOPE_MODO_TALLER  = 90 * 60  # segundos — cierre automático si nadie dice "detén el mapeo"
+CHECKPOINT_TALLER = 5 * 60   # segundos entre checkpoints explícitos (flush+fsync + log)
 
 # Cola de eventos del watcher generados durante una sesión activa.
 # Los callbacks enqueuean aquí; loop_principal drena al salir de modo escucha.
@@ -69,6 +75,10 @@ _current_session_id: list = [0]
 # Comienza en False — se activa con "Jarvis abre los ojos".
 # Cuando está cleared el loop de cámara corre a 1fps sin detección ni gestos.
 _vision_activa: threading.Event = threading.Event()
+
+# Modo taller (mejora-010): previene dos sesiones de captura corriendo en paralelo.
+# Se setea al inicio de modo_taller_captura() y se limpia en su finally.
+_modo_taller_activo: threading.Event = threading.Event()
 
 # ── Logging ────────────────────────────────────────────────────────────────────
 # RotatingFileHandler en vez de un FileHandler simple: el daemon corre indefinidamente
@@ -552,6 +562,7 @@ def escuchar_respuesta(timeout: int = 30) -> str | None:
     if eco_restante > 0:
         time.sleep(eco_restante)
     recognizer = sr.Recognizer()
+    recognizer.operation_timeout = _mod.STT_OPERATION_TIMEOUT
     _dev = seleccionar_dispositivo_entrada()
     for intento in range(3):
         try:
@@ -820,6 +831,7 @@ def esperar_wake_word(device_index: "int | None" = None) -> str:
     para que otras sesiones (watcher callbacks) puedan abrirlo sin conflicto."""
     import speech_recognition as sr
     recognizer = sr.Recognizer()
+    recognizer.operation_timeout = _mod.STT_OPERATION_TIMEOUT
     log(f"Esperando wake word {WAKE_WORDS}...")
 
     while True:
@@ -895,6 +907,16 @@ _CERRAR_OJOS = (
     "apaga la visión", "apaga la vision", "duerme la camara",
 )
 
+# Mejora 010 — Modo Taller. Deliberadamente específicas (no "detente" ni "para"
+# solos, que ya están en _DESPEDIDAS) para evitar falsos positivos con la charla
+# normal de un taller.
+_MODO_TALLER = ("modo taller", "activa modo taller", "modo mapeo")
+
+_DETENER_MAPEO = (
+    "detén el mapeo", "deten el mapeo", "detente el mapeo",
+    "para el mapeo", "termina el mapeo", "termina el taller",
+)
+
 
 def _es_despedida(texto: str) -> bool:
     t = texto.lower()
@@ -909,6 +931,16 @@ def _es_abrir_ojos(texto: str) -> bool:
 def _es_cerrar_ojos(texto: str) -> bool:
     t = texto.lower()
     return any(p in t for p in _CERRAR_OJOS)
+
+
+def _es_modo_taller(texto: str) -> bool:
+    t = texto.lower()
+    return any(p in t for p in _MODO_TALLER)
+
+
+def _es_detener_mapeo(texto: str) -> bool:
+    t = texto.lower()
+    return any(p in t for p in _DETENER_MAPEO)
 
 
 def procesar_comando(lock_interaccion: threading.Lock) -> bool:
@@ -959,11 +991,32 @@ def procesar_comando(lock_interaccion: threading.Lock) -> bool:
             hablar("Entendido. Cerrando los ojos.")
             return True
 
-        emitir_evento("procesando", texto[:60])
-        intent, params = detectar_intent(texto, historial_sesion)
-        log(f"Intent: {intent} | Params: {params}")
-        actualizar_historial(texto, (intent, params))
-        despachar_intent(intent, params, texto, vision_callback=_vision_callback)
+        if _es_modo_taller(texto):
+            if _modo_taller_activo.is_set():
+                log("[Taller] Modo taller solicitado pero ya hay una sesión activa — ignorando.")
+                hablar("Ya estoy en modo taller.")
+                return True
+            log("[Taller] Activando modo taller.")
+            emitir_evento("escuchando", "Modo taller — mapeando conversación...")
+            hablar("Modo taller activado. Voy a escuchar hasta que digas: Jarvis, detén el mapeo.")
+            iniciar_modo_taller = True
+        else:
+            iniciar_modo_taller = False
+
+        if not iniciar_modo_taller:
+            emitir_evento("procesando", texto[:60])
+            intent, params = detectar_intent(texto, historial_sesion)
+            log(f"Intent: {intent} | Params: {params}")
+            actualizar_historial(texto, (intent, params))
+            despachar_intent(intent, params, texto, vision_callback=_vision_callback)
+
+    # modo_taller_captura() corre FUERA del `with lock_interaccion:` de arriba a
+    # propósito: es una llamada bloqueante de hasta 90 minutos, y lock_interaccion
+    # no es reentrante (threading.Lock). Toma el lock puntualmente por su cuenta
+    # — mismo patrón que _ejecutar_accion_pendiente_con_lock (línea ~249).
+    if iniciar_modo_taller:
+        modo_taller_captura(lock_interaccion)
+
     return True
 
 
@@ -1035,6 +1088,182 @@ def modo_escucha_activo(lock_interaccion: threading.Lock,
                 f"sesión {_current_session_id[0]} ya tomó el control, no piso su estado.")
 
 
+# ── Modo Taller (mejora-010) — ver docs/plan-010.md ──────────────────────────
+
+def modo_taller_captura(lock_interaccion: threading.Lock) -> None:
+    """Escucha continua para modo taller. A diferencia de modo_escucha_activo(),
+    nunca llama a detectar_intent() — cada frase capturada se acumula en el
+    transcript, no se despacha como comando. Termina con "Jarvis, detén el
+    mapeo" o al llegar a TOPE_MODO_TALLER.
+
+    Se llama YA FUERA del `with lock_interaccion:` de procesar_comando —
+    toma el lock puntualmente por su cuenta en los momentos que hablan o
+    escriben el vault (mismo patrón que _ejecutar_accion_pendiente_con_lock),
+    nunca durante el loop de captura en sí.
+
+    Write-through: cada frase capturada se escribe y flushea al archivo de
+    inmediato. Checkpoint: además, cada CHECKPOINT_TALLER segundos se fuerza
+    un fsync explícito y una línea en jarvis.log — capa adicional de
+    resistencia a crash, independiente del write-through por frase.
+
+    Cada checkpoint también reemite "escuchando" al dashboard con el conteo
+    de frases — sin esto, la interfaz recibe un solo evento al activarse y
+    se ve congelada el resto de la sesión (hasta 90 min) aunque la captura
+    esté funcionando bien. emitir_evento() es fire-and-forget, no necesita
+    lock_interaccion (no habla, no despacha, no toca el vault)."""
+    if _modo_taller_activo.is_set():
+        log("[Taller] Ya hay una sesión de modo taller activa — ignorando.")
+        return
+    _modo_taller_activo.set()
+
+    inicio = time.time()
+    ultimo_checkpoint = inicio
+    n_frases = 0
+    cerrado_por_tope = False
+
+    fecha_hora = datetime.now().strftime("%Y-%m-%d_%H%M")
+    transcript_path = INBOX_PATH / f"{fecha_hora}_modo-taller_transcript.tmp.md"
+
+    try:
+        INBOX_PATH.mkdir(parents=True, exist_ok=True)
+        with open(transcript_path, "w", encoding="utf-8") as f:
+            f.write(f"# Transcript — Modo Taller ({datetime.now().strftime('%Y-%m-%d %H:%M')})\n\n")
+            f.flush()
+            os.fsync(f.fileno())
+
+            while True:
+                if time.time() - inicio >= TOPE_MODO_TALLER:
+                    log(f"[Taller] Tope de {TOPE_MODO_TALLER // 60} min alcanzado — cerrando mapeo automáticamente.")
+                    cerrado_por_tope = True
+                    break
+
+                texto = escuchar()
+                if texto is None:
+                    continue  # silencio normal — en un taller la gente habla entre sí, no con Jarvis
+
+                if _es_detener_mapeo(texto):
+                    log(f"[Taller] Stop-phrase detectada: '{texto}'")
+                    break
+
+                n_frases += 1
+                f.write(f"[{datetime.now().strftime('%H:%M:%S')}] {texto}\n")
+                f.flush()
+                os.fsync(f.fileno())
+
+                if time.time() - ultimo_checkpoint >= CHECKPOINT_TALLER:
+                    ultimo_checkpoint = time.time()
+                    f.flush()
+                    os.fsync(f.fileno())
+                    log(f"[Taller] Checkpoint {datetime.now().strftime('%H:%M')} — {n_frases} frases capturadas.")
+                    emitir_evento("escuchando", f"Modo taller — {n_frases} frases capturadas...")
+    finally:
+        _modo_taller_activo.clear()
+
+    log(f"[Taller] Captura cerrada — {n_frases} frases en {transcript_path.name}.")
+
+    if cerrado_por_tope:
+        with lock_interaccion:
+            emitir_evento("procesando", "Cerrando mapeo por tiempo...")
+            hablar("Cerré el mapeo porque llegamos al límite de tiempo.")
+
+    if n_frases == 0:
+        try:
+            transcript_path.unlink()
+        except OSError:
+            pass
+        with lock_interaccion:
+            emitir_evento("idle", "Mapeo cerrado sin contenido")
+            hablar("No capturé nada durante el mapeo, así que no hay candidatos que extraer.")
+        registrar_en_jarvis_log("modo-taller", "Jarvis, modo taller",
+                                 "Cerrado sin frases capturadas — nada que extraer.")
+        return
+
+    with lock_interaccion:
+        emitir_evento("ejecutando", "Extrayendo candidatos a concepto...")
+        hablar("Dame un momento, estoy revisando la conversación para encontrar candidatos.")
+
+        resumen_voz, n_candidatos = _extraer_candidatos_taller(transcript_path)
+
+        if n_candidatos > 0:
+            try:
+                transcript_path.unlink()
+                log(f"[Taller] transcript.tmp.md borrado — {n_candidatos} candidatos ya en candidatos.tmp.md.")
+            except OSError as e:
+                log(f"[Taller] No pude borrar transcript.tmp.md: {e}")
+        else:
+            log("[Taller] 0 candidatos extraídos — transcript.tmp.md se conserva como respaldo.")
+
+        emitir_evento("idle", "Mapeo completado")
+        hablar(resumen_voz)
+
+    detalle = f"{n_frases} frases capturadas, {n_candidatos} candidatos extraídos."
+    detalle += " Transcript conservado (sin candidatos)." if n_candidatos == 0 else " Transcript borrado."
+    registrar_en_jarvis_log("modo-taller", "Jarvis, modo taller", detalle)
+
+
+def _extraer_candidatos_taller(transcript_path: Path) -> "tuple[str, int]":
+    """Llama a `claude --print` para extraer candidatos a concepto atómico del
+    transcript crudo. Escribe Inbox/..._candidatos.tmp.md. Devuelve
+    (resumen_para_voz, n_candidatos).
+
+    Debe llamarse ya bajo `with lock_interaccion:` — no toma el lock por su
+    cuenta (mismo motivo que ejecutar_claude() en cualquier otro flujo: evita
+    que dos procesos `claude` escriban el vault en paralelo).
+
+    Deliberadamente NO pide profundización con fuentes externas — eso es
+    trabajo de `profundizador-conceptos` / "Jarvis, extrae conceptos de
+    [fuente]", que ya existe y ya pasa por Gate 0 + rúbrica. Este paso solo
+    detecta candidatos, nunca instala nada en Conocimiento/Conceptos/."""
+    candidatos_path = transcript_path.with_name(
+        transcript_path.name.replace("_transcript.tmp.md", "_candidatos.tmp.md")
+    )
+    instruccion = (
+        f"Lee el archivo {transcript_path} — es el transcript crudo de una "
+        f"conversación de taller, capturado por voz con timestamps.\n\n"
+        f"Identifica entre 3 y 10 fragmentos que suenen a concepto atómico: "
+        f"afirmaciones con forma de definición, tensiones nombradas "
+        f"explícitamente, o patrones que alguien nombró como fenómeno "
+        f"recurrente. Ignora saludos, ruido de transcripción y charla sin "
+        f"contenido conceptual.\n\n"
+        f"Por cada candidato, escribe en el archivo de salida: un encabezado "
+        f"'## ' seguido del título tentativo, 1-2 líneas de qué es, y la cita "
+        f"textual + timestamp del transcript que lo sugirió (formato: "
+        f'> "cita" — HH:MM:SS).\n\n'
+        f"Escribe el resultado completo en {candidatos_path} (créalo si no "
+        f"existe). Si no encuentras ningún fragmento que valga la pena, "
+        f"escribe únicamente la línea 'Sin candidatos identificados.' — no "
+        f"inventes contenido para rellenar.\n\n"
+        f"Esto es un archivo TEMPORAL de candidatos sin decidir todavía — no "
+        f"instales nada en Conocimiento/Conceptos/, no toques el ATLAS, no "
+        f"apliques Gate 0 ni la rúbrica. Esa evaluación pasa por otro comando "
+        f"cuando Luigui decida qué candidatos vale la pena profundizar."
+    )
+    try:
+        salida = ejecutar_claude(instruccion)
+    except Exception as e:
+        log(f"[Taller] Error en extracción de candidatos: {e}")
+        return ("Tuve un problema extrayendo los candidatos. El transcript quedó guardado en la bandeja de entrada.", 0)
+
+    if not candidatos_path.exists():
+        log(f"[Taller] Claude no generó {candidatos_path.name} — output: {salida[:200]!r}")
+        return ("No logré generar el archivo de candidatos. El transcript quedó guardado en la bandeja de entrada.", 0)
+
+    contenido = candidatos_path.read_text(encoding="utf-8")
+    if "sin candidatos identificados" in contenido.lower():
+        n_candidatos = 0
+    else:
+        n_candidatos = contenido.count("\n## ") + (1 if contenido.startswith("## ") else 0)
+
+    if n_candidatos == 0:
+        return ("Revisé la conversación pero no encontré candidatos claros a concepto.", 0)
+
+    resumen = (
+        f"Encontré {n_candidatos} candidato{'s' if n_candidatos != 1 else ''} a concepto. "
+        f"Quedaron guardados en la bandeja de entrada."
+    )
+    return (resumen, n_candidatos)
+
+
 def loop_principal(lock_interaccion: threading.Lock) -> None:
     """Ciclo infinito: espera wake word via STT, ejecuta flujo de escucha activa."""
     log("Daemon iniciado. Di 'Jarvis' para activar.")
@@ -1069,6 +1298,17 @@ def loop_principal(lock_interaccion: threading.Lock) -> None:
                 _vision_solicitar_descanso()
                 emitir_evento("idle", "Visión desactivada — ojos cerrados")
                 hablar("Entendido. Cerrando los ojos.")
+                continue
+
+            if _es_modo_taller(texto_wake):
+                if _modo_taller_activo.is_set():
+                    log("[Taller] Modo taller solicitado desde wake word pero ya hay una sesión activa.")
+                    hablar("Ya estoy en modo taller.")
+                    continue
+                log("[Taller] Activando modo taller desde wake word.")
+                emitir_evento("escuchando", "Modo taller — mapeando conversación...")
+                hablar("Modo taller activado. Voy a escuchar hasta que digas: Jarvis, detén el mapeo.")
+                modo_taller_captura(lock_interaccion)
                 continue
 
             emitir_evento("escuchando", "Di tu comando...")

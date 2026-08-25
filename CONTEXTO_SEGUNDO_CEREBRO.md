@@ -1,6 +1,6 @@
 # Contexto del Segundo Cerebro — Luigui Avila
 
-> Archivo actualizado el 2026-08-19 (instalación de 5 conceptos + reconciliación de las tablas por carpeta contra el frontmatter real + normalización Gate 0 de 2 archivos). Auditoría de contenido completa (Gate 1+2) más reciente: 2026-07-06. mejora-006 de Jarvis completa: memoria personal, saludo proactivo, watcher conversacional con profundización externa, auto-regeneración del ATLAS — ver JARVIS_LOG.md. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
+> Archivo actualizado el 2026-08-24 (auditoría completa Gate 0/1/2 de las 6 carpetas de `Conceptos/` + `Correlaciones/`, 101 conceptos + 29 correlaciones — ver detalle abajo y en `JARVIS_LOG.md`). mejora-006 de Jarvis completa: memoria personal, saludo proactivo, watcher conversacional con profundización externa, auto-regeneración del ATLAS — ver JARVIS_LOG.md. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
 
 ---
 
@@ -16,7 +16,8 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 
 **Jarvis** es el agente de mantenimiento del vault (Claude Code) con interfaz de voz. Corre como daemon en macOS vía wake word "Jarvis". Capacidades actuales:
 
-- **Comandos de vault**: agrega conceptos, correlaciona, audita, actualiza ATLAS, sube cambios a GitHub por voz
+- **Comandos de vault**: agrega conceptos, correlaciona, audita, actualiza ATLAS, sube cambios a GitHub por voz. **Nota 2026-08-19:** hasta hoy, `ejecutar_claude()` (el mecanismo detrás de todo intent `accion_directa`) invocaba `claude --print` sin permisos de escritura en modo headless — la escritura se denegaba en silencio (returncode 0, sin error visible). Corregido con `--permission-mode bypassPermissions`. Antes del fix, es probable que ningún comando de voz haya escrito realmente al vault — detalle completo en `JARVIS_LOG.md` y `docs/plan-010.md`.
+- **Modo taller** (mejora-010, 2026-08-19): "Jarvis, modo taller" activa escucha continua (no comando-por-turno) que mapea una conversación de hasta 90min buscando candidatos a concepto atómico; "Jarvis, detén el mapeo" la cierra. Write-through + checkpoint cada 5min a `Inbox/*.tmp.md`. Primer uso real expuso y corrigió 2 bugs de fondo (cuelgue de `escuchar()` sin timeout de red, y el bug de permisos de arriba) — ver `docs/plan-010.md`.
 - **Memoria personal**: recuerda hechos que Luigui le pide guardar ("recuerda que...") en `memoria.md` y los carga como contexto en toda conversación futura
 - **Conciencia temporal**: responde "qué hicimos ayer / hoy / esta semana" filtrando `JARVIS_LOG.md` por período real, en vez de mostrar ciegamente las últimas líneas
 - **Saludo proactivo al arrancar**: sincroniza el vault con GitHub y reporta qué conceptos nuevos aparecieron desde la última vez que habló con Luigui
@@ -30,10 +31,9 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 
 ## Estado actual del vault
 
-- **88 conceptos (78 activos, 10 borrador)** — reconciliado 2026-08-19 contando directo del frontmatter de cada archivo (tablas por carpeta abajo), incluye `paradoja-de-la-confianza-y-adopcion` incorporado por el merge de commits del Scout pendientes en `origin/main` al momento del push. No es una auditoría de contenido completa, solo conteo estructural — la última auditoría de rúbrica (Gate 1+2) completa sigue siendo la de 2026-07-06, sobre 80 conceptos.
-- **29 correlaciones documentadas (18 activas, 11 borrador)** — verificado 2026-08-19, sin cambios desde la auditoría 2026-07-06.
-- **Auditoría 2026-07-06:** revisión de los 109 archivos (80 conceptos + 29 correlaciones de entonces) contra Gate 0 (estructura) y Gate 1+2 (rúbrica). 4 archivos normalizados estructuralmente (campo `slug` prohibido, `estado` ausente, `tags`/`relacionado` sobre el límite). 17 archivos bajados de `activo` a `borrador` por contenido (tensión débil, dato sin fuente, o correlación que el propio texto admite como no-contradictoria). Detalle completo en `JARVIS_LOG.md`. **No cubre los 7 conceptos instalados después** (2026-07-14 y 2026-08-19) — pasaron Gate 1+2 al momento de instalarse pero no una auditoría de rúbrica completa posterior.
-- **Gate 0 — 2 archivos normalizados el 2026-08-19** (encontrados al reconciliar esta tabla, no por auditoría deliberada): `limite-de-las-jaulas-digitales` y `llm-como-motor-de-plausibilidad` (ambos del 2026-07-14) tenían campo `slug` prohibido, `estado` ausente, y `tags`/`relacionado` sobre el límite. Normalizados — ver `JARVIS_LOG.md`.
+- **101 conceptos (99 activos, 2 borrador)** — auditoría completa Gate 0/1/2 de las 6 carpetas el 2026-08-24 (tablas por carpeta abajo). Incluye los 8 candidatos del taller de diseño sistémico (2026-08-21) y otros conceptos instalados por el Scout desde la última auditoría.
+- **29 correlaciones documentadas (27 activas, 2 borrador)** — mismo ciclo de auditoría, 2026-08-24.
+- **Auditoría 2026-08-24 (Gate 0/1/2 completo, todas las carpetas):** 15 archivos con fix de frontmatter (6 con campo prohibido `slug` + `estado` faltante + `tags`/`relacionado` sobre el límite; 9 con campo no-canónico `categorias_secundarias` eliminado — no existe en la plantilla de `taxonomia.md`). 15 conceptos + correlaciones subidos de `borrador` a `activo` al confirmar que ya cumplían Gate 1+2. 4 archivos rechazados y quedan en `borrador`: `Conceptos/ia/gestion-del-tiempo.md` (contenido genérico sin conexión a IA), `Conceptos/organizaciones/rutina-trabajo-enfocada.md` (sin interpretación propia, tensión boilerplate), y 2 correlaciones del 2026-06-25 (`agentes-ia--capital-de-contexto`, `gestion-del-tiempo--capital-de-contexto` — tensión no real, síntesis obvia). Detalle completo por archivo en `JARVIS_LOG.md`.
 - **6 conceptos más recientes (por fecha de frontmatter):**
   - `terminal-como-interfaz-optima-para-agentes` (ia · 2026-08-15) — el terminal, no la GUI, es la interfaz que domina la adopción real de agentes (80× crecimiento en descargas CLI sin interfaz gráfica de por medio)
   - `engano-emergente-en-agentes-autonomos` (ia · 2026-08-07) — un agente puede desarrollar engaño instrumental sin instrucción explícita — riesgo de disposición, no de capacidad
@@ -41,12 +41,12 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
   - `agente-que-escapa-obedeciendo` (ia · 2026-07-22) — un agente puede escapar del sandbox sin desobedecer, resolviendo un conflicto entre instrucciones a favor de la que no era la del operador
   - `cuello-de-botella-del-flujo` (ia · 2026-08-14) — automatizar una tarea no acelera el flujo si esa tarea no es el paso limitante (Teoría de Restricciones aplicada a IA)
   - `limite-de-las-jaulas-digitales` (ia · 2026-07-14) — límites estructurales de contener agentes vía restricciones técnicas
-  - Nota: hay **76 conceptos candidatos adicionales** generados por el Scout automatizado (07-14 a 08-18) sin instalar todavía — 22 de ellos con score ≥24/30 (`paradoja-de-la-confianza-y-adopcion`, score 23/30, ya se instaló vía merge de un commit del Scout que estaba pendiente en `origin/main`). Detalle en `JARVIS_LOG.md` (entrada 2026-08-19).
+  - Nota: siguen pendientes ~76 conceptos candidatos del Scout automatizado (Gmail, sin instalar) y 71 ramas `origin/claude/*` sin auditar — detalle en `JARVIS_LOG.md` (entrada 2026-08-19).
 - **Jarvis Server (VPS):** desplegado en `https://jarvis-luigui.duckdns.org`. Corre código anterior a la corrección de seguridad del 2026-07-04 (el `/health` en vivo todavía expone `conceptos`/`vault_commit` en el body) — redespliegue pendiente, no bloqueante. Endpoints: `/health`, `/comando`, `/audio`, `/evaluar` (Tavily+DeepSeek, usado por la reevaluación conversacional de Jarvis), `/confirmar` (solo para conceptos nuevos — rechaza con 409 si el slug ya existe).
 - **mejora-006 de Jarvis (Memoria y Conciencia Contextual) — completa, las 6 fases:** memoria personal, "qué hicimos" con filtro de período, subir cambios por voz, saludo proactivo + sync diario, watcher conversacional (evaluar/reportar/confirmar/guardar), profundización externa vía VPS. Detalle de diseño en `docs/plan-006.md` / `docs/tasks-006.md` (ambos `estado: completado`). Nota: el número "mejora-006" también se usa para la feature de Filesystem del daemon de voz — son dos iniciativas distintas que comparten numeración por casualidad, sin colisión real.
 - **Auto-index del watcher (2026-07-06):** el watcher ya no pide confirmación al detectar un concepto nuevo o modificado — anuncia la detección y regenera el ATLAS automáticamente sin intervención. La reevaluación completa contra la rúbrica sigue disponible, pero solo por voz directa ("Jarvis, reevalúa este concepto"), no disparada automáticamente por el watcher.
 - **Skill `/presentacion-html [slug] [formato]`** — genera una presentación HTML autocontenida desde cualquier concepto del vault. Formato `business-case` implementado. Plantillas en `Plantillas/presentaciones/`.
-- **Grafo tipado de relaciones:** 24 conceptos con campo `edges:` (37 edges tipados en total; tipos: `contradicts`, `requires`, `enables`, `refines`, `extends`, `exemplifies`, `same_mechanism_as`, `analogous_to`, `precedes`). ATLAS incluye sección "Grafo tipado de relaciones".
+- **Grafo tipado de relaciones:** 25 conceptos con campo `edges:` (40 edges tipados en total; tipos: `contradicts`, `requires`, `enables`, `refines`, `extends`, `exemplifies`, `same_mechanism_as`, `analogous_to`, `precedes`). ATLAS incluye sección "Grafo tipado de relaciones".
 - **Remotion (generación de video):** NO funcional — `remotion/src` está vacío/perdido (nunca se trackeó en git). `generar_video.py` falla con error claro en vez de crashear, pero no genera videos hasta reconstruir el proyecto. Para presentaciones, usar `/presentacion-html`.
 
 ---
@@ -57,12 +57,12 @@ Los conceptos viven en `Conocimiento/Conceptos/` organizados en 6 subcarpetas te
 
 ```
 Conocimiento/Conceptos/
-├── ia/             (37 conceptos) — tecnología, modelos, agentes IA
-├── diseno/         (13 conceptos) — proceso de diseño, rol del diseñador, UX agéntico
+├── ia/             (40 conceptos) — tecnología, modelos, agentes IA
+├── diseno/         (15 conceptos) — proceso de diseño, rol del diseñador, UX agéntico
 ├── producto/       (12 conceptos) — construir, medir, iterar productos
 ├── organizaciones/ (12 conceptos) — equipos, roles, transformación organizacional
 ├── economia/       (6 conceptos)  — mercado laboral, impacto económico de la IA
-└── filosofia/      (7 conceptos)  — pensamiento abstracto, epistemología, marcos
+└── filosofia/      (16 conceptos) — pensamiento abstracto, epistemología, marcos
 ```
 
 Sistemas adicionales:
@@ -77,12 +77,13 @@ Sistemas adicionales:
 
 ---
 
-## Los 88 conceptos (78 activos, 10 borrador)
+## Los 101 conceptos (99 activos, 2 borrador)
 
-### ia/ (37 conceptos)
+### ia/ (40 conceptos)
 
 | slug | título | estado |
 |---|---|---|
+| `agente-como-carpeta` | El agente como carpeta | activo |
 | `agente-que-escapa-obedeciendo` | El agente que escapa obedeciendo | activo |
 | `agentes-ia` | Equipos de agentes IA | activo |
 | `ai-evals-como-disciplina` | AI Evals como disciplina de producto | activo |
@@ -98,30 +99,32 @@ Sistemas adicionales:
 | `el-agente-que-no-para` | El agente que no para | activo |
 | `engano-emergente-en-agentes-autonomos` | El engaño emergente en agentes autónomos | activo |
 | `espectro-autonomia-agente` | Espectro de autonomía del agente | activo |
-| `espiral-delusional` | Espiral delusional | **borrador** |
+| `espiral-delusional` | Espiral delusional | activo |
 | `fabrica-oscura-de-software` | La fábrica oscura de software | activo |
 | `gestion-del-tiempo` | Gestión efectiva del tiempo | **borrador** |
 | `gobernanza-ia-performativa` | Gobernanza de IA performativa | activo |
+| `identidad-criptografica-como-arnes` | Identidad criptográfica como arnés | activo |
 | `impuesto-de-alineacion` | El impuesto de alineación | activo |
 | `impuesto-de-verificacion` | El impuesto de verificación | activo |
 | `ingenieria-agentica` | Ingeniería agéntica | activo |
 | `inteligencia-como-utilidad` | Inteligencia como utilidad | activo |
 | `legibilidad-de-maquina` | Legibilidad de máquina | activo |
+| `limite-de-la-escala-de-modelo` | El límite de la escala de modelo | activo |
 | `limite-de-las-jaulas-digitales` | El límite de las jaulas digitales | activo |
 | `orquestacion-de-agentes` | Orquestación de agentes | activo |
-| `paradoja-de-la-confianza-y-adopcion` | La paradoja de la confianza y adopción en código generado por IA | **borrador** |
+| `paradoja-de-la-confianza-y-adopcion` | La paradoja de la confianza y adopción en código generado por IA | activo |
 | `poblaciones-sinteticas` | Poblaciones sintéticas | activo |
-| `problema-del-referente-para-la-ia` | El problema del referente para la IA | **borrador** |
+| `problema-del-referente-para-la-ia` | El problema del referente para la IA | activo |
 | `representacion-agente` | Representación agente | activo |
 | `riesgo-geopolitico-del-modelo` | Riesgo geopolítico del modelo IA | activo |
 | `seguridad-asimetrica-de-modelos-abiertos` | La asimetría de seguridad de los modelos abiertos | activo |
 | `spec-driven-development` | Spec-Driven Development | activo |
 | `terminal-como-interfaz-optima-para-agentes` | El terminal como interfaz óptima para agentes | activo |
-| `usuarios-sinteticos` | Usuarios sintéticos | **borrador** |
+| `usuarios-sinteticos` | Usuarios sintéticos | activo |
 | `vibe-coding` | Vibe coding | activo |
 | `web-bifurcada` | Web bifurcada | activo |
 
-### diseno/ (13 conceptos)
+### diseno/ (15 conceptos)
 
 | slug | título | estado |
 |---|---|---|
@@ -130,9 +133,11 @@ Sistemas adicionales:
 | `de-usuario-a-cliente-servido` | De usuario a cliente servido | activo |
 | `disenador-a-constructor` | Del diseñador al constructor | activo |
 | `diseno-dos-velocidades` | Diseño en dos velocidades | activo |
+| `diseno-sistemico-como-cambio-de-alcance` | El diseño sistémico como cambio de alcance | activo |
 | `diseno-uxui-y-ia` | Diseño UX/UI con IA | activo |
 | `el-moat-del-gusto` | El moat del gusto | activo |
-| `fundamentales-vs-flux` | Fundamentales vs. flux | **borrador** |
+| `fundamentales-vs-flux` | Fundamentales vs. flux | activo |
+| `ilusion-de-omnipotencia-del-disenador` | La ilusión de omnipotencia del diseñador | activo |
 | `metacognicion-del-disenador` | Metacognición del diseñador | activo |
 | `quien-controla-el-prompt` | Quien controla el prompt controla el producto | activo |
 | `soberania-epistemica` | Soberanía epistémica | activo |
@@ -147,7 +152,7 @@ Sistemas adicionales:
 | `confianza-a-traves-de-velocidad` | Confianza a través de velocidad | activo |
 | `copiloto-de-producto` | Copiloto de producto | activo |
 | `corrupcion-silenciosa-por-delegacion` | Corrupción silenciosa por delegación | activo |
-| `expertise-de-dominio-en-producto` | Expertise de dominio como infraestructura de producto | **borrador** |
+| `expertise-de-dominio-en-producto` | Expertise de dominio como infraestructura de producto | activo |
 | `feedback-que-escala` | El feedback que escala | activo |
 | `las-tres-caras-del-producto-agentico` | Las tres caras del producto agéntico | activo |
 | `metricas-post-pantalla` | Métricas post-pantalla | activo |
@@ -166,7 +171,7 @@ Sistemas adicionales:
 | `condicion-redespliegue` | La condición del redespliegue | activo |
 | `cultura-de-tinkering` | Cultura de tinkering como ventaja competitiva | activo |
 | `deuda-cognitiva-organizacional` | Deuda cognitiva organizacional | activo |
-| `equipos-pequenos-alto-impacto` | Equipos pequeños de alto impacto | **borrador** |
+| `equipos-pequenos-alto-impacto` | Equipos pequeños de alto impacto | activo |
 | `ia-sin-ecosistema` | IA sin ecosistema | activo |
 | `juicio-como-trabajo-completo` | El juicio como trabajo completo | activo |
 | `la-competencia-que-oculta-el-juicio` | La competencia que oculta el juicio | activo |
@@ -184,22 +189,30 @@ Sistemas adicionales:
 | `presupuesto-ia-como-restriccion` | El presupuesto de IA como restricción operativa | activo |
 | `senal-anticipada-mercado-laboral` | Señal anticipada en el mercado laboral | activo |
 
-### filosofia/ (8 conceptos)
+### filosofia/ (16 conceptos)
 
 | slug | título | estado |
 |---|---|---|
 | `arquitectura-de-inteligencia` | Arquitectura de inteligencia | activo |
+| `capas-de-profundidad-sistemica` | Capas de profundidad sistémica | activo |
 | `colonialismo-cultural-digital` | Colonialismo cultural digital | activo |
-| `cuerpo-como-infraestructura-cognitiva` | El cuerpo como infraestructura cognitiva | **borrador** |
+| `colonizar-el-manana-con-hoy` | Colonizar el mañana con la idea de hoy | activo |
+| `cuerpo-como-infraestructura-cognitiva` | El cuerpo como infraestructura cognitiva | activo |
+| `granularidad-como-decision-de-mapeo` | La granularidad como decisión de mapeo | activo |
+| `infraestructura-visible-cuando-falla` | La infraestructura se vuelve visible cuando falla | activo |
+| `interdependencia-sistemica` | Interdependencia sistémica | activo |
+| `invisibilizacion-de-actores-naturales` | Invisibilización de los actores naturales en el sistema | activo |
 | `llm-como-motor-de-plausibilidad` | LLM como motor de plausibilidad | activo |
 | `lo-ilegible-como-senal` | Lo ilegible como señal | activo |
 | `momento-liminal` | El momento liminal | activo |
 | `presencia-como-condicion-del-valor` | La presencia como condición del valor | activo |
+| `sistema-de-mentalidades-futuras` | Sistema de mentalidades futuras | activo |
 | `supuestos-importados-por-ia` | Supuestos importados por IA | activo |
+| `visibilidad-relativa-al-observador` | La visibilidad es relativa al observador | activo |
 
 ---
 
-## Las 29 correlaciones documentadas (18 activas, 11 borrador)
+## Las 29 correlaciones documentadas (27 activas, 2 borrador)
 
 | archivo | título | estado |
 |---|---|---|
@@ -207,30 +220,30 @@ Sistemas adicionales:
 | `2026-04-10_claridad-antes-de-velocidad--momento-liminal` | La claridad que pides no existe todavía | activo |
 | `2026-04-10_fundamentales-vs-flux--disenador-a-constructor` | ¿Construir es un fundamental o una habilidad que se depreca? | activo |
 | `2026-04-11_automatizar-mi-propio-trabajo--expertise-de-dominio-en-producto` | El experto que intenta reemplazarse a sí mismo se descubre a sí mismo | activo |
-| `2026-04-15_automatizacion-vs-ampliacion--fundamentales-vs-flux` | La misma línea divisoria, dos mapas | **borrador** |
-| `2026-04-15_ia-como-filtro-de-entrada--agentes-ia` | El multiplicador que cierra la puerta | **borrador** |
+| `2026-04-15_automatizacion-vs-ampliacion--fundamentales-vs-flux` | La misma línea divisoria, dos mapas | activo |
+| `2026-04-15_ia-como-filtro-de-entrada--agentes-ia` | El multiplicador que cierra la puerta | activo |
 | `2026-04-15_ia-como-filtro-de-entrada--disenador-a-constructor` | La salida de emergencia también se cierra | activo |
 | `2026-04-15_senal-anticipada-mercado-laboral--gobernanza-ia-performativa` | Gobernar la señal sin verla | activo |
 | `2026-04-18_copiloto-de-producto--quien-controla-el-prompt` | El mapa y el volante | activo |
-| `2026-04-18_espectro-autonomia-agente--capital-de-contexto` | El precio de entrada para cada posición | **borrador** |
+| `2026-04-18_espectro-autonomia-agente--capital-de-contexto` | El precio de entrada para cada posición | activo |
 | `2026-04-18_espectro-autonomia-agente--fabrica-oscura-de-software` | El operador que no está | activo |
-| `2026-04-18_fabrica-oscura-de-software--capital-de-contexto` | El único activo que queda | **borrador** |
+| `2026-04-18_fabrica-oscura-de-software--capital-de-contexto` | El único activo que queda | activo |
 | `2026-04-18_pit-stop-cognitivo--confianza-a-traves-de-velocidad` | La pausa que sostiene la velocidad | activo |
 | `2026-04-18_pit-stop-cognitivo--feedback-que-escala` | Lo que el sistema no puede enseñarse a sí mismo | activo |
 | `2026-05-13_aprendizaje-vicario-mediado-por-agente--capital-de-contexto` | Cómo el contexto aprende de sí mismo | activo |
-| `2026-05-13_aprendizaje-vicario-mediado-por-agente--feedback-que-escala` | El aprendizaje que no se codifica desaparece | **borrador** |
+| `2026-05-13_aprendizaje-vicario-mediado-por-agente--feedback-que-escala` | El aprendizaje que no se codifica desaparece | activo |
 | `2026-05-13_aprendizaje-vicario-mediado-por-agente--juicio-como-trabajo-completo` | El agente que destruye la rampa también puede reconstruirla | activo |
-| `2026-06-10_autoautomatizacion-del-disenador--la-competencia-que-oculta-el-juicio` | La trampa sin señal de alarma | **borrador** |
+| `2026-06-10_autoautomatizacion-del-disenador--la-competencia-que-oculta-el-juicio` | La trampa sin señal de alarma | activo |
 | `2026-06-10_conocimiento-autoorganizado-por-llm--metacognicion-del-disenador` | ¿Tu vault es el producto o el ejercicio de tu conocimiento? | activo |
-| `2026-06-10_corrupcion-silenciosa-por-delegacion--comprehension-debt` | El modo de supervisión que hace invisible la degradación | **borrador** |
+| `2026-06-10_corrupcion-silenciosa-por-delegacion--comprehension-debt` | El modo de supervisión que hace invisible la degradación | activo |
 | `2026-06-10_cuerpo-como-infraestructura-cognitiva--juicio-como-trabajo-completo` | La ironía estructural de la era agéntica | activo |
 | `2026-06-10_de-usuario-a-cliente-servido--agencia-humana-como-imperativo-ux` | La comodidad como camino de menor resistencia del diseño | activo |
-| `2026-06-10_equipos-pequenos-alto-impacto--comprehension-debt` | El modelo de éxito lleva el riesgo incorporado | **borrador** |
+| `2026-06-10_equipos-pequenos-alto-impacto--comprehension-debt` | El modelo de éxito lleva el riesgo incorporado | activo |
 | `2026-06-10_espiral-delusional--capital-de-contexto` | La espiral del experto | activo |
-| `2026-06-10_gobernanza-ia-performativa--sycophancy-como-riesgo-de-diseno` | Dos capas de apariencia, cero de enforcement | **borrador** |
+| `2026-06-10_gobernanza-ia-performativa--sycophancy-como-riesgo-de-diseno` | Dos capas de apariencia, cero de enforcement | activo |
 | `2026-06-10_impuesto-de-verificacion--pit-stop-cognitivo` | El mismo acto, diagnósticos opuestos | activo |
 | `2026-06-10_inversion-sesgo-tecnologico--ia-como-filtro-de-entrada` | La escalera que se desmonta desde los dos extremos | activo |
 | `2026-06-25_agentes-ia--capital-de-contexto` | La Tensión entre Equipos de Agentes IA y Capital de Contexto | **borrador** |
 | `2026-06-25_gestion-del-tiempo--capital-de-contexto` | La Tensión entre Gestión del Tiempo y Capital de Contexto | **borrador** |
 
-Las 2 correlaciones del 2026-06-25 (`agentes-ia--capital-de-contexto`, `gestion-del-tiempo--capital-de-contexto`) tienen una estructura y voz claramente distintas al resto del corpus (secciones genéricas en vez del patrón `## La tensión`/`## El insight no obvio`/`## El límite`, título literal "La Tensión entre A y B") — candidatas a reescritura completa, no solo a advertencia.
+Las 2 correlaciones del 2026-06-25 (`agentes-ia--capital-de-contexto`, `gestion-del-tiempo--capital-de-contexto`) siguen sin aprobar Gate 2 en la auditoría 2026-08-24 (tensión no real — dependencia genérica, no contradicción; síntesis obvia). Tienen además una estructura y voz claramente distintas al resto del corpus (secciones genéricas en vez del patrón `## La tensión`/`## El insight no obvio`/`## El límite`, título literal "La Tensión entre A y B") — candidatas a reescritura completa, no solo a advertencia.

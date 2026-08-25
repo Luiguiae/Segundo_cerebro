@@ -3,7 +3,6 @@ titulo: "Riesgo geopolítico del modelo IA"
 tipo: concepto
 fecha: 2026-06-19
 familia: agencia-ia
-categorias_secundarias: [organizaciones, economia]
 tags: [ia, gobernanza-ia, infraestructura, etica, estrategia]
 estado: activo
 relacionado: [gobernanza-ia-performativa, arquitectura-de-confianza, capital-de-contexto]

@@ -3,7 +3,6 @@ titulo: "Ingeniería agéntica"
 tipo: concepto
 fecha: 2026-06-13
 familia: agencia-ia
-categorias_secundarias: [producto]
 tags: [ia, agentes, evaluacion, sistemas, construccion]
 estado: activo
 relacionado: [vibe-coding, spec-driven-development, juicio-como-trabajo-completo]

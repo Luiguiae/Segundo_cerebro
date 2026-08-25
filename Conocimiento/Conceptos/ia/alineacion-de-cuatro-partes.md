@@ -2,7 +2,6 @@
 titulo: "Alineación de cuatro partes"
 tipo: concepto
 familia: agencia-ia
-categorias_secundarias: [gobernanza]
 tags: [agentes, gobernanza-ia, etica, marco]
 relacionado: [arquitectura-de-confianza, gobernanza-ia-performativa, arnes-del-agente]
 edges:

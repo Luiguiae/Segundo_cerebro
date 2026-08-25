@@ -3,7 +3,6 @@ titulo: "Representación agente"
 tipo: concepto
 fecha: 2026-06-13
 familia: agencia-ia
-categorias_secundarias: [diseno]
 tags: [agentes, ia, etica, control, diseño]
 estado: activo
 relacionado: [arnes-del-agente, espectro-autonomia-agente, agencia-humana-como-imperativo-ux]

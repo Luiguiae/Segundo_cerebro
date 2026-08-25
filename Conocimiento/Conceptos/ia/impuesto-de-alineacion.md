@@ -3,7 +3,6 @@ titulo: "El impuesto de alineación"
 tipo: concepto
 fecha: 2026-06-15
 familia: agencia-ia
-categorias_secundarias: [organizaciones]
 tags: [ia, agentes, gobernanza-ia, etica, control]
 estado: activo
 relacionado: [gobernanza-ia-performativa, arquitectura-de-confianza, sycophancy-como-riesgo-de-diseno]

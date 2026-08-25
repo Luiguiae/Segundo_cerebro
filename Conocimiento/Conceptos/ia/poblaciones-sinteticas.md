@@ -3,7 +3,6 @@ titulo: "Poblaciones sintéticas"
 tipo: concepto
 fecha: 2026-06-18
 familia: agencia-ia
-categorias_secundarias: [diseno, economia]
 tags: [ia, agentes, validacion, research, diseño]
 estado: activo
 relacionado:

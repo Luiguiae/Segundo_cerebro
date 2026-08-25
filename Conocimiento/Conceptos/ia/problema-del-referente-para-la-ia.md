@@ -2,7 +2,6 @@
 titulo: "El problema del referente para la IA"
 tipo: concepto
 familia: epistemologia-practica
-categorias_secundarias: [ia]
 tags: [gobernanza-ia, etica, criterio, incertidumbre]
 relacionado: [arquitectura-de-inteligencia, sycophancy-como-riesgo-de-diseno, gobernanza-ia-performativa]
 edges:
@@ -16,7 +15,7 @@ edges:
     tipo: enables
     why: "sin resolver qué es la IA (persona, corporación, recurso, herramienta), la gobernanza que se construye encima hereda esa ambigüedad y tiende a quedarse en lo performativo porque no hay categoría clara a la cual anclar reglas de cumplimiento."
 fecha: 2026-07-03
-estado: borrador
+estado: activo
 fuentes:
   - titulo: "'There's this deep mystery of what, actually, is this thing?': the philosopher inside Google DeepMind"
     url: "https://www.theguardian.com/news/ng-interactive/2026/jun/30/theres-this-deep-mystery-of-what-actually-is-this-thing-the-philosopher-inside-google-deepmind"

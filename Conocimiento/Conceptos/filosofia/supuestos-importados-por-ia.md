@@ -2,7 +2,6 @@
 titulo: "Supuestos importados por IA"
 tipo: concepto
 familia: agencia-ia
-categorias_secundarias: [filosofia, organizaciones]
 tags: [criterio, gobernanza-ia, fundamentos]
 relacionado: [quien-controla-el-prompt, gobernanza-ia-performativa, arnes-del-agente]
 edges:
