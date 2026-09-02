@@ -27,6 +27,48 @@
 
 ---
 
+### 2026-08-31 11:22 — gradúa los borradores (rutina cloud semanal, primera corrida real)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Listados 4 borradores: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`)
+- Confirmado por grep de "graduador" en este log: comando nunca ejecutado antes (implementado 2026-08-24) — ningún borrador saltado por intento reciente
+- Por cada uno, localizado el diagnóstico específico más reciente en el log (auditorías 2026-07-06 y 2026-08-24) e identificado el hueco puntual que falló
+- `rutina-trabajo-enfocada.md`: hueco = falta de mecanismo/interpretación propia (Gate 2). Profundización dirigida a 1 eje ("mecanismo cognitivo del costo de interrumpir el foco"): 2 fuentes sólidas con autoría e institución verificable (Sophie Leroy 2009, *Organizational Behavior and Human Decision Processes*; Gloria Mark et al. 2008, UC Irvine, CHI). Reescrito `El concepto`/`Por qué importa`/`Tensiones y límites` ancladas al mecanismo, agregadas `## Datos y evidencia` + `## Ejes investigados` + `fuentes:` en frontmatter. Re-evaluado Gate 2: 4/4 (antes 2/4)
+- `gestion-del-tiempo.md`, y las 2 correlaciones con `capital-de-contexto`: diagnosticado que el hueco es estructural (Gate 1 "Propio"/desconexión temática en el primero; Gate 2 correlación criterio 1 "tensión real" en las otras dos), no un hueco de evidencia cerrable con 1-2 ejes de investigación — profundización dirigida NO aplica sin violar "no reescritura genérica" / "no reemplaza el argumento central". No se investigó ni se escribió contenido nuevo para estos 3.
+
+**Resultados:**
+- `Conceptos/organizaciones/rutina-trabajo-enfocada.md`: GRADUADO (propuesto) — contenido enriquecido en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, pendiente de aprobación de Luigui. `estado` NO modificado en el archivo original.
+- `Conceptos/ia/gestion-del-tiempo.md`: SIN GRADUAR — requiere reescritura completa (voz propia + conexión a IA) o reubicación fuera de `ia/`; fuera de alcance de este comando
+- `Correlaciones/2026-06-25_agentes-ia--capital-de-contexto.md`: SIN GRADUAR — tensión estructuralmente de dependencia, no contradicción; requiere re-redacción manual vía "Correlacionar conceptos", no graduación
+- `Correlaciones/2026-06-25_gestion-del-tiempo--capital-de-contexto.md`: SIN GRADUAR — mismo motivo, agravado por depender de `gestion-del-tiempo` sin graduar
+
+**ATLAS regenerado:** no aplica — no se escribió en `Conocimiento/`, solo en `Inbox/`
+
+---
+
+### 2026-08-31 11:22 — busca correlaciones (rutina cloud semanal, misma corrida)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos 99 conceptos `estado: activo` (sin cambios desde la corrida del 2026-08-25 — mismo vault)
+- Identificados los mismos 2 sub-conectados que la corrida anterior: `capas-de-profundidad-sistemica`, `interdependencia-sistemica` (ninguno con candidato nuevo que sobreviva la autocrítica esta corrida)
+- Generados candidatos por señal objetiva: 1,429 pares con score ≥2, tras excluir los 29 pares ya en `Correlaciones/`, los 3 pendientes en `Inbox/2026-08-25_0811_correlaciones-propuestas.tmp.md` (sin revisar aún — no se duplican), y los 15 pares ya evaluados y descartados en la corrida del 2026-08-25 (mismo vault, mismo veredicto esperado — evitado el reproceso)
+- Evaluado el top 20 restante por score; aplicada autocrítica adversarial a cada uno
+- 2 propuestas sobrevivieron la autocrítica; 18 descartadas — patrón dominante: el par ya se declara mutuamente en `relacionado` y comparte señal fuerte, pero la relación real es de ejemplificación o co-ocurrencia temática (uno es caso particular o extensión directa del otro), no contradicción
+
+**Resultados:**
+- 2 propuestas escritas en `Inbox/2026-08-31_1122_correlaciones-propuestas.tmp.md`:
+  1. `agencia-humana-como-imperativo-ux × soberania-epistemica` — el criterio de reversibilidad protege el resultado, no el juicio
+  2. `impuesto-de-alineacion × seguridad-asimetrica-de-modelos-abiertos` — el impuesto no se paga parejo: el atacante lo evade, el defensor lo hereda
+- 18 descartados listados con razón resumida en el archivo de propuesta
+
+**ATLAS regenerado:** no — no se escribió en `Conocimiento/`
+
+---
+
 ### 2026-08-25 08:32 — fix: "carpeta ia/diseño/..." se enrutaba a operacion_archivo en vez de consulta_simple
 
 **Instrucción:** "ajustalo" (sobre el hallazgo reportado tras el diagnóstico del bug de Groq)
