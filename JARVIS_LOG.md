@@ -2,6 +2,31 @@
 
 ---
 
+### 2026-09-02 14:25 — mejora-012: análisis de sesión en modo taller (implementado)
+
+**Instrucción:** "implementa" (tras confirmar 4 decisiones: activación junto a la extracción de candidatos; destino Inbox/*.tmp.md; responsables genéricos por rol, nunca nombre propio; cruce solo con coincidencias fuertes)
+
+**Acciones:**
+- `docs/plan-012.md`: plan completo, `estado: implementado`
+- `jarvis_daemon.py`: `import concurrent.futures`; nueva función `_analizar_sesion_taller(transcript_path) -> bool` — mismo patrón que `_extraer_candidatos_taller()`, genera `Inbox/*_modo-taller_analisis.tmp.md` con 6 secciones (tópicos principales, priorización por gravedad, acuerdos y responsables, nivel de información por tópico, cruce con otras sesiones de modo taller, cruce con el vault)
+- `modo_taller_captura()`: candidatos y análisis ahora corren EN PARALELO vía `ThreadPoolExecutor` (mismo transcript, cada uno escribe su propio archivo — sin conflicto entre sí) en vez de en serie, para no duplicar el tiempo de espera. Resumen de voz y entrada de log combinan ambos resultados
+- `py_compile` OK
+- Confirmado sin sesión de modo taller activa antes de reiniciar (última cerró 12:00 por tope de 90min)
+- Daemon reiniciado (`kill -TERM` 37040 → relanzado por launchd, nuevo PID 75132)
+
+**Hallazgo lateral (no relacionado a esta mejora):** el `[Boot] Sync diario` del reinicio reportó `pull falló` — esperado, causado por los cambios locales sin commitear de esta sesión, no un bug. Al revisar `origin/main` se confirmó que la rutina cloud semanal de mejora-011 (`vault-correlaciones-y-graduacion-semanal`) corrió por primera vez el 2026-08-31 11:28 UTC y funcionó en producción: 2 correlaciones propuestas (`agencia-humana-como-imperativo-ux`×`soberania-epistemica`, `impuesto-de-alineacion`×`seguridad-asimetrica-de-modelos-abiertos`), 18 descartadas por la autocrítica adversarial; 1 borrador graduado (`rutina-trabajo-enfocada` — uno de los 2 que la auditoría del 2026-08-24 había rechazado), 3 sin graduar. Todo ya commiteado y pusheado automáticamente por la rutina — mergeado a continuación.
+
+**Resultados:**
+- `jarvis_daemon.py`, `docs/plan-012.md`: OK — mejora-012 implementada y activa
+
+**Pendiente:**
+- Primera sesión de modo taller real con ambas extracciones en paralelo — validar que no hay contención ni error al correr 2 `claude --print` simultáneos sobre el mismo transcript de solo lectura
+- Revisar con "Jarvis, revisa propuestas pendientes": 2 correlaciones + 1 graduación de la rutina del 2026-08-31, más los candidatos de modo taller acumulados en Inbox (2026-09-01 ×2, 2026-09-02) sin decisión
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-08-25 08:32 — fix: "carpeta ia/diseño/..." se enrutaba a operacion_archivo en vez de consulta_simple
 
 **Instrucción:** "ajustalo" (sobre el hallazgo reportado tras el diagnóstico del bug de Groq)
@@ -3237,3 +3262,23 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-08-25 08:17 — FILESYSTEM
 **Instrucción:** cuáles son los últimos conceptos en la carpeta ia
 **Resultado:** En 'luiguiavilae': Carpetas: .SoulseekQt/, .Trash/, .android/, .app-store/, .cache/, .claude/, .codex/, .config/, .copilot/, .cricut-design-space/, .cups/, .cursor/, .docker/, .expo/, .lemminx/, .loca
+
+## 2026-09-01 15:00 — CONSULTA
+**Instrucción:** cuál es la última actualización del vault
+**Resultado:** El último registro del vault indica que se generó automáticamente el 24 de agosto de 2026 a las 21:17. No hay actualizaciones posteriores registradas. Si necesitas más detalles, avísame.
+
+## 2026-09-01 15:01 — ACCION
+**Instrucción:** jarvis
+**Resultado:** Retomando desde 2026-04-10. Sin pendientes registrados en la última sesión. ¿Qué hacemos hoy?
+
+## 2026-09-01 16:04 — modo-taller
+**Instrucción:** Jarvis, modo taller
+**Resultado:** 457 frases capturadas, 7 candidatos extraídos. Transcript borrado.
+
+## 2026-09-01 17:03 — modo-taller
+**Instrucción:** Jarvis, modo taller
+**Resultado:** 425 frases capturadas, 6 candidatos extraídos. Transcript borrado.
+
+## 2026-09-02 12:00 — modo-taller
+**Instrucción:** Jarvis, modo taller
+**Resultado:** 213 frases capturadas, 6 candidatos extraídos. Transcript borrado.

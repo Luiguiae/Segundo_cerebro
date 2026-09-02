@@ -11,6 +11,7 @@ Conocimiento/ y notifica en voz sin que el usuario lo pida.
 Logs: Prompts/Meta/jarvis/jarvis.log
 """
 
+import concurrent.futures
 import fcntl
 import os
 import queue
@@ -1179,10 +1180,18 @@ def modo_taller_captura(lock_interaccion: threading.Lock) -> None:
         return
 
     with lock_interaccion:
-        emitir_evento("ejecutando", "Extrayendo candidatos a concepto...")
-        hablar("Dame un momento, estoy revisando la conversación para encontrar candidatos.")
+        emitir_evento("ejecutando", "Extrayendo candidatos y analizando la sesión...")
+        hablar("Dame un momento, estoy revisando la conversación.")
 
-        resumen_voz, n_candidatos = _extraer_candidatos_taller(transcript_path)
+        # mejora-012: candidatos y análisis de sesión corren en paralelo sobre el
+        # mismo transcript — cada uno escribe su propio archivo de salida, no hay
+        # conflicto de escritura entre ellos (el lock_interaccion protege contra
+        # OTRA interacción de voz no relacionada, no entre estas dos).
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as ex:
+            fut_candidatos = ex.submit(_extraer_candidatos_taller, transcript_path)
+            fut_analisis = ex.submit(_analizar_sesion_taller, transcript_path)
+            resumen_voz, n_candidatos = fut_candidatos.result()
+            analisis_ok = fut_analisis.result()
 
         if n_candidatos > 0:
             try:
@@ -1193,10 +1202,14 @@ def modo_taller_captura(lock_interaccion: threading.Lock) -> None:
         else:
             log("[Taller] 0 candidatos extraídos — transcript.tmp.md se conserva como respaldo.")
 
+        if analisis_ok:
+            resumen_voz += " También dejé el análisis de la sesión en la bandeja de entrada."
+
         emitir_evento("idle", "Mapeo completado")
         hablar(resumen_voz)
 
-    detalle = f"{n_frases} frases capturadas, {n_candidatos} candidatos extraídos."
+    detalle = f"{n_frases} frases capturadas, {n_candidatos} candidatos extraídos, "
+    detalle += f"análisis de sesión {'generado' if analisis_ok else 'NO generado'}."
     detalle += " Transcript conservado (sin candidatos)." if n_candidatos == 0 else " Transcript borrado."
     registrar_en_jarvis_log("modo-taller", "Jarvis, modo taller", detalle)
 
@@ -1262,6 +1275,79 @@ def _extraer_candidatos_taller(transcript_path: Path) -> "tuple[str, int]":
         f"Quedaron guardados en la bandeja de entrada."
     )
     return (resumen, n_candidatos)
+
+
+def _analizar_sesion_taller(transcript_path: Path) -> bool:
+    """mejora-012 — Segunda lente sobre el mismo transcript de modo taller:
+    análisis de la sesión como reunión (tópicos, prioridad, acuerdos/responsables,
+    nivel de información, cruce con otras sesiones y con el vault), complementario
+    a _extraer_candidatos_taller() (minería de conceptos atómicos).
+
+    Corre en paralelo con _extraer_candidatos_taller() vía ThreadPoolExecutor en
+    modo_taller_captura() — ambos solo LEEN el transcript y cada uno escribe un
+    archivo de salida distinto, así que no hay conflicto entre ellos. Debe
+    llamarse ya bajo `with lock_interaccion:` (mismo motivo que
+    _extraer_candidatos_taller: evita procesos `claude` en paralelo con OTRA
+    interacción de voz no relacionada escribiendo al vault).
+
+    Devuelve True si el archivo de análisis se generó, False si no."""
+    analisis_path = transcript_path.with_name(
+        transcript_path.name.replace("_transcript.tmp.md", "_analisis.tmp.md")
+    )
+    instruccion = (
+        f"Lee el archivo {transcript_path} — transcript crudo de una sesión de "
+        f"taller/reunión, capturado por voz con timestamps.\n\n"
+        f"Genera un análisis de la SESIÓN (no de conceptos atómicos — eso lo hace "
+        f"otro paso aparte) con estas secciones exactas, en este orden:\n\n"
+        f"## Tópicos principales\n"
+        f"Lista los temas centrales tocados, 1-2 líneas cada uno.\n\n"
+        f"## Priorización por gravedad\n"
+        f"Tabla markdown: tópico | gravedad (alta/media/baja) | por qué. Solo "
+        f"para tópicos que planteen un problema o riesgo — no fuerces gravedad "
+        f"en temas puramente informativos.\n\n"
+        f"## Acuerdos y responsables\n"
+        f"Tabla markdown: acuerdo | responsable | condición o cuándo. CRÍTICO: "
+        f"nunca escribas el nombre propio de una persona — infiere y usa su rol "
+        f"o área desde el contexto de la conversación (ej. 'el arquitecto', 'el "
+        f"equipo de producto', 'un funcionario de banca empresas'). Si no puedes "
+        f"inferir el rol, usa 'una persona del equipo'. Si no hay acuerdos "
+        f"explícitos, escribe únicamente la línea 'Sin acuerdos explícitos "
+        f"detectados.'\n\n"
+        f"## Nivel de información por tópico\n"
+        f"Tabla markdown: tópico | suficiente / necesita profundizar | qué falta "
+        f"si aplica.\n\n"
+        f"## Cruce con otras sesiones de modo taller\n"
+        f"Busca con Glob otros archivos Inbox/*_modo-taller_candidatos.tmp.md e "
+        f"Inbox/*_modo-taller_analisis.tmp.md (excluyendo este transcript y su "
+        f"propio archivo de salida) y léelos. Señala SOLO coincidencias fuertes "
+        f"— el mismo tópico ya apareció antes, no temas relacionados vagamente. "
+        f"Una línea por coincidencia: tópico + nombre del archivo de la sesión "
+        f"anterior. Si no hay ninguna, escribe únicamente 'Sin coincidencias "
+        f"fuertes con sesiones anteriores.'\n\n"
+        f"## Cruce con el vault\n"
+        f"Busca en Conocimiento/Conceptos/ (todas las subcarpetas) conceptos ya "
+        f"instalados que coincidan fuertemente con un tópico de esta sesión — "
+        f"mismo fenómeno, no relación vaga. Una línea por coincidencia: tópico + "
+        f"slug del concepto. Si no hay ninguna, escribe únicamente 'Sin "
+        f"coincidencias fuertes con conceptos existentes.'\n\n"
+        f"Escribe el resultado completo en {analisis_path} (créalo si no "
+        f"existe), empezando con un encabezado H1 'Análisis de sesión — Taller "
+        f"[fecha y hora]'. No instales nada en Conocimiento/Conceptos/, no "
+        f"toques el ATLAS, no apliques Gate 0 ni la rúbrica — esto es un "
+        f"análisis de la sesión como reunión, no una evaluación de conceptos."
+    )
+    try:
+        ejecutar_claude(instruccion)
+    except Exception as e:
+        log(f"[Taller] Error en análisis de sesión: {e}")
+        return False
+
+    if not analisis_path.exists():
+        log(f"[Taller] Claude no generó {analisis_path.name}.")
+        return False
+
+    log(f"[Taller] Análisis de sesión generado en {analisis_path.name}.")
+    return True
 
 
 def loop_principal(lock_interaccion: threading.Lock) -> None:
