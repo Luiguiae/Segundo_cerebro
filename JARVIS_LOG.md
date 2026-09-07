@@ -2,6 +2,23 @@
 
 ---
 
+### 2026-09-07 11:17 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Listados 4 borradores: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`)
+- Los 4 son exactamente el mismo conjunto que la corrida anterior del 2026-08-31 11:22 (7 días atrás, dentro de la ventana de 14 días) — saltados los 4 por regla 3 del comando (evitar reintentar en loop sobre borradores ya diagnosticados). No se leyó contenido adicional ni se ejecutó profundización dirigida sobre ninguno.
+- Confirmado que ninguno de los 4 tiene un diagnóstico posterior al 2026-08-31 en el log que cambie su estado de saltado
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento de graduación registrado hace 7 días (2026-08-31). Nota: `rutina-trabajo-enfocada` ya tiene una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, aún sin revisar por Luigui — sigue ahí sin cambios.
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo nuevo en `Inbox/`.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-02 14:25 — mejora-012: análisis de sesión en modo taller (implementado)
 
 **Instrucción:** "implementa" (tras confirmar 4 decisiones: activación junto a la extracción de candidatos; destino Inbox/*.tmp.md; responsables genéricos por rol, nunca nombre propio; cruce solo con coincidencias fuertes)
