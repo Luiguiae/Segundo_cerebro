@@ -2,6 +2,28 @@
 
 ---
 
+### 2026-09-07 11:22 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 99 conceptos `estado: activo` en `Conceptos/` (frontmatter completo: familia, tags, relacionado)
+- Identificados sub-conectados (0-1 en `relacionado`): `capas-de-profundidad-sistemica`, `interdependencia-sistemica` (ambos con 1 entrada, apuntando a `arquitectura-de-inteligencia`)
+- Generados candidatos por señales objetivas (mención cruzada en el cuerpo, ≥3 tags compartidos, familia+≥2 tags) sobre los 99×98/2 pares posibles, excluyendo: pares que ya tienen archivo en `Correlaciones/` (29), y los 23 pares ya evaluados en las corridas anteriores del 2026-08-25 (3 sobrevivientes pendientes) y 2026-08-31 (2 sobrevivientes pendientes + 18 descartados) — el vault no cambió desde entonces, así que re-evaluarlos habría repetido el mismo veredicto
+- Tope aplicado: 20 candidatos nuevos, priorizados mención cruzada > ≥3 tags compartidos > familia+tags
+- Por cada uno: leído el contenido completo de ambos conceptos, redactada correlación completa (`La tensión` / `El insight no obvio` / `El límite`), aplicada autocrítica adversarial (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?)
+
+**Resultados:**
+- 20 candidatos evaluados, 1 sobreviviente, 19 descartados
+- Patrón de descarte dominante en esta corrida (distinto a corridas previas): 17 de 19 fallan porque uno de los dos archivos fuente ya contiene, en su propia sección "Tensiones y límites" o "Ejes investigados", la síntesis completa citando al otro concepto por nombre — no es co-ocurrencia sin tensión, es tensión ya resuelta por la fuente misma
+- Sobreviviente: **"Los tests en verde no son el pit stop"** — `comprehension-debt` × `pit-stop-cognitivo`: `pit-stop-cognitivo` declara excepción a su propia práctica si el equipo "ya tiene pruebas automatizadas robustas"; `comprehension-debt` documenta empíricamente que ese es exactamente el escenario de mayor riesgo (deuda de comprensión acumulándose detrás de tests en verde)
+- `Inbox/2026-09-07_1117_correlaciones-propuestas.tmp.md`: creado — 1 propuesta completa + 19 descartes con razón específica
+- Siguen pendientes de revisión (sin tocar en esta corrida): `Inbox/2026-08-25_0811_correlaciones-propuestas.tmp.md` (3), `Inbox/2026-08-31_1122_correlaciones-propuestas.tmp.md` (2), `Inbox/2026-08-31_1122_borradores-graduados.tmp.md` (1)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-07 11:17 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
