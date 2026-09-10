@@ -2,6 +2,26 @@
 
 ---
 
+### 2026-09-10 01:30 — Profundizador-2: profundiza concepto agi-como-harness-no-como-modelo
+
+**Instrucción:** Tarea automática nocturna — Profundizador-2 (CONCEPTO 2 del Scout 2026-09-10)
+
+**Acciones:**
+- Leído Issue #114 del Scout (2026-09-10) — extraído CONCEPTO 2
+- Leído CONTEXTO_SEGUNDO_CEREBRO.md para contexto del vault
+- Investigados 3 ejes: (1) definiciones formales de AGI y criterio de aprendizaje continuo, (2) harness como locus de inteligencia, (3) pesos congelados de Astra
+- Construido .md completo con 5 datos verificados y 4 fuentes sólidas
+- Enviado mail a luiguiavilae@gmail.com con bloque listo para instalar
+
+**Resultados:**
+- agi-como-harness-no-como-modelo: PENDIENTE INSTALACIÓN (mail enviado, ID: 1a08a2c6c675d512)
+- Ejes investigados: 3/3 — 2 fuentes sólidas por eje
+- Score Scout: 24/30
+
+**ATLAS regenerado:** no — concepto no instalado aún (pendiente revisión de Luigui)
+
+---
+
 ### 2026-09-07 11:22 — busca correlaciones (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
