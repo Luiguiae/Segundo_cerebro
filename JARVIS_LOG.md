@@ -2,6 +2,65 @@
 
 ---
 
+### 2026-09-14 11:20 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Listados 4 borradores: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`)
+- Los 4 son exactamente el mismo conjunto que la corrida del 2026-09-07 11:17 (7 días atrás, dentro de la ventana de 14 días) — saltados los 4 por regla 3 del comando (evitar reintentar en loop sobre borradores ya diagnosticados). No se leyó contenido adicional ni se ejecutó profundización dirigida sobre ninguno.
+- Confirmado que ninguno de los 4 tiene un diagnóstico posterior al 2026-09-07 en el log que cambie su estado de saltado
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento de graduación registrado hace 7 días (2026-09-07). Nota: `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, aún sin revisar por Luigui.
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo nuevo en `Inbox/`.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-14 11:16 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 99 conceptos `estado: activo` en `Conceptos/` (frontmatter completo: familia, tags, relacionado)
+- Identificados sub-conectados (0-1 en `relacionado`): `capas-de-profundidad-sistemica`, `interdependencia-sistemica` (sin cambio respecto a corridas anteriores)
+- Generados candidatos por señales objetivas (mención cruzada en el cuerpo, ≥3 tags compartidos, familia+≥2 tags) sobre los 99×98/2 pares posibles, excluyendo: pares que ya tienen archivo en `Correlaciones/` (29), y los 47 pares ya evaluados en las corridas anteriores del 2026-08-25 (18), 2026-08-31 (20) y 2026-09-07 (20) — el vault no cambió desde el 2026-09-07 (confirmado por `git log` sobre `Conocimiento/`), así que re-evaluarlos habría repetido el mismo veredicto
+- Tope aplicado: 20 candidatos nuevos, priorizados mención cruzada > ≥3 tags compartidos > familia+tags. Los 20 con mayor señal fueron todos de mención cruzada (686 candidatos nuevos totales por encima del umbral mínimo, saturado por el criterio más fuerte)
+- Por cada uno: leído el contexto completo de la mención cruzada en ambos conceptos, aplicada autocrítica adversarial (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?)
+
+**Resultados:**
+- 20 candidatos evaluados, 0 sobrevivientes, 20 descartados
+- Patrón de descarte uniforme en esta corrida: los 20 fallan porque el archivo fuente que menciona al otro concepto ya contiene, en su propia sección "Tensiones y límites" o "Por qué importa", la síntesis completa de la relación — incluyendo, en varios casos, la resolución explícita de si es tensión real o no (p. ej. `marea-creciente-de-automatizacion` dice literalmente "Son dimensiones distintas, no contradictorias" sobre `automatizacion-vs-ampliacion`; `confianza-a-traves-de-velocidad` y `claridad-antes-de-velocidad` se citan mutuamente con la resolución completa en ambos textos)
+- Descartados (par — razón):
+  - `agente-como-carpeta` × `limite-de-la-escala-de-modelo` — síntesis explícita en el archivo fuente ("este concepto explica por qué esa arquitectura importa tanto... invertir en el diseño del harness es la palanca de mejora más confiable")
+  - `ai-evals-como-disciplina` × `fabrica-oscura-de-software` — ai-evals se autodefine como "la respuesta estructural" al problema que fabrica-oscura documenta; relación de solución ya resuelta, no tensión
+  - `engano-emergente-en-agentes-autonomos` × `arnes-del-agente` — síntesis explícita: "el arnés... puede ser neutralizado por un agente que aprende a reescribir su propio registro de actividad"
+  - `identidad-criptografica-como-arnes` × `arnes-del-agente` — síntesis explícita: "no reemplaza al arnés de comportamiento — es la infraestructura que hace posible auditar si el arnés se respetó"
+  - `llm-como-motor-de-plausibilidad` × `arnes-del-agente` — síntesis explícita: "el arnés puede reducir el espacio de fallos pero no eliminarlos, porque el motor subyacente sigue sin poder verificar..."
+  - `comprehension-debt` × `autoautomatizacion-del-disenador` — síntesis explícita: "la autoautomatización es el mecanismo generador de esa deuda en el plano individual"
+  - `automatizacion-vs-ampliacion` × `marea-creciente-de-automatizacion` — el propio texto dice "son dimensiones distintas, no contradictorias" — falla criterio 1 (no hay tensión real)
+  - `feedback-que-escala` × `capital-de-contexto` — relación de definición/co-ocurrencia ("conecta directamente... es el repositorio donde se materializa"), no contradicción; la tensión real de ese párrafo es con `quien-controla-el-prompt`, no con este par
+  - `capital-de-contexto` × `inteligencia-como-utilidad` — relación de aplicación/ejemplo, ya resuelta en el texto de `inteligencia-como-utilidad`
+  - `capital-de-contexto` × `riesgo-geopolitico-del-modelo` — síntesis ya explícita: "para quien construye capital-de-contexto sobre un modelo frontier... esto introduce una vulnerabilidad que no es técnica sino política"
+  - `confianza-a-traves-de-velocidad` × `claridad-antes-de-velocidad` — caso extremo: ambos archivos se citan mutuamente con la resolución completa ya escrita en ambas direcciones
+  - `copiloto-de-producto` × `comprehension-debt` — síntesis explícita: "mantener el modelo mental completo y ejecutar simultáneamente produce comprehension-debt"
+  - `fabrica-oscura-de-software` × `comprehension-debt` — síntesis explícita: "si ningún humano revisa el código, el comprehension-debt se acumula sin mecanismo de recuperación"
+  - `comprehension-debt` × `paradoja-de-la-confianza-y-adopcion` — la fuente ya se autodiferencia explícitamente: "ambos describen consecuencias del uso. La paradoja describe el mecanismo que genera desconfianza activa..."
+  - `condicion-redespliegue` × `impuesto-de-verificacion` — síntesis explícita: "el Impuesto de Verificación muestra que ese tiempo... se redirige mayoritariamente a supervisión... cerrando el ciclo sin generar valor adicional"
+  - `presupuesto-ia-como-restriccion` × `costo-marginal-cero-como-disruptor` — síntesis explícita: "la disrupción no elimina los costos — los redistribuye"
+  - `impuesto-de-verificacion` × `engano-emergente-en-agentes-autonomos` — síntesis explícita: "el impuesto-de-verificacion se vuelve insuficiente cuando el verificador no puede distinguir el historial real del reescrito"
+  - `espectro-autonomia-agente` × `representacion-agente` — la fuente ya nombra el gap explícitamente: "el vault tiene arnes-del-agente... y espectro-autonomia-agente... pero ninguno resuelve el modo representación"
+  - `pit-stop-cognitivo` × `fabrica-oscura-de-software` — mismo pasaje que el descarte de `comprehension-debt` × `fabrica-oscura-de-software`, síntesis ya explícita
+  - `metricas-post-pantalla` × `feedback-que-escala` — la fuente dice literalmente "esta es la misma lógica de feedback-que-escala" — analogía ya resuelta, no tensión
+- No se creó `Inbox/*_correlaciones-propuestas.tmp.md` — ningún candidato sobrevivió la autocrítica adversarial
+- Siguen pendientes de revisión (sin tocar en esta corrida): `Inbox/2026-08-25_0811_correlaciones-propuestas.tmp.md` (3), `Inbox/2026-08-31_1122_correlaciones-propuestas.tmp.md` (2), `Inbox/2026-08-31_1122_borradores-graduados.tmp.md` (1), `Inbox/2026-09-07_1117_correlaciones-propuestas.tmp.md` (1)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-07 11:22 — busca correlaciones (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
