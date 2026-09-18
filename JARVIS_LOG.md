@@ -2,6 +2,30 @@
 
 ---
 
+### 2026-09-18 01:30 — Profundizador-1 (rutina cloud nocturna)
+
+**Instrucción:** Tarea programada — profundizar CONCEPTO 1 del Scout 2026-09-18
+
+**Acciones:**
+- Leyó Issue #122 "🔍 Scout [2026-09-18] — 5 candidatos" del repositorio
+- Extrajo CONCEPTO 1: slug `mercado-de-agentes-como-seleccion-natural` (score 24/30)
+- Leyó CONTEXTO_SEGUNDO_CEREBRO.md para contexto del vault
+- Lanzó 3 ejes de investigación:
+  - Eje 1: Caso empírico iLands (julio–sept 2026) — 4 fuentes sólidas encontradas
+  - Eje 2: arXiv 2608.03076 (Zhang & Shang) economía emergente en agentes — 2 fuentes verificables
+  - Eje 3: ICML 2026 arXiv 2512.04988 (Vanderschaar Lab) selección competitiva — 2 fuentes verificables
+- Construyó .md completo con secciones: El concepto / Por qué importa / Datos y evidencia / Tensiones y límites / Ejes investigados
+- Envió mail a luiguiavilae@gmail.com (message id: 1a0b33bc6606e676)
+
+**Resultados:**
+- `Conocimiento/Conceptos/ia/mercado-de-agentes-como-seleccion-natural.md`: PENDIENTE DE INSTALACIÓN (enviado por mail)
+- Gmail: OK — mail entregado
+- 6 fuentes verificadas en el .md (3 ejes × ≥2 fuentes por eje)
+
+**ATLAS regenerado:** no — el concepto no fue instalado en el vault (pendiente aprobación de Luigui)
+
+---
+
 ### 2026-09-14 11:20 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
