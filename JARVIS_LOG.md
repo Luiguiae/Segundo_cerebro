@@ -2,7 +2,29 @@
 
 ---
 
-### 2026-09-14 11:20 — gradúa los borradores (rutina cloud semanal)
+### 2026-09-19 01:45 — Profundizador-3 (rutina cloud automática)
+
+**Instrucción:** "Profundizador-3: profundiza CONCEPTO 3 del Scout de hoy y envía mail"
+
+**Acciones:**
+- Leyó Issue #123 "🔍 Scout [2026-09-19]" del repo Luiguiae/Segundo_cerebro
+- Extrajo CONCEPTO 3: `lavado-de-consultas-entre-modelos` (score 23/30)
+- Identificó 3 ejes de investigación desde `por_que_importa` y `tension`
+- Eje 1: Escala del fraude — Moonshot 23M exchanges, DeepSeek 12.1M, Alibaba 151M+, 5,380 cuentas fraudulentas; 2 fuentes sólidas
+- Eje 2: Soberanía y seguridad nacional — advisory NSA/CISA/FBI (8 sept 2026), PLA y operador ruso identificados entre usuarios de modelos intermediarios; 2 fuentes sólidas
+- Eje 3: Verificabilidad técnica — arXiv 2606.16100 (GhostPrint, fingerprinting "fundamentalmente rompible"), arXiv 2607.20860 (IRIS, model substitution documentada en producción); 2 fuentes sólidas
+- Construyó .md completo con 5 secciones (El concepto, Por qué importa, Datos y evidencia, Tensiones y límites, Ejes investigados)
+- Envió mail a luiguiavilae@gmail.com: asunto "🧠 Concepto listo: lavado-de-consultas-entre-modelos"
+
+**Resultados:**
+- `Conocimiento/Conceptos/ia/lavado-de-consultas-entre-modelos.md`: PENDIENTE DE INSTALACIÓN (enviado por mail, requiere aprobación de Luigui)
+- Mail Gmail: OK — messageId 1a0b898de16d3562
+
+**ATLAS regenerado:** no — concepto no instalado aún
+
+---
+
+4 11:20 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
 
