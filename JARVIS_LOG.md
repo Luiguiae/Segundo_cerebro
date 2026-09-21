@@ -2,6 +2,45 @@
 
 ---
 
+### 2026-09-21 11:14 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Confirmado vía `git log --since=2026-09-14 -- Conocimiento/` que el vault no cambió desde la corrida anterior — mismos 4 borradores: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`)
+- Los 4 tienen intento de graduación registrado en `JARVIS_LOG.md` hace 7 días (2026-09-14), dentro de la ventana de 14 días de la regla 3 — saltados los 4 sin leer contenido adicional ni ejecutar profundización dirigida
+- Confirmado que ninguno tiene un diagnóstico posterior al 2026-09-14 que cambie su estado de saltado
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento de graduación registrado hace 7 días (2026-09-14). `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, aún sin revisar por Luigui.
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo nuevo en `Inbox/`.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-21 11:09 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 99 conceptos `estado: activo` en `Conceptos/` (sin cambios desde la corrida del 2026-09-14 — mismo vault, confirmado por `git log`). Mismos 2 sub-conectados de siempre: `capas-de-profundidad-sistemica`, `interdependencia-sistemica`
+- Reconstruido el historial completo de pares ya evaluados leyendo las 4 entradas previas de este comando en el log (2026-08-25, 2026-08-31, 2026-09-07, 2026-09-14) más los 3 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes de revisión (que contienen las listas íntegras de descartados que el log no siempre listaba completas): 67 pares únicos ya evaluados, más los 29 pares que ya tienen archivo en `Correlaciones/`
+- Generados candidatos por señal objetiva sobre los conceptos restantes: 37 pares con mención cruzada disponibles tras las exclusiones — suficientes para saturar el tope de 20 solo con la señal más fuerte, sin necesidad de bajar a ≥3 tags compartidos o familia+tags. Desempate dentro del mismo nivel de señal por cantidad de tags compartidos
+- Por cada uno de los 20: leído el contexto completo de la mención cruzada en ambos conceptos, redactada correlación completa (`La tensión` / `El insight no obvio` / `El límite`), aplicada autocrítica adversarial (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?)
+
+**Resultados:**
+- 20 candidatos evaluados, 1 sobreviviente, 19 descartados
+- Patrón de descarte dominante (18 de 19, igual que en 09-07 y 09-14): el archivo fuente que menciona al otro concepto ya contiene, en su propia sección "Tensiones y límites" (frecuentemente bajo un subtítulo literal `**Tensión con...**`), la síntesis completa de la relación ya resuelta
+- Sobreviviente: **"El arnés no tiene dónde insertarse"** — `arnes-del-agente` × `el-agente-que-no-para`: `arnes-del-agente` presupone puntos discretos de confirmación a lo largo de un espectro de calibración continua; `el-agente-que-no-para` documenta Kimi Work Goal Mode (5 días de autonomía, 300 sub-agentes, 4,000 pasos) donde esos puntos discretos no existen por diseño — la ausencia de arnés que observa no es un déficit de esfuerzo sino la consecuencia de que el vocabulario de `arnes-del-agente` no tiene superficie de inserción en una arquitectura sin turnos. Ninguno de los dos textos nombra esa distinción
+- `Inbox/2026-09-21_1109_correlaciones-propuestas.tmp.md`: creado — 1 propuesta completa (frontmatter + cuerpo listo para copiar) + 19 descartes con razón específica (cita textual de la síntesis ya existente en cada caso)
+- Verificados ambos slugs de la propuesta (`arnes-del-agente`, `el-agente-que-no-para`) contra archivos existentes en `Conceptos/ia/`
+- Siguen pendientes de revisión (sin tocar en esta corrida): `Inbox/2026-08-25_0811_correlaciones-propuestas.tmp.md` (3), `Inbox/2026-08-31_1122_correlaciones-propuestas.tmp.md` (2), `Inbox/2026-08-31_1122_borradores-graduados.tmp.md` (1), `Inbox/2026-09-07_1117_correlaciones-propuestas.tmp.md` (1), `Inbox/2026-09-21_1109_correlaciones-propuestas.tmp.md` (1, nueva)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-14 11:20 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
