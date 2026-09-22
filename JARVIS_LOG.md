@@ -2,6 +2,26 @@
 
 ---
 
+### 2026-09-22 02:30 — Profundizador-1: entropia-agentica-mas-alla-del-diff
+
+**Instrucción:** Rutina automatizada Profundizador-1 (2026-09-22) — CONCEPTO 1 del Scout Issue #126
+
+**Acciones:**
+- Leído Issue #126 "🔍 Scout [2026-09-22] — 5 candidatos" en Luiguiae/Segundo_cerebro
+- Extraído CONCEPTO 1: slug `entropia-agentica-mas-alla-del-diff` (score 23/30)
+- Leído CONTEXTO_SEGUNDO_CEREBRO.md para validar slugs relacionados
+- Investigados 3 ejes: (1) mecanismo de entropía agéntica (paper arXiv 2604.16323), (2) datos cuantitativos de degradación (SlopCodeBench, GitClear), (3) señales alternativas de detección (ARCTIC, Spec-Driven Dev)
+- Construido .md completo con 4 fuentes verificables
+
+**Resultados:**
+- Concepto `entropia-agentica-mas-alla-del-diff`: LISTO — enviado por email a luiguiavilae@gmail.com
+- Fuentes por eje: Eje 1 = 2, Eje 2 = 3, Eje 3 = 3 (total 4 únicas verificables)
+- Email enviado: asunto "🧠 Concepto listo: entropia-agentica-mas-alla-del-diff — La entropía agéntica que el diff no puede ver"
+
+**ATLAS regenerado:** no — concepto no instalado en vault todavía (pendiente revisión de Luigui)
+
+---
+
 ### 2026-09-21 11:14 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
