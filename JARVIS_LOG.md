@@ -2,6 +2,26 @@
 
 ---
 
+### 2026-09-22 01:30 — Profundizador-3: agentes-antes-que-modelos-es-el-error
+
+**Instrucción:** Scheduled task — Profundizador-3, CONCEPTO 3 del Scout 2026-09-22 (Issue #126)
+
+**Acciones:**
+- Leído Issue #126 del repo — extraído CONCEPTO 3: slug `agentes-antes-que-modelos-es-el-error`
+- Leído CONTEXTO_SEGUNDO_CEREBRO.md para verificar slugs relacionados (ingenieria-agentica ✓, vibe-coding ✓, limite-de-la-escala-de-modelo ✓)
+- Investigados 3 ejes: (1) caso histórico World of Bits ICML 2017, (2) evidencia empírica de brecha benchmark→producción, (3) contraargumento infraestructura modelo-agnóstica
+- Ejes: 3 investigados · 6 fuentes sólidas identificadas (2 por eje mínimo)
+- Mail enviado a luiguiavilae@gmail.com con .md completo listo para instalar
+
+**Resultados:**
+- agentes-antes-que-modelos-es-el-error: ENTREGADO vía Gmail (id: 1a0c80ad763004aa)
+- Score Scout: 23/30 · estado propuesto: borrador (pendiente auditoría Jarvis)
+- Destino: Conocimiento/Conceptos/ia/agentes-antes-que-modelos-es-el-error.md
+
+**ATLAS regenerado:** no — concepto no instalado aún (pendiente revisión de Luigui)
+
+---
+
 ### 2026-09-22 02:30 — Profundizador-1: entropia-agentica-mas-alla-del-diff
 
 **Instrucción:** Rutina automatizada Profundizador-1 (2026-09-22) — CONCEPTO 1 del Scout Issue #126
