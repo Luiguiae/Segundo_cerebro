@@ -2,6 +2,25 @@
 
 ---
 
+### 2026-09-23 06:15 — Scout nocturno (rutina cloud diaria)
+
+**Instrucción:** Búsqueda nocturna automatizada — leer contexto del vault, scoutear señales de las últimas 24h, scorear candidatos, crear Issue con TOP 3, enviar mail resumen.
+
+**Acciones:**
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` para conceptos activos, familias y tema central
+- Gmail PRIORIDAD 1: solo 1 correo en ventana de 24h de las 5 fuentes configuradas (Superhuman, 2026-09-22) — mayormente noticias/lanzamientos, 1 bloque con argumento real usado como semilla del CONCEPTO 1. `deeplearning.ai` (último 2026-09-18), `iterativethinking.substack.com` (último 2026-07-08) sin correo en ventana; `aifordesigners.substack.com` y `uxuniversity.substack.com` sin ningún correo histórico registrado en Gmail — posible suscripción inactiva, señalado en el Issue
+- Pasado a PRIORIDAD 2 (web) por volumen insuficiente. `WebFetch` bloqueado por el proxy de red para todos los dominios probados (stratechery.com, geekwire.com, augmentcode.com) — investigación reconstruida vía `WebSearch` cruzando múltiples fuentes secundarias por candidato
+- Evaluados 8 candidatos totales; 3 superaron el umbral 15/30 con calidad suficiente para redacción completa; descartados por noticia/lanzamiento o solape con conceptos ya activos (`el-moat-del-gusto`, `ia-sin-ecosistema`) o con propuesta ya pendiente de ayer (Issue #126, CONCEPTO 3)
+- Verificados los 3 slugs nuevos contra `find Conocimiento/Conceptos/` — sin colisión
+
+**Resultados:**
+- Issue #127 creado en `Luiguiae/Segundo_cerebro`: "🔍 Scout [2026-09-23] — 3 candidatos" con TOP 3 completo (`control-selectivo-del-checkout-agentico` 23/30, `la-especificacion-que-se-vuelve-mentira` 23/30, `la-señal-de-dolor-que-hace-elegir-dañar` 23/30) y 0 candidatos pendientes adicionales
+- Mail resumen enviado a luiguiavilae@gmail.com — Gmail funcionó sin problemas, no fue necesario modo contingencia
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/` (el Scout solo propone, no escribe al vault)
+
+---
+
 ### 2026-09-22 02:30 — Profundizador-1: entropia-agentica-mas-alla-del-diff
 
 **Instrucción:** Rutina automatizada Profundizador-1 (2026-09-22) — CONCEPTO 1 del Scout Issue #126
