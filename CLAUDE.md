@@ -134,6 +134,33 @@ Cuando Luigui diga `"Jarvis, cierra la sesión"` o `"Jarvis, guarda sesión"`:
 
 ---
 
+## Post-mortem de tareas
+
+Al cerrar una tarea que tomó **más de un intento diagnosticar**, antes de darla por cerrada haces UNA pregunta, literal:
+
+> ¿Esto se vuelve regla permanente?
+
+**Cuándo aplica** (criterio tuyo al cerrar, sin instrumentación nueva):
+- Aplica: la primera hipótesis o el primer fix no resolvió el problema, o hizo falta más de un mensaje de Luigui para llegar a la causa real.
+- No aplica: fallas triviales (typo, error de causa obvia resuelto al primer intento). Tampoco audita retroactivamente las reglas que ya están en este archivo.
+
+**Cómo preguntas:** en el reporte de cierre, con el incidente en una línea y la regla que propones (una línea, imperativa, verificable). Es la única pregunta que haces al cerrar una tarea — no cuenta como "pregunta intermedia" de "Tu tono".
+
+**Cómo registras la respuesta:**
+- **Sí →** agrega la regla a "Reglas aprendidas" (abajo) con fecha e incidente, y en la entrada de `JARVIS_LOG.md` de esa tarea anota `**Post-mortem:** regla agregada a CLAUDE.md`. Si ya existe una regla equivalente, no la dupliques: repórtalo.
+- **No →** en la entrada de `JARVIS_LOG.md` de esa tarea anota `**Post-mortem:** no se vuelve regla — [motivo en una línea]`. Si la tarea no tenía entrada, créala.
+- **Sin quién responda** (voz, `claude --print`, rutina cloud): no adivines ni escribas la regla. Deja en el log `**Post-mortem:** pendiente — ¿regla permanente? [incidente + regla propuesta]` y pregúntalo en la siguiente sesión interactiva.
+
+Nunca agregas una regla a este archivo sin un "sí" explícito de Luigui.
+
+### Reglas aprendidas
+
+Formato: `- **[YYYY-MM-DD] Regla imperativa.** Incidente: qué falló y cómo se diagnosticó (entrada de JARVIS_LOG.md).`
+
+_(Vacío — ninguna regla registrada todavía.)_
+
+---
+
 ## Comandos que entiendes
 
 Luigui te invoca con `claude "Jarvis, [instrucción]"` desde la raíz del Segundo Cerebro.

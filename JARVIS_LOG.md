@@ -2,6 +2,33 @@
 
 ---
 
+### 2026-09-26 18:10 — paquete de mejoras, 3/5: sección "Post-mortem de tareas" en CLAUDE.md (Mejora D)
+
+**Instrucción:** "3. CLAUDE.md — Agrega la sección 'Post-mortem': tras cerrar cualquier tarea que tomó más de un intento diagnosticar, preguntar explícitamente '¿esto se vuelve regla permanente?' y registrar la respuesta (sí → regla con fecha + incidente en CLAUDE.md; no → línea en JARVIS_LOG.md)." (Luigui: "procede")
+
+**Acciones:**
+- `CLAUDE.md`: nueva sección `## Post-mortem de tareas` entre "Reglas que siempre sigues" y "Comandos que entiendes" (+27 líneas, 0 modificadas o borradas; las 9 reglas numeradas y todo lo demás quedan idénticos — el spec pide explícitamente no auditar retroactivamente el archivo). Contiene: la pregunta literal; criterio de "no trivial" (primera hipótesis/fix falló, o más de un mensaje de Luigui para llegar a la causa — tal como fija el spec, sin instrumentación nueva, a juicio de Jarvis al cerrar); registro del "sí" (regla en la subsección `### Reglas aprendidas` con fecha + incidente, más una línea `**Post-mortem:**` en la entrada del log) y del "no" (línea `**Post-mortem:** no se vuelve regla — [motivo]` en `JARVIS_LOG.md`, append-only); subsección `### Reglas aprendidas` creada VACÍA
+- Verificado mecánicamente: `git diff --numstat` = 27/0; ninguna línea existente alterada; sin separadores `---` dobles; 10 de 10 frases-requisito del spec presentes; ningún código parsea CLAUDE.md por secciones (solo hay 2 comentarios que lo mencionan en jarvis.py)
+- Sin reinicio del daemon: es prosa; cada `claude --print` de voz relee CLAUDE.md en fresco
+
+**Decisiones mías, no literales del spec (revisables):**
+1. **Nunca se escribe una regla en CLAUDE.md sin un "sí" explícito de Luigui** — CLAUDE.md es la identidad de Jarvis; que Jarvis edite sus propias reglas por su cuenta contradice el principio existente "no escribes si tienes duda"
+2. **Caso "sin quién responda"** (voz, `claude --print`, rutina cloud — sin turno de respuesta): no adivinar; queda `**Post-mortem:** pendiente — ¿regla permanente?` en el log y se pregunta en la siguiente sesión interactiva. El spec no cubre flujos headless y sin esto la pregunta se perdería o se contestaría sola
+3. La pregunta va acompañada del incidente en una línea y la regla propuesta (una línea, imperativa, verificable), para que el "sí" sea accionable sin otra vuelta
+4. La pregunta se declara excepción explícita a "sin preguntas intermedias" de "Tu tono" (es de cierre, no intermedia)
+5. `### Reglas aprendidas` se dejó vacía a propósito — el mecanismo es prospectivo; no se sembraron reglas de incidentes pasados (sería fabricar decisiones que Luigui no ha confirmado)
+
+**Limitación conocida:** la métrica "0 fallas no triviales cerradas sin el paso explícito" no se puede medir — el spec descarta instrumentación nueva, así que depende del juicio de Jarvis al cerrar
+
+**Resultados:**
+- `CLAUDE.md`: OK
+
+**Pendiente:** confirmación de Luigui para pasar a 4/5 (`poda-por-uso.py`)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-26 17:40 — paquete de mejoras, 2/5: Trabajo/Reuniones/ + plantilla (Mejora C, solo estructura)
 
 **Instrucción:** "2. Trabajo/Reuniones/ — Crea la subcarpeta y un archivo _plantilla-reunion.md con frontmatter (fecha, titulo, acciones). Deja la estructura lista; la skill de transcript→acciones se construye en una sesión aparte de Claude Code." (Luigui: "adelante con Mejora 2")
