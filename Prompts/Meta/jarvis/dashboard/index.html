@@ -406,8 +406,22 @@ function applyState(tipo, mensaje) {
 function pushLog(tipo, mensaje, ts) {
   const d    = ts ? new Date(ts) : new Date();
   const time = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  actionLog.unshift({ time, tipo: tipo.toUpperCase(), msg: (mensaje || '').slice(0, 52) });
-  if (actionLog.length > 5) actionLog.pop();
+  const msg  = (mensaje || '').slice(0, 52);
+
+  // Colapsa transiciones de estado consecutivas con el mismo mensaje (ej.
+  // "procesando" → "ejecutando" de un mismo accion_directa, donde texto ==
+  // instruccion) en una sola fila — evita que se vea como si el comando
+  // hubiera corrido 2 veces. También cubre el reenvío de _ultimo_evento que
+  // hace el servidor al reconectar tras una caída (mismo mensaje, no es una
+  // acción nueva). Solo colapsa si el mensaje es idéntico al de la fila más
+  // reciente — mensajes distintos (aunque sea la misma instrucción con otro
+  // tipo) siguen agregando fila nueva.
+  if (actionLog.length > 0 && actionLog[0].msg === msg) {
+    actionLog[0].time = time;
+  } else {
+    actionLog.unshift({ time, tipo: tipo.toUpperCase(), msg });
+    if (actionLog.length > 5) actionLog.pop();
+  }
 
   // Construcción via DOM + textContent (no innerHTML con template string): mensaje/time
   // vienen de transcripciones de voz o nombres de archivo — pueden contener '<'/'>'/'&'.
