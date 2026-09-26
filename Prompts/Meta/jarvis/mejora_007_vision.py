@@ -13,6 +13,7 @@ Usa es_error_vision(s) para distinguir errores de contenido real antes de despac
 
 Dependencias opcionales:
   pip3.11 install pyobjc-framework-Cocoa pyobjc-framework-ApplicationServices Pillow anthropic
+  pip3.11 install pyobjc-framework-Vision pyobjc-framework-Quartz  # OCR local, camino primario desde 2026-09-15
 """
 
 import base64
@@ -304,7 +305,139 @@ def tomar_screenshot() -> str:
     return base64.standard_b64encode(img_bytes).decode()
 
 
-# ── Claude Vision ──────────────────────────────────────────────────────────────
+# ── OCR local (Vision framework de macOS) ────────────────────────────────────
+# Camino PRIMARIO para pantallas dominadas por texto (2026-09-15). Corre siempre
+# primero porque es instantáneo y gratis — su resultado (texto + % de área
+# cubierta por texto detectado) es lo que decide si la pantalla es "solo texto"
+# (se usa el OCR directo) o si hay contenido visual real que amerita DeepSeek
+# Vision (ver clasificación en obtener_contexto_pantalla()).
+#
+# Por qué área de cobertura y no solo longitud de texto: una pantalla con una
+# barra de menú (poco texto, pero texto real) y el resto ilustraciones NO debe
+# tratarse como "solo texto" — cobertura mide qué fracción de la pantalla es
+# texto, no cuántos caracteres hay. Calibrado en vivo: una pantalla con menú de
+# VSCode + fondo de ilustraciones dio área=0.0024 (0.24%) — muy por debajo del
+# umbral; un documento o código con contenido real cubre fácilmente >3-5%.
+
+def ocr_local(base64_image: str) -> tuple[str | None, float]:
+    """Extrae el texto visible en el screenshot vía Vision.framework de macOS
+    (VNRecognizeTextRequest) — corre en el proceso, sin red, sin API key.
+    Retorna (texto, cobertura) donde cobertura es la fracción [0.0, 1.0] del
+    área de la imagen cubierta por texto detectado (suma de bounding boxes).
+    Retorna (None, 0.0) si no hay texto reconocible o si pyobjc-framework-Vision
+    no está instalado (para que el caller haga fallback a AppleScript)."""
+    try:
+        import Vision
+        import Quartz
+        from Foundation import NSData
+    except ImportError:
+        return None, 0.0
+
+    try:
+        img_bytes = base64.standard_b64decode(base64_image)
+        data = NSData.dataWithBytes_length_(img_bytes, len(img_bytes))
+        src = Quartz.CGImageSourceCreateWithData(data, None)
+        if src is None:
+            return None, 0.0
+        cg_image = Quartz.CGImageSourceCreateImageAtIndex(src, 0, None)
+        if cg_image is None:
+            return None, 0.0
+
+        request = Vision.VNRecognizeTextRequest.alloc().init()
+        request.setRecognitionLevel_(Vision.VNRequestTextRecognitionLevelAccurate)
+        request.setUsesLanguageCorrection_(True)
+        request.setRecognitionLanguages_(["es-ES", "en-US"])
+
+        handler = Vision.VNImageRequestHandler.alloc().initWithCGImage_options_(cg_image, {})
+        ok, err = handler.performRequests_error_([request], None)
+        if not ok:
+            print(f"[OCR] Vision request falló: {err}", flush=True)
+            return None, 0.0
+
+        resultados = request.results()
+        if not resultados:
+            return None, 0.0
+
+        lineas = []
+        cobertura = 0.0
+        for obs in resultados:
+            candidatos = obs.topCandidates_(1)
+            if candidatos:
+                lineas.append(candidatos[0].string())
+            bb = obs.boundingBox()
+            cobertura += bb.size.width * bb.size.height
+
+        texto = "\n".join(lineas).strip()
+        return (texto if texto else None), min(cobertura, 1.0)
+    except Exception as e:
+        print(f"[OCR] Error: {e}", flush=True)
+        return None, 0.0
+
+
+# ── DeepSeek Vision (camino primario desde 2026-09-15) ──────────────────────
+# deepseek-flash (antes deepseek-v4-flash-vision-exp) — confirmado con un request
+# real, no solo documentación: describe correctamente tanto texto (menú de VSCode)
+# como contenido puramente visual (ilustraciones) que el OCR local no puede leer.
+#
+# Es un modelo con razonamiento interno — el presupuesto de tokens se gasta primero
+# en "reasoning_content" y solo después en la respuesta final ("content"). Con
+# max_tokens bajo (probado con 150), content queda vacío y finish_reason="length"
+# sin que haya error visible. Confirmado que 1500 alcanza para una respuesta de 2
+# oraciones (570 tokens de razonamiento + resto de respuesta, finish_reason="stop").
+# Se usa 2000 acá con margen para instrucciones más largas (ej. "lee este correo
+# completo con 3 candidatos").
+
+_DEEPSEEK_VISION_MODEL = "deepseek-flash"
+
+
+def analizar_con_deepseek_vision(base64_image: str, instruccion: str = "") -> str:
+    """
+    Envía el screenshot a DeepSeek Vision (deepseek-flash) y retorna la
+    descripción/interpretación del contenido. Requiere DEEPSEEK_API_KEY.
+    """
+    import requests
+
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
+    if not api_key:
+        raise RuntimeError("DEEPSEEK_API_KEY no disponible en el entorno.")
+
+    prompt = instruccion or (
+        "Describe en detalle el contenido visible en esta pantalla. "
+        "Si hay texto, transcríbelo. Si hay una página web, incluye el título, "
+        "la URL si es visible, y el contenido principal del artículo o página. "
+        "Responde en español."
+    )
+
+    response = requests.post(
+        "https://api.deepseek.com/chat/completions",
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": _DEEPSEEK_VISION_MODEL,
+            "messages": [{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
+                ],
+            }],
+            "max_tokens": 2000,
+        },
+        timeout=45,
+    )
+    response.raise_for_status()
+    data = response.json()
+    contenido = data["choices"][0]["message"].get("content", "")
+    if not contenido.strip():
+        # Se gastó todo el presupuesto en razonamiento sin llegar a la respuesta final.
+        razon = data["choices"][0].get("finish_reason", "?")
+        raise RuntimeError(f"DeepSeek Vision no generó respuesta final (finish_reason={razon}, sin contenido).")
+    return contenido
+
+
+# ── Claude Vision (opcional — requiere ANTHROPIC_API_KEY, no configurada hoy) ──
 
 def analizar_con_vision(base64_image: str, instruccion: str = "") -> str:
     """
@@ -365,12 +498,19 @@ def _fallback_accesibilidad() -> str:
 
 def obtener_contexto_pantalla(instruccion_vision: str = "") -> str:
     """
-    Retorna el texto de lo que el usuario está viendo.
-    Prioridad: screenshot + Claude Vision (PRIMARIO) → AppleScript (SECUNDARIO).
+    Retorna el texto/descripción de lo que el usuario está viendo.
+    Ruteo interno por clasificación (2026-09-15, a pedido explícito de Luigui:
+    "si identificas solo texto ir por OCR, si identificas imagen ir por DeepSeek"):
+    OCR local corre SIEMPRE primero (gratis, instantáneo) y su cobertura de área
+    decide la ruta — pantalla dominada por texto → se usa el OCR directo, sin
+    gastar la cuenta de pago de DeepSeek; poco texto relativo al tamaño de
+    pantalla → hay contenido visual real → se escala a DeepSeek Vision. Claude
+    Vision (opcional, solo si ANTHROPIC_API_KEY llega a configurarse) y
+    AppleScript/Accesibilidad quedan como último recurso si ambos fallan.
     El screenshot captura cualquier app — no solo el navegador.
     Retorna mensaje legible si no tiene permisos.
     """
-    # PRIMARIO: screenshot de pantalla completa + Claude Vision
+    # Base: screenshot de pantalla completa
     try:
         b64 = tomar_screenshot()
         print(f"[Vision007] Screenshot OK ({len(b64) // 1024}KB base64)", flush=True)
@@ -384,20 +524,53 @@ def obtener_contexto_pantalla(instruccion_vision: str = "") -> str:
         print(f"[Vision007] Screenshot error: {e} — fallback AppleScript", flush=True)
         return _fallback_accesibilidad()
 
-    print("[Vision007] Llamando Claude API...", flush=True)
-    try:
-        resultado = analizar_con_vision(b64, instruccion_vision)
-        print("[Vision007] Respuesta Claude:", repr(resultado[:200]), flush=True)
-        return resultado
-    except Exception as e:
-        print("[Vision007] ERROR Claude Vision:", e, flush=True)
-        import traceback
-        traceback.print_exc()
-        print("[Vision007] Fallback a AppleScript...", flush=True)
-        fallback = _fallback_accesibilidad()
-        if fallback and not fallback.startswith("No pude"):
-            return fallback
-        return f"Error al analizar la pantalla: {e}"
+    # CLASIFICACIÓN INTERNA: OCR corre siempre primero (instantáneo, gratis) — su
+    # resultado decide la ruta. "Solo texto" (cobertura de área + longitud por
+    # encima del umbral) → se usa el OCR directo, sin gastar la cuenta de pago de
+    # DeepSeek. Cobertura baja (poco texto relativo al tamaño de pantalla, aunque
+    # haya algo de texto — ej. una barra de menú sobre una imagen) → hay
+    # contenido visual real que el OCR no puede leer → se escala a DeepSeek
+    # Vision. Umbrales calibrados en vivo (ver comentario en ocr_local()).
+    print("[Vision007] Corriendo OCR local (clasificación)...", flush=True)
+    texto_ocr, cobertura = ocr_local(b64)
+    _ES_SOLO_TEXTO = texto_ocr and len(texto_ocr) > 100 and cobertura > 0.03
+    print(f"[Vision007] OCR: {len(texto_ocr) if texto_ocr else 0} chars, "
+          f"cobertura={cobertura:.4f} → {'SOLO TEXTO' if _ES_SOLO_TEXTO else 'posible contenido visual'}", flush=True)
+
+    if _ES_SOLO_TEXTO:
+        return f"Texto visible en pantalla (extraído por OCR):\n{texto_ocr}"
+
+    # Hay poco texto relativo a la pantalla → probablemente contenido visual real
+    if os.environ.get("DEEPSEEK_API_KEY"):
+        print("[Vision007] Consultando DeepSeek Vision...", flush=True)
+        try:
+            resultado = analizar_con_deepseek_vision(b64, instruccion_vision)
+            print("[Vision007] Respuesta DeepSeek:", repr(resultado[:200]), flush=True)
+            return resultado
+        except Exception as e:
+            print(f"[Vision007] ERROR DeepSeek Vision: {e}", flush=True)
+
+    # DeepSeek no disponible o falló — usa lo que el OCR sí encontró, aunque sea poco
+    if texto_ocr and len(texto_ocr) > 20:
+        print(f"[Vision007] Usando OCR parcial como respaldo ({len(texto_ocr)} chars)", flush=True)
+        return f"Texto visible en pantalla (extraído por OCR, puede haber contenido visual no descrito):\n{texto_ocr}"
+
+    # Opcional: Claude Vision, solo si la key está configurada
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        print("[Vision007] Intentando Claude Vision...", flush=True)
+        try:
+            resultado = analizar_con_vision(b64, instruccion_vision)
+            print("[Vision007] Respuesta Claude:", repr(resultado[:200]), flush=True)
+            return resultado
+        except Exception as e:
+            print("[Vision007] ERROR Claude Vision:", e, flush=True)
+
+    # ÚLTIMO RECURSO: AppleScript/Accesibilidad
+    print("[Vision007] Fallback a AppleScript...", flush=True)
+    fallback = _fallback_accesibilidad()
+    if fallback and not fallback.startswith("No pude"):
+        return fallback
+    return "No pude leer el contenido de la pantalla (ni por DeepSeek, OCR, ni accesibilidad)."
 
 
 # ── Funciones de intent ────────────────────────────────────────────────────────
