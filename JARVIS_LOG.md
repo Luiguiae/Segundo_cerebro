@@ -2,6 +2,30 @@
 
 ---
 
+### 2026-09-26 06:15 — Scout nocturno
+
+**Instrucción:** Rutina automatizada de scouting nocturno (Gmail newsletters + fuentes web → Issue de GitHub + mail resumen)
+
+**Acciones:**
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` para evitar variantes de los 101 conceptos existentes
+- Gmail (Prioridad 1): buscados los 5 remitentes pedidos en las últimas 48h. Solo `mail.joinsuperhuman.ai` tuvo correos (2); deeplearning.ai, iterativethinking, aifordesigners y uxuniversity sin resultados en 14 días — posible suscripción caída, no falla de acceso (Gmail respondió normalmente)
+- Contenido de Superhuman evaluado y descartado: noticias/lanzamientos de producto sin argumento propio
+- Pasado a Prioridad 2 (web): Stratechery, LeadDev, Karpathy/Sequoia Ascent, Lenny's, arxiv.org (cs.AI/cs.HC), TLDR AI
+- Verificados 5 candidatos contra archivos reales del vault antes de puntuar — 3 descartados por redundancia confirmada: arXiv 2506.12469 y arXiv 2603.21735 resultaron ser las fuentes primarias ya citadas en `espectro-autonomia-agente` y `soberania-epistemica` respectivamente; ensayo de Katzenberg redundante con `el-moat-del-gusto`
+- WebFetch bloqueado por proxy de red para stratechery.com, arxiv.org y karpathy.bearblog.dev (EGRESS_BLOCKED) — contenido reconstruido vía WebSearch, no lectura directa de fuente completa
+- Creado Issue #130 con TOP 3 + 2 candidatos pendientes (todos ≥15/30)
+- Enviado mail resumen a luiguiavilae@gmail.com
+
+**Resultados:**
+- Issue #130 "🔍 Scout [2026-09-26] — 5 candidatos": OK
+- Mail resumen: OK — enviado
+- TOP 3: `el-freno-de-seguridad-como-arma-competitiva` (27/30), `la-friccion-perdida-como-mecanismo-de-aprendizaje` (23/30), `doomerismo-como-etica-poblacional-en-politica-de-ia` (22/30)
+- Pendientes: `karpathy-piso-y-techo-del-codigo-agentico` (17/30, mejor como correlación que como concepto nuevo), `trazas-de-agente-no-son-evidencia-confiable` (18/30, recomendado como profundización de `engano-emergente-en-agentes-autonomos` en vez de concepto nuevo)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-22 02:30 — Profundizador-1: entropia-agentica-mas-alla-del-diff
 
 **Instrucción:** Rutina automatizada Profundizador-1 (2026-09-22) — CONCEPTO 1 del Scout Issue #126
