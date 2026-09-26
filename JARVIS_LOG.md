@@ -2,6 +2,173 @@
 
 ---
 
+### 2026-09-26 17:05 — paquete de mejoras, 1/5: vault-brief.md + aviso del watcher (Mejora A)
+
+**Instrucción:** "1. vault-brief.md — crea el archivo en la raíz con las 5 secciones (máx. 10 líneas c/u). Agrega al filesystem watcher existente una notificación (no regeneración automática) cuando el conteo de conceptos en ATLAS.md cambie en más de ±5, o se cree una categoría nueva." (spec `2026-09-26_paquete-mejoras-vault.md`; ejecución una por una, con confirmación de Luigui entre cada una)
+
+**Acciones:**
+- `vault-brief.md` (nuevo, raíz): 5 secciones, 36 líneas (≤6 por sección), 2,267 caracteres. Contenido sacado solo de fuentes verificables (CLAUDE.md, CONTEXTO_SEGUNDO_CEREBRO.md, este log, docs/plan-01x.md, el propio spec) — nada inventado. Métrica del spec "reduce contexto ≥90%": 90.4% frente a CONTEXTO_SEGUNDO_CEREBRO.md (la primera versión daba 88%, se compactó hasta cumplir). Frontmatter con `conceptos_baseline: 103` y `categorias_baseline` = las 6 carpetas actuales — es el baseline contra el que compara el watcher
+- `jarvis_daemon.py`: constantes `BRIEF_PATH`/`ATLAS_PATH`/`CONCEPTOS_DIR`/`BRIEF_UMBRAL_CONCEPTOS=5`; `_evaluar_brief_desactualizado()` (solo lee: |`Total de conceptos` de ATLAS.md − baseline| > 5, o subcarpeta nueva de Conceptos/ con .md fuera de `categorias_baseline`); `_avisar_si_brief_desactualizado()` (log + evento `watcher` al dashboard + voz). Se engancha en `VaultEventHandler._ejecutar_auto_index` justo después de regenerar el ATLAS, con try/except para que un fallo del aviso nunca rompa el auto-index
+- Diseño anti-spam: avisa UNA vez al cruzar el umbral y se rearma cuando el brief vuelve a estar al día (actualizar el brief a mano = cambiar el baseline del frontmatter; no hay estado aparte que resetear). Nunca regenera ni edita el brief
+- Probado con un vault falso en directorio temporal (12 casos, todos PASS): al día, Δ=+5 exacto NO dispara, Δ=+6 dispara, Δ=−6 (baja) dispara, categoría nueva con .md dispara, carpeta nueva sin .md no dispara, brief ausente → None sin crashear, aviso una sola vez, rearme tras actualizar. Contra el vault real: `None` (al día) — no hay falso aviso al primer index
+- `py_compile` OK. Daemon reiniciado (PID 766 → 76556)
+
+**Hallazgos / limitaciones (no resueltas, por transparencia):**
+- El aviso solo corre tras un auto-index, y el watcher solo reacciona a archivos `.md` creados o modificados — NO a borrados ni movidos. Si el conteo baja por borrar/mover conceptos, el aviso no se dispara hasta el próximo concepto creado/modificado. Cubrirlo exigiría agregar `on_deleted`/`on_moved` al handler, que cambia la semántica del auto-index; fuera del alcance pedido
+- `launchd` NO relanzó el daemon tras `kill -TERM` (mismo síntoma que el 2026-09-09, PID `-` en `launchctl list`); se levantó a mano con `launchctl start com.segundocerebro.jarvis`. Es la segunda vez que ocurre — sigue sin causa determinada
+- Otros cambios sin commitear de sesiones anteriores (jarvis.py, mejora_007_vision.py, dashboard/index.html, conceptos untracked, Inbox/*.tmp.md) NO se incluyen en el commit de esta mejora, salvo las entradas de este log que los describen
+
+**Resultados:**
+- `vault-brief.md`: OK · `jarvis_daemon.py`: OK — aviso activo
+
+**Pendiente:** confirmación de Luigui para pasar a 2/5 (`Trabajo/Reuniones/`). Ojo: `Trabajo/` no existe hoy en el vault — a resolver al llegar a esa mejora.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-15 10:21 — ajuste: ruteo interno OCR vs. DeepSeek Vision por clasificación de pantalla
+
+**Instrucción:** "la priorización debería ser interna, si identificas solo texto ir por OCR, si identificas imagen ir por Deepseek"
+
+**Acciones:**
+- `ocr_local()`: ahora retorna `(texto, cobertura)` en vez de solo `texto` — `cobertura` es la fracción [0.0-1.0] del área de la imagen cubierta por bounding boxes de texto detectado (suma de `obs.boundingBox()` de cada observación de Vision.framework)
+- `obtener_contexto_pantalla()`: reescrito el ruteo — OCR corre SIEMPRE primero (gratis, instantáneo) y clasifica: `len(texto) > 100 and cobertura > 0.03` → "solo texto", devuelve el OCR directo sin llamar a DeepSeek; si no, escala a DeepSeek Vision (hay contenido visual real que el OCR no puede leer). Si DeepSeek falla o no hay key, usa el texto parcial que sí encontró el OCR como respaldo antes de caer a Claude Vision/AppleScript
+- Umbrales calibrados con 2 pruebas reales, no arbitrarios: pantalla real con menú de VSCode + fondo de ilustraciones → cobertura=0.0024 (0.24%) → clasifica correctamente como "posible contenido visual"; imagen sintética con código denso (PIL, 666 caracteres de texto) → cobertura=0.1527 (15%) → clasifica correctamente como "solo texto". Margen amplio entre ambos casos reales, no un umbral ajustado al límite
+- `py_compile` OK. Daemon reiniciado
+
+**Resultados:**
+- `mejora_007_vision.py`: OK — ruteo por clasificación activo, DeepSeek solo se consulta cuando el OCR indica que probablemente hay contenido visual
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-15 10:12 — mejora: "ver mi pantalla" ahora interpreta imágenes reales vía DeepSeek Vision
+
+**Instrucción:** "si, quiero que interprete imagenes también, tengo una cuenta de paga en deepseek, averigua si con esa api key puede leer imagenes" (seguido de Luigui compartiendo la key directamente en el chat)
+
+**Investigación:** confirmado vía documentación oficial (`api-docs.deepseek.com/guides/vision`) que existe `deepseek-flash` (antes `deepseek-v4-flash-vision-exp`) con soporte real de imágenes — formato estándar `image_url` con base64 inline, hasta 32MB/8192px. No estaba en mi conocimiento previo de DeepSeek (modelo reciente). Verificado con un request real (no solo la doc): confirmó tanto texto (menú de VSCode) como contenido puramente visual (ilustraciones), algo que el OCR local nunca podría hacer.
+
+**Hallazgo durante la prueba:** `deepseek-flash` es un modelo con razonamiento interno — con `max_tokens=150` el presupuesto completo se gastó en `reasoning_content` y `content` (la respuesta final) quedó vacío, `finish_reason="length"`, sin error visible. Con `max_tokens=1500` sí generó respuesta completa (570 tokens de razonamiento + resto). Se usa `max_tokens=2000` en la integración real, con margen para instrucciones más largas.
+
+**Acciones:**
+- `DEEPSEEK_API_KEY` agregada a `~/Library/Application Support/Jarvis/env` (permisos 600)
+- `mejora_007_vision.py`: nueva función `analizar_con_deepseek_vision(base64_image, instruccion)` — mismo patrón que `analizar_con_vision()` (Claude, sigue sin usarse — no hay `ANTHROPIC_API_KEY`), pero maneja explícitamente el caso `content` vacío por agotamiento de `reasoning_content` (lanza error legible en vez de devolver silencio)
+- `obtener_contexto_pantalla()`: reordenado — PRIMARIO ahora es DeepSeek Vision (entiende texto Y contenido visual real); SECUNDARIO es OCR local (si DeepSeek falla/no hay key — instantáneo, gratis, pero solo texto); Claude Vision y AppleScript quedan como último recurso, sin cambios en su lógica
+- Probado end-to-end real con la key real de Luigui: describió correctamente 13 ilustraciones de perros visibles en pantalla junto con el menú de VSCode — confirma comprensión visual genuina, no solo texto
+- `py_compile` OK. Confirmado que el proceso del daemon (`ps eww`) tiene `DEEPSEEK_API_KEY` en su entorno tras el reinicio. Daemon reiniciado
+
+**Resultados:**
+- `mejora_007_vision.py`: OK — DeepSeek Vision activo como camino primario
+
+**Pendiente:**
+- Validar en producción con un pedido de voz real ("Jarvis, qué estoy viendo")
+- Cada llamada a `ver_pantalla`/`profundizar_pantalla`/`relacionar_con_vault` ahora consume la cuenta de pago de DeepSeek de Luigui — no medido el costo real por llamada, solo confirmado que funciona
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-15 09:50 — fix: "ver mi pantalla" solo veía el navegador — reemplazado Claude Vision (nunca configurado) por OCR local
+
+**Instrucción:** "siempre que le pido que vea mi pantalla, solo ve el navegador, no ve VSC u otro elemento" → "usa cualquiera de mis api keys de groq o de deepseek"
+
+**Diagnóstico:** confirmado que `ANTHROPIC_API_KEY` nunca estuvo en `~/Library/Application Support/Jarvis/env` (solo `GROQ_API_KEY` y `JARVIS_TOKEN`) — `analizar_con_vision()` fallaba en silencio en CADA pedido de `ver_pantalla` desde que existe la función, y el sistema corría siempre sobre `_fallback_accesibilidad()` (AppleScript), que solo tiene extracción rica para Chrome/Safari/Arc — cualquier otra app se reducía al título de la ventana. De ahí "solo ve el navegador".
+
+**Investigación de alternativas:** confirmado con `GET /openai/v1/models` que Groq no tiene ningún modelo con capacidad de imagen en esta key (ninguno con "vision"/"vl"/"image" en el nombre); DeepSeek tampoco expone un endpoint de visión en su API estándar (no verificado con key real — no está configurada — pero su API pública documentada es solo texto). Ninguno de los dos sirve como reemplazo directo de un modelo de visión.
+
+**Acciones:**
+- `mejora_007_vision.py`: nueva función `ocr_local(base64_image)` — usa `Vision.framework` de macOS (`VNRecognizeTextRequest`) vía pyobjc, 100% local, sin red, sin API key. Confirmado `pyobjc-framework-Vision`/`Quartz` ya instalados
+- `obtener_contexto_pantalla()`: reordenado — PRIMARIO ahora es screenshot + OCR local (funciona para cualquier app, no solo navegador); SECUNDARIO opcional es Claude Vision (solo si `ANTHROPIC_API_KEY` llega a configurarse alguna vez); AppleScript queda como último recurso, igual que antes
+- El texto extraído por OCR se pasa exactamente igual que antes a `responder_con_groq()` en `jarvis.py` (sin cambios ahí) — Groq interpreta el texto ya extraído, reusando la pieza que ya funciona. Ningún proveedor nuevo, ninguna key nueva
+- Probado end-to-end real (no mockeado): captura de pantalla real + OCR real sobre VSCode al frente → confirmado que lee contenido real más allá del navegador
+- `py_compile` OK. Daemon reiniciado
+
+**Trade-off documentado, no oculto:** OCR solo lee texto — no describe layout, íconos ni contenido gráfico como podría un modelo de visión real. Para los casos de uso reales de este vault (leer código, leer un correo, leer una página) es lo que se necesita, y es más fiel que un modelo de visión parafraseando texto.
+
+**Resultados:**
+- `mejora_007_vision.py`: OK — fix activo
+- `jarvis.py`: sin cambios necesarios
+
+**Pendiente:**
+- Validar en producción pidiendo "Jarvis, qué estoy viendo" con VSCode/otra app no-navegador al frente
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-15 09:45 — fix: Jarvis se cortaba al leer/describir contenido largo de pantalla
+
+**Instrucción:** "le pedí que leyera el correo que muestro en la imagen adjunta, y solo leyó hasta 'La identidad del agente como el nuevo botín'... es la misma observación que hago cuando digo que Jarvis se corta cuando esta leyendo o describiendo algo" (screenshot del dashboard + Gmail con un correo del Scout, 3 candidatos)
+
+**Diagnóstico:** dos topes apilados en el flujo `ver_pantalla` (`jarvis.py`), y el primero es el que realmente cortaba el contenido — no el segundo, que es el único que documentaba `CONTEXTO_SEGUNDO_CEREBRO.md`:
+1. `responder_con_groq()` (usada para generar lo que Jarvis dice) llama a Groq con `max_tokens=150` — un tope de generación del LLM, no de post-procesamiento. Con eso, Groq nunca termina de generar una respuesta que cubra 3 candidatos + pendientes + advertencia de newsletters — corta a mitad de la descripción del primero.
+2. El `system_prompt` default de `responder_con_groq()` además instruye explícitamente "máximo 2 oraciones" — apropiado para charla casual ("cómo estás"), pero el `ver_pantalla` lo usaba sin overridearlo, así que Groq intentaba cumplir la instrucción de brevedad sobre contenido que el usuario pidió leer completo.
+3. `hablar_respuesta(respuesta)` trunca a 600 chars como red de seguridad adicional — pero en este caso ni siquiera llegó a activarse: la respuesta de Groq ya venía corta desde el paso 1.
+
+**Acciones:**
+- `responder_con_groq()`: agregado parámetro `max_tokens: int = 150` (antes hardcodeado) — default sin cambios para no afectar charla casual
+- `ver_pantalla`: diferenciado por `params["accion"]` — "describir" (default, incluye pedidos de "lee esto") usa un `system_prompt_override` sin el límite de 2 oraciones ("relata el contenido de forma completa y fiel... cúbrelos todos") + `max_tokens=500`; "resumir"/"opinar" se quedan con el comportamiento breve original (a propósito — sí deben ser cortos)
+- `hablar_respuesta()` en esa misma rama: `max_chars=1200` en vez de 600, para no truncar de nuevo la respuesta ya más completa
+- **No se tocó** `consulta_simple`/`razonamiento_profundo` (tienen su propio "máximo 3 oraciones" a propósito — preguntas tipo "cuántos conceptos tengo" deben ser breves) ni `relacionar_con_vault` (pregunta tipo sí/no, no pide relayar contenido largo) — ninguno coincide con el patrón "leer/describir contenido real y extenso" que reportó Luigui
+- `py_compile` OK
+
+**Resultados:**
+- `jarvis.py`: OK — fix activo tras reinicio del daemon
+
+**Pendiente:**
+- Validar en producción con un correo/contenido igual de largo que el del reporte
+- Si el mismo corte aparece en `relacionar_con_vault` o en otro flujo no cubierto acá, es un fix aparte — este alcance fue específico a `ver_pantalla`
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-09 08:12 — fix: escuchar() cortaba instrucciones largas antes de que Luigui terminara de hablar
+
+**Instrucción:** "cuando me escucha y le estoy dando una instrucción, si mi descripción es muy larga deja de escuchar de manera abrupta, no me deja terminar... recibe solicitudes a medias"
+
+**Diagnóstico:** en `jarvis.py::escuchar()` (línea 171, la función que captura toda instrucción de voz tras el wake word — no la de detección de wake word, que está bien acotada a 6s aparte): `recognizer.listen(source, timeout=5, phrase_time_limit=15)` — tope duro de 15s de grabación, y sin `pause_threshold` explícito (default de la librería: 0.8s de silencio = fin de frase). Dos mecanismos distintos podían cortar una instrucción larga antes de tiempo: el tope de 15s en instrucciones con varias cláusulas, y el silencio de 0.8s ante cualquier pausa natural de pensar a mitad de frase — este segundo es probablemente el más frecuente en la práctica, y explica el corte "abrupto" e impredecible (no siempre a los 15s exactos).
+
+**Acciones:**
+- `jarvis.py::escuchar()`: `pause_threshold` subido de 0.8s (default) a 1.5s explícito; `phrase_time_limit` subido de 15s a 45s (tope de seguridad, no el mecanismo normal de corte — eso sigue siendo `pause_threshold`)
+- `escuchar_respuesta()` en `jarvis_daemon.py` (usada para respuestas de confirmación más cortas, no para la instrucción inicial) — **no se tocó**, mismo `phrase_time_limit=10` de antes; si Luigui nota el mismo problema ahí (ej. explicando una razón larga en respuesta a una pregunta de seguimiento), es un fix aparte
+- `py_compile` OK
+- Confirmado sin modo taller activo ni subproceso `claude --print` corriendo antes de reiniciar
+- Daemon reiniciado
+
+**Resultados:**
+- `jarvis.py`: OK — fix activo
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-09 08:05 — fix: dashboard mostraba comandos como ejecutados 2 veces (bug de visualización, no de ejecución)
+
+**Instrucción:** "le acabo de pedir una tarea a Jarvis, sin embargo en el front me sale que se ejecuto 2 veces? analiza por que podría estar pasando esto" (sobre "jarvis puedes revisar mi correo en busca de conceptos atómicos", 07:57)
+
+**Diagnóstico:**
+- Confirmado en el log real que solo hubo **1** `Transcripción` (07:57:52) y **1** `Intent: accion_directa` / dispatch (07:57:54) — el backend NO ejecutó el comando dos veces
+- Nota lateral: `~/Library/Logs/jarvis.log` (target de `StandardOutPath`/`StandardErrorPath` del plist) lleva congelado desde el arranque del daemon el 2026-09-08 08:22:49 pese a que el daemon sigue vivo y trabajando — el log real y activo es `Prompts/Meta/jarvis/jarvis.log` (target del `RotatingFileHandler` interno, `maxBytes=5MB`, `backupCount=3` — de ahí `jarvis.log.1`/`.2` en esa carpeta). Causa de por qué el stream de stdout crudo dejó de escribir: no determinada — sin crash log de macOS en la ventana relevante. No se investigó más a fondo, fuera del alcance de esta pregunta.
+- Causa real de la "doble ejecución" encontrada en `jarvis_daemon.py`/`jarvis.py`: para cualquier `accion_directa`, el pipeline emite `emitir_evento("procesando", texto[:60])` justo tras transcribir (`jarvis_daemon.py:1008`, antes de clasificar intent) y luego `emitir_evento("ejecutando", instruccion[:60])` al despachar (`jarvis.py:1590`). Ambos tipos están en `LOG_STATES` del dashboard (`index.html`), y como `instruccion` es el mismo texto que `texto` para `accion_directa`, ambos eventos llegan con mensaje idéntico — separados por la latencia de clasificación de Groq (~2s, coincide exacto con el hueco de tiempos reportado). `pushLog()` nunca renderiza el campo `tipo` en la lista, solo hora+mensaje, así que dos transiciones de estado reales y correctas se ven indistinguibles de una ejecución duplicada.
+- Se investigó también la hipótesis de un crash+relanzamiento del servidor del dashboard (mismo patrón que el incidente del 2026-08-25 con "busca correlaciones") — descartada para este caso específico: el watchdog relanzó el dashboard a las 07:58:48, DESPUÉS de que ambas entradas duplicadas ya habían aparecido (07:57:52 / 07:57:54) — no pudo ser la causa aquí, aunque sigue siendo un mecanismo real que puede producir el mismo síntoma en otros casos (reenvío de `_ultimo_evento` al reconectar).
+
+**Acciones:**
+- `dashboard/index.html` — `pushLog()`: si el mensaje nuevo es idéntico al de la fila más reciente en `actionLog`, actualiza su hora en vez de agregar una fila nueva. Colapsa tanto el caso `procesando`→`ejecutando` de hoy como el caso de reconexión/reenvío de `_ultimo_evento` del 2026-08-25 — un solo fix cubre ambos mecanismos
+- Sin cambios en backend — no había nada que corregir ahí, el dispatch ya era único
+
+**Resultados:**
+- `dashboard/index.html`: OK — corregido, sin necesidad de reiniciar ningún proceso (se sirve fresco en cada carga)
+
+**Pendiente:**
+- Investigar por qué `~/Library/Logs/jarvis.log` (stdout crudo vía launchd) dejó de escribir desde el arranque del 2026-09-08 — hallazgo lateral, no bloqueante (el log real y funcional es `Prompts/Meta/jarvis/jarvis.log`)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-07 11:22 — busca correlaciones (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
@@ -3363,3 +3530,59 @@ Una correlación que podría faltar es la relación entre la "restriccion-de-tie
 ## 2026-09-02 12:00 — modo-taller
 **Instrucción:** Jarvis, modo taller
 **Resultado:** 213 frases capturadas, 6 candidatos extraídos. Transcript borrado.
+
+## 2026-09-07 12:30 — SYNC
+**Instrucción:** sincroniza el vault
+**Resultado:** 2 archivos actualizados
+
+## 2026-09-07 12:30 — FILESYSTEM
+**Instrucción:** pues leer el último archivo en la carpeta
+**Resultado:** El archivo '/Users/luiguiavilae/carpeta' no existe.
+
+## 2026-09-07 12:30 — CONSULTA
+**Instrucción:** dentro del vault en la carpeta guía hay
+**Resultado:** 
+
+## 2026-09-09 07:59 — ACCION
+**Instrucción:** jarvis puedes revisar mi correo en busca de conceptos atómicos
+**Resultado:** Revisé el correo: encontré 6 conceptos ya redactados por el Scout en las últimas 48 horas que aún no están en el vault — ninguno de sus slugs existe en `Conceptos/` (opacidad-como-precio-de-la-alineacion 26/30, sinergia-negativa-en-equipos-de-agentes 25/30, agi-como-harness-no-como-modelo 24/30, opacidad-recurrente-como-costo-de-capacidad y colapso-de-la-investigacion-en-soberania-epistemica 23/30, y verificacion-delegada-a-maquina-en-prueba-matematica 22/30).
+
+## 2026-09-09 07:59 — RAZONAMIENTO
+**Instrucción:** puedes profundizar en ají como harns
+**Resultado:** 
+
+## 2026-09-09 08:00 — ACCION
+**Instrucción:** sí ayúdame con el correo
+**Resultado:** No tengo contexto de a qué correo te refieres — ¿es un correo que quieres que redacte, uno que debo revisar, o algo relacionado con el Segundo Cerebro? Dime el asunto o pégame el contenido y lo hago.
+
+## 2026-09-09 08:00 — ACCION
+**Instrucción:** el asunto es concepto listo ágil como harnes
+**Resultado:** No logro interpretar con claridad esa instrucción de voz — parece un fragmento cortado o mal transcrito, y crear un concepto nuevo sin saber el nombre y la descripción real sería arriesgado. ¿Podrías repetir o escribir qué concepto quieres agregar y sobre qué trata? No toqué el vault.
+
+## 2026-09-09 08:01 — ACCION
+**Instrucción:** aquí como har
+**Resultado:** No entendí la instrucción de voz completa — "aquí como har" parece un corte en la transcripción. ¿Puedes repetir qué quieres que haga con el vault?
+
+## 2026-09-09 08:01 — ACCION
+**Instrucción:** ají o mojarnos en mi correo
+**Resultado:** No logré entender la instrucción de voz "ají o mojarnos en mi correo" — parece una transcripción distorsionada y no corresponde a ningún comando que reconozca. ¿Puedes repetirla o escribirla directamente?
+
+## 2026-09-15 09:30 — VISION
+**Instrucción:** qué estoy viendo ahorita
+**Resultado:** Estás en tu bandeja de entrada de Gmail, con 12 correos no leídos en la carpeta Recibidos. La lista muestra los asuntos de los mensajes más recientes, agrupados por pestaña (Principal, Promociones, So
+
+## 2026-09-15 09:31 — VISION
+**Instrucción:** puedes leer el correo que estoy viendo ahora jarvis
+**Resultado:** El correo de Luigui Avila informa que el Scout identificó cinco candidatos, de los cuales tres están siendo profundizados y recibirás un mensaje por cada uno antes de las 3 am. Los tres mejores son: l
+
+## 2026-09-15 12:00 — modo-taller
+**Instrucción:** Jarvis, modo taller
+**Resultado:** 74 frases capturadas, 6 candidatos extraídos, análisis de sesión generado. Transcript borrado.
+
+## 2026-09-15 12:56 — modo-taller
+**Instrucción:** Jarvis, modo taller
+**Resultado:** 1 frases capturadas, 0 candidatos extraídos, análisis de sesión generado. Transcript conservado (sin candidatos).
+
+## 2026-09-24 12:01 — modo-taller
+**Instrucción:** Jarvis, modo taller
+**Resultado:** 25 frases capturadas, 0 candidatos extraídos, análisis de sesión generado. Transcript conservado (sin candidatos).

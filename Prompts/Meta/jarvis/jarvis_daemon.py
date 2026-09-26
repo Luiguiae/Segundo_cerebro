@@ -45,6 +45,15 @@ MODO_ESCUCHA_TIMEOUT = 60
 TOPE_MODO_TALLER  = 90 * 60  # segundos — cierre automático si nadie dice "detén el mapeo"
 CHECKPOINT_TALLER = 5 * 60   # segundos entre checkpoints explícitos (flush+fsync + log)
 
+# Paquete de mejoras 2026-09-26, Mejora A — vault-brief.md: el watcher AVISA (nunca
+# regenera) cuando el brief se desactualiza. El baseline vive en el frontmatter del
+# propio brief (conceptos_baseline, categorias_baseline), así que actualizar el brief
+# a mano resetea el aviso sin tocar código ni estado aparte.
+BRIEF_PATH             = CEREBRO_PATH / "vault-brief.md"
+ATLAS_PATH             = CEREBRO_PATH / "Conocimiento" / "ATLAS.md"
+CONCEPTOS_DIR          = CEREBRO_PATH / "Conocimiento" / "Conceptos"
+BRIEF_UMBRAL_CONCEPTOS = 5   # |conteo ATLAS − baseline| mayor que esto dispara el aviso
+
 # Cola de eventos del watcher generados durante una sesión activa.
 # Los callbacks enqueuean aquí; loop_principal drena al salir de modo escucha.
 _watcher_queue: queue.Queue = queue.Queue()
@@ -221,6 +230,68 @@ def leer_titulo_frontmatter(path: str) -> str | None:
     except Exception:
         pass
     return None
+
+
+# ── vault-brief.md — aviso de desactualización (Mejora A, 2026-09-26) ────────────
+
+_brief_aviso_activo = False  # True mientras ya se avisó y el brief sigue desactualizado
+
+
+def _evaluar_brief_desactualizado() -> str | None:
+    """Motivo (str) si vault-brief.md quedó desactualizado respecto al vault, o
+    None si está al día o no se pudo evaluar. Solo lee — no escribe nada.
+
+    Compara contra el baseline del frontmatter del propio brief:
+      - conteo: `Total de conceptos` de ATLAS.md vs conceptos_baseline (umbral ±5)
+      - categoría nueva: subcarpeta de Conceptos/ con .md que no esté en
+        categorias_baseline
+    El conteo sale de ATLAS.md (no de contar archivos) porque así lo pidió el spec y
+    porque el aviso corre justo tras regenerarlo."""
+    try:
+        if not BRIEF_PATH.exists() or not ATLAS_PATH.exists():
+            return None
+        brief = BRIEF_PATH.read_text(encoding="utf-8")
+        fm = brief.split("---", 2)[1] if brief.startswith("---") else ""
+        m_base = re.search(r"^conceptos_baseline:\s*(\d+)", fm, re.MULTILINE)
+        m_cats = re.search(r"^categorias_baseline:\s*\[(.*?)\]", fm, re.MULTILINE)
+        m_atlas = re.search(r"Total de conceptos:\s*\*\*(\d+)\*\*",
+                            ATLAS_PATH.read_text(encoding="utf-8")[:600])
+        if not (m_base and m_cats and m_atlas):
+            log("[Brief] No pude leer baseline/conteo — omitiendo verificación de vault-brief.md")
+            return None
+        baseline  = int(m_base.group(1))
+        cats_base = {c.strip() for c in m_cats.group(1).split(",") if c.strip()}
+        actual    = int(m_atlas.group(1))
+        cats_actual = {
+            d.name for d in CONCEPTOS_DIR.iterdir()
+            if d.is_dir() and not d.name.startswith(".") and any(d.glob("*.md"))
+        }
+        nuevas = sorted(cats_actual - cats_base)
+        if nuevas:
+            return f"hay una categoría nueva en el vault: {', '.join(nuevas)}"
+        if abs(actual - baseline) > BRIEF_UMBRAL_CONCEPTOS:
+            return f"el conteo pasó de {baseline} a {actual} conceptos"
+        return None
+    except Exception as e:
+        log(f"[Brief] Error evaluando vault-brief.md: {e}")
+        return None
+
+
+def _avisar_si_brief_desactualizado() -> None:
+    """Se llama tras regenerar el ATLAS. Avisa UNA sola vez al cruzar el umbral (no
+    en cada concepto nuevo posterior — sería spam) y se rearma cuando el brief
+    vuelve a estar al día. Solo avisa: nunca regenera ni edita el brief."""
+    global _brief_aviso_activo
+    motivo = _evaluar_brief_desactualizado()
+    if motivo is None:
+        _brief_aviso_activo = False
+        return
+    if _brief_aviso_activo:
+        return
+    _brief_aviso_activo = True
+    log(f"[Brief] vault-brief.md desactualizado — {motivo}")
+    emitir_evento("watcher", "vault-brief.md desactualizado")
+    hablar(f"Luigui, el vault brief quedó desactualizado: {motivo}. Cuando quieras lo actualizamos.")
 
 
 def _es_eco_de_jarvis(transcripcion: str) -> bool:
@@ -699,6 +770,10 @@ class VaultEventHandler(FileSystemEventHandler):
                 )
                 if resultado.returncode == 0:
                     hablar("Atlas actualizado.")
+                    try:
+                        _avisar_si_brief_desactualizado()
+                    except Exception as e:  # el aviso nunca debe romper el auto-index
+                        log(f"[Brief] Error en aviso de vault-brief.md: {e}")
                 else:
                     log(f"[Watcher] generar_index.py falló (código {resultado.returncode}): {resultado.stderr[:300]}")
                     hablar("Error al actualizar el Atlas. Revisa el log.")
