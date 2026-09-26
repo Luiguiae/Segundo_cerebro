@@ -2,6 +2,28 @@
 
 ---
 
+### 2026-09-26 17:40 — paquete de mejoras, 2/5: Trabajo/Reuniones/ + plantilla (Mejora C, solo estructura)
+
+**Instrucción:** "2. Trabajo/Reuniones/ — Crea la subcarpeta y un archivo _plantilla-reunion.md con frontmatter (fecha, titulo, acciones). Deja la estructura lista; la skill de transcript→acciones se construye en una sesión aparte de Claude Code." (Luigui: "adelante con Mejora 2")
+
+**Hallazgo previo:** el spec afirma que `Trabajo/Reuniones/` "no colisiona con el schema operacional existente de `Trabajo/`", pero `Trabajo/` no existía en el vault ni en `~/Documents`/`~/Projects` (búsqueda hasta 3 niveles). Se preguntó a Luigui si crear desde cero; respondió "adelante" sin objetar → se creó `Trabajo/` desde cero, como dice el prompt literalmente ("Crea la subcarpeta"). Si existe un `Trabajo/` con schema propio en otro lado, esta carpeta habría que reconciliarla con él.
+
+**Acciones:**
+- `Trabajo/Reuniones/_plantilla-reunion.md` (nuevo): frontmatter exacto pedido — `fecha`, `titulo`, `acciones` (lista de hasta 3 objetos `accion`/`responsable`/`fecha`, que es el "acción, responsable, fecha" del spec). Mismo estilo que `Backlog/_plantilla-idea.md` (prefijo `_`). Las restricciones del spec quedan como comentario HTML dentro de la plantilla para que la sesión que construya la skill las encuentre ahí: máx. 3 acciones, no asignar responsables no mencionados (dejar vacío en vez de inventar), no reemplaza actas, v1 solo texto pegado, sin calendario/Slack
+- Decisión mía, no del spec: nombre de archivo sugerido `YYYY-MM-DD_titulo-en-kebab-case.md` (misma convención que fuentes y correlaciones en taxonomia.md). El spec solo dice "un .md por reunión"
+- No se construyó la skill ni se escribió ninguna reunión — fuera de alcance por instrucción
+
+**Verificación:** frontmatter parseado con PyYAML — claves exactas `fecha/titulo/acciones`, `acciones` es lista de 1-3 con `accion/responsable/fecha`. Confirmado que nada escanea `Trabajo/`: `generar_index.py` solo recorre `Conocimiento/Conceptos/`, el watcher solo `Conocimiento/`, ninguna referencia en daemon ni filesystem. No requiere reiniciar el daemon
+
+**Resultados:**
+- `Trabajo/Reuniones/_plantilla-reunion.md`: OK
+
+**Pendiente:** confirmación de Luigui para pasar a 3/5 (CLAUDE.md, sección Post-mortem). Opcional, sin hacer: `CLAUDE.md` (árbol de carpetas) y `vault-brief.md` (sección 2) no mencionan `Trabajo/` todavía
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-26 17:05 — paquete de mejoras, 1/5: vault-brief.md + aviso del watcher (Mejora A)
 
 **Instrucción:** "1. vault-brief.md — crea el archivo en la raíz con las 5 secciones (máx. 10 líneas c/u). Agrega al filesystem watcher existente una notificación (no regeneración automática) cuando el conteo de conceptos en ATLAS.md cambie en más de ±5, o se cree una categoría nueva." (spec `2026-09-26_paquete-mejoras-vault.md`; ejecución una por una, con confirmación de Luigui entre cada una)

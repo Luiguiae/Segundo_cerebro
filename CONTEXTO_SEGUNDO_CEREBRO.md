@@ -68,6 +68,7 @@ Conocimiento/Conceptos/
 ```
 
 Sistemas adicionales:
+- `Trabajo/Reuniones/` (2026-09-26) — un `.md` por reunión con acciones (máx. 3: acción, responsable, fecha). Solo existe la `_plantilla-reunion.md`; la skill transcript→acciones aún no está construida
 - `Backlog/` — pipeline para ideas de proyectos construibles
 - `Inbox/` — archivo de entrada para scouts y fuentes sin procesar
 - `docs/` — planes de implementación de mejoras del vault (incluye `plan-006.md`/`tasks-006.md`, completos)
