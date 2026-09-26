@@ -160,6 +160,13 @@ def escuchar() -> str | None:
 
     recognizer = sr.Recognizer()
     recognizer.operation_timeout = STT_OPERATION_TIMEOUT
+    # pause_threshold: segundos de silencio para considerar que la frase terminó.
+    # El default de la librería es 0.8s — muy agresivo para una instrucción larga
+    # con pausas naturales de pensar a mitad de frase; cortaba la captura antes de
+    # que Luigui terminara de hablar (reportado 2026-09-09: "deja de escuchar de
+    # manera abrupta... recibe solicitudes a medias"). 1.5s da margen para pausas
+    # normales sin sentirse lento en respuestas cortas.
+    recognizer.pause_threshold = 1.5
     # device_index=None deja que PortAudio use el default del sistema.
     # Cuando el daemon llama escuchar(), ya fijó el dispositivo via seleccionar_dispositivo_entrada().
     # En modo standalone (jarvis.py directo), None es correcto.
@@ -168,7 +175,10 @@ def escuchar() -> str | None:
             with sr.Microphone(device_index=None) as source:
                 print("Escuchando... (habla ahora)")
                 recognizer.adjust_for_ambient_noise(source, duration=0.05)
-                audio = recognizer.listen(source, timeout=5, phrase_time_limit=15)
+                # phrase_time_limit: tope duro de seguridad, no el mecanismo normal de
+                # corte (ese es pause_threshold, arriba). Subido de 15s a 45s — 15s no
+                # alcanzaba para una instrucción con varias cláusulas o ejemplos.
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=45)
         except AttributeError:
             hablar("Micrófono no disponible.")
             return None
@@ -640,8 +650,20 @@ def actualizar_historial(texto_usuario: str, resultado_intent: tuple[str, dict])
 # ── Conversación casual — Groq ────────────────────────────────────────────────
 
 def responder_con_groq(pregunta: str, historial: list[dict],
-                       system_prompt_override: str | None = None) -> str:
-    """Genera respuesta conversacional casual usando Groq."""
+                       system_prompt_override: str | None = None,
+                       max_tokens: int = 150) -> str:
+    """Genera respuesta conversacional casual usando Groq.
+
+    max_tokens=150 (default) es correcto para charla casual ("cómo estás") pero
+    corta a mitad de frase cuando el caller necesita relayar contenido real y
+    extenso (ej. leer una pantalla/correo en voz alta) — el system_prompt default
+    además instruye "máximo 2 oraciones", agravando el corte. Callers que piden
+    describir/leer contenido, no conversar, deben pasar su propio
+    system_prompt_override (sin el límite de 2 oraciones) y un max_tokens mayor.
+    Encontrado en producción 2026-09-15: "Jarvis, puedes leer el correo que estoy
+    viendo" se cortaba tras describir un solo candidato de 3 — la causa no era
+    hablar_respuesta() truncando una respuesta completa, era que esta función
+    nunca terminaba de generarla."""
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         return "No tengo acceso a Groq en este momento."
@@ -668,7 +690,7 @@ def responder_con_groq(pregunta: str, historial: list[dict],
                 "model": "openai/gpt-oss-20b",
                 "messages": mensajes,
                 "temperature": 0.3,
-                "max_tokens": 150,
+                "max_tokens": max_tokens,
             },
             timeout=10,
         )
@@ -1283,10 +1305,29 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
             hablar(resultado)
             return
         emitir_evento("procesando", "Consultando Groq...")
-        respuesta = responder_con_groq(resultado, historial_sesion)
+        # "describir" (default — incluye pedidos de "lee esto") necesita relayar
+        # contenido real (ej. un correo con varios puntos), no charla casual de
+        # 2 oraciones. "resumir"/"opinar" sí deben quedarse breves a propósito.
+        _accion_pantalla = params.get("accion") or "describir"
+        if _accion_pantalla == "describir":
+            _system_lectura = (
+                "Eres Jarvis, asistente de voz de Luigui. Te piden leer o describir "
+                "contenido real que Luigui tiene en pantalla (ej. un correo, una lista). "
+                "Relata el contenido de forma completa y fiel — NO lo resumas "
+                "agresivamente ni te limites a 2 oraciones si el contenido tiene varios "
+                "puntos (ej. varios candidatos, varios ítems): cúbrelos todos. "
+                "Responde en español, sin bullets ni markdown — se lee en voz alta, "
+                "así que usa prosa natural con conectores entre puntos."
+            )
+            respuesta = responder_con_groq(
+                resultado, historial_sesion,
+                system_prompt_override=_system_lectura, max_tokens=500,
+            )
+        else:
+            respuesta = responder_con_groq(resultado, historial_sesion)
         print(f"[Vision] {respuesta}")
         emitir_evento("respondiendo", respuesta[:80])
-        hablar_respuesta(respuesta)
+        hablar_respuesta(respuesta, max_chars=1200 if _accion_pantalla == "describir" else 600)
         registrar_en_jarvis_log("VISION", instruccion, respuesta[:200])
         if vision_callback:
             vision_callback(respuesta)
