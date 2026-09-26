@@ -2,6 +2,30 @@
 
 ---
 
+### 2026-09-26 19:00 — cierre de deuda: código del daemon commiteado + idea de Backlog sobre `estado` (entre las mejoras 4/5 y 5/5)
+
+**Instrucción (Luigui):** (a) Mejora 4 aprobada, el reporte de poda se queda como está y sin programarlo como rutina; (b) `rutina-trabajo-enfocada` aparece como "(borrador)": si es un campo `estado` real, no es parte del schema no-negociable (titulo, tipo, fecha, familia, categorias_secundarias, tags, relacionado, fuentes) → no tocarlo, registrarlo como entrada nueva en `Backlog/ideas/` para limpiarlo aparte, mismo tipo de caso que `categoria` en la auditoría de mayo; (c) "van cuatro veces que pregunto: ¿jarvis.py, mejora_007_vision.py y dashboard/index.html ya se commitearon? Si siguen sueltos, commitéalos ahora o dime por qué no, antes de seguir acumulando mejoras que dependen de JARVIS_LOG.md"; (d) adelante con Mejora 5, con un export real que Luigui pasará "a continuación".
+
+**(c) Código sin commitear — estado y causa:** seguían sueltos. Gravedad real, no solo de orden: el daemon corría una `mejora_007_vision.py` que NO existía en git (la versionada era la anterior a OCR/DeepSeek, commit `25a07ca`) y 6 entradas de este log ya pusheadas describían código que el repo no tenía. Causa: en cada mejora del paquete (1/5 a 4/5) dejé estos archivos fuera del commit a propósito para mantener los commits enfocados, y lo avisé en el reporte, pero nunca los resolví ni pedí decisión — dejé que se acumularan. Fue una mala decisión dado que el log ya dependía de ellos.
+- Revisado el diff de los 3 archivos y barrido de secretos: sin claves ni tokens; la key de DeepSeek no aparece en ningún archivo del repo (vive solo en `~/Library/Application Support/Jarvis/env`)
+- `py_compile` OK; tres commits separados y pusheados (origin en 0/0): `6cf2ec1` jarvis.py (escuchar() sin cortes + ver_pantalla completo), `907025f` mejora_007_vision.py (OCR + DeepSeek con clasificación), `6fab809` dashboard/index.html (colapsar filas duplicadas)
+
+**(b) Idea de Backlog registrada, `rutina-trabajo-enfocada.md` NO tocado (verificado: sin diff contra HEAD):** `Backlog/ideas/2026-09-26_limpieza-frontmatter-estado-conceptos.md` (estado `borrador`, plantilla del Backlog, secciones 1/5/8 rellenadas, el resto "pendiente de maduración") + fila en `Backlog/listas/backlog.md`. **La premisa no coincide con el repo, y la entrada lo registra en vez de asumirla:** `taxonomia.md` (líneas 36 y 72) define `estado` como campo del schema y Gate 0 (CLAUDE.md regla 9) lo lista como REQUERIDO; 101 de 103 conceptos lo llevan; lo consumen la rúbrica, el graduador, poda-por-uso.py y el ATLAS. `categorias_secundarias` (que la lista de Luigui incluye) NO está en taxonomia.md y se eliminó de 9 conceptos en la auditoría del 2026-08-24. La lista "no-negociable" que cita Luigui no existe en el repo (sin rastro en docs/, Backlog/, Plantillas/; tampoco el registro de las Mejoras 003/004) → su fuente vive fuera del vault. La pregunta abierta es cuál es la fuente de verdad del schema. Registrada así para que una sesión futura no borre `estado` de 103 conceptos actuando sobre una premisa que contradice Gate 0
+
+**Hallazgo colateral (no resuelto, no pedido):** 2 conceptos sin trackear del 2026-08-28 (`diseno-multiinteligencia`, `criterio-transferible-vs-respuesta-memorizada`) fallan Gate 0 hoy: sin `estado`, con `slug` (prohibido), 7 tags (máx. 5) y 4 `relacionado` (máx. 3). Cuentan en el ATLAS (103), en el baseline de `vault-brief.md` y en el reporte de poda. Igual que antes de la auditoría del 08-24; no se normalizaron porque no era lo pedido
+
+**(d) Mejora 5:** el mensaje decía que el export llegaría "a continuación", pero no venía ningún export ni muestra en él. No se asume ni inventa el formato: 5/5 sigue detenida en el paso "confirmar el formato real con una muestra pequeña". Tampoco se buscó un export en disco sin que se indicara dónde (contiene conversaciones privadas)
+
+**Todavía sin commitear (a propósito, no son míos o no se pidió):** `Conocimiento/ATLAS.md` (regenerado el 09-07), los 2 conceptos anteriores, 8 archivos `Inbox/*.tmp.md` de modo taller (09-15 y 09-24), `Prompts/Meta/jarvis/docs/` (plan.md/tasks.md de RESOLVER.md, esperando aprobación), y los `jarvis.log.1/.2/.3` (5 MB c/u; `.gitignore` solo cubre `*.log`, no `*.log.N`)
+
+**Post-mortem:** pendiente de respuesta de Luigui — ¿esto se vuelve regla permanente? Incidente: el código que el daemon ya ejecutaba quedó sin commitear durante varias mejoras aunque el log ya lo describía. Regla propuesta: "Todo cambio de código que el daemon ya ejecuta se commitea en la misma sesión en que se reinicia el daemon con él; si algo queda fuera de un commit, se avisa una sola vez con la razón y se pide decisión — nunca se arrastra en silencio."
+
+**Pendiente:** confirmación de Luigui sobre la fuente de verdad del schema; el export para 5/5; respuesta al post-mortem
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-26 18:30 — paquete de mejoras, 4/5: poda-por-uso.py + primer reporte (Mejora E)
 
 **Instrucción:** "4. poda-por-uso.py — Script que escanea Conocimiento/Conceptos/, cuenta referencias entrantes vía `relacionado` y Correlaciones/, filtra por antigüedad >90 días con 0 referencias, y escribe el resultado en Conocimiento/Mantenimiento/poda-candidatos.md. No modifica ni toca el frontmatter de ningún concepto — es solo reporte. Ejecutar manualmente primero para validar el output antes de programarlo como rutina periódica." (Luigui: "procede")
