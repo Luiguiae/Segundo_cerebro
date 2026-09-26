@@ -2,6 +2,34 @@
 
 ---
 
+### 2026-09-26 18:30 — paquete de mejoras, 4/5: poda-por-uso.py + primer reporte (Mejora E)
+
+**Instrucción:** "4. poda-por-uso.py — Script que escanea Conocimiento/Conceptos/, cuenta referencias entrantes vía `relacionado` y Correlaciones/, filtra por antigüedad >90 días con 0 referencias, y escribe el resultado en Conocimiento/Mantenimiento/poda-candidatos.md. No modifica ni toca el frontmatter de ningún concepto — es solo reporte. Ejecutar manualmente primero para validar el output antes de programarlo como rutina periódica." (Luigui: "procede")
+
+**Acciones:**
+- `Prompts/Meta/poda-por-uso.py` (nuevo; ubicación junto a `generar_index.py`, el spec no fijaba ruta). Reutiliza `parse_frontmatter` de `generar_index.py` (importable sin efectos: verificado que `ATLAS.md` no cambia) para contar las referencias exactamente como las lee el ATLAS — sin dependencia de PyYAML (el 3.11 del daemon no la tiene)
+- Señal de uso, tal como fija el spec (v1): un concepto está referenciado si aparece en el `relacionado` de OTRO concepto (la auto-referencia no cuenta; acepta lista inline, de bloque y wikilinks `[[slug|alias]]`) o en el `conceptos` de una correlación. `edges` NO cuentan
+- Antigüedad = hoy − `fecha` del frontmatter (no la mtime del archivo: cada auditoría/checkout la resetea). Regla `>90` días: exactamente 90 queda fuera. Sin `fecha` válida → "No evaluables", nunca se adivina. Concepto `archivado` → omitido (decisión mía: ya está archivado, no es candidato a revisión; hoy hay 0)
+- Solo lectura sobre conceptos/correlaciones. Única escritura: `Conocimiento/Mantenimiento/poda-candidatos.md`, atómica (tmp + `os.replace`). Flags: `--dry-run` (imprime sin escribir), `--dias`, `--hoy`, `--base` (estos dos últimos existen para poder probar de forma determinista)
+- Extras míos en el reporte, para que la revisión sea informada: columna "relaciona a" (cuántos cita el candidato hacia afuera) y "edges†" (cuántos lo apuntan con un edge tipado — informativo, NO cuenta como uso). Los slugs van en `código`, no como wikilinks, a propósito: en Obsidian un wikilink cuenta como uso y el reporte no debe "citar" lo que señala
+
+**Validación:**
+- Vault sintético, 24/24 PASS: huérfano viejo = candidato; citado por relacionado (bloque), solo por correlación o por wikilink con alias = no candidato; 90 días exactos NO / 91 SÍ; joven excluido; archivado omitido; fecha ausente y fecha inválida ("ayer") → no evaluable; auto-referencia no cuenta; edges no cuentan (edges†=1 y sigue candidato); slug colgante ignorado en "relaciona a"; archivo con UTF-8 inválido → advertencia sin crash; slug duplicado → advertencia; `--dry-run` no crea ni la carpeta; sin `.tmp` residual; sin wikilinks en el reporte; hashes de todo lo escaneado idénticos antes/después
+- Vault real (103 conceptos): primero `--dry-run` (como pide el spec), luego corrida real. **Recuento independiente** por otro método (regex sobre el texto crudo del frontmatter, sin el parser): mismos 11 candidatos y mismos 64 referenciados — el resumen cuadra (11 + 64 + 28 jóvenes = 103). Hashes de los 132 archivos de Conceptos+Correlaciones idénticos antes/después de la corrida real. El watcher no reaccionó a `Conocimiento/Mantenimiento/` (el handler solo actúa sobre rutas con `Conceptos`/`Correlaciones`)
+
+**Resultado de la primera corrida (11 candidatos de 103):** `pmf-perecedero`, `restriccion-de-tiempo-como-ventaja`, `metricas-post-pantalla` (producto); `ai-evals-como-disciplina`, `design-system-como-api-para-agentes`, `orquestacion-de-agentes`, `ingenieria-agentica`, `poblaciones-sinteticas`, `el-agente-que-no-para` (ia); `rutina-trabajo-enfocada` (organizaciones, borrador); `supuestos-importados-por-ia` (filosofia). Patrón: los 11 tienen "relaciona a" = 2-3 y edges† = 0 — ninguno está aislado, todos citan hacia afuera pero nadie los cita a ellos; entre 93 y 161 días de antigüedad. Es una señal de uso baja, no un veredicto: el reporte no decide nada
+
+**Limitaciones (por transparencia):** la señal v1 ignora `edges`, wikilinks del cuerpo y consultas de Jarvis (por diseño del spec); un concepto recién agregado a `relacionado` de otro cuenta como usado aunque ese "uso" sea solo estructural, no de consulta real. NO se programó como rutina periódica — el spec pide validar el output a mano primero
+
+**Resultados:**
+- `Prompts/Meta/poda-por-uso.py`: OK · `Conocimiento/Mantenimiento/poda-candidatos.md`: OK (primer reporte, 11 filas, revisable en minutos)
+
+**Pendiente:** (1) que Luigui revise `poda-candidatos.md` y decida si el output es útil antes de programar la rutina; (2) confirmación para pasar a 5/5 (`minador-decisiones.py`)
+
+**ATLAS regenerado:** no aplica — no se modificó ningún concepto
+
+---
+
 ### 2026-09-26 18:10 — paquete de mejoras, 3/5: sección "Post-mortem de tareas" en CLAUDE.md (Mejora D)
 
 **Instrucción:** "3. CLAUDE.md — Agrega la sección 'Post-mortem': tras cerrar cualquier tarea que tomó más de un intento diagnosticar, preguntar explícitamente '¿esto se vuelve regla permanente?' y registrar la respuesta (sí → regla con fecha + incidente en CLAUDE.md; no → línea en JARVIS_LOG.md)." (Luigui: "procede")
