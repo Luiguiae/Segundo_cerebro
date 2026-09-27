@@ -43,9 +43,7 @@
    "tipo": "espera",
    "ok": null,
    "obs": "ok",
-   "transcripciones": [
-    " así"
-   ]
+   "transcripciones": []
   },
   {
    "id": "G01",
@@ -71,9 +69,7 @@
    "tipo": "cambio",
    "ok": false,
    "obs": "no reaccionó en 7 s",
-   "transcripciones": [
-    "canción de fondos el mes pasado"
-   ]
+   "transcripciones": []
   },
   {
    "id": "G04",
@@ -81,9 +77,7 @@
    "tipo": "cambio",
    "ok": false,
    "obs": "no reaccionó en 7 s",
-   "transcripciones": [
-    " a la oficina para presentar una solicitud"
-   ]
+   "transcripciones": []
   },
   {
    "id": "G05",
@@ -308,9 +302,7 @@
    "tipo": "cambio",
    "ok": false,
    "obs": "no reaccionó en 9 s",
-   "transcripciones": [
-    " bella siguiente"
-   ]
+   "transcripciones": []
   }
  ]
 }

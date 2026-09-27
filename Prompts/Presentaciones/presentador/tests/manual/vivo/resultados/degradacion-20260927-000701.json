@@ -1,0 +1,84 @@
+{
+ "guion": "degradacion",
+ "variante": "ininteligible",
+ "inicio": "2026-09-27T05:06:10.706Z",
+ "fin": "2026-09-27T05:07:01.717Z",
+ "resumen": {
+  "total": 5,
+  "ok": 5,
+  "fallos": 0
+ },
+ "estadisticas": {
+  "voz": {
+   "acciones": 0,
+   "reinicios": 0,
+   "errores": 0
+  },
+  "gestos": {
+   "acciones": 0
+  }
+ },
+ "motores": {
+  "voz": {
+   "estado": "activo",
+   "detalle": "escuchando"
+  },
+  "gestos": {
+   "estado": "inactivo",
+   "detalle": ""
+  }
+ },
+ "bloqueadas": [],
+ "errores_pagina": 0,
+ "online_al_final": true,
+ "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "pasos": [
+  {
+   "id": "I1",
+   "titulo": "Di:  “LeIA, bailemos un vals”",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": [
+    "le llevaremos un vals",
+    "leía bailemos un vals"
+   ]
+  },
+  {
+   "id": "I2",
+   "titulo": "Di:  “LeIA, qué hora es”",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": [
+    "leí A qué hora es"
+   ]
+  },
+  {
+   "id": "I3",
+   "titulo": "Murmura algo incomprensible (“blablabla…”) 8 s",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": []
+  },
+  {
+   "id": "I4",
+   "titulo": "Di:  “LeIA”  y nada más",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": [
+    "ella"
+   ]
+  },
+  {
+   "id": "I5",
+   "titulo": "¿La pantalla se mantuvo LIMPIA (solo el indicador discreto, ningún aviso ni error)?",
+   "tipo": "humano",
+   "ok": true,
+   "obs": "confirmado por Luigui",
+   "transcripciones": []
+  }
+ ]
+}

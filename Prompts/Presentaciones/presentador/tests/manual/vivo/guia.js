@@ -7,7 +7,9 @@
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const post = (ruta, cuerpo) => fetch(ruta, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) }).catch(() => {});
   const log = (linea) => { console.info('[guia]', linea); post('/__guia/evento', { linea }); };
-  const G = window.__guia = { guion: GUION, paso: null, buf: [], resultados: [], fin: false, listo: false };
+  const G = window.__guia = { guion: GUION, paso: null, buf: [], resultados: [], fin: false, listo: false, errores: 0 };
+  addEventListener('error', () => { G.errores++; });
+  addEventListener('unhandledrejection', () => { G.errores++; });
 
   // ── audio ──
   let ac = null;
@@ -33,7 +35,7 @@
   const barra = (f) => { $('b').style.width = Math.max(0, Math.min(1, f)) * 100 + '%'; };
 
   // ── observación ──
-  const idx = () => { const i = Reveal.getIndices(); return { h: i.h, f: i.f === undefined ? -1 : i.f }; };
+  const idx = () => { if (!window.Reveal || !Reveal.getIndices) return { h: -1, f: -1 }; const i = Reveal.getIndices(); return { h: i.h, f: i.f === undefined ? -1 : i.f }; };
   const cooldownRestante = () => Math.max(0, 1600 - (performance.now() - (window.Presentador.estado().ultimoCambioMs || -1e9)));
   function esperar(cond, timeoutMs, alTick) {
     return new Promise((resolver) => {
@@ -52,7 +54,7 @@
 
   async function correrPaso(p, i, n, resumenTxt) {
     G.buf = [];
-    if (p.preparar) { Reveal.slide(p.preparar.h, 0, p.preparar.f === undefined ? -1 : p.preparar.f); await sleep(300); }
+    if (p.preparar && window.Reveal) { Reveal.slide(p.preparar.h, 0, p.preparar.f === undefined ? -1 : p.preparar.f); await sleep(300); }
     if (p.antes) await p.antes();
     mostrar('Un momento…', p.titulo, '');
     // dejar pasar el cooldown del cambio de preparación para que la primera orden no se descarte
@@ -92,11 +94,22 @@
     } else if (p.tipo === 'info') {
       await esperar(() => false, tim, (dt) => { barra(dt / tim); $('n').textContent = Math.ceil((tim - dt) / 1000); });
       ok = true; obs = `informativo: ${ejecutados().length} cambios`; extra = { cambios: ejecutados().map((e) => e.texto) };
+    } else if (p.tipo === 'humano') {
+      // Luigui confirma con la tecla 1 (sí) o 0 (no)
+      const k = await new Promise((res) => {
+        const f = (e) => { if (e.key === '1' || e.key === '0') { removeEventListener('keydown', f); res(e.key); } };
+        addEventListener('keydown', f);
+        setTimeout(() => { removeEventListener('keydown', f); res(null); }, tim);
+        (function tick(t1) { if (performance.now() - t1 < tim) { barra((performance.now() - t1) / tim); setTimeout(() => tick(t1), 200); } })(performance.now());
+      });
+      ok = k === '1'; obs = k === null ? 'sin respuesta' : (ok ? 'confirmado por Luigui' : 'Luigui indicó que NO');
     } else if (p.tipo === 'condicion') {
-      const r = await esperar(() => { try { return p.cond(); } catch (e) { return false; } }, tim, (dt) => { barra(dt / tim); $('n').textContent = Math.ceil((tim - dt) / 1000); });
+      const r = await esperar(() => { try { return p.cond(ini); } catch (e) { return false; } }, tim, (dt) => { barra(dt / tim); $('n').textContent = Math.ceil((tim - dt) / 1000); });
       ok = !!r; obs = ok ? (p.obsOk || 'ok') : (p.obsMal || 'no se cumplió a tiempo');
     }
-    const trans = G.buf.filter((e) => e.tipo === 'transcripcion' && e.final).map((e) => e.texto);
+    // Privacidad: el micrófono puede captar audio AMBIENTE (tele, otras personas). Solo se conservan transcripciones en los pasos
+    // de voz (donde Luigui habla a propósito), truncadas; en cualquier otro paso se descartan.
+    const trans = (p.canal === 'voz' ? G.buf.filter((e) => e.tipo === 'transcripcion' && e.final).map((e) => String(e.texto).slice(0, 80)) : []);
     const r = { id: p.id, titulo: p.titulo, tipo: p.tipo, ok: p.tipo === 'info' || p.tipo === 'espera' ? null : ok, obs, transcripciones: trans, ...extra };
     G.resultados.push(r); G.paso = null;
     beep(ok ? 880 : 280, 160);
@@ -131,7 +144,7 @@
     const v = G.resultados.filter((r) => r.ok !== null);
     const resumen = { total: v.length, ok: v.filter((r) => r.ok).length, fallos: v.filter((r) => !r.ok).length };
     const salida = { guion: GUION, variante: VARIANTE, inicio: t_ini, fin: new Date().toISOString(), resumen, estadisticas: window.Presentador.estadisticas(),
-      motores: window.Presentador.motores(), bloqueadas: window.Presentador.bloqueadas(), userAgent: navigator.userAgent, pasos: G.resultados };
+      motores: window.Presentador.motores(), bloqueadas: window.Presentador.bloqueadas(), errores_pagina: G.errores, online_al_final: navigator.onLine, userAgent: navigator.userAgent, pasos: G.resultados };
     await post('/__guia/resultado', salida);
     G.fin = true; G.salida = salida;
     beep(880, 300);

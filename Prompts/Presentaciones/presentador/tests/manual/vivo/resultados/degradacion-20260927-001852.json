@@ -1,0 +1,77 @@
+{
+ "guion": "degradacion",
+ "variante": "sinreveal",
+ "inicio": "2026-09-27T05:18:24.101Z",
+ "fin": "2026-09-27T05:18:52.073Z",
+ "resumen": {
+  "total": 5,
+  "ok": 5,
+  "fallos": 0
+ },
+ "estadisticas": {
+  "voz": {
+   "acciones": 0,
+   "reinicios": 0,
+   "errores": 0
+  },
+  "gestos": {
+   "acciones": 0
+  }
+ },
+ "motores": {
+  "voz": {
+   "estado": "inactivo",
+   "detalle": "apagado"
+  },
+  "gestos": {
+   "estado": "inactivo",
+   "detalle": "apagado"
+  }
+ },
+ "bloqueadas": [],
+ "errores_pagina": 0,
+ "online_al_final": true,
+ "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "pasos": [
+  {
+   "id": "D1a",
+   "titulo": "Espera unos segundos…",
+   "tipo": "condicion",
+   "ok": true,
+   "obs": "ok",
+   "transcripciones": []
+  },
+  {
+   "id": "D1b",
+   "titulo": "¿La página se ve NORMAL (título y lista) y abajo a la derecha dice “no usa Reveal.js — inactivo”?",
+   "tipo": "humano",
+   "ok": true,
+   "obs": "confirmado por Luigui",
+   "transcripciones": []
+  },
+  {
+   "id": "D1c",
+   "titulo": "Pulsa  M  y luego  E",
+   "tipo": "condicion",
+   "ok": true,
+   "obs": "ok",
+   "transcripciones": []
+  },
+  {
+   "id": "D1d",
+   "titulo": "Comprobando…",
+   "tipo": "condicion",
+   "ok": true,
+   "obs": "motores inactivos y 0 errores en la página",
+   "transcripciones": []
+  },
+  {
+   "id": "D1e",
+   "titulo": "¿La página SIGUE viéndose normal, sin mensajes ni ventanas nuevas?",
+   "tipo": "humano",
+   "ok": true,
+   "obs": "confirmado por Luigui",
+   "transcripciones": []
+  }
+ ]
+}

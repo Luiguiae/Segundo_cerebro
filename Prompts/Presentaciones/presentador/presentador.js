@@ -103,6 +103,7 @@
     const m = motores[nombre];
     let clase = 'off', txt;
     if (!quiere) txt = 'apagado';
+    else if (estado.reveal === 'sin-reveal') txt = 'inactivo (sin Reveal)';
     else if (!m) txt = '—';
     else {
       const e = m.estado ? m.estado() : { estado: 'activo' };
@@ -134,7 +135,7 @@
   // Un motor (voz en T13, gestos en T14) se registra con { iniciar(), detener(), estado() }.
   function registrarMotor(nombre, motor) {
     motores[nombre] = motor;
-    if (estado.control[nombre] && reveal && typeof motor.iniciar === 'function') Promise.resolve().then(() => motor.iniciar()).catch((e) => console.warn('[presentador] motor', nombre, e));
+    if (estado.control[nombre] && reveal && estado.reveal === 'listo' && typeof motor.iniciar === 'function') Promise.resolve().then(() => motor.iniciar()).catch((e) => console.warn('[presentador] motor', nombre, e));
     dibujar();
   }
   function alternar(nombre) {
@@ -143,7 +144,8 @@
     const m = motores[nombre];
     if (m && nombre !== 'indicador') {
       try {
-        if (estado.control[nombre]) { if (typeof m.iniciar === 'function') Promise.resolve(m.iniciar()).catch((e) => console.warn('[presentador]', nombre, e)); }
+        // Sin Reveal (o antes de que esté listo) el presentador está inactivo: la tecla solo cambia el deseo, no abre cámara ni micrófono.
+        if (estado.control[nombre]) { if (estado.reveal === 'listo' && typeof m.iniciar === 'function') Promise.resolve(m.iniciar()).catch((e) => console.warn('[presentador]', nombre, e)); }
         else if (typeof m.detener === 'function') m.detener();
       } catch (e) { console.warn('[presentador]', nombre, e); }
     }
