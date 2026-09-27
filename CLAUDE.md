@@ -157,7 +157,7 @@ Nunca agregas una regla a este archivo sin un "sí" explícito de Luigui.
 
 Formato: `- **[YYYY-MM-DD] Regla imperativa.** Incidente: qué falló y cómo se diagnosticó (entrada de JARVIS_LOG.md).`
 
-_(Vacío — ninguna regla registrada todavía.)_
+- **[2026-09-26] Todo cambio de código que el daemon ya ejecuta se commitea en la misma sesión en que se reinicia el daemon con él. Si algo queda fuera de un commit, avísalo una sola vez con la razón y pide decisión — nunca lo arrastres en silencio.** Incidente: desfase entre `JARVIS_LOG.md` y el código real del daemon. Durante las mejoras 1/5 a 4/5 del paquete 2026-09-26, `jarvis.py`, `mejora_007_vision.py` y `dashboard/index.html` — que el daemon ya ejecutaba desde el 09-09/09-15 — se dejaron fuera de cada commit "para mantenerlos enfocados"; el repo tenía 6 entradas de log pusheadas que describían código que no contenía, y la `mejora_007_vision.py` versionada era la anterior a OCR/DeepSeek. Luigui tuvo que preguntar cuatro veces. Resuelto con los commits `6cf2ec1`, `907025f` y `6fab809` (entrada `2026-09-26 19:00` de `JARVIS_LOG.md`).
 
 ---
 
