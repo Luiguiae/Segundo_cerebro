@@ -2,6 +2,16 @@
 
 ---
 
+### 2026-09-26 21:45 — 2 conceptos sin trackear commiteados tal cual (schema (c) sigue abierta)
+
+**Instrucción (Luigui):** commitear `diseno-multiinteligencia` y `criterio-transferible-vs-respuesta-memorizada` sin resolver el schema, solo para sacarlos de "sin trackear" y tenerlos respaldados en git; dejarlos fallando Gate 0 a propósito (sin agregar `estado` ni quitar `slug`); la pregunta (c) de tags queda abierta para otra sesión y la propuesta de reemplazos se arma cuando se retome, no ahora.
+
+**Acciones:** commit solo de esos 2 archivos, contenido intacto (verificado: sin `estado`, con `slug`, sin secretos). Sin regenerar ATLAS, sin tocar el Backlog. Siguen fallando Gate 0 (falta `estado` · `slug` prohibido · 7 tags · 4 `relacionado` · tags fuera del vocabulario) — **por decisión de Luigui, no por omisión.** Una auditoría futura los volverá a marcar: la decisión de tags de (c) lo resuelve.
+
+**ATLAS regenerado:** no — sin cambios de contenido en `Conocimiento/`
+
+---
+
 ### 2026-09-26 21:35 — verificación de 4 pendientes del mensaje anterior (1 estaba sin hacer)
 
 **Instrucción (Luigui):** confirmar las 4: (1) `Trabajo/` (con `Reuniones/`) en el árbol de `CLAUDE.md` y en la sección 2 de `vault-brief.md`; (2) fila de Correlaciones de `context.md` a 27/2; (3) cerrar (a) y (b) en la entrada de Backlog de schema; (4) confirmar con `realpath` que la ruta del daemon no pasa por symlinks de `/var/folders`.
