@@ -9,6 +9,7 @@
   window.__GUIONES = window.__GUIONES || {};
   window.__GUIONES.gestos = {
     titulo: 'Prueba de GESTOS (T14)',
+    activar: ['gestos'],   // están apagados por defecto (experimentales en v1): la guía los enciende
     intro: 'De pie, a la distancia real de la presentación. Cada paso te dice qué hacer; oirás un tono corto al empezar y otro al terminar. Pulsa ESPACIO en la laptop para empezar y luego colócate.',
     cierre: 'Ya guardé todo. Puedes volver a la laptop.',
     pasos: () => {

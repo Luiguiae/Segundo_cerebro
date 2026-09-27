@@ -113,6 +113,7 @@
     if (!cargar || !def) { mostrar('No encontré el guion ' + GUION, ''); return; }
     await esperar(() => window.Presentador && window.Presentador.estado().reveal !== 'esperando', 30000);
     window.Presentador.alEvento((e) => G.buf.push(e));
+    for (const n of (def.activar || [])) if (!window.Presentador.control()[n]) window.Presentador.alternar(n);   // p. ej. gestos, que están apagados por defecto
     const pasos = typeof def.pasos === 'function' ? def.pasos(VARIANTE) : def.pasos;
     G.listo = true;
     mostrar(def.titulo, def.intro || 'Pulsa ESPACIO para empezar.', '', '');

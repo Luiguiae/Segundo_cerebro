@@ -2,6 +2,8 @@
 
 > Proyecto: `~/Documents/Segundo_cerebro/Prompts/Presentaciones/presentador/` · Deadline: lunes 2026-09-28 (presentación de trabajo)
 
+> **Revisión 2026-09-27 (4.ª, tras la prueba en vivo de T14; aprobada por Luigui):** el **swipe queda EXPERIMENTAL en v1 y los gestos están APAGADOS por defecto** (se activan con `M`). Motivo: en la prueba en vivo, a la distancia real y con un solo intento por paso, hubo **2 disparos inversos en 10 swipes a la izquierda** (además de 13/20 aciertos). La voz y el teclado son los canales de v1. Las metas de swipe de §7 pasan a ser objetivo de una versión posterior, no criterio de aceptación de v1. Ver `plan.md` §13–14.
+>
 > **Revisión 2026-09-26 (3.ª, tras la ronda 2 del spike; aprobada por Luigui):** el swipe pasa a ser un **canal secundario en v1** y se detecta con el **detector v2**: categoría `Open_Palm` como condición de armado **más mano abierta y casi quieta justo antes del trazo** (≥200 ms). Umbral por defecto **8 %** del ancho (rango de trabajo ~8–12 %). Meta **8/10 por lado en intentos válidos** (antes 9/10); voz y teclado cubren los fallos. Se mantiene estricto: **0 cambios no intencionales y 0 disparos inversos**; ante cualquier conflicto entre tasa de acierto y falsos positivos, gana 0 falsos positivos (ver `plan.md` §12).
 >
 > **Revisión 2026-09-26 (2.ª, tras el spike T06; aprobada por Luigui):** el swipe se mide con **~10–12 % del ancho del cuadro en <500 ms** (antes ~25 % en ~400 ms: a la distancia real un swipe recorre 13–21 % del ancho; ver `plan.md` §9), **con la mano abierta como condición de armado** (el método —categoría `Open_Palm` o dedos extendidos por landmarks— se fija con la comparación offline de la ronda 2), y la resolución de cámara por defecto es **640×480**. Además `presentador.js` **bloquea** la telemetría de MediaPipe hacia `odml.pa.googleapis.com` (`fetch`/XHR/`sendBeacon`).
@@ -51,7 +53,7 @@ Luigui presentando en el trabajo, de pie a menos de 2 m de su MacBook Pro Intel 
 - Chrome corta el reconocimiento continuo tras silencios; el sistema lo reinicia automáticamente en `onend`/`onerror` sin intervención.
 
 **CU5 — Control y feedback**
-- Tecla `M` activa/desactiva gestos; `E` activa/desactiva voz; `I` oculta/muestra el indicador. Las teclas nativas de Reveal (flechas, espacio) y el clicker siguen funcionando siempre. `M`, `E` e `I` no deben chocar con atajos de Reveal (verificado; ver la revisión del 2026-09-26 arriba).
+- Tecla `M` activa/desactiva gestos (**apagados por defecto**: experimentales en v1); `E` activa/desactiva voz; `I` oculta/muestra el indicador. Las teclas nativas de Reveal (flechas, espacio) y el clicker siguen funcionando siempre. `M`, `E` e `I` no deben chocar con atajos de Reveal (verificado; ver la revisión del 2026-09-26 arriba).
 - Indicador discreto en una esquina, por encima del contenido de la presentación sin alterar su layout: estado de cámara y micrófono, y último comando ejecutado con el slide resultante (ej. `+3 → 7/20`).
 
 **Arranque**
@@ -61,7 +63,7 @@ Luigui presentando en el trabajo, de pie a menos de 2 m de su MacBook Pro Intel 
 
 **Errores**
 - La página no usa Reveal.js → la presentación se muestra igual, el presentador no se activa y el indicador lo avisa.
-- Sin permiso de cámara → funciona con voz y teclado; el indicador lo muestra.
+- Sin permiso de cámara → funciona con voz y teclado; el indicador lo muestra. (Con los gestos apagados por defecto, la cámara solo se pide al pulsar `M`.)
 - Sin internet (Web Speech falla) → funciona con gestos y teclado; el indicador lo muestra.
 - Comando de voz no reconocido → no pasa nada; no hay mensajes intrusivos en pantalla.
 
@@ -98,7 +100,7 @@ Prompts/Presentaciones/presentador/
 
 ## 7. Métricas de éxito
 - En ensayo de 10 min hablando y gesticulando normalmente: 0 cambios de slide no intencionales.
-- Swipe (canal secundario en v1): **8/10 a la derecha y 8/10 a la izquierda en intentos válidos** (mano abierta y quieta antes del trazo, a 1–2 m con luz de oficina), **0 disparos inversos** al regresar la mano. Los swipes que no se reconocen los cubren la voz y el teclado.
+- **[Experimental en v1 — objetivo, no criterio de aceptación]** Swipe (canal secundario): **8/10 a la derecha y 8/10 a la izquierda en intentos válidos** (mano abierta y quieta antes del trazo, a 1–2 m con luz de oficina), **0 disparos inversos** al regresar la mano. Los swipes que no se reconocen los cubren la voz y el teclado.
 - Prioridad: ante cualquier conflicto entre tasa de acierto y falsos positivos, se prioriza **0 falsos positivos**.
 - 9/10 comandos de voz reconocidos a la primera, incluidos saltos de N slides.
 - Latencia percibida < 1 s en swipe y < 1.5 s en voz.

@@ -21,7 +21,7 @@
 | T11 `presentador.js` (arranque, navegación, cooldown, bloqueo de telemetría) | ✅ | `04aa3b9` |
 | T12 teclas M/E/I e indicador | ✅ | `5a298dc` |
 | T13 voz en el navegador | ✅ 14/16 en vivo + 4/4 tras calibrar "de ella" | `72e78ae` |
-| T14 gestos en el navegador | 🟡 **código listo y probado; criterio en vivo NO cumplido** (2/10 inversos a la izquierda, 13/20 aciertos a un intento) — a la espera de decisión | (ver git log) |
+| T14 gestos en el navegador | ✅ código y pruebas; **swipe EXPERIMENTAL en v1, gestos apagados por defecto** (criterio en vivo no cumplido: 2/10 inversos a la izquierda, 13/20 a un intento; decisión de Luigui 2026-09-27) | `28e8765` + ajuste |
 | T15–T18 | pendientes | — |
 
 Verificación previa de D1 (tecla `V` = pausa) resuelta el 2026-09-26: `V` → `E` (commit `4d4c1dd`).

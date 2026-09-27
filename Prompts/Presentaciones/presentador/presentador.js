@@ -25,7 +25,9 @@
     ultimoCambioMs: -Infinity,      // performance.now() del último cambio de slide o fragment, venga de donde venga
     ultimoComando: null,            // { texto, canal, h, total }
     bloqueadas: [],                 // peticiones de telemetría bloqueadas
-    control: { gestos: true, voz: true, indicador: true }, // lo que Luigui quiere (M, E, I); los motores (T13/T14) reportan lo que pasa
+    // Lo que Luigui quiere (M, E, I); los motores (T13/T14) reportan lo que pasa. GESTOS APAGADOS POR DEFECTO: el swipe es
+    // experimental en v1 (2 disparos inversos en 10 swipes a la izquierda en la prueba en vivo de T14; plan.md §13–14). Se activan con M.
+    control: { gestos: false, voz: true, indicador: true },
     debugTexto: '',                 // última transcripción cruda (solo con --debug)
     debugGestos: '',                // estado de la mano (solo con --debug)
   };
