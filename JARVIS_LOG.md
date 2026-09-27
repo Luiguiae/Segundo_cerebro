@@ -2,6 +2,16 @@
 
 ---
 
+### 2026-09-26 21:20 — recordatorio de la prueba de voz en el ritual de inicio
+
+**Instrucción (Luigui):** recordar la prueba de voz (taller + pantalla) en el ritual de inicio de la próxima sesión, con los dos criterios de éxito; y dejar las horas 22:00/23:00/23:45 tal cual (no reinventarlas con una hora exacta que tampoco sería cierta — queda trazable por la nota de la entrada `21:10`).
+
+**Acciones:** `CLAUDE.md` → "Ritual de inicio de sesión", paso 4 temporal: recordatorio una vez por sesión con los criterios de éxito (taller: `_candidatos` + `_analisis` en Inbox; pantalla: respuesta sin ruido de permisos y sin archivos nuevos). Se elimina cuando Luigui reporte el resultado (si falla, se conserva y se diagnostica con `jarvis.log`). Horas de las 3 entradas: sin cambios, por instrucción.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 21:10 — reglas aprendidas: regla 3 (perfiles explícitos) agregada y regla 2 corregida
 
 **Instrucción (Luigui):** sí a la regla de perfiles explícitos (con fecha e incidente de hoy); reemplazar el texto de la regla 2 ("sin herramientas ni conectores"), que quedó falsa, por la versión "cada permiso scopeado al mínimo por perfil…", conservando el historial con nota de fecha; programar la prueba de voz completa de taller y pantalla tras el reinicio (no urgente).

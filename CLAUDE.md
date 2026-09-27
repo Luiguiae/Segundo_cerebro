@@ -71,6 +71,11 @@ Al abrir Claude Code en este proyecto, antes de cualquier otra acción:
 3. Reporta en una línea:
    - Si hay sesiones: `"Retomando desde [fecha]. Pendiente: [pendientes de la última sesión]"`
    - Si no hay sesiones: `"Primera sesión. Sin contexto previo."`
+4. **Recordatorio temporal (2026-09-26) — prueba de voz de los perfiles de `ejecutar_claude()`.** Después de la línea de retomar, recuérdale a Luigui una sola vez por sesión que falta probar por voz real, tras el reinicio del 2026-09-26 20:51:
+   - **Modo taller:** decir "Jarvis, modo taller", hablar un rato y cerrarlo → deben aparecer `_candidatos` y `_analisis` en `Inbox/`.
+   - **Pantalla:** "Jarvis, profundiza lo que estoy leyendo" / "guarda esto como concepto" con una pantalla real → respuesta hablada sin mencionar permisos y sin archivos nuevos en el vault.
+
+   Cuando Luigui reporte el resultado (pasó o falló), regístralo en `JARVIS_LOG.md` y elimina este paso 4 de `CLAUDE.md`. Si falla, no lo elimines: diagnostica con `Prompts/Meta/jarvis/jarvis.log`.
 
 ---
 
