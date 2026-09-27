@@ -135,3 +135,11 @@ Hallazgos:
 \* "Válido" = mano vista en ≥50 % de los cuadros y algún movimiento ≥8 % (swipes realmente hechos). Con validación cruzada (afinar en intentos impares, probar en pares) el método A · v2 da 69 % derecha / 53 % izquierda, 0 inversos, 0 falsos positivos; el B da lo mismo con 1 falso positivo.
 
 **Lectura honesta:** sobre la misma base que el prototipo (todos los intentos), el resultado **no es claramente igual o mejor**: derecha sube, pero izquierda queda por debajo del ~65 % (42–58 % con v1, 53 % con v2). Con solo los intentos válidos, v2 llega a 80 %/80 % sin inversos ni falsos positivos, pero sigue por debajo del 9/10 del SPEC. Por eso se **detuvo el avance a T09** y se presentaron las cifras. Límites: n ≤ 19 por lado, una persona, una sesión, parámetros afinados sobre los mismos datos; 106 s de no-swipe (el SPEC pide 10 min sin cambios no intencionales).
+
+## 12. Decisión tras la ronda 2 (Luigui, 2026-09-26)
+
+Aprobada la opción (a): **detector v2** (categoría `Open_Palm` + mano abierta y quieta justo antes del trazo).
+- **Swipe = canal secundario en v1.** Meta **8/10 por lado en intentos válidos** (antes 9/10). Voz y teclado cubren los fallos.
+- **Se mantiene estricto:** 0 cambios no intencionales y 0 disparos inversos. **Ante cualquier conflicto entre tasa de acierto y falsos positivos, se prioriza 0 falsos positivos.**
+- **T17 (ensayo):** grabar trazas con la mano que Luigui use **naturalmente al presentar** (en las rondas 1–2 usó una mano distinta por dirección) y **re-afinar los umbrales solo si mejora la tasa sin introducir falsos positivos**, siempre **antes del congelamiento**.
+- Parámetros iniciales de v2 (los de la comparación offline): umbral 8 %, ventana 500 ms, quietud previa 200 ms (≥3 cuadros, ≥60 % con `Open_Palm`, dispersión ≤8 %), cooldown 1500 ms. T09 los deja en un objeto de configuración; T10 los valida contra las 103 trazas reales de las dos rondas.

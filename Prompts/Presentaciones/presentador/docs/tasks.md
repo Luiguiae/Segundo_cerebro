@@ -111,15 +111,15 @@ Contrato compartido que usan varias tareas (ver T07/T09):
 
 ## F4 — Detector de swipe
 
-### T09 · `swipe.js` — detector puro
-- **Descripción:** `crearDetector(config)` con `procesar(muestra)`. Condición (revisión 2026-09-26, ver plan.md §10): **mano abierta como condición de armado** (método —categoría `Open_Palm` o dedos extendidos por landmarks— según la comparación offline de la ronda 2), desplazamiento horizontal neto **≥~10–12 % del ancho** en **≤500 ms**, desplazamiento vertical bajo (relación configurable), dirección invertida por el espejo. **Re-armado** (mitigación de R1): tras un disparo se ignora todo hasta que pasen los 1500 ms compartidos *y* la mano quede casi quieta o salga del cuadro. Umbrales en un objeto de configuración al inicio del archivo. Módulo dual (navegador / Node).
+### T09 · `swipe.js` — detector puro (v2)
+- **Descripción:** `crearDetector(config)` → `{ procesar(muestra), notificarCambio(t), reiniciar(), config }`. Muestras `{t, x, y, categoria}` con `x`,`y` normalizados del centro de palma en el cuadro **sin espejar**; `x`/`y` nulos = sin mano. **Detector v2** (aprobado, plan.md §12): hay evento si existe un trazo horizontal de **≥8 % del ancho en ≤500 ms** (relación vertical ≤0.6) **precedido de ≥200 ms de mano abierta y casi quieta** (≥3 cuadros, ≥60 % con `Open_Palm`, dispersión x/y ≤8 %); la mano **no** tiene que ser `Open_Palm` durante el trazo. Dirección invertida por el espejo (raw `x` decreciente = **derecha** del presentador). **Cooldown 1500 ms** tras un evento; `notificarCambio(t)` inicia el mismo cooldown y limpia el historial cuando el cambio vino de **otro canal** (cooldown compartido con la voz). Un hueco de detección **>250 ms** limpia el historial (mano que sale y entra ≠ swipe). Umbrales en `CONFIG_POR_DEFECTO` al inicio del archivo. Módulo dual (navegador `window.Swipe` / Node). Prototipo de referencia: `tests/manual/spike/comparar_metodos.py` (`detector2`).
 - **Archivos:** `swipe.js`.
-- **Done:** pasa T10. Ancla: CU1 (todos los puntos), R1.
+- **Done:** produce **exactamente los mismos eventos** que el prototipo `detector2` de Python sobre las 103 trazas reales de las dos rondas (verificación de equivalencia), y pasa T10. Ancla: CU1 (todos los puntos), R1.
 
 ### T10 · Tests del detector (sintéticos + trazas reales)
-- **Descripción:** `tests/swipe.test.js` con casos sintéticos y con las trazas grabadas en T06.
+- **Descripción:** `tests/swipe.test.js` (`node --test`) con casos sintéticos y con las trazas reales grabadas en T06 (rondas 1 y 2).
 - **Archivos:** `tests/swipe.test.js`.
-- **Done:** sintéticos — swipe derecha limpio (raw `x` 0.7→0.4 en 300 ms) = `'derecha'`; izquierda limpio (0.3→0.6) = `'izquierda'` (verifica el espejo); lento (900 ms) = `null`; corto (15 %) = `null`; vertical dominante = `null`; mano no abierta todo el movimiento = `null`; swipe + retorno rápido dentro de 1500 ms = **1** evento; retorno a los 1600 ms sin haber quedado quieta = `null`, y tras quedarse quieta 300 ms un nuevo swipe sí dispara; vaivén de 10–20 % = `null`; temblor ±2 % = `null`; mano que sale y entra = `null`; muestreo irregular (66–100 ms) sigue detectando; dos cuadros seguidos tras el disparo = 1 evento. Trazas reales — **≥9/10 derecha, ≥9/10 izquierda, 0 disparos inversos en los retornos naturales, 0 en gesticulación**. Ancla: CU1, M-swipe.
+- **Done:** sintéticos — swipe derecha limpio (raw `x` decreciente tras mano abierta quieta) = `'derecha'`; izquierda limpio = `'izquierda'` (verifica el espejo); lento (2 s) = `null`; corto (5 %) = `null`; vertical dominante = `null`; mano no abierta todo el movimiento = `null`; **trazo con la categoría perdida durante el movimiento sí dispara** (armado solo por la quietud previa); swipe + retorno rápido dentro de 1500 ms = **1** evento; retorno a los 1600 ms sin haber quedado quieta = `null`, y tras quedarse quieta 300 ms un nuevo swipe sí dispara; vaivén continuo = `null`; temblor ±2 % = `null`; mano que sale y entra = `null`; muestreo irregular (66–100 ms) sigue detectando; dos cuadros seguidos tras el disparo = 1 evento; `notificarCambio` bloquea 1500 ms y exige nueva quietud. Trazas reales — **0 disparos en gesticulación, reposo y puño (rondas 1 y 2); 0 eventos antes del YA; 0 disparos con dirección inversa como primer evento; 0 eventos extra; en la ronda 2, ≥8/10 derecha y ≥8/10 izquierda en intentos válidos**. Prioridad: si hay conflicto entre tasa y falsos positivos, gana 0 falsos positivos. Ancla: CU1, SPEC §7 (swipe).
 
 ---
 
@@ -167,7 +167,8 @@ Contrato compartido que usan varias tareas (ver T07/T09):
 ### T17 · Ensayo guiado y métricas
 - **Descripción:** ejecutar el checklist completo contigo (domingo) y medir el SPEC §7 con el micrófono Bluetooth y la distancia real; registrar resultados y ajustes en `docs/ensayo.md`.
 - **Archivos:** `docs/ensayo.md`, ajustes puntuales de constantes (variantes de "LeIA", idioma, umbrales).
-- **Done:** 10 min hablando y gesticulando con **0** cambios no intencionales; **9/10** swipes por lado; **9/10** comandos de voz; latencias < 1 s (swipe) y < 1.5 s (voz); el deck completo se navega sin tocar la laptop. Si algo no pasa, se decide plan B con esos números. Ancla: SPEC §7 completo.
+- **Además (aprobado tras la ronda 2):** grabar trazas de swipe con **la mano que Luigui use naturalmente al presentar** y **re-afinar los umbrales de `swipe.js` solo si mejora la tasa sin introducir falsos positivos ni disparos inversos** (se valida con `tests/swipe.test.js` + las trazas nuevas), y **siempre antes del congelamiento** (T18).
+- **Done:** 10 min hablando y gesticulando con **0** cambios no intencionales y **0** disparos inversos; swipe **8/10** por lado en intentos válidos (canal secundario); **9/10** comandos de voz; latencias < 1 s (swipe) y < 1.5 s (voz); el deck completo se navega sin tocar la laptop. Si algo no pasa, se decide plan B con esos números. Ancla: SPEC §7 completo.
 
 ### T18 · Congelamiento y cierre
 - **Descripción:** congelar el código (domingo 22:00), registrar en `JARVIS_LOG.md` (append, formato de `CLAUDE.md`) y `git push`.

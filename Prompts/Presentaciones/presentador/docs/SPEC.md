@@ -2,6 +2,8 @@
 
 > Proyecto: `~/Documents/Segundo_cerebro/Prompts/Presentaciones/presentador/` · Deadline: lunes 2026-09-28 (presentación de trabajo)
 
+> **Revisión 2026-09-26 (3.ª, tras la ronda 2 del spike; aprobada por Luigui):** el swipe pasa a ser un **canal secundario en v1** y se detecta con el **detector v2**: categoría `Open_Palm` como condición de armado **más mano abierta y casi quieta justo antes del trazo** (≥200 ms). Umbral por defecto **8 %** del ancho (rango de trabajo ~8–12 %). Meta **8/10 por lado en intentos válidos** (antes 9/10); voz y teclado cubren los fallos. Se mantiene estricto: **0 cambios no intencionales y 0 disparos inversos**; ante cualquier conflicto entre tasa de acierto y falsos positivos, gana 0 falsos positivos (ver `plan.md` §12).
+>
 > **Revisión 2026-09-26 (2.ª, tras el spike T06; aprobada por Luigui):** el swipe se mide con **~10–12 % del ancho del cuadro en <500 ms** (antes ~25 % en ~400 ms: a la distancia real un swipe recorre 13–21 % del ancho; ver `plan.md` §9), **con la mano abierta como condición de armado** (el método —categoría `Open_Palm` o dedos extendidos por landmarks— se fija con la comparación offline de la ronda 2), y la resolución de cámara por defecto es **640×480**. Además `presentador.js` **bloquea** la telemetría de MediaPipe hacia `odml.pa.googleapis.com` (`fetch`/XHR/`sendBeacon`).
 
 > **Revisión 2026-09-26 (aprobada por Luigui):** las teclas de control pasan de `G`/`V`/`H` a **`M` (gestos) / `E` (voz, "escuchar") / `I` (indicador)**. Verificado en `vendor/reveal/dist/reveal.js` (6.0.2): `H` = slide anterior, `G` = saltar a slide y **`V` (keyCode 86) = pausa / pantalla negra** (no figura en la ayuda de Reveal, solo en el código). `M`, `E` e `I` no las usa Reveal ni sus plugins (notes = `S`, search = Ctrl+Shift+F, zoom = Esc). El SPEC ya preveía reasignar si había choque (CU5).
@@ -28,7 +30,7 @@ Luigui presentando en el trabajo, de pie a menos de 2 m de su MacBook Pro Intel 
 - Si el salto excede los límites, se detiene en el primer o último slide.
 
 **CU1 — Swipe**
-- DADO que la cámara ve mi mano abierta (`Open_Palm`) a ≤2 m, CUANDO la desplazo horizontalmente hacia mi derecha más de ~10–12% del ancho del cuadro en menos de ~500 ms con poco desplazamiento vertical, ENTONCES avanza un paso exactamente una vez.
+- DADO que la cámara ve mi mano abierta (`Open_Palm`) a ≤2 m, CUANDO la desplazo horizontalmente hacia mi derecha más de ~8–12% del ancho del cuadro en menos de ~500 ms con poco desplazamiento vertical, y la mano llevaba al menos ~200 ms abierta y casi quieta justo antes del trazo, ENTONCES avanza un paso exactamente una vez.
 - CUANDO hago el mismo movimiento hacia mi izquierda, ENTONCES retrocede un paso exactamente una vez.
 - La dirección se calcula desde la perspectiva del presentador (la imagen de la webcam viene en espejo y se invierte).
 - DADO que acaba de ocurrir un cambio por cualquier canal, CUANDO pasan menos de 1500 ms, ENTONCES se ignora todo movimiento y comando (cooldown compartido). Esto evita que el regreso de la mano después de un swipe dispare el sentido contrario.
@@ -75,7 +77,7 @@ Luigui presentando en el trabajo, de pie a menos de 2 m de su MacBook Pro Intel 
 
 ## 6. Stack / arquitectura
 - **Presentación:** HTML + Reveal.js. El proyecto trae Reveal.js en `vendor/` y `presentar.py` lo sirve en `/vendor/`, para que las presentaciones puedan referenciarlo localmente en vez de depender de un CDN el día de la charla.
-- **Gestos:** MediaPipe Tasks Vision `GestureRecognizer` (JS/WASM). La mano abierta es la condición de armado (categoría `Open_Palm` o dedos extendidos por landmarks: se decide con datos, ver la revisión del 2026-09-26) y los landmarks de la mano (centro de palma) miden la trayectoria horizontal del swipe. Cámara a 640×480. Librería y modelo `gesture_recognizer.task` descargados en `vendor/` durante el setup (sin CDN en runtime).
+- **Gestos:** MediaPipe Tasks Vision `GestureRecognizer` (JS/WASM). La condición de armado es la categoría `Open_Palm` con la mano casi quieta justo antes del trazo (elegida con datos: la geometría de dedos extendidos no la superó; ver `plan.md` §11–12) y los landmarks de la mano (centro de palma) miden la trayectoria horizontal del swipe. Cámara a 640×480. Librería y modelo `gesture_recognizer.task` descargados en `vendor/` durante el setup (sin CDN en runtime).
 - **Voz:** Web Speech API de Chrome (`continuous`, `interimResults`, `lang: es-PE`). Parser de comandos en el cliente (normalización de tildes, variantes de "LeIA", números en palabras), sin Groq.
 - **Servidor:** `presentar.py` con librería estándar de Python 3.11 (`http.server`) en `localhost:8765`. `localhost` es contexto seguro, requisito de `getUserMedia`. Sirve la carpeta de la presentación en `/`, el presentador en `/presentador/` y las librerías en `/vendor/`, e inyecta los scripts en `index.html`.
 - **Convivencia con Jarvis:** Jarvis local solo se activa con "Jarvis" y macOS permite que ambos usen el micrófono a la vez, así que no hay que pausarlo.
@@ -96,7 +98,8 @@ Prompts/Presentaciones/presentador/
 
 ## 7. Métricas de éxito
 - En ensayo de 10 min hablando y gesticulando normalmente: 0 cambios de slide no intencionales.
-- 9/10 swipes a la derecha y 9/10 a la izquierda reconocidos a 1–2 m con luz de oficina, sin disparo inverso al regresar la mano.
+- Swipe (canal secundario en v1): **8/10 a la derecha y 8/10 a la izquierda en intentos válidos** (mano abierta y quieta antes del trazo, a 1–2 m con luz de oficina), **0 disparos inversos** al regresar la mano. Los swipes que no se reconocen los cubren la voz y el teclado.
+- Prioridad: ante cualquier conflicto entre tasa de acierto y falsos positivos, se prioriza **0 falsos positivos**.
 - 9/10 comandos de voz reconocidos a la primera, incluidos saltos de N slides.
 - Latencia percibida < 1 s en swipe y < 1.5 s en voz.
 - El lunes la presentación completa se navega sin tocar la laptop.
