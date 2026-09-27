@@ -14,6 +14,10 @@
 __pycache__/
 *.pyc
 *.log
+# Logs rotados (RotatingFileHandler del daemon: jarvis.log.1, .2, .3 — ~5 MB c/u).
+# `*.log` no los cubre porque terminan en ".1", no en ".log". Patrón numérico a
+# propósito: no oculta jarvis.log.archived, que sí está trackeado.
+*.log.[0-9]*
 
 # Secretos — nunca deben trackearse desde ninguna subcarpeta
 **/.env
