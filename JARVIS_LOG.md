@@ -2,6 +2,22 @@
 
 ---
 
+### 2026-09-26 23:59 — presentador: T09–T12 ejecutadas con el detector v2 aprobado; parada antes de T13
+
+**Instrucción (Luigui):** aprobado (a): detector v2 (categoría `Open_Palm` + mano abierta y quieta antes del trazo); swipe como canal secundario con meta 8/10 por lado en intentos válidos; 0 cambios no intencionales y 0 disparos inversos, y ante conflicto gana 0 falsos positivos; en T17 re-afinar solo si mejora la tasa sin falsos positivos y antes del congelamiento; ejecutar T09–T12 sin detenerse (un commit por tarea) y parar antes de T13 con resumen.
+
+**Acciones:** SPEC/plan/tasks actualizados (`0d37b14`); T09 `swipe.js` (`242ce0d`); T10 49 tests + endurecimiento del detector (`aa8b2b6`); T11 `presentador.js` con bloqueo de telemetría, espera a Reveal, navegación y cooldown (`04aa3b9`); T12 teclas M/E/I e indicador (`5a298dc`). Suites: 36 unittest, 147 casos de voz, 49 de swipe (196 Node) en verde.
+
+**Hallazgos durante T09–T10 (con datos, ver plan.md §12.1):** (1) la regla de hueco de 250 ms que yo había añadido costaba swipes reales (la mano se pierde 250–300 ms por desenfoque a mitad del trazo) → 400 ms; (2) un swipe seguido de un retorno rápido tras ≥2 s de reposo disparaba el sentido inverso (ronda 1, `derecha-18`) → bloqueo del sentido contrario 3 s con consumo del trazo; (3) los tests sintéticos destaparon que con dispersión 0.08 un vaivén con palma abierta se "quedaba quieto" en los giros → quietud con duración (≥150 ms) y guardia de vaivén; (4) descartado un guardia de "últimos 100 ms": costaba un acierto y provocaba un inverso real. Resultado en las 102 trazas reales: 0 FP, 0 inversos (cualquier posición), 0 extras, 0 antes del YA; ronda 2 válidos 8/10 y 8/10. Límite conocido: vaivén lento (~1 Hz) con palma abierta indistinguible de swipes repetidos. T12: `V` sigue siendo la pausa de Reveal y no interfiere.
+
+**Límites:** n ≤ 19 por lado, una sola persona; parámetros afinados sobre los mismos datos; 106 s de no-swipe; el detector aún no está conectado a la cámara (T14) ni la voz al micrófono (T13).
+
+**Pendiente:** T13 (voz en el navegador) y T14 (gestos) esperan revisión; T15–T18 después. Sin tocar `jarvis.py`, `jarvis_daemon.py`, `.zshrc`, `RESOLVER.md`, `ATLAS.md` ni conceptos.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 23:30 — presentador: ronda 2 del spike (640×480 + 21 landmarks) y comparación offline; detenido antes de T09
 
 **Instrucción (Luigui):** aprobadas las desviaciones del SPEC (umbral ~10–12 %, ventana 500 ms, 640×480) y el bloqueo de la telemetría de MediaPipe; guardar los 21 landmarks; grabar una sesión corta a 640×480 guiada; comparar offline categoría `Open_Palm` vs geometría de dedos; si el resultado es igual o mejor que el prototipo (~85 %/~65 %/0–1 FP) continuar con T09–T12 sin detenerse (parar antes de T13); si es peor, detenerse y presentar las cifras antes de T09.

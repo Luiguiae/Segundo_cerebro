@@ -17,8 +17,10 @@
 | T07 casos de prueba del parser (147) | ✅ | `b17c891` |
 | T08 `comandos.js` | ✅ 147/147 | `a542334` |
 | T09 `swipe.js` (detector v2) | ✅ | `242ce0d` + ajustes en T10 |
-| T10 tests del detector (49) | ✅ | ver git log |
-| T11–T18 | pendientes (T11–T12 en curso; parada antes de T13) | — |
+| T10 tests del detector (49) | ✅ | `aa8b2b6` |
+| T11 `presentador.js` (arranque, navegación, cooldown, bloqueo de telemetría) | ✅ | `04aa3b9` |
+| T12 teclas M/E/I e indicador | ✅ | `5a298dc` |
+| T13–T18 | pendientes (**parada aquí a la espera de revisión**) | — |
 
 Verificación previa de D1 (tecla `V` = pausa) resuelta el 2026-09-26: `V` → `E` (commit `4d4c1dd`).
 
