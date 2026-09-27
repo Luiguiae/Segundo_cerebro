@@ -2,6 +2,20 @@
 
 ---
 
+### 2026-09-26 21:35 — verificación de 4 pendientes del mensaje anterior (1 estaba sin hacer)
+
+**Instrucción (Luigui):** confirmar las 4: (1) `Trabajo/` (con `Reuniones/`) en el árbol de `CLAUDE.md` y en la sección 2 de `vault-brief.md`; (2) fila de Correlaciones de `context.md` a 27/2; (3) cerrar (a) y (b) en la entrada de Backlog de schema; (4) confirmar con `realpath` que la ruta del daemon no pasa por symlinks de `/var/folders`.
+
+**Verificación contra el repo (no de memoria):**
+- (1) **NO estaba hecho** — `Trabajo/Reuniones/_plantilla-reunion.md` existe y está trackeado (Mejora 2), pero ni el árbol de `CLAUDE.md` ni `vault-brief.md` lo mencionaban. Corregido ahora: línea `Trabajo/` + `Reuniones/` en el árbol (antes de `Iniciativas/`) y mención en la sección 2 de `vault-brief.md`.
+- (2) Hecho (entrada `22:00`): `context.md` línea 26 dice "29 (27 activas, 2 borrador) — verificado 2026-09-26 (auditoría del 2026-08-24)".
+- (3) Hecho (entrada `22:00`): (a) y (b) marcadas ✅ CERRADA 2026-09-26 en `Backlog/ideas/2026-09-26_limpieza-frontmatter-estado-conceptos.md` (fuente `taxonomia.md` líneas 36/72 + Gate 0); queda abierta solo (c).
+- (4) `os.path.realpath` de la raíz del vault, `jarvis_daemon.py`, `Inbox/`, `Conocimiento/` y `Prompts/Meta/jarvis/`: todas IGUALES a su ruta sin resolver — ningún symlink. El proceso vivo del daemon corre `/Users/luiguiavilae/Documents/Segundo_cerebro/Prompts/Meta/jarvis/jarvis_daemon.py`; `CEREBRO_PATH` sale de `Path.home()`; `/var/folders` no interviene (solo mis vaults de prueba estaban ahí). Nota: el daemon arranca vía `Jarvis.app` con cwd `/`, pero todas sus rutas son absolutas desde `CEREBRO_PATH`, así que no importa.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 21:20 — recordatorio de la prueba de voz en el ritual de inicio
 
 **Instrucción (Luigui):** recordar la prueba de voz (taller + pantalla) en el ritual de inicio de la próxima sesión, con los dos criterios de éxito; y dejar las horas 22:00/23:00/23:45 tal cual (no reinventarlas con una hora exacta que tampoco sería cierta — queda trazable por la nota de la entrada `21:10`).

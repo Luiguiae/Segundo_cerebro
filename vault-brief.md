@@ -13,7 +13,7 @@ categorias_baseline: [diseno, economia, filosofia, ia, organizaciones, producto]
 ## 2. Estructura (al 2026-09-26)
 - Conocimiento/Conceptos/: 103 en 6 carpetas — ia 41 · filosofia 17 · diseno 15 · organizaciones 12 · producto 12 · economia 6.
 - Conocimiento/: Correlaciones/ (29), Fuentes/Sesiones/, ATLAS.md (índice auto-generado).
-- Inbox/ (.tmp.md por decidir) · Backlog/ (ideas de proyecto) · docs/ (planes) · Plantillas/ (taxonomia.md, rubrica.md: solo lectura) · Prompts/Meta/.
+- Inbox/ (.tmp.md por decidir) · Backlog/ (ideas de proyecto) · docs/ (planes) · Plantillas/ (taxonomia.md, rubrica.md: solo lectura) · Trabajo/Reuniones/ (plantilla de reunión; material de trabajo, no conocimiento atómico) · Prompts/Meta/.
 
 ## 3. Decisiones ya tomadas
 - 1 concepto = 1 idea atómica; Gate 0 (estructura) + rúbrica Gate 1/2 antes de escribir.

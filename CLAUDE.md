@@ -57,6 +57,8 @@ Estructura de carpetas:
 ├── remotion/                          ← proyecto Remotion (en .gitignore; src actualmente vacío/perdido — ver nota en "Generar video de concepto")
 ├── Documentos/
 ├── Proyectos/
+├── Trabajo/                           ← material de trabajo de Luigui (no es conocimiento atómico)
+│   └── Reuniones/                     ← _plantilla-reunion.md (reunión → acuerdos y responsables)
 └── Iniciativas/
 ```
 
