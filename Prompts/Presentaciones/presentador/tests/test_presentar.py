@@ -105,6 +105,95 @@ class Seguridad(Base):
         self.assertEqual(self.srv.server_address[0], "127.0.0.1")
 
 
+class Inyeccion(unittest.TestCase):
+    def test_antes_de_body(self):
+        r = presentar.inyectar(b"<html><body>x</body></html>")
+        self.assertIn(b'<script src="/presentador/presentador.js"></script>\n</body>', r)
+        self.assertTrue(r.startswith(b"<html><body>x"))
+
+    def test_body_en_mayusculas(self):
+        r = presentar.inyectar(b"<HTML><BODY>x</BODY></HTML>")
+        self.assertLess(r.index(b"presentador.js"), r.index(b"</BODY>"))
+
+    def test_body_con_espacio(self):
+        r = presentar.inyectar(b"<body>x</body >")
+        self.assertLess(r.index(b"presentador.js"), r.index(b"</body >"))
+
+    def test_sin_body_va_al_final(self):
+        r = presentar.inyectar(b"<p>hola</p>")
+        self.assertTrue(r.startswith(b"<p>hola</p>"))
+        self.assertTrue(r.rstrip().endswith(b"</script>"))
+
+    def test_dos_body_usa_el_ultimo(self):
+        r = presentar.inyectar(b"<script>var s='</body>'</script><body>x</body>")
+        self.assertEqual(r.count(b"</body>"), 2)
+        self.assertGreater(r.index(b"presentador.js"), r.index(b"<body>x"))
+
+    def test_idempotente(self):
+        una = presentar.inyectar(b"<body></body>")
+        self.assertEqual(presentar.inyectar(una), una)
+        self.assertEqual(una.count(b"presentador.js"), 1)
+
+    def test_utf8_con_tildes_intacto(self):
+        html = "<body>ñandú — acción</body>".encode("utf-8")
+        r = presentar.inyectar(html)
+        self.assertIn("ñandú — acción".encode("utf-8"), r)
+
+    def test_no_utf8_bytes_intactos(self):
+        html = b"<body>\xf1and\xfa \xe1</body>"  # latin-1
+        r = presentar.inyectar(html)
+        self.assertIn(b"\xf1and\xfa \xe1", r)
+
+    def test_orden_de_scripts_y_config(self):
+        r = presentar.inyectar(b"<body></body>", debug=True)
+        i = [r.index(x) for x in (b"PRESENTADOR_CONFIG", b"comandos.js", b"swipe.js", b"presentador.js")]
+        self.assertEqual(i, sorted(i))
+        self.assertIn(b'"debug": true', r)
+        self.assertIn(b'"debug": false', presentar.inyectar(b"<body></body>", debug=False))
+
+
+class InyeccionEnServidor(Base):
+    def setUp(self):
+        super().setUp()
+        self.srv.cfg.inyectar = True
+        self.hash_antes = {p: p.read_bytes() for p in self.deck.rglob("*") if p.is_file() and not p.is_symlink()}
+        (self.deck / "otra.html").write_text("<body>otra</body>", encoding="utf-8")
+
+    def test_raiz_e_index_inyectados_con_length_correcto(self):
+        for ruta in ("/", "/index.html", "/?x=1"):
+            r, cuerpo = self.pedir(ruta)
+            self.assertEqual(r.status, 200, ruta)
+            self.assertIn(b"/presentador/presentador.js", cuerpo, ruta)
+            self.assertEqual(int(r.getheader("Content-Length")), len(cuerpo), ruta)
+            self.assertIn("Hola ñandú", cuerpo.decode("utf-8"))
+
+    def test_head_length_coincide_con_get(self):
+        rg, cg = self.pedir("/")
+        rh, ch = self.pedir("/", "HEAD")
+        self.assertEqual(ch, b"")
+        self.assertEqual(rh.getheader("Content-Length"), rg.getheader("Content-Length"))
+
+    def test_otros_archivos_no_se_tocan(self):
+        self.assertEqual(self.pedir("/assets/a.js")[1], b"console.log(1)")
+        self.assertNotIn(b"presentador", self.pedir("/otra.html")[1])
+
+    def test_html_en_disco_no_cambia(self):
+        for _ in range(3):
+            self.pedir("/")
+        despues = {p: p.read_bytes() for p in self.deck.rglob("*") if p.is_file() and not p.is_symlink() and p.name != "otra.html"}
+        for p, b in despues.items():
+            self.assertEqual(b, self.hash_antes[p], p.name)
+        self.assertNotIn(b"presentador", (self.deck / "index.html").read_bytes())
+
+    def test_sin_inyeccion_sirve_tal_cual(self):
+        self.srv.cfg.inyectar = False
+        self.assertEqual(self.pedir("/")[1].decode("utf-8"), HTML)
+
+    def test_debug_llega_al_html(self):
+        self.srv.cfg.debug = True
+        self.assertIn(b'"debug": true', self.pedir("/")[1])
+
+
 class Cli(unittest.TestCase):
     def ejecutar(self, argv, vendor):
         err = io.StringIO()

@@ -13,6 +13,7 @@ Nunca escribe nada en la carpeta de la presentación.
 import argparse
 import errno
 import mimetypes
+import re
 import shutil
 import subprocess
 import sys
@@ -47,6 +48,37 @@ TIPOS = {
     ".woff2": "font/woff2",
     ".woff": "font/woff",
 }
+
+
+# ── Inyección del presentador en index.html (solo al servir; el HTML en disco no se toca) ──────────
+
+MARCA_INYECCION = b"presentador:inyectado"
+_RE_CIERRE_BODY = re.compile(rb"</body\s*>", re.IGNORECASE)
+
+
+def bloque_inyeccion(debug: bool = False) -> bytes:
+    return (
+        "\n<!-- presentador:inyectado -->\n"
+        f"<script>window.PRESENTADOR_CONFIG = {{\"debug\": {'true' if debug else 'false'}}};</script>\n"
+        '<script src="/presentador/comandos.js"></script>\n'
+        '<script src="/presentador/swipe.js"></script>\n'
+        '<script src="/presentador/presentador.js"></script>\n'
+    ).encode("ascii")
+
+
+def inyectar(html: bytes, debug: bool = False) -> bytes:
+    """Agrega los scripts del presentador antes del ÚLTIMO </body> (sin distinguir mayúsculas;
+    si no hay, al final). Trabaja sobre bytes (no decodifica: cualquier codificación queda intacta)
+    y es idempotente."""
+    if MARCA_INYECCION in html:
+        return html
+    bloque = bloque_inyeccion(debug)
+    ultimo = None
+    for ultimo in _RE_CIERRE_BODY.finditer(html):
+        pass
+    if ultimo is None:
+        return html + bloque
+    return html[:ultimo.start()] + bloque + html[ultimo.start():]
 
 
 def tipo_de(ruta: Path) -> str:
@@ -115,6 +147,13 @@ class Manejador(BaseHTTPRequestHandler):
         archivo = self._archivo_para(ruta_url)
         if archivo is None:
             return self._no_encontrado(con_cuerpo)
+        cfg = self.server.cfg
+        if cfg.inyectar and ruta_url in ("/", "/index.html"):
+            try:
+                cuerpo = inyectar(archivo.read_bytes(), cfg.debug)
+            except OSError:
+                return self._no_encontrado(con_cuerpo)
+            return self._responder(200, tipo_de(archivo), cuerpo, con_cuerpo)
         try:
             tamano = archivo.stat().st_size
             self.send_response(200)
