@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Deck de demo — presentador</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Reveal.js se carga SOLO desde /vendor/ (sin CDN), como deben hacerlo los decks reales.
+       Script clásico (no módulo ESM): así existe `window.Reveal`, que es lo que espera el presentador. -->
+  <link rel="stylesheet" href="/vendor/reveal/dist/reset.css">
+  <link rel="stylesheet" href="/vendor/reveal/dist/reveal.css">
+  <link rel="stylesheet" href="/vendor/reveal/dist/theme/black.css">
+  <style>
+    .reveal h1 { font-size: 2.2em; }
+    .reveal .pequeno { font-size: .6em; opacity: .7; }
+    .reveal .largo { font-size: .62em; text-align: left; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1 -->
+      <section>
+        <h1>Deck de demo</h1>
+        <p>Para probar el presentador por gestos y voz</p>
+        <p class="pequeno">Contenido genérico — no es una presentación de trabajo</p>
+      </section>
+
+      <!-- 2 -->
+      <section>
+        <h2>Slide 2</h2>
+        <p>Un slide simple, sin fragments.</p>
+      </section>
+
+      <!-- 3: fragments -->
+      <section>
+        <h2>Slide 3 — con fragments</h2>
+        <ul>
+          <li class="fragment">Primer punto</li>
+          <li class="fragment">Segundo punto</li>
+          <li class="fragment">Tercer punto</li>
+        </ul>
+        <p class="pequeno">"Siguiente" avanza un fragment; "avanza 1 slide" salta el slide completo.</p>
+      </section>
+
+      <!-- 4 -->
+      <section>
+        <h2>Slide 4</h2>
+        <p>Otro slide simple.</p>
+      </section>
+
+      <!-- 5 -->
+      <section>
+        <h2>Slide 5</h2>
+        <p>Cinco de doce.</p>
+      </section>
+
+      <!-- 6: texto largo -->
+      <section>
+        <h2>Slide 6 — texto largo</h2>
+        <p class="largo">
+          Este slide tiene bastante texto para comprobar que el indicador del presentador
+          no altera el layout ni tapa el contenido. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+          ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+          esse cillum dolore eu fugiat nulla pariatur.
+        </p>
+      </section>
+
+      <!-- 7 -->
+      <section>
+        <h2>Slide 7</h2>
+        <p>Siete de doce.</p>
+      </section>
+
+      <!-- 8: fragments -->
+      <section>
+        <h2>Slide 8 — con fragments</h2>
+        <p class="fragment">Aparece primero</p>
+        <p class="fragment">Aparece después</p>
+      </section>
+
+      <!-- 9 -->
+      <section>
+        <h2>Slide 9</h2>
+        <p>Nueve de doce.</p>
+      </section>
+
+      <!-- 10 -->
+      <section>
+        <h2>Slide 10</h2>
+        <p>Diez de doce.</p>
+      </section>
+
+      <!-- 11 -->
+      <section>
+        <h2>Slide 11</h2>
+        <p>Once de doce.</p>
+      </section>
+
+      <!-- 12 -->
+      <section>
+        <h1>Fin</h1>
+        <p class="pequeno">Último slide — los saltos se detienen aquí</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="/vendor/reveal/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: false,
+      slideNumber: 'c/t',
+      transition: 'none',   // sin animación: las pruebas y el ensayo ven el cambio al instante
+      controls: false,
+      progress: true
+    });
+  </script>
+</body>
+</html>
