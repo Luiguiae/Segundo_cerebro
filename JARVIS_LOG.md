@@ -2,6 +2,20 @@
 
 ---
 
+### 2026-09-26 23:45 — prueba de los 6 llamadores de `ejecutar_claude()` con prompts reales (SIN cambios en `jarvis.py`; a la espera de confirmación de Luigui)
+
+**Instrucción (Luigui):** opción 2 aprobada con ajuste — watcher y modo taller (`Edit` de Conocimiento/Inbox/Backlog/JARVIS_LOG + `Bash(python3 Prompts/Meta/generar_index.py)`, sin web); profundizar/capturar (`WebFetch`, `WebSearch`, cero `Edit`); `accion_directa` sigue en bypass. Probar los 6 llamadores con sus prompts reales y confirmar resultados ANTES de tocar `jarvis.py`.
+
+**Acciones:** los prompts se extrajeron por AST del código versionado (no copiados a mano) y se corrieron en vaults de prueba aislados (copia de Plantillas, Conceptos, `CLAUDE.md` y `.claude/` reales, rutas redirigidas, `generar_index.py` de mentira), 2 tandas, ~30 corridas, con inyección de prompt plantada en el texto de terceros y verificación en disco + eventos stream-json (`init`, herramientas usadas, `permission_denials`). Vault real intacto (hash de ATLAS.md/CLAUDE.md y `git status` idénticos).
+
+**Resultados:** ver el informe entregado en el chat. Resumen: taller 4/4 con `Edit(Inbox/**)` bastando (extras sin uso); profundizar/capturar 2/2 y 2/2 sin `Edit`; watcher con `Bash` restringido solo ~3/5 (compuestos `cd …; diff/for` denegados; ruta de `generar_index.py` en forma absoluta no coincide con la regla relativa); sin `--setting-sources ""` las reglas `allow` de settings se heredan (confirmado en el vault real con `code --list-extensions`; `settings.local.json` trae `git add/commit/push:*`); bypass carga 9 conectores MCP (Gmail, Calendar, Drive…), restringido 0. Ninguna inyección prospera ni siquiera bajo bypass (el modelo las detecta) — no es evidencia de barrera; la barrera es el permiso.
+
+**Límites:** un artefacto propio detectado y corregido (1ª tanda con vault en `/var/folders`, symlink → falsos 'denegado' en taller; repetida en ruta real). Muestra pequeña (1-3 corridas por celda; no determinista). `rm -rf /tmp/leakgit` (residuo de una prueba) bloqueado por el chequeo de seguridad — queda para que Luigui lo borre.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 23:00 — informe de datos sobre `bypassPermissions` en `ejecutar_claude()` (SIN cambios de código; decisión de Luigui pendiente)
 
 **Instrucción (Luigui):** traer detalle antes de decidir — qué comando usa hoy `bypassPermissions` y qué se rompe si se restringe.
