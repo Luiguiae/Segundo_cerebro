@@ -2,6 +2,8 @@
 
 > Proyecto: `~/Documents/Segundo_cerebro/Prompts/Presentaciones/presentador/` · Deadline: lunes 2026-09-28 (presentación de trabajo)
 
+> **Revisión 2026-09-26 (aprobada por Luigui):** las teclas de control pasan de `G`/`V`/`H` a **`M` (gestos) / `E` (voz, "escuchar") / `I` (indicador)**. Verificado en `vendor/reveal/dist/reveal.js` (6.0.2): `H` = slide anterior, `G` = saltar a slide y **`V` (keyCode 86) = pausa / pantalla negra** (no figura en la ayuda de Reveal, solo en el código). `M`, `E` e `I` no las usa Reveal ni sus plugins (notes = `S`, search = Ctrl+Shift+F, zoom = Esc). El SPEC ya preveía reasignar si había choque (CU5).
+
 ## 1. Problema
 Al presentar, Luigui necesita navegar los slides sin tocar la laptop ni depender de un clicker, usando swipes de mano o comandos de voz indistintamente.
 
@@ -45,7 +47,7 @@ Luigui presentando en el trabajo, de pie a menos de 2 m de su MacBook Pro Intel 
 - Chrome corta el reconocimiento continuo tras silencios; el sistema lo reinicia automáticamente en `onend`/`onerror` sin intervención.
 
 **CU5 — Control y feedback**
-- Tecla `G` activa/desactiva gestos; `V` activa/desactiva voz; `H` oculta/muestra el indicador. Las teclas nativas de Reveal (flechas, espacio) y el clicker siguen funcionando siempre. `G`, `V` y `H` no deben chocar con atajos de Reveal; si alguno choca, se reasigna.
+- Tecla `M` activa/desactiva gestos; `E` activa/desactiva voz; `I` oculta/muestra el indicador. Las teclas nativas de Reveal (flechas, espacio) y el clicker siguen funcionando siempre. `M`, `E` e `I` no deben chocar con atajos de Reveal (verificado; ver la revisión del 2026-09-26 arriba).
 - Indicador discreto en una esquina, por encima del contenido de la presentación sin alterar su layout: estado de cámara y micrófono, y último comando ejecutado con el slide resultante (ej. `+3 → 7/20`).
 
 **Arranque**
@@ -111,5 +113,5 @@ Prompts/Presentaciones/presentador/
 - [ ] Probar "avanza 3", "retrocede dos slides", "vuelve al inicio", y un slide con fragments
 - [ ] Probar swipes con la luz real o la más parecida, a la distancia en la que vas a estar; revisar que el regreso de la mano no retroceda
 - [ ] Probar en la red donde vas a presentar o con hotspot (la voz necesita internet)
-- [ ] Probar `G`, `V`, `H` y el clicker/flechas como fallback
+- [ ] Probar `M`, `E`, `I` y el clicker/flechas como fallback (y confirmar que `V` NO hace nada útil: en Reveal es pausa/pantalla negra)
 - [ ] Opcional: pausar Jarvis local por precaución si no lo vas a usar durante la charla
