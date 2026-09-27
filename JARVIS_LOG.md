@@ -2,6 +2,20 @@
 
 ---
 
+### 2026-09-26 22:10 — proyecto presentador (gestos y voz): SPEC guardado, plan.md y tasks.md — a la espera de aprobación
+
+**Instrucción (Luigui):** crear `Prompts/Presentaciones/presentador/`, guardar el SPEC en `docs/SPEC.md`, generar `docs/plan.md` y `docs/tasks.md` (sin código) y detenerse a esperar aprobación antes de ejecutar tarea por tarea. Deadline: lunes 2026-09-28.
+
+**Acciones:** carpeta y 3 documentos creados (SPEC verbatim, plan con objetivo/fases/dependencias/riesgos R1–R11, 18 tareas atómicas T01–T18 con criterio de done ligado al SPEC; `comandos.js` con ~55 casos de prueba definidos antes de implementar). **Sin código, sin tocar** `jarvis.py`, `jarvis_daemon.py`, `.zshrc`, `RESOLVER.md`, `ATLAS.md` ni conceptos. Verificado hoy para no planear sobre suposiciones: equipo (i7-9750H, 16 GB, GPU dual, Chrome 153, Python 3.11.15, Node 24), versiones en npm (Reveal 6.0.2, tasks-vision 1.0.1, modelo 8 373 440 B), MIME de Python 3.11 y los atajos reales de Reveal 6.0.2 leyendo su código.
+
+**Hallazgos que cambian el SPEC (requieren aprobación, ver plan §3):** `H` en Reveal = "Previous slide" y `G` = "Jump to slide" (choque real; propuesta `M`/`V`/`I`); "avanza" interino puede ser prefijo de "avanza 3" (regla de espera ~500 ms); "lea" es también un verbo (exigir adyacencia con el comando); el audio de Web Speech sale a Google; la plantilla de presentaciones del vault no es Reveal.js (dependencia del deck del lunes).
+
+**Resultados:** plan.md OK (borrador) · tasks.md OK (borrador) · SPEC.md OK. **Pendiente: aprobación de Luigui para ejecutar T01 en adelante.**
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 21:45 — 2 conceptos sin trackear commiteados tal cual (schema (c) sigue abierta)
 
 **Instrucción (Luigui):** commitear `diseno-multiinteligencia` y `criterio-transferible-vs-respuesta-memorizada` sin resolver el schema, solo para sacarlos de "sin trackear" y tenerlos respaldados en git; dejarlos fallando Gate 0 a propósito (sin agregar `estado` ni quitar `slug`); la pregunta (c) de tags queda abierta para otra sesión y la propuesta de reemplazos se arma cuando se retome, no ahora.
