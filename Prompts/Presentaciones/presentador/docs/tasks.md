@@ -16,7 +16,9 @@
 | T06 spike de gestos (go / no-go) | ✅ rondas 1 y 2 medidas; comparación offline hecha (plan.md §11); **T09 detenida a la espera de decisión de Luigui** | `2c4fb13` + ronda 2 |
 | T07 casos de prueba del parser (147) | ✅ | `b17c891` |
 | T08 `comandos.js` | ✅ 147/147 | `a542334` |
-| T09–T18 | pendientes | — |
+| T09 `swipe.js` (detector v2) | ✅ | `242ce0d` + ajustes en T10 |
+| T10 tests del detector (49) | ✅ | ver git log |
+| T11–T18 | pendientes (T11–T12 en curso; parada antes de T13) | — |
 
 Verificación previa de D1 (tecla `V` = pausa) resuelta el 2026-09-26: `V` → `E` (commit `4d4c1dd`).
 
@@ -112,9 +114,9 @@ Contrato compartido que usan varias tareas (ver T07/T09):
 ## F4 — Detector de swipe
 
 ### T09 · `swipe.js` — detector puro (v2)
-- **Descripción:** `crearDetector(config)` → `{ procesar(muestra), notificarCambio(t), reiniciar(), config }`. Muestras `{t, x, y, categoria}` con `x`,`y` normalizados del centro de palma en el cuadro **sin espejar**; `x`/`y` nulos = sin mano. **Detector v2** (aprobado, plan.md §12): hay evento si existe un trazo horizontal de **≥8 % del ancho en ≤500 ms** (relación vertical ≤0.6) **precedido de ≥200 ms de mano abierta y casi quieta** (≥3 cuadros, ≥60 % con `Open_Palm`, dispersión x/y ≤8 %); la mano **no** tiene que ser `Open_Palm` durante el trazo. Dirección invertida por el espejo (raw `x` decreciente = **derecha** del presentador). **Cooldown 1500 ms** tras un evento; `notificarCambio(t)` inicia el mismo cooldown y limpia el historial cuando el cambio vino de **otro canal** (cooldown compartido con la voz). Un hueco de detección **>400 ms** limpia el historial (mano que sale y entra ≠ swipe). Umbrales en `CONFIG_POR_DEFECTO` al inicio del archivo. Módulo dual (navegador `window.Swipe` / Node). Prototipo de referencia: `tests/manual/spike/comparar_metodos.py` (`detector2`).
+- **Descripción:** `crearDetector(config)` → `{ procesar(muestra), notificarCambio(t), reiniciar(), config }`. Muestras `{t, x, y, categoria}` con `x`,`y` normalizados del centro de palma en el cuadro **sin espejar**; `x`/`y` nulos = sin mano. **Detector v2** (aprobado, plan.md §12): hay evento si existe un trazo horizontal de **≥8 % del ancho en ≤500 ms** (relación vertical ≤0.6) **precedido de ≥200 ms de mano abierta y casi quieta** (≥3 cuadros, ≥60 % con `Open_Palm`, dispersión x/y ≤8 %); la mano **no** tiene que ser `Open_Palm` durante el trazo. Dirección invertida por el espejo (raw `x` decreciente = **derecha** del presentador). **Cooldown 1500 ms** tras un evento; `notificarCambio(t)` inicia el mismo cooldown y limpia el historial cuando el cambio vino de **otro canal** (cooldown compartido con la voz). Un hueco de detección **>400 ms** limpia el historial (mano que sale y entra ≠ swipe; 250 ms costaba swipes reales porque la mano se pierde 250–300 ms por desenfoque a mitad del trazo). **Reglas añadidas al medir con datos (T10):** la quietud previa debe **abarcar ≥150 ms** (3 cuadros pueden ser solo 66 ms); el **sentido contrario se bloquea 3 s** tras un evento y el trazo bloqueado se consume (una mano que reposó 2.3 s abierta en el destino y volvió rápido disparó el inverso en la ronda 1); **guardia de vaivén** (≥3 inversiones de sentido ≥4 % en 1 s no arma). **Límite conocido:** un vaivén lento (~1 Hz) con la palma abierta y quietud en cada giro es indistinguible de swipes repetidos; la tecla `M` apaga los gestos. Umbrales en `CONFIG_POR_DEFECTO` al inicio del archivo. Módulo dual (navegador `window.Swipe` / Node). Prototipo de referencia: `tests/manual/spike/comparar_metodos.py` (`detector2`).
 - **Archivos:** `swipe.js`.
-- **Done:** produce **exactamente los mismos eventos** que el prototipo `detector2` de Python sobre las 102 trazas reales de las dos rondas (verificación de equivalencia), y pasa T10. Ancla: CU1 (todos los puntos), R1.
+- **Done:** produce **exactamente los mismos eventos** que el prototipo `detector2` de Python (actualizado con las mismas reglas) sobre las 102 trazas reales de las dos rondas (verificación de equivalencia), y pasa T10. Ancla: CU1 (todos los puntos), R1.
 
 ### T10 · Tests del detector (sintéticos + trazas reales)
 - **Descripción:** `tests/swipe.test.js` (`node --test`) con casos sintéticos y con las trazas reales grabadas en T06 (rondas 1 y 2).

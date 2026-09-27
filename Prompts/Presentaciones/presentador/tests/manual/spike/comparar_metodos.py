@@ -97,17 +97,37 @@ def pred_geo_ori(tau=1.5, minimo=4, max_ang=45, palma=True):
     return f
 
 # ---- detector v2: mano abierta QUIETA justo antes del trazo ------------------------------------------
-def detector2(ms, abierta, TH=0.10, W=500, AST=300, KST=3, SP=0.04, CD=1500, DY=0.6, FRAC=0.6, GAP=400):
-    """Evento si hay un trazo horizontal ≥TH en ≤W ms precedido por AST ms de mano abierta casi quieta
-    (≥KST cuadros, ≥FRAC de ellos 'abierta', dispersión x/y ≤SP). La mano no necesita ser 'abierta' durante el trazo."""
-    ev = []; ult = -1e9; hist = []
+def _inversiones(pts, amp):
+    if len(pts) < 3: return 0
+    dir_ = 0; ext = pts[0][1]; n = 0
+    for _, x in pts:
+        if dir_ == 0:
+            if x - ext >= amp: dir_ = 1; ext = x
+            elif ext - x >= amp: dir_ = -1; ext = x
+        elif dir_ == 1:
+            if x > ext: ext = x
+            elif ext - x >= amp: dir_ = -1; ext = x; n += 1
+        else:
+            if x < ext: ext = x
+            elif x - ext >= amp: dir_ = 1; ext = x; n += 1
+    return n
+
+def detector2(ms, abierta, TH=0.10, W=500, AST=300, KST=3, SP=0.04, CD=1500, DY=0.6, FRAC=0.6, GAP=400, INV=3000,
+              SPAN=0.75, VV=1000, VAMP=0.04, VMIN=3):
+    """Réplica en Python de swipe.js (detector v2). Evento si hay un trazo horizontal ≥TH en ≤W ms precedido por AST ms de mano
+    abierta casi quieta (≥KST cuadros que ABARCAN ≥SPAN·AST, ≥FRAC 'abierta', dispersión ≤SP). Además: hueco >GAP limpia el
+    historial, el sentido contrario se bloquea INV ms tras un evento (y el trazo bloqueado se consume) y un vaivén
+    (≥VMIN inversiones ≥VAMP en VV ms) no arma."""
+    ev = []; ult = -1e9; hist = []; tray = []; ultdir = None
     for m in ms:
         if m["x"] is None: continue
         t = m["t"]
-        if GAP and hist and t - hist[-1][0] > GAP: hist = []      # hueco de detección largo: empezar de cero (igual que swipe.js)
+        if hist and (t < hist[-1][0] or (GAP and t - hist[-1][0] > GAP)): hist = []; tray = []
         hist.append((t, m["x"], m["y"], abierta(m)))
+        tray.append((t, m["x"])); tray = [h for h in tray if t - h[0] <= VV]
         hist = [h for h in hist if t - h[0] <= W + AST + 50]
         if t - ult < CD: continue
+        if _inversiones(tray, VAMP) >= VMIN: hist = []; continue
         mejor = None
         for a in hist:
             if t - a[0] > W or t - a[0] < 60: continue
@@ -118,7 +138,11 @@ def detector2(ms, abierta, TH=0.10, W=500, AST=300, KST=3, SP=0.04, CD=1500, DY=
             xs = [h[1] for h in quieto]; ys = [h[2] for h in quieto]
             if max(xs) - min(xs) > SP or max(ys) - min(ys) > SP: continue
             if sum(1 for h in quieto if h[3]) < FRAC * len(quieto): continue
+            if a[0] - quieto[0][0] < SPAN * AST: continue
             if mejor is None or abs(dx) > abs(mejor): mejor = dx
         if mejor is not None:
-            ev.append((t, "derecha" if mejor < 0 else "izquierda")); ult = t; hist = []
+            d = "derecha" if mejor < 0 else "izquierda"
+            if INV and ultdir is not None and d != ultdir and t - ult < INV:
+                hist = []; continue
+            ev.append((t, d)); ult = t; ultdir = d; hist = []
     return ev
