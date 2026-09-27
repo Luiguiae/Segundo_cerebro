@@ -2,6 +2,23 @@
 
 ---
 
+### 2026-09-26 19:30 — primera regla aprendida, deuda de schema unificada y `.gitignore` de logs rotados
+
+**Instrucción (Luigui):** (1) sí a la regla de post-mortem propuesta → agregarla a "Reglas aprendidas" de CLAUDE.md con fecha e incidente (el desfase entre JARVIS_LOG.md y el código real del daemon, hoy); (2) los 2 conceptos que fallan Gate 0 van en la MISMA entrada de Backlog abierta para `estado`/`rutina-trabajo-enfocada` (misma categoría: deuda de schema); (3) arreglar `.gitignore`: `*.log` no cubre `jarvis.log.N`; (4) no tocar ATLAS.md, los Inbox/*.tmp.md ni los docs de RESOLVER.md — sesión de limpieza aparte; (5) para la Mejora 5, la muestra del export llega en este chat.
+
+**Acciones:**
+- `CLAUDE.md`: primera entrada en `### Reglas aprendidas` (reemplaza el placeholder "vacío"; diff = 1 línea por 1): `[2026-09-26]` commitear en la misma sesión todo cambio de código que el daemon ya ejecuta; si algo queda fuera, avisar una vez con la razón y pedir decisión. Incidente y commits que lo resolvieron (`6cf2ec1`, `907025f`, `6fab809`) referenciados. Se escribió solo porque Luigui dio el "sí" explícito que exige la propia sección
+- `Backlog/ideas/2026-09-26_limpieza-frontmatter-estado-conceptos.md` + fila de `listas/backlog.md`: ampliadas. Los 2 conceptos (`diseno-multiinteligencia`, `criterio-transferible-vs-respuesta-memorizada`) pasan de "dato aparte" a manifestación (c) de la misma deuda, con tabla de fallas verificada campo por campo contra taxonomia.md y Gate 0: sin `estado`, con `slug`, 7 tags (máx. 5), 4 `relacionado` (máx. 3), y tags fuera del vocabulario controlado (`sistemas-complejos`, `inteligencia-distribuida`, `epistemologia`, `organizaciones` / `generalizacion`, `feedback`). Ningún concepto modificado. Error mío corregido antes de escribirlo: mi primer chequeo marcó `diseño` como tag inválido por una regex que no aceptaba la `ñ`; sí está en el vocabulario (rerevisado, lista final arriba)
+- `.gitignore`: agregado `*.log.[0-9]*` con comentario. Patrón numérico a propósito (no `*.log.*`): no oculta `jarvis.log.archived`, que está trackeado y parece archivado a propósito. Verificado con `git check-ignore`: `.2`, `.3` y `.12` ignorados; `jarvis.log.archived` y `README.md` no
+- **Fuera de lo literal, decisión mía (reversible):** `jarvis.log.1` estaba TRACKEADO (un blob de 5 MB de un commit "sync" antiguo) y `.gitignore` no afecta lo ya trackeado, así que sin más habría seguido apareciendo como modificado en cada rotación. Lo saqué del índice con `git rm --cached`; el archivo sigue en disco intacto. El blob viejo permanece en el historial (reescribirlo no se pidió). Revertible con `git add -f`
+- NO tocados, por instrucción: `ATLAS.md`, `Inbox/*.tmp.md`, `Prompts/Meta/jarvis/docs/` (RESOLVER.md)
+
+**Post-mortem:** regla agregada a CLAUDE.md (cierra el pendiente de la entrada de las 19:00)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-26 19:00 — cierre de deuda: código del daemon commiteado + idea de Backlog sobre `estado` (entre las mejoras 4/5 y 5/5)
 
 **Instrucción (Luigui):** (a) Mejora 4 aprobada, el reporte de poda se queda como está y sin programarlo como rutina; (b) `rutina-trabajo-enfocada` aparece como "(borrador)": si es un campo `estado` real, no es parte del schema no-negociable (titulo, tipo, fecha, familia, categorias_secundarias, tags, relacionado, fuentes) → no tocarlo, registrarlo como entrada nueva en `Backlog/ideas/` para limpiarlo aparte, mismo tipo de caso que `categoria` en la auditoría de mayo; (c) "van cuatro veces que pregunto: ¿jarvis.py, mejora_007_vision.py y dashboard/index.html ya se commitearon? Si siguen sueltos, commitéalos ahora o dime por qué no, antes de seguir acumulando mejoras que dependen de JARVIS_LOG.md"; (d) adelante con Mejora 5, con un export real que Luigui pasará "a continuación".
@@ -18,7 +35,7 @@
 
 **Todavía sin commitear (a propósito, no son míos o no se pidió):** `Conocimiento/ATLAS.md` (regenerado el 09-07), los 2 conceptos anteriores, 8 archivos `Inbox/*.tmp.md` de modo taller (09-15 y 09-24), `Prompts/Meta/jarvis/docs/` (plan.md/tasks.md de RESOLVER.md, esperando aprobación), y los `jarvis.log.1/.2/.3` (5 MB c/u; `.gitignore` solo cubre `*.log`, no `*.log.N`)
 
-**Post-mortem:** pendiente de respuesta de Luigui — ¿esto se vuelve regla permanente? Incidente: el código que el daemon ya ejecutaba quedó sin commitear durante varias mejoras aunque el log ya lo describía. Regla propuesta: "Todo cambio de código que el daemon ya ejecuta se commitea en la misma sesión en que se reinicia el daemon con él; si algo queda fuera de un commit, se avisa una sola vez con la razón y se pide decisión — nunca se arrastra en silencio."
+**Post-mortem:** ~~pendiente~~ → RESUELTO (Luigui: sí; ver entrada de las 19:30) — ¿esto se vuelve regla permanente? Incidente: el código que el daemon ya ejecutaba quedó sin commitear durante varias mejoras aunque el log ya lo describía. Regla propuesta: "Todo cambio de código que el daemon ya ejecuta se commitea en la misma sesión en que se reinicia el daemon con él; si algo queda fuera de un commit, se avisa una sola vez con la razón y se pide decisión — nunca se arrastra en silencio."
 
 **Pendiente:** confirmación de Luigui sobre la fuente de verdad del schema; el export para 5/5; respuesta al post-mortem
 
