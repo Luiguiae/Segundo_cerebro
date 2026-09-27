@@ -2,6 +2,22 @@
 
 ---
 
+### 2026-09-27 00:50 — presentador: opción (B) aplicada, T15 (4 pruebas de degradación en vivo) y T16 (README); detenido antes de T17
+
+**Instrucción (Luigui):** opción (B): gestos experimentales y apagados por defecto (SPEC, README y checklist actualizados; ronda de diagnóstico (A) como pendiente opcional en plan.md); T15 conmigo presente (la de cámara denegada activando los gestos con `M`); T16 el README sin mí con las dos reglas de uso de los gestos y que están apagados por defecto; un commit por tarea; resumen y parada antes de T17 (el ensayo lo hace Luigui con el deck real y el micrófono Bluetooth).
+
+**Acciones:** gestos apagados por defecto (`ba6b209`; verificado: la cámara no se pide hasta pulsar `M`). T15 (`9ea6964`): guía ampliada (pasos con confirmación humana 1/0), 4 variantes de degradación ensayadas con simulación y luego en vivo; **fallo real encontrado y corregido:** en una página sin Reveal, `M` encendía la cámara; ahora sin Reveal ninguna tecla abre cámara ni micrófono (0 `getUserMedia`, 0 reconocedores). Privacidad: la guía captaba audio AMBIENTE (voces ajenas) en pasos que no eran de voz; ya no guarda transcripciones fuera de los pasos de voz (truncadas a 40 caracteres) y se limpiaron los resultados guardados — el archivo `gestos-20260926-235250.json` ya estaba subido con unas frases ambientales cortas en `28e8765`, siguen en el historial de git. T16: README (+ `--lang` en `presentar.py`, con tests) y checklist en README y SPEC.
+
+**Resultados:** las 4 pruebas de degradación pasan (sin Reveal 5/5, cámara denegada 5/5, sin internet 8/8, comando no reconocido 5/5); 203 tests Node y los unittest en verde. Sin tocar `jarvis.py`, `jarvis_daemon.py`, `.zshrc`, `RESOLVER.md`, `ATLAS.md` ni conceptos.
+
+**Límites:** micrófono integrado (Bluetooth sin probar); una sola persona y sesión; los gestos siguen sin cumplir 0 inversos (experimentales).
+
+**Pendiente:** T17 (ensayo de Luigui con el deck real y el micrófono Bluetooth) y T18 (congelamiento); ronda de diagnóstico (A) opcional.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-27 00:10 — presentador: T13 voz completada; T14 gestos probada en vivo y NO cumple el criterio de 0 inversos — detenido
 
 **Instrucción (Luigui):** T13–T16 en una sola sesión conmigo presente, guiándome en las pruebas en vivo; un commit por tarea; si un criterio de done falla y no lo puedo resolver, detenerme y avisar.

@@ -121,4 +121,7 @@ Prompts/Presentaciones/presentador/
 - [ ] Probar swipes con la luz real o la más parecida, a la distancia en la que vas a estar; revisar que el regreso de la mano no retroceda
 - [ ] Probar en la red donde vas a presentar o con hotspot (la voz necesita internet)
 - [ ] Probar `M`, `E`, `I` y el clicker/flechas como fallback (y confirmar que `V` NO hace nada útil: en Reveal es pausa/pantalla negra)
+- [ ] **Gestos apagados por defecto (experimentales en v1).** Si se ensayan (tecla `M`), dos reglas de uso: (1) tras un swipe, **bajar o cerrar la mano** en vez de regresarla horizontal con la palma abierta; (2) **no saludar ni hacer vaivenes con la palma abierta**; usar `M` para apagarlos si hace falta
+- [ ] Micrófono Bluetooth como entrada: medir 9/10 comandos de voz a la primera con ese micrófono (aún no se ha probado con él)
+- [ ] 30 s de silencio y luego un comando (la voz debe seguir viva); probar también con el Wi-Fi apagado (la voz avisa, el teclado sigue)
 - [ ] Opcional: pausar Jarvis local por precaución si no lo vas a usar durante la charla

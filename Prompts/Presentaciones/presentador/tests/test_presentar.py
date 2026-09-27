@@ -208,6 +208,21 @@ class InyeccionExtra(Base):
         self.assertEqual(presentar.inyectar(b"<body></body>"), presentar.inyectar(b"<body></body>", extra=b""))
 
 
+class Idioma(unittest.TestCase):
+    def test_lang_por_defecto_es_pe(self):
+        self.assertIn(b'"lang": "es-PE"', presentar.inyectar(b"<body></body>"))
+
+    def test_lang_configurable(self):
+        r = presentar.inyectar(b"<body></body>", debug=True, lang="es-MX")
+        self.assertIn(b'"lang": "es-MX"', r); self.assertIn(b'"debug": true', r)
+
+    def test_config_es_json_valido(self):
+        import json, re
+        r = presentar.inyectar(b"<body></body>", lang='es-"PE')
+        m = re.search(rb"PRESENTADOR_CONFIG = (\{.*?\});", r)
+        self.assertEqual(json.loads(m.group(1))["lang"], 'es-"PE')
+
+
 class Cli(unittest.TestCase):
     def ejecutar(self, argv, vendor):
         err = io.StringIO()

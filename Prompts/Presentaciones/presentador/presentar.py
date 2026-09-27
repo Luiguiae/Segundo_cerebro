@@ -12,6 +12,7 @@ Nunca escribe nada en la carpeta de la presentación.
 
 import argparse
 import errno
+import json
 import mimetypes
 import re
 import shutil
@@ -56,23 +57,24 @@ MARCA_INYECCION = b"presentador:inyectado"
 _RE_CIERRE_BODY = re.compile(rb"</body\s*>", re.IGNORECASE)
 
 
-def bloque_inyeccion(debug: bool = False, extra: bytes = b"") -> bytes:
+def bloque_inyeccion(debug: bool = False, extra: bytes = b"", lang: str = "es-PE") -> bytes:
+    config = json.dumps({"debug": bool(debug), "lang": lang})
     return (
         "\n<!-- presentador:inyectado -->\n"
-        f"<script>window.PRESENTADOR_CONFIG = {{\"debug\": {'true' if debug else 'false'}}};</script>\n"
+        f"<script>window.PRESENTADOR_CONFIG = {config};</script>\n"
         '<script src="/presentador/comandos.js"></script>\n'
         '<script src="/presentador/swipe.js"></script>\n'
         '<script src="/presentador/presentador.js"></script>\n'
     ).encode("ascii") + extra
 
 
-def inyectar(html: bytes, debug: bool = False, extra: bytes = b"") -> bytes:
+def inyectar(html: bytes, debug: bool = False, extra: bytes = b"", lang: str = "es-PE") -> bytes:
     """Agrega los scripts del presentador antes del ÚLTIMO </body> (sin distinguir mayúsculas;
     si no hay, al final). Trabaja sobre bytes (no decodifica: cualquier codificación queda intacta)
     y es idempotente. `extra`: bytes que se añaden tras los scripts (solo lo usan los arneses de prueba en vivo)."""
     if MARCA_INYECCION in html:
         return html
-    bloque = bloque_inyeccion(debug, extra)
+    bloque = bloque_inyeccion(debug, extra, lang)
     ultimo = None
     for ultimo in _RE_CIERRE_BODY.finditer(html):
         pass
@@ -150,7 +152,7 @@ class Manejador(BaseHTTPRequestHandler):
         cfg = self.server.cfg
         if cfg.inyectar and ruta_url in ("/", "/index.html"):
             try:
-                cuerpo = inyectar(archivo.read_bytes(), cfg.debug, getattr(cfg, "extra", b""))
+                cuerpo = inyectar(archivo.read_bytes(), cfg.debug, getattr(cfg, "extra", b""), getattr(cfg, "lang", "es-PE"))
             except OSError:
                 return self._no_encontrado(con_cuerpo)
             return self._responder(200, tipo_de(archivo), cuerpo, con_cuerpo)
@@ -176,11 +178,11 @@ class Servidor(ThreadingHTTPServer):
 
 
 def crear_servidor(carpeta: Path, puerto=PUERTO, vendor=None, proyecto=None,
-                   inyectar=True, debug=False, extra=b"") -> Servidor:
+                   inyectar=True, debug=False, extra=b"", lang="es-PE") -> Servidor:
     srv = Servidor(("127.0.0.1", puerto), Manejador)
     srv.cfg = SimpleNamespace(
         carpeta=Path(carpeta), vendor=Path(vendor or VENDOR), proyecto=Path(proyecto or PROYECTO),
-        inyectar=inyectar, debug=debug, extra=extra,
+        inyectar=inyectar, debug=debug, extra=extra, lang=lang,
     )
     return srv
 
@@ -198,6 +200,7 @@ def main(argv=None) -> int:
     ap.add_argument("--debug", action="store_true", help="muestra la transcripción cruda de la voz en el indicador")
     ap.add_argument("--sin-inyeccion", action="store_true", help="sirve la carpeta tal cual, sin inyectar el presentador")
     ap.add_argument("--no-abrir", action="store_true", help="no abre Chrome (para pruebas)")
+    ap.add_argument("--lang", default="es-PE", help="idioma del reconocimiento de voz (es-PE por defecto; prueba es-MX o es-ES si transcribe mal)")
     args = ap.parse_args(argv)
 
     carpeta = Path(args.carpeta).expanduser()
@@ -216,7 +219,7 @@ def main(argv=None) -> int:
         return 2
 
     try:
-        srv = crear_servidor(carpeta, args.puerto, inyectar=not args.sin_inyeccion, debug=args.debug)
+        srv = crear_servidor(carpeta, args.puerto, inyectar=not args.sin_inyeccion, debug=args.debug, lang=args.lang)
     except OSError as e:
         if e.errno == errno.EADDRINUSE:
             print(f"ERROR: el puerto {args.puerto} está ocupado (¿otra instancia de presentar.py?). "

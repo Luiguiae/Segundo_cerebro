@@ -23,7 +23,7 @@
 | T13 voz en el navegador | ✅ 14/16 en vivo + 4/4 tras calibrar "de ella" | `72e78ae` |
 | T14 gestos en el navegador | ✅ código y pruebas; **swipe EXPERIMENTAL en v1, gestos apagados por defecto** (criterio en vivo no cumplido: 2/10 inversos a la izquierda, 13/20 a un intento; decisión de Luigui 2026-09-27) | `28e8765` + ajuste |
 | T15 pruebas de degradación (4) | ✅ las 4 pasan; fallo real corregido (sin Reveal, `M` encendía la cámara); ver `docs/pruebas-degradacion.md` | ver git log |
-| T16 README | pendiente | — |
+| T16 README y checklist de ensayo | ✅ (con las 2 reglas de uso de los gestos y gestos apagados por defecto; añade `--lang`) | ver git log |
 | T17–T18 | pendientes (T17 lo hace Luigui con el deck real y el micrófono Bluetooth) | — |
 
 Verificación previa de D1 (tecla `V` = pausa) resuelta el 2026-09-26: `V` → `E` (commit `4d4c1dd`).
