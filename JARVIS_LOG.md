@@ -2,6 +2,24 @@
 
 ---
 
+### 2026-09-26 23:00 — informe de datos sobre `bypassPermissions` en `ejecutar_claude()` (SIN cambios de código; decisión de Luigui pendiente)
+
+**Instrucción (Luigui):** traer detalle antes de decidir — qué comando usa hoy `bypassPermissions` y qué se rompe si se restringe.
+
+**Acciones:**
+- Inventario: `ejecutar_claude()` (`jarvis.py`) es el único punto que lanza `claude`; 6 llamadores — watcher `evaluar_concepto` (daemon), modo taller (extracción y análisis, daemon), `profundizar_pantalla`, `capturar_como_concepto`, `accion_directa` (cualquier comando de voz genérico). `jarvis-server` no usa claude. Los `git commit/push` y la regeneración del ATLAS del daemon los hace Python vía `subprocess`, no claude.
+- Experimento en 6 vaults de prueba (copia de `.claude/` real, stub de `generar_index.py`), mismas 10 acciones con verificación en disco (no por lo que dice el modelo): M0 bypass (hoy) 10/10 · M1 sin flag 0/10 (el bug original del 08-19) · M2 acceptEdits 7/10 (deja escribir CLAUDE.md y fuera del vault; bloquea Bash y web) · M3 dontAsk sin allowlist 0/10 · M4/M5 dontAsk + allowlist de `Edit(Conocimiento/** Inbox/** Backlog/** JARVIS_LOG.md)` + `Bash(python3 Prompts/Meta/generar_index.py)` 6/10: permite lo legítimo y bloquea escritura fuera del vault, Bash arbitrario, editar CLAUDE.md y `rm`.
+- Hallazgos de sintaxis: `Write(...)` no es válido en allowlist (solo `Edit(...)` cubre escritura); `--allowedTools` es variádico y se traga el prompt posicional → pasar el prompt por stdin.
+- Primera corrida de M4/M5 inválida (error de sintaxis mío, 0/10 por rechazo del flag); repetida corregida.
+
+**Límites del experimento:** probé 10 acciones sintéticas, no los prompts reales de los 6 flujos; WebFetch iba en mi allowlist (no es resultado del modo); `Bash(find:*)` en la allowlist permitiría `find -delete/-exec` (no se probó; en una versión real no debe incluirse).
+
+**Resultado:** sin cambios en el repo salvo esta entrada. `bypassPermissions` sigue activo. Recomendación y opciones entregadas a Luigui en el chat.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 22:00 — cierre de (a)/(b) del Backlog, segunda regla aprendida, `CONTEXTO` al día y `context.md` corregido
 
 **Instrucción (Luigui):** (1) `context.md`: actualizar la fila de Correlaciones a 27/2 (no dejarla en 18/11: `context.md` debe reflejar el estado real) y conservar las 2 adiciones (nota de "snapshot mixto" y sección "Lo que este archivo NO refleja todavía"); (2) cerrar en la entrada de Backlog las preguntas (a) y (b) con `taxonomia.md` como fuente; (3) sí a la regla: `claude --print` sobre texto no confiable corre sin herramientas ni conectores; (4) informe con datos sobre `bypassPermissions` antes de decidir — "qué comando lo usa hoy y qué se rompe si se restringe, no quiero decidir eso a ciegas"; (5) `CONTEXTO_SEGUNDO_CEREBRO.md` seguía en 101 y sin las correcciones del prompt anterior: ¿ahora o aparte?
