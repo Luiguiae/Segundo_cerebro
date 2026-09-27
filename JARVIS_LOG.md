@@ -2,6 +2,22 @@
 
 ---
 
+### 2026-09-26 22:45 — presentador T06: spike de gestos ejecutado con Luigui frente a la cámara; a la espera de su decisión
+
+**Instrucción (Luigui):** preparar la página del spike, guiar la grabación de trazas y presentar cifras y recomendación (seguir / seguir con mitigaciones / plan B); no avanzar a T09 hasta que decida.
+
+**Acciones:** `tests/manual/spike/` (`index.html` + `spike.js` + `servir_spike.py`, solo desarrollo): benchmark de 4 configuraciones, protocolo guiado en pantalla (derecha, izquierda, ida y vuelta, puño/dedo, gesticulación), CSP estricta para auditar la red, muestreo de CPU por `ps`/`top`. Probado antes con cámara falsa en Chrome headless (flujo completo). Sesión real: 54 trazas guardadas en `tests/traces/` (solo coordenadas) + `_resumen.json` + `_cpu.json`. Servidor y pestaña cerrados.
+
+**Resultados (detalle en `docs/plan.md` §9):** fps 23–30 en las 4 configuraciones (GPU 640×480 = 28.1), latencia 15–21 ms con GPU, Chrome ≈0.3–0.4 núcleos, Jarvis ≈3.7 % de un núcleo; espejo confirmado 20/20; **hallazgos negativos:** (1) MediaPipe 1.0.1 intenta enviar telemetría de uso a `odml.pa.googleapis.com/v1/log` cada 60 s (la CSP la bloqueó; corrige mi D6); (2) un swipe real recorre 13–21 % del ancho, no ~25 % (SPEC); (3) `Open_Palm` solo en 30–51 % de los cuadros durante el swipe, a 320×240; solo 8/20 derecha, 7/20 izquierda y 5/8 retorno cumplieron el criterio de validez del spike.
+
+**Límites:** una sola sesión, una luz, primera vez del usuario; el prototipo offline se ajustó sobre los mismos datos (no es evidencia independiente); la resolución elegida fue 320×240 por criterio de fps (error de mi criterio de selección); no pude decodificar el payload protobuf de la telemetría.
+
+**Pendiente:** decisión de Luigui (seguir con mitigaciones / plan B). T09 no iniciada.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 22:40 — presentador: T01–T05 y T07–T08 ejecutadas (parada antes de T06, que requiere cámara)
 
 **Instrucción (Luigui):** aprobados plan.md y tasks.md con D1–D6; ejecutar T01–T05 y T07–T08 sin detenerse mientras cada done se cumpla (un commit + push por tarea), con dos condiciones: verificar antes de T12 si `V` (keyCode 86) activa la pausa de Reveal, y que `presentar.py` se detenga con mensaje claro si falta `vendor/`; registrar la voz local (Vosk) como pendiente v2; resumen por tarea y parada antes de T06.

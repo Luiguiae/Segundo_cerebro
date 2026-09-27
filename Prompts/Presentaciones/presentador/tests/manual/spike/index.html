@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Spike de gestos — T06</title>
+  <!-- CSP estricta: el spike NO debe hablar con internet. Cualquier intento de conexión externa se bloquea
+       y se cuenta (evento securitypolicyviolation). Es la prueba de "0 requests salientes". -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; object-src 'none'; frame-src 'none'; base-uri 'self'">
+  <script>
+    // Auditoría de red — corre ANTES de cargar MediaPipe. Registra toda petición que la página intente.
+    window.__red = { intentos: [], violaciones: [] };
+    (function () {
+      const misma = (u) => { try { return new URL(u, location.href).origin === location.origin; } catch (e) { return false; } };
+      const anota = (tipo, u) => window.__red.intentos.push({ tipo, url: String(u).slice(0, 160), externa: !misma(u) });
+      const f = window.fetch; window.fetch = function (u, o) { anota('fetch', (u && u.url) || u); return f.apply(this, arguments); };
+      const x = XMLHttpRequest.prototype.open; XMLHttpRequest.prototype.open = function (m, u) { anota('xhr', u); return x.apply(this, arguments); };
+      if (navigator.sendBeacon) { const b = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = (u, d) => { anota('beacon', u); return b(u, d); }; }
+      const W = window.WebSocket; window.WebSocket = function (u, p) { anota('websocket', u); return new W(u, p); };
+      document.addEventListener('securitypolicyviolation', (e) => window.__red.violaciones.push({ directiva: e.violatedDirective, url: e.blockedURI }));
+    })();
+  </script>
+  <style>
+    :root { color-scheme: dark; }
+    html, body { margin: 0; height: 100%; background: #0b0d10; color: #e8eaed; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; overflow: hidden; }
+    body.ya { background: #0d2a14; }
+    #coach { position: absolute; left: 4vw; right: 4vw; top: 8vh; font-size: 6.4vw; font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
+    #sub { position: absolute; left: 4vw; right: 30vw; top: 34vh; font-size: 2.5vw; line-height: 1.3; color: #b7bec9; }
+    #cuenta { position: absolute; left: 4vw; top: 52vh; font-size: 18vw; font-weight: 900; line-height: 1; color: #ffd166; }
+    #cont { position: absolute; left: 4vw; right: 4vw; bottom: 4vh; font-size: 2.1vw; line-height: 1.5; color: #cfd6df; white-space: pre-wrap; }
+    #live { position: absolute; right: 3vw; top: 3vh; font-size: 2.4vw; font-weight: 700; padding: .3em .7em; border-radius: .4em; background: #3a1116; color: #ff8a8a; }
+    #live.mano { background: #3a2f11; color: #ffd166; }
+    #live.palma { background: #0f3a1c; color: #7ee787; }
+    #vista { position: absolute; right: 3vw; top: 14vh; width: 22vw; border-radius: .6em; overflow: hidden; border: 2px solid #2a2f37; }
+    #vista video { width: 100%; display: block; transform: scaleX(-1); }
+    #vista canvas { position: absolute; inset: 0; width: 100%; height: 100%; transform: scaleX(-1); }
+    #fin { position: absolute; inset: 0; padding: 5vw; font-size: 1.6vw; overflow: auto; display: none; background: #0b0d10; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <div id="live">sin mano</div>
+  <div id="vista"><video id="video" autoplay playsinline muted></video><canvas id="punto"></canvas></div>
+  <div id="coach">Spike de gestos</div>
+  <div id="sub">Cargando MediaPipe…</div>
+  <div id="cuenta"></div>
+  <div id="cont"></div>
+  <div id="fin"></div>
+  <script type="module" src="spike.js"></script>
+</body>
+</html>

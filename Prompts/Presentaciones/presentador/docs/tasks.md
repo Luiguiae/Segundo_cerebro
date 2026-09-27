@@ -13,7 +13,7 @@
 | T03 `demo/index.html` | ✅ | `1121998` |
 | T04 `presentar.py` (servidor + comprobación de `vendor/`) | ✅ | `afa63c4` |
 | T05 inyección de scripts | ✅ | `b4ec34a` |
-| T06 spike de gestos (go / no-go) | ⏸ **pendiente — requiere a Luigui frente a la cámara** | — |
+| T06 spike de gestos (go / no-go) | 🟡 **medido; a la espera de tu decisión** (ver plan.md §9) | (ver git log) |
 | T07 casos de prueba del parser (147) | ✅ | `b17c891` |
 | T08 `comandos.js` | ✅ 147/147 | `a542334` |
 | T09–T18 | pendientes | — |
@@ -143,7 +143,7 @@ Contrato compartido que usan varias tareas (ver T07/T09):
 ### T14 · Gestos en el navegador
 - **Descripción:** `getUserMedia` (resolución según T06), video oculto, bucle de `GestureRecognizer` con los parámetros que salgan del spike, alimentando `swipe.js`; el evento pasa por `navegar()` con el cooldown compartido. Gestos apagados con `M` **liberan la cámara** (se detienen los tracks: se apaga la luz y baja el CPU).
 - **Archivos:** `presentador.js`.
-- **Done:** swipe a la derecha avanza un paso una sola vez, a la izquierda retrocede, el regreso de la mano no dispara, hablar gesticulando no cambia slides; `M` apaga y enciende la cámara; latencia percibida < 1 s. Ancla: CU1, CU5, R1, R2, M-swipe.
+- **Done:** swipe a la derecha avanza un paso una sola vez, a la izquierda retrocede, el regreso de la mano no dispara, hablar gesticulando no cambia slides; `M` apaga y enciende la cámara; latencia percibida < 1 s; **0 peticiones externas con MediaPipe activo** (el bloqueo de `odml.pa.googleapis.com` está en `presentador.js`; ver plan.md §9). Ancla: CU1, CU5, R1, R2, M-swipe.
 
 ---
 

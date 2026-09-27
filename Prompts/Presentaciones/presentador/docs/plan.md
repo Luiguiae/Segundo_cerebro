@@ -77,3 +77,25 @@ Cada tarea de `docs/tasks.md` trae su criterio de done ligado al SPEC. El cierre
 
 - **Reconocimiento de voz local en el navegador** (p. ej. Vosk, WASM) para no enviar audio a Google ni depender de internet (ver D6 y R3). Hoy la voz usa Web Speech API de Chrome porque es lo que fija el SPEC; esto es una mejora posterior, no se hace antes del lunes.
 - Que Jarvis/LeIA controlen los slides desde un daemon (ya listado como posible v2 en el SPEC §5).
+
+## 9. Resultados del spike de gestos — T06 (2026-09-26)
+
+Medido en este Mac (i7-9750H, Chrome 153, Intel UHD 630 vía Metal), de pie a la distancia real de presentar, con Jarvis corriendo. Datos crudos en `tests/traces/` (54 trazas + `_resumen.json` + `_cpu.json`; solo coordenadas, sin imágenes).
+
+| Medida | Resultado |
+|---|---|
+| fps sostenidos (10 s medidos + 3 s de calentamiento) | GPU 640×480: **28.1** (mín 26/s) · GPU 320×240: **29.9** (mín 28) · CPU 640×480: 23.6 (mín 19) · CPU 320×240: 23.2 (mín 22). 100 % de los segundos ≥15 fps en las 4. La cámara entrega 30 fps |
+| Latencia cuadro → resultado | GPU: 15–21 ms de media (p95 21–38 ms) · CPU: ≈60 ms (p95 76–90 ms) |
+| CPU | Chrome ≈0.3–0.4 núcleos con GPU (0.2 solo con la cámara abierta) y ≈0.9–1.1 con el delegado CPU; equipo completo ≈13 % (12 núcleos lógicos); **Jarvis ≈3.7 % de un núcleo** (sin interferencia apreciable) |
+| Red | 0 recursos externos, pero **2 intentos de `POST https://odml.pa.googleapis.com/v1/log`** (bloqueados por la CSP del spike). Ver corrección de D6 abajo |
+| Espejo | **Confirmado**: 20/20 swipes válidos se leen en la dirección correcta al invertir `x` |
+| Amplitud del swipe | En el cuadro, un swipe real recorre **13–21 % del ancho** (mediana; máx 28 %) en ~230–300 ms, no el ~25 % del SPEC |
+| Reconocimiento de la categoría | `Open_Palm` en solo 30–51 % de los cuadros con mano durante un swipe (el resto `None`); en gesticulación normal `Open_Palm` ≈0 % |
+| Trazas | derecha 20 intentos (8 válidos con el criterio del spike) · izquierda 20 (7) · retorno 8 (5) · puño/dedo 3 · gesticulación 3 (60 s) |
+
+**Prototipo offline** (solo para dimensionar; sobre los mismos datos, no es evidencia independiente): umbral Δx ≥ 10–12 % en ≤ 500 ms, armado por 3 cuadros de `Open_Palm` en 600 ms, cooldown 1500 ms y re-armado con nueva palma → derecha 15–17/20, izquierda 12–13/20, retorno 5/8, direcciones inversas 1 en 48, y 0–1 falso positivo en 60 s de gesticulación. Sin armado por palma: 4 falsos positivos en 60 s y 3 con puño/dedo.
+
+**Correcciones a este plan a raíz del spike (pendientes de tu decisión):**
+- **D6 corregida:** el plan decía que los frames de la cámara no salen y que se verificaría "0 requests salientes". Se verificó y **no es cierto del todo**: `vision_bundle.mjs` (1.0.1) crea siempre un registrador de uso que envía a Google cada 60 s, por HTTP POST en protobuf, métricas del task (tipo `GestureRecognizer`, modo y contadores/latencias según el código; no hay imágenes ni landmarks en ese mensaje, pero no pude decodificar el payload real). No tiene opción para desactivarlo. Propuesta: `presentador.js` bloquea (`fetch`/XHR/`sendBeacon`) las peticiones a `odml.pa.googleapis.com`; el registrador se apaga solo tras el primer fallo. Criterio de done nuevo en T14: 0 peticiones externas con MediaPipe activo.
+- **Resolución:** el spike eligió 320×240 solo por fps (todas superan 15 con holgura). La baja resolución es la sospecha principal del bajo reconocimiento de `Open_Palm`; hay que probar 640×480 (28 fps) o 1280×720 antes de dar el diseño del detector por bueno.
+- **Umbral del swipe (CU1):** ~25 % del ancho no es alcanzable a esta distancia y campo de visión; los datos apuntan a ~10–12 %, con la palma abierta como condición de armado. Es una desviación del SPEC (que dice "~25 %" y "~400 ms") y requiere tu aprobación.
