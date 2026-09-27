@@ -2,6 +2,20 @@
 
 ---
 
+### 2026-09-26 22:40 — presentador: T01–T05 y T07–T08 ejecutadas (parada antes de T06, que requiere cámara)
+
+**Instrucción (Luigui):** aprobados plan.md y tasks.md con D1–D6; ejecutar T01–T05 y T07–T08 sin detenerse mientras cada done se cumpla (un commit + push por tarea), con dos condiciones: verificar antes de T12 si `V` (keyCode 86) activa la pausa de Reveal, y que `presentar.py` se detenga con mensaje claro si falta `vendor/`; registrar la voz local (Vosk) como pendiente v2; resumen por tarea y parada antes de T06.
+
+**Acciones:** 8 commits de código/tests (`24e806d`, `7047c5a`, `1121998`, `afa63c4`, `b4ec34a`, `b17c891`, `a542334` + 2 de docs `9e4daa9`, `4d4c1dd`). `vendor/` (47 MB) fuera de git, reconstruible con `setup_vendor.py` (hashes npm/sha256 verificados). **Hallazgo:** `V` SÍ colisiona — en Reveal 6.0.2 `[58,59,66,86,190]` → `togglePause()` (pantalla negra) y no figura en su ayuda; mi plan inicial lo había dado por libre leyendo solo la ayuda (error mío, detectado por la condición de Luigui). La voz pasa a `E`; `M`/`E`/`I` verificadas libres en el núcleo y los 6 plugins. SPEC, plan y tasks actualizados.
+
+**Verificación (no solo tests):** T02 corrida real + idempotencia + 6 tests de integridad/tarballs hostiles; T03 en Chrome real por CDP (Reveal listo, 12 slides, 0 recursos externos, fragments); T04 30 tests + curl real (traversal, dotfiles, MIME, loopback, puerto ocupado, hash de `demo/` idéntico) + Chrome abrió `localhost:8765`; T05 en Chrome real (3 scripts inyectados, config `debug`, HTML en disco idéntico); T07/T08 147 casos, rojo→verde, 6 mutaciones que los tests detectan, y carga en Chrome real. Nota: el log de las 22:10 hablaba de ~55 casos de parser; son 147 (la tabla del plan era un resumen).
+
+**Pendiente:** T06 (spike MediaPipe, va con Luigui frente a la cámara) y T09–T18. Sin tocar `jarvis.py`, `jarvis_daemon.py`, `.zshrc`, `RESOLVER.md`, `ATLAS.md` ni conceptos.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 22:10 — proyecto presentador (gestos y voz): SPEC guardado, plan.md y tasks.md — a la espera de aprobación
 
 **Instrucción (Luigui):** crear `Prompts/Presentaciones/presentador/`, guardar el SPEC en `docs/SPEC.md`, generar `docs/plan.md` y `docs/tasks.md` (sin código) y detenerse a esperar aprobación antes de ejecutar tarea por tarea. Deadline: lunes 2026-09-28.

@@ -4,6 +4,22 @@
 > Protocolo aprobado: T01–T05 y T07–T08 seguidas sin detenerse mientras cada criterio de done se cumpla (un commit + push por tarea); resumen por tarea al terminar T08 y **parada antes de T06** (requiere a Luigui frente a la cámara). Ante un done que falle sin solución, o cualquier desvío del SPEC o de D1–D6: detenerse y avisar. Desde T09 en adelante, revisión tarea por tarea.
 > Convención de referencias: **CA-x** = criterio de aceptación del SPEC §4 (Nav = semántica de navegación, CU1…CU5, Arranque, Errores); **M-x** = métrica del SPEC §7.
 
+## Avance (actualizado 2026-09-26)
+
+| Tarea | Estado | Commit |
+|---|---|---|
+| T01 estructura y `.gitignore` | ✅ | `24e806d` |
+| T02 `setup_vendor.py` | ✅ | `7047c5a` |
+| T03 `demo/index.html` | ✅ | `1121998` |
+| T04 `presentar.py` (servidor + comprobación de `vendor/`) | ✅ | `afa63c4` |
+| T05 inyección de scripts | ✅ | `b4ec34a` |
+| T06 spike de gestos (go / no-go) | ⏸ **pendiente — requiere a Luigui frente a la cámara** | — |
+| T07 casos de prueba del parser (147) | ✅ | `b17c891` |
+| T08 `comandos.js` | ✅ 147/147 | `a542334` |
+| T09–T18 | pendientes | — |
+
+Verificación previa de D1 (tecla `V` = pausa) resuelta el 2026-09-26: `V` → `E` (commit `4d4c1dd`).
+
 Contrato compartido que usan varias tareas (ver T07/T09):
 - `interpretar(texto, esFinal)` → `null` | `{ accion: 'paso'|'salto'|'inicio', delta, definitivo, conPrefijo }`. `paso` = `Reveal.next()/prev()` (delta ±1, respeta fragments); `salto` = `Reveal.slide(h ± N)` (ignora fragments, con tope en primer/último slide); `inicio` = `Reveal.slide(0, 0)`.
 - Detector de swipe: muestras `{ t, x, y, categoria }` con `x`,`y` normalizados (0–1) del centro de palma en el cuadro **sin espejar**; el detector invierte `x` (perspectiva del presentador) y devuelve `null` | `'derecha'` | `'izquierda'`.
