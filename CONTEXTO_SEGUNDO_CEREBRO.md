@@ -1,6 +1,6 @@
 # Contexto del Segundo Cerebro — Luigui Avila
 
-> Archivo actualizado el 2026-08-24 (auditoría completa Gate 0/1/2 de las 6 carpetas de `Conceptos/` + `Correlaciones/`, 101 conceptos + 29 correlaciones — ver detalle abajo y en `JARVIS_LOG.md`). mejora-006 de Jarvis completa: memoria personal, saludo proactivo, watcher conversacional con profundización externa, auto-regeneración del ATLAS — ver JARVIS_LOG.md. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
+> Archivo actualizado el 2026-08-24 (auditoría completa Gate 0/1/2 de las 6 carpetas de `Conceptos/` + `Correlaciones/`, 101 conceptos + 29 correlaciones — ver detalle abajo y en `JARVIS_LOG.md`). **Revisado el 2026-09-26:** ahora son 103 conceptos (los 2 últimos, sin auditar y con Gate 0 roto); en "Estado actual del vault" están la fuente de verdad del schema, el estado del paquete de 5 mejoras, la deuda de schema, el incidente de launchd y las reglas de post-mortem (bullets marcados 2026-09-26). mejora-006 de Jarvis completa: memoria personal, saludo proactivo, watcher conversacional con profundización externa, auto-regeneración del ATLAS — ver JARVIS_LOG.md. Úsalo como contexto en conversaciones de Claude.ai para que el asistente conozca el estado completo del vault.
 
 ---
 
@@ -33,10 +33,15 @@ Un sistema de conocimiento atómico en Obsidian. La lógica: los conceptos se ca
 
 ## Estado actual del vault
 
-- **101 conceptos (99 activos, 2 borrador)** — auditoría completa Gate 0/1/2 de las 6 carpetas el 2026-08-24 (tablas por carpeta abajo). Incluye los 8 candidatos del taller de diseño sistémico (2026-08-21) y otros conceptos instalados por el Scout desde la última auditoría.
+- **103 conceptos (99 activos, 2 borrador, 2 sin `estado`)** — verificado 2026-09-26 (archivos de `Conceptos/` = `ATLAS.md` = `conceptos_baseline` de `vault-brief.md`). Los primeros 101 pasaron la auditoría Gate 0/1/2 del 2026-08-24 (tablas por carpeta abajo); **los 2 nuevos (`diseno-multiinteligencia` y `criterio-transferible-vs-respuesta-memorizada`, del 2026-08-28, sin trackear) NO están auditados y fallan Gate 0** (ver deuda de schema). Incluye los 8 candidatos del taller de diseño sistémico (2026-08-21) y otros conceptos instalados por el Scout desde la última auditoría.
 - **29 correlaciones documentadas (27 activas, 2 borrador)** — mismo ciclo de auditoría, 2026-08-24.
 - **Auditoría 2026-08-24 (Gate 0/1/2 completo, todas las carpetas):** 15 archivos con fix de frontmatter (6 con campo prohibido `slug` + `estado` faltante + `tags`/`relacionado` sobre el límite; 9 con campo no-canónico `categorias_secundarias` eliminado — no existe en la plantilla de `taxonomia.md`). 15 conceptos + correlaciones subidos de `borrador` a `activo` al confirmar que ya cumplían Gate 1+2. 4 archivos rechazados y quedan en `borrador`: `Conceptos/ia/gestion-del-tiempo.md` (contenido genérico sin conexión a IA), `Conceptos/organizaciones/rutina-trabajo-enfocada.md` (sin interpretación propia, tensión boilerplate), y 2 correlaciones del 2026-06-25 (`agentes-ia--capital-de-contexto`, `gestion-del-tiempo--capital-de-contexto` — tensión no real, síntesis obvia). Detalle completo por archivo en `JARVIS_LOG.md`.
-- **6 conceptos más recientes (por fecha de frontmatter):**
+- **Fuente de verdad del schema (decisión de Luigui, 2026-09-26):** `Plantillas/taxonomia.md`. `estado` es campo real y requerido por Gate 0 (101 de 103 conceptos lo llevan; los 2 sin él fallan). `categorias_secundarias` no es campo vigente: se eliminó en la auditoría del 2026-08-24 y hoy hay 0.
+- **Paquete de 5 mejoras (2026-09-26): 5 de 5 instaladas** — 1/5 `vault-brief.md` + aviso del watcher; 2/5 `Trabajo/Reuniones/` (solo plantilla: la skill transcript→acciones no está construida); 3/5 sección Post-mortem en `CLAUDE.md`; 4/5 `poda-por-uso.py` (reporte-solo, manual, no es rutina); 5/5 `minador-decisiones.py` (formato de Claude confirmado con una muestra; ChatGPT no soportado; precisión ≥80% aún sin medir sobre un export real). Detalle en los bullets de capacidades de arriba y en `JARVIS_LOG.md`.
+- **Deuda de schema** (`Backlog/ideas/2026-09-26_limpieza-frontmatter-estado-conceptos.md`): `estado` y `categorias_secundarias` CERRADAS el 2026-09-26 con `taxonomia.md` como fuente. **Sigue abierta:** los 2 conceptos sin auditar que fallan Gate 0 (sin `estado`, con `slug`, 7 tags, 4 `relacionado`, tags fuera del vocabulario controlado) y la decisión sobre sus tags. Ningún concepto se ha modificado.
+- **Incidente sin resolver:** `launchd` no relanza el daemon tras `kill -TERM` (2026-09-09 y 2026-09-26; en otros reinicios sí lo hizo). Causa no determinada. Workaround: `launchctl start com.segundocerebro.jarvis`.
+- **Reglas aprendidas en `CLAUDE.md` (2026-09-26), ambas aprobadas por Luigui:** (1) commitear en la misma sesión todo cambio de código que el daemon ya ejecuta; (2) todo `claude --print` sobre texto no confiable corre sin herramientas ni conectores. Decisión abierta relacionada, aún sin tomar: el uso de `bypassPermissions` en `ejecutar_claude()` del daemon.
+- **6 conceptos más recientes (por fecha de frontmatter, al 2026-08-24; los 2 sin auditar del 2026-08-28 son posteriores):**
   - `terminal-como-interfaz-optima-para-agentes` (ia · 2026-08-15) — el terminal, no la GUI, es la interfaz que domina la adopción real de agentes (80× crecimiento en descargas CLI sin interfaz gráfica de por medio)
   - `engano-emergente-en-agentes-autonomos` (ia · 2026-08-07) — un agente puede desarrollar engaño instrumental sin instrucción explícita — riesgo de disposición, no de capacidad
   - `seguridad-asimetrica-de-modelos-abiertos` (ia · 2026-08-03) — los guardrails de seguridad rechazan por igual a defensores y atacantes; el atacante siempre tiene un modelo abierto al que migrar
@@ -62,12 +67,12 @@ Los conceptos viven en `Conocimiento/Conceptos/` organizados en 6 subcarpetas te
 
 ```
 Conocimiento/Conceptos/
-├── ia/             (40 conceptos) — tecnología, modelos, agentes IA
+├── ia/             (41 conceptos) — tecnología, modelos, agentes IA
 ├── diseno/         (15 conceptos) — proceso de diseño, rol del diseñador, UX agéntico
 ├── producto/       (12 conceptos) — construir, medir, iterar productos
 ├── organizaciones/ (12 conceptos) — equipos, roles, transformación organizacional
 ├── economia/       (6 conceptos)  — mercado laboral, impacto económico de la IA
-└── filosofia/      (16 conceptos) — pensamiento abstracto, epistemología, marcos
+└── filosofia/      (17 conceptos) — pensamiento abstracto, epistemología, marcos
 ```
 
 Sistemas adicionales:
@@ -83,9 +88,9 @@ Sistemas adicionales:
 
 ---
 
-## Los 101 conceptos (99 activos, 2 borrador)
+## Los 103 conceptos (99 activos, 2 borrador, 2 sin `estado`)
 
-### ia/ (40 conceptos)
+### ia/ (41 conceptos)
 
 | slug | título | estado |
 |---|---|---|
@@ -100,6 +105,7 @@ Sistemas adicionales:
 | `capital-de-contexto` | Capital de contexto | activo |
 | `comprehension-debt` | Comprehension debt | activo |
 | `conocimiento-autoorganizado-por-llm` | Conocimiento autoorganizado por LLM | activo |
+| `criterio-transferible-vs-respuesta-memorizada` | Criterio transferible vs. respuesta memorizada | **sin `estado`** — falla Gate 0, sin auditar |
 | `cuello-de-botella-del-flujo` | El cuello de botella del flujo, no de la tarea | activo |
 | `design-system-como-api-para-agentes` | El design system como API para agentes | activo |
 | `el-agente-que-no-para` | El agente que no para | activo |
@@ -195,7 +201,7 @@ Sistemas adicionales:
 | `presupuesto-ia-como-restriccion` | El presupuesto de IA como restricción operativa | activo |
 | `senal-anticipada-mercado-laboral` | Señal anticipada en el mercado laboral | activo |
 
-### filosofia/ (16 conceptos)
+### filosofia/ (17 conceptos)
 
 | slug | título | estado |
 |---|---|---|
@@ -204,6 +210,7 @@ Sistemas adicionales:
 | `colonialismo-cultural-digital` | Colonialismo cultural digital | activo |
 | `colonizar-el-manana-con-hoy` | Colonizar el mañana con la idea de hoy | activo |
 | `cuerpo-como-infraestructura-cognitiva` | El cuerpo como infraestructura cognitiva | activo |
+| `diseno-multiinteligencia` | Diseño multiinteligencia | **sin `estado`** — falla Gate 0, sin auditar |
 | `granularidad-como-decision-de-mapeo` | La granularidad como decisión de mapeo | activo |
 | `infraestructura-visible-cuando-falla` | La infraestructura se vuelve visible cuando falla | activo |
 | `interdependencia-sistemica` | Interdependencia sistémica | activo |

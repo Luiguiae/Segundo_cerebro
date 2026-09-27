@@ -2,6 +2,22 @@
 
 ---
 
+### 2026-09-26 22:00 — cierre de (a)/(b) del Backlog, segunda regla aprendida, `CONTEXTO` al día y `context.md` corregido
+
+**Instrucción (Luigui):** (1) `context.md`: actualizar la fila de Correlaciones a 27/2 (no dejarla en 18/11: `context.md` debe reflejar el estado real) y conservar las 2 adiciones (nota de "snapshot mixto" y sección "Lo que este archivo NO refleja todavía"); (2) cerrar en la entrada de Backlog las preguntas (a) y (b) con `taxonomia.md` como fuente; (3) sí a la regla: `claude --print` sobre texto no confiable corre sin herramientas ni conectores; (4) informe con datos sobre `bypassPermissions` antes de decidir — "qué comando lo usa hoy y qué se rompe si se restringe, no quiero decidir eso a ciegas"; (5) `CONTEXTO_SEGUNDO_CEREBRO.md` seguía en 101 y sin las correcciones del prompt anterior: ¿ahora o aparte?
+
+**Acciones:**
+- `Backlog/ideas/2026-09-26_limpieza-frontmatter-estado-conceptos.md` + fila de `listas/backlog.md`: (a) y (b) CERRADAS. Fuente: `taxonomia.md` líneas 36 y 72 (`estado` es campo del schema) y Gate 0 regla 9 (lo exige) — `rutina-trabajo-enfocada` con `estado: borrador` es correcto (no pasó Gate 2 en la auditoría del 08-24; hay una propuesta de graduación sin revisar en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`), no hay limpieza que hacer y el archivo no se toca; `categorias_secundarias` no está en `taxonomia.md` (0 menciones) y no vuelve. La lista externa de campos "no-negociables" no prevalece. Se conserva el historial con las preguntas tachadas y su resolución; queda 🔴 abierta solo (c): 2 conceptos que fallan Gate 0 + decisión sobre sus tags. Título y fila actualizados
+- `CLAUDE.md`: segunda entrada en "Reglas aprendidas" (escrita solo por el "sí" explícito): `claude --print` sobre texto no confiable → sin herramientas ni conectores (cwd vacío, `--strict-mcp-config`, `--disallowedTools`, `--permission-mode dontAsk`, `--setting-sources ""`; `--tools ""` NO desactiva; verificar con el evento `init`). Incidente y trazabilidad a la entrada `21:00`
+- **`CONTEXTO_SEGUNDO_CEREBRO.md` — respuesta a (5): AHORA, en esta misma sesión.** Con la compactación inminente, dejarlo para después es el patrón que prohíbe la primera regla aprendida de hoy (arrastrar en silencio); y es un cambio acotado. Cambios: 101 → 103 conceptos (99 activos, 2 borrador, 2 sin `estado`); los 2 conceptos sin auditar agregados a las tablas de `ia/` (41) y `filosofia/` (17) marcados "sin `estado` — falla Gate 0, sin auditar"; tabla y carpetas verificadas contra los archivos reales (6/6 carpetas y el total 103 cuadran); bullets nuevos de fuente de verdad del schema, estado del paquete de 5 mejoras (5/5), deuda de schema (a/b cerradas, c abierta), incidente de launchd y las dos reglas aprendidas; el bullet de "6 conceptos más recientes" pasó a "al 2026-08-24" (los 2 sin auditar son posteriores). Correlaciones ya estaba en 27/2 (auditoría del 08-24)
+- `context.md` (fuera de git): fila Correlaciones → 27/2; fila "Último commit" (era `4275260`) reemplazada por una instrucción de verificación en vez de un hash que envejece; regla 2 marcada aprobada; deuda de schema con (a)/(b) cerradas; pendientes ajustados. Se conservan la nota de snapshot mixto y la sección "Lo que este archivo NO refleja todavía"; en esta última se quitó la mención de la fila de Correlaciones, ya corregida
+
+**Post-mortem:** regla agregada a CLAUDE.md (segunda regla aprendida; cierra el pendiente de la entrada de las 21:00)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-26 21:00 — paquete de mejoras, 5/5: minador-decisiones.py (Mejora B)
 
 **Instrucción:** "5. minador-decisiones.py — Script bajo demanda que recibe la ruta a un export (Claude o ChatGPT) y devuelve candidatos de decisión en formato Backlog/ideas/ (estado: borrador). Confirma el formato real del export con una muestra pequeña antes de escribir el parser final." Luigui pegó la muestra en el chat (una conversación de un mensaje, renderizada como árbol de un visor JSON, no el archivo crudo).
@@ -34,7 +50,7 @@
 
 **Pendiente:** (1) Luigui corre el minador sobre un export real (`--desde` reciente, primero sin `--escribir`) y revisa la precisión; (2) muestra de export de ChatGPT si se quiere soportar; (3) decisión sobre la invocación de `ejecutar_claude()` en modo taller
 
-**Post-mortem:** pendiente de respuesta de Luigui — ¿esto se vuelve regla permanente? Incidente: la primera invocación de `claude --print` para procesar texto no confiable (`--tools ""`) parecía segura y no lo era; se detectó con un archivo canario. Regla propuesta: "Todo `claude --print` que procese texto no confiable (historiales, transcripciones de reuniones) se invoca sin herramientas ni conectores: cwd vacío, `--strict-mcp-config`, `--disallowedTools`, `--permission-mode dontAsk`; `--tools \"\"` NO desactiva las herramientas. Verificar con el evento `init` del stream-json, no con lo que el modelo dice de sí mismo."
+**Post-mortem:** ~~pendiente~~ → RESUELTO (Luigui: sí, 2026-09-26; ver entrada de las 22:00) — ¿esto se vuelve regla permanente? Incidente: la primera invocación de `claude --print` para procesar texto no confiable (`--tools ""`) parecía segura y no lo era; se detectó con un archivo canario. Regla propuesta: "Todo `claude --print` que procese texto no confiable (historiales, transcripciones de reuniones) se invoca sin herramientas ni conectores: cwd vacío, `--strict-mcp-config`, `--disallowedTools`, `--permission-mode dontAsk`; `--tools \"\"` NO desactiva las herramientas. Verificar con el evento `init` del stream-json, no con lo que el modelo dice de sí mismo."
 
 **ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
 
