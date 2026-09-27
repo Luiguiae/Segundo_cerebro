@@ -13,7 +13,7 @@
 | T03 `demo/index.html` | ✅ | `1121998` |
 | T04 `presentar.py` (servidor + comprobación de `vendor/`) | ✅ | `afa63c4` |
 | T05 inyección de scripts | ✅ | `b4ec34a` |
-| T06 spike de gestos (go / no-go) | ✅ ronda 1 medida (`2c4fb13`); decisión tomada (plan.md §10); **ronda 2 a 640×480 con landmarks en curso** | `2c4fb13` |
+| T06 spike de gestos (go / no-go) | ✅ rondas 1 y 2 medidas; comparación offline hecha (plan.md §11); **T09 detenida a la espera de decisión de Luigui** | `2c4fb13` + ronda 2 |
 | T07 casos de prueba del parser (147) | ✅ | `b17c891` |
 | T08 `comandos.js` | ✅ 147/147 | `a542334` |
 | T09–T18 | pendientes | — |

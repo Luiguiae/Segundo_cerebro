@@ -7,7 +7,10 @@
 
 import { FilesetResolver, GestureRecognizer } from '/vendor/tasks-vision/vision_bundle.mjs';
 
-const PRUEBA = new URLSearchParams(location.search).has('prueba');
+const QS = new URLSearchParams(location.search);
+const PRUEBA = QS.has('prueba');
+const RONDA2 = QS.get('ronda') === '2';   // ronda 2: 640×480 fijo, 21 landmarks por cuadro, protocolo corto, archivos con prefijo r2-
+const PREFIJO = RONDA2 ? 'r2-' : '';
 const $ = (id) => document.getElementById(id);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const post = (ruta, cuerpo) => fetch(ruta, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) })
@@ -60,6 +63,9 @@ function muestraDe(res, ts, t0, t1, meta, now) {
     m.y = CENTRO_PALMA.reduce((a, i) => a + lm[i].y, 0) / CENTRO_PALMA.length;
     const g = res.gestures && res.gestures[0] && res.gestures[0][0];
     if (g) { m.cat = g.categoryName; m.s = g.score; }
+    m.lm = lm.map((q) => [q.x, q.y, q.z]);   // los 21 landmarks (existen aunque la categoría sea "ninguna")
+    const hd = res.handedness && res.handedness[0] && res.handedness[0][0];
+    if (hd) m.h = hd.categoryName;
   }
   return m;
 }
@@ -153,7 +159,7 @@ async function benchmark() {
 function ventanaMaxDx(palma) {
   let mejor = { dx: 0, dy: 0, ms: 0, t: 0 };
   for (let i = 0; i < palma.length; i++) {
-    for (let j = i + 1; j < palma.length && palma[j].t - palma[i].t <= 400; j++) {
+    for (let j = i + 1; j < palma.length && palma[j].t - palma[i].t <= 500; j++) {
       const dx = palma[j].x - palma[i].x;
       if (Math.abs(dx) > Math.abs(mejor.dx)) mejor = { dx, dy: palma[j].y - palma[i].y, ms: palma[j].t - palma[i].t, t: palma[j].t };
     }
@@ -192,7 +198,7 @@ function analiza(muestras, yaMs) {
 }
 
 // ── Protocolo de grabación ──────────────────────────────────────────────────────────────────────────
-const PASOS = [
+const PASOS1 = [
   { tipo: 'derecha', nombre: 'SWIPE A TU DERECHA', n: 10, dur: 3500, ayuda: 'Mano ABIERTA, palma hacia la cámara, al centro. Al oír el tono largo: un swipe rápido hacia TU DERECHA y deja que la mano vuelva sola, sin frenarla.' },
   { tipo: 'izquierda', nombre: 'SWIPE A TU IZQUIERDA', n: 10, dur: 3500, ayuda: 'Mano ABIERTA al centro. Al oír el tono largo: un swipe rápido hacia TU IZQUIERDA y deja que la mano vuelva sola, sin frenarla.' },
   { tipo: 'retorno', nombre: 'IDA Y VUELTA RÁPIDO', n: 5, dur: 4000, ayuda: 'Mano ABIERTA al centro. Al oír el tono largo: swipe a tu DERECHA y regresa la mano al centro lo MÁS RÁPIDO que puedas (el peor caso). Luego baja la mano.' },
@@ -200,8 +206,19 @@ const PASOS = [
   { tipo: 'gesticulacion', nombre: 'HABLA Y GESTICULA', n: 3, dur: 20000, ayuda: 'Cuéntame en voz alta qué hiciste hoy, gesticulando normal — la mano abierta a ratos, moviéndola como al explicar. SIN swipes intencionales. Dura 20 s.' },
 ];
 
+// Ronda 2: más corta (~10 min) y con "reposo" (mano abierta quieta hablando) para medir falsos positivos del armado.
+const PASOS2 = [
+  { tipo: 'derecha', nombre: 'SWIPE A TU DERECHA', n: 10, dur: 3000, ayuda: 'Mano ABIERTA, dedos bien separados, palma hacia la cámara, al centro. Al tono largo: un swipe rápido y amplio hacia TU DERECHA; deja que la mano vuelva sola.' },
+  { tipo: 'izquierda', nombre: 'SWIPE A TU IZQUIERDA', n: 10, dur: 3000, ayuda: 'Mano ABIERTA, dedos bien separados, palma hacia la cámara, al centro. Al tono largo: un swipe rápido y amplio hacia TU IZQUIERDA; deja que la mano vuelva sola.' },
+  { tipo: 'retorno', nombre: 'IDA Y VUELTA RÁPIDO', n: 4, dur: 3500, ayuda: 'Mano ABIERTA al centro. Al tono largo: swipe a tu DERECHA y regresa la mano al centro lo MÁS RÁPIDO posible. Luego baja la mano.' },
+  { tipo: 'noabierta', nombre: 'PUÑO O DEDO — RÁPIDO', n: 2, dur: 3000, ayuda: 'Puño cerrado o señalando con un dedo; al tono largo, muévelo rápido de lado a lado. NO debe contar como swipe.' },
+  { tipo: 'reposo', nombre: 'MANO ABIERTA QUIETA', n: 2, dur: 10000, ayuda: 'Al tono largo: mano ABIERTA frente a la cámara, casi quieta (como esperando), mientras cuentas algo en voz alta. Sin swipes. Dura 10 s.' },
+  { tipo: 'gesticulacion', nombre: 'HABLA Y GESTICULA', n: 4, dur: 20000, ayuda: 'Cuéntame en voz alta qué hiciste hoy, gesticulando normal, con la mano abierta a ratos. SIN swipes intencionales. Dura 20 s. (No digas "Jarvis")' },
+];
+const PASOS = RONDA2 ? PASOS2 : PASOS1;
+
 function contadores(validas) {
-  return PASOS.map((p) => `${p.tipo === 'noabierta' ? 'Puño' : p.tipo === 'gesticulacion' ? 'Gesticulación' : p.tipo[0].toUpperCase() + p.tipo.slice(1)} ${validas[p.tipo] || 0}/${PRUEBA ? 1 : p.n}`).join('  ·  ');
+  return PASOS.map((p) => `${p.tipo === 'noabierta' ? 'Puño' : p.tipo === 'reposo' ? 'Reposo' : p.tipo === 'gesticulacion' ? 'Gesticulación' : p.tipo[0].toUpperCase() + p.tipo.slice(1)} ${validas[p.tipo] || 0}/${PRUEBA ? 1 : p.n}`).join('  ·  ');
 }
 
 async function esperaPausa() { while (pausado && !abortar) { coach('PAUSA', 'Pulsa ESPACIO para continuar.'); await sleep(200); } }
@@ -228,11 +245,11 @@ async function protocolo(rec) {
       document.body.className = '';
       $('cont').textContent = `${contadores(validas)}\nFaltan ${total - hechas} de ${total} · intento ${k}${k > objetivo ? ' (repetición)' : ''}`;
       coach(`${paso.nombre}  ${validas[paso.tipo] + 1}/${objetivo}`, paso.ayuda, '');
-      await sleep(PRUEBA ? 400 : 3200);                      // tiempo para leer y colocarse
-      for (const n of PRUEBA ? [1] : [3, 2, 1]) {              // cuenta atrás; la grabación empieza en el "1"
+      await sleep(PRUEBA ? 400 : RONDA2 ? 2200 : 3200);          // tiempo para leer y colocarse
+      for (const n of PRUEBA ? [1] : RONDA2 ? [2, 1] : [3, 2, 1]) {              // cuenta atrás; la grabación empieza en el "1"
         $('cuenta').textContent = String(n); beep(520, 110);
         if (n === 1) { muestras = []; tGrab = performance.now(); grabando = true; }
-        await sleep(PRUEBA ? 200 : 1000);
+        await sleep(PRUEBA ? 200 : RONDA2 ? 850 : 1000);
       }
       const yaMs = performance.now();
       beep(1040, 450, 0.35); document.body.className = 'ya'; coach('¡YA!', paso.ayuda, '');
@@ -244,18 +261,24 @@ async function protocolo(rec) {
       let valida;
       if (PRUEBA) valida = true;
       else if (paso.tipo === 'gesticulacion') valida = an.cuadros_con_mano >= 40;
+      else if (paso.tipo === 'reposo') valida = an.cuadros_con_mano >= 0.6 * an.cuadros;
+      else if (RONDA2 && ['derecha', 'izquierda', 'retorno'].includes(paso.tipo)) valida = an.cuadros_con_mano >= 0.5 * an.cuadros && an.dx_max_cualquier_gesto >= 0.08;  // criterio laxo: la comparación de métodos se hace offline
       else if (paso.tipo === 'noabierta') valida = an.cuadros_con_mano >= 10;
       else valida = an.cuadros_palma_abierta >= 6 && an.dx_max_palma >= 0.15;
       if (valida) { validas[paso.tipo]++; hechas++; }
 
       const nn = String(k).padStart(2, '0');
-      const nombre = `${paso.tipo}-${nn}-${valida ? 'ok' : 'x'}.json`;
+      const nombre = `${PREFIJO}${paso.tipo}-${nn}-${valida ? 'ok' : 'x'}.json`;
       const datos = {
-        version: 1, tipo: paso.tipo, intento: k, valida, ya_ms: redondea(yaMs - tGrab, 0), duracion_ms: paso.dur,
+        version: 1, ronda: RONDA2 ? 2 : 1, tipo: paso.tipo, intento: k, valida, ya_ms: redondea(yaMs - tGrab, 0), duracion_ms: paso.dur,
         config: resumen.elegida, camara: ajustesCamara,
-        esperado: paso.tipo === 'gesticulacion' || paso.tipo === 'noabierta' ? { eventos: 0 } : { primer_evento: paso.tipo === 'izquierda' ? 'izquierda' : 'derecha', eventos: 1 },
+        esperado: ['gesticulacion', 'noabierta', 'reposo'].includes(paso.tipo) ? { eventos: 0 } : { primer_evento: paso.tipo === 'izquierda' ? 'izquierda' : 'derecha', eventos: 1 },
         analisis: an,
-        muestras: rel.map((m) => ({ t: Math.round(m.t), x: redondea(m.x), y: redondea(m.y), cat: m.cat, s: redondea(m.s, 2) })),
+        muestras: rel.map((m) => {
+          const o = { t: Math.round(m.t), x: redondea(m.x), y: redondea(m.y), cat: m.cat, s: redondea(m.s, 2) };
+          if (RONDA2) { o.h = m.h || null; o.lm = m.lm ? m.lm.map((q) => [redondea(q[0], 3), redondea(q[1], 3), redondea(q[2], 3)]) : null; }
+          return o;
+        }),
       };
       const r = await post('/guardar', { nombre, datos });
       resumen.trazas.push({ nombre, tipo: paso.tipo, valida, guardada: !!r.ok, analisis: an });
@@ -266,7 +289,7 @@ async function protocolo(rec) {
       else if (paso.tipo === 'noabierta') msg = valida ? `✔ registrado (${an.pct_palma_abierta}% clasificado como palma abierta)` : '✗ no vi la mano; repetimos';
       else msg = valida ? `✔ Δx ${Math.round(an.dx_max_palma * 100)}% en ${an.ms_de_esa_ventana} ms → detectado hacia tu ${an.direccion_presentador}` : `✗ ${an.cuadros_palma_abierta < 6 ? 'no vi la PALMA ABIERTA' : 'movimiento demasiado corto (' + Math.round(an.dx_max_palma * 100) + '%)'}; repetimos`;
       coach(msg, '', ''); beep(valida ? 880 : 300, 150);
-      await sleep(PRUEBA ? 200 : 1800);
+      await sleep(PRUEBA ? 200 : RONDA2 ? 1100 : 1800);
     }
     resumen.protocolo[paso.tipo] = { validas: validas[paso.tipo], intentos: intentos[paso.tipo], objetivo };
   }
@@ -297,8 +320,8 @@ function entorno() {
 
 async function finalizar() {
   resumen.red = auditaRed(); resumen.entorno = entorno(); resumen.fin = new Date().toISOString();
-  await post('/guardar', { nombre: '_resumen.json', datos: resumen });
-  await post('/fin', {});
+  await post('/guardar', { nombre: RONDA2 ? 'r2-resumen.json' : '_resumen.json', datos: resumen });
+  await post('/fin', { prefijo: RONDA2 ? 'r2' : '' });
   if (stream) stream.getTracks().forEach((t) => t.stop());
   document.body.className = ''; beep(880, 300);
   coach('Listo ✔  Gracias', 'Ya guardé todo. Puedes volver a la laptop.', '');
@@ -331,13 +354,14 @@ async function iniciar() {
     coach('Permiso de cámara', 'Acepta el permiso de cámara en Chrome si te lo pide.');
     await abrirCamara(640, 480);
     coach('Todo cargado ✔', `Modelo cargado (${Object.entries(cargaMs).map(([k, v]) => k + ' ' + v + ' ms').join(', ')}).`);
-    const espera = PRUEBA ? 2 : 20;
+    const espera = PRUEBA ? 2 : RONDA2 ? 15 : 20;
     for (let s = espera; s > 0 && !abortar; s--) {
       coach('Aléjate a tu posición de presentar', 'De pie, a la distancia real de la presentación, con la luz de siempre. El benchmark y la grabación empiezan solos. (ESPACIO = pausa · ESC = cancelar)', String(s));
       await sleep(1000);
     }
     if (abortar) return finalizar();
-    await benchmark();
+    if (RONDA2) resumen.elegida = { delegado: reconocedores.GPU ? 'GPU' : 'CPU', resolucion: '640x480' };
+    else await benchmark();
     if (!resumen.elegida) throw new Error('Ninguna configuración produjo mediciones.');
     await abrirCamara(...resumen.elegida.resolucion.split('x').map(Number));
     coach('Ahora las grabaciones', `Usaré ${resumen.elegida.delegado} ${resumen.elegida.resolucion}. Sigue las instrucciones en pantalla: oirás una cuenta atrás y un tono largo.`, '');
@@ -359,6 +383,6 @@ addEventListener('keydown', (e) => {
   }
   if (e.code === 'Escape') abortar = true;
 });
-coach('Spike de gestos (T06)', 'Pulsa ESPACIO para empezar. Pasos: cargar → permiso de cámara → te alejas → benchmark (~50 s) → 31 grabaciones guiadas (~6 min).');
+coach(RONDA2 ? 'Spike de gestos — RONDA 2 (640×480)' : 'Spike de gestos (T06)', RONDA2 ? 'Pulsa ESPACIO para empezar. Cargar → permiso de cámara → te alejas (15 s) → 32 grabaciones guiadas (~10 min). Sin benchmark: 640×480 fijo.' : 'Pulsa ESPACIO para empezar. Pasos: cargar → permiso de cámara → te alejas → benchmark (~50 s) → 31 grabaciones guiadas (~6 min).');
 $('cont').textContent = PRUEBA ? 'MODO PRUEBA (?prueba=1): tiempos cortos, sin exigir mano.' : '';
 if (PRUEBA) setTimeout(() => { if (!ac) iniciar(); }, 300);

@@ -2,6 +2,22 @@
 
 ---
 
+### 2026-09-26 23:30 — presentador: ronda 2 del spike (640×480 + 21 landmarks) y comparación offline; detenido antes de T09
+
+**Instrucción (Luigui):** aprobadas las desviaciones del SPEC (umbral ~10–12 %, ventana 500 ms, 640×480) y el bloqueo de la telemetría de MediaPipe; guardar los 21 landmarks; grabar una sesión corta a 640×480 guiada; comparar offline categoría `Open_Palm` vs geometría de dedos; si el resultado es igual o mejor que el prototipo (~85 %/~65 %/0–1 FP) continuar con T09–T12 sin detenerse (parar antes de T13); si es peor, detenerse y presentar las cifras antes de T09.
+
+**Acciones:** SPEC/plan/tasks actualizados (commit `f9a009e`); spike ampliado (landmarks por cuadro, lateralidad, ronda 2 con prefijo `r2-`, tipo "reposo", validación laxa), probado con cámara falsa y con landmarks simulados; sesión real de 49 trazas (~4.6 MB, solo coordenadas); comparación offline con detectores de prototipo (`tests/manual/spike/comparar_metodos.py`): categoría vs 4 variantes geométricas × 2 detectores, con validación cruzada. Servidor y pestaña cerrados.
+
+**Resultados (plan.md §11):** método elegido = categoría `Open_Palm` (la geometría sola está activa en 76–83 % de la gesticulación y no supera a la categoría en swipes detectados); la resolución 640×480 NO mejoró el reconocimiento de `Open_Palm`; el detector v2 (mano abierta quieta justo antes del trazo) da 0 inversos y 0 falsos positivos pero 77 %/53 % sobre todos los intentos (80 %/80 % solo sobre los válidos); el prototipo v1 da 92 %/42–58 % con 1 inverso y 1 FP. Base comparable con el prototipo (todos los intentos): izquierda queda por debajo → **regla de parada activada: no se inició T09**. Se usó una mano distinta para cada dirección.
+
+**Límites:** n ≤ 19 por lado, una sola persona y sesión, parámetros afinados sobre los mismos datos, 106 s de no-swipe. Mi hipótesis de la ronda 1 (la resolución) resultó falsa.
+
+**Pendiente:** decisión de Luigui; T09–T12 no iniciadas; plan B (voz + teclado) sigue siendo suya al mediodía.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 22:45 — presentador T06: spike de gestos ejecutado con Luigui frente a la cámara; a la espera de su decisión
 
 **Instrucción (Luigui):** preparar la página del spike, guiar la grabación de trazas y presentar cifras y recomendación (seguir / seguir con mitigaciones / plan B); no avanzar a T09 hasta que decida.

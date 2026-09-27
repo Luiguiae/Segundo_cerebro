@@ -135,8 +135,10 @@ class ManejadorSpike(presentar.Manejador):
         if ruta == "/fin":
             mu.parar.set()
             TRAZAS.mkdir(parents=True, exist_ok=True)
-            (TRAZAS / "_cpu.json").write_text(json.dumps({"pid_jarvis": mu.pid_jarvis, "nucleos_logicos": mu.nucleos_logicos, "muestras": mu.muestras, "sistema": mu.sistema}), encoding="utf-8")
-            print("[spike] FIN — _cpu.json escrito", flush=True)
+            pref = re.sub(r"[^a-z0-9]", "", str(cuerpo.get("prefijo", "")).lower())[:10]
+            nombre_cpu = f"{pref}-cpu.json" if pref else "_cpu.json"
+            (TRAZAS / nombre_cpu).write_text(json.dumps({"pid_jarvis": mu.pid_jarvis, "nucleos_logicos": mu.nucleos_logicos, "muestras": mu.muestras, "sistema": mu.sistema}), encoding="utf-8")
+            print(f"[spike] FIN — {nombre_cpu} escrito", flush=True)
             return self._json(200, {"ok": True})
         return self._json(404, {"ok": False})
 

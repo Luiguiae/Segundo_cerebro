@@ -106,3 +106,32 @@ Medido en este Mac (i7-9750H, Chrome 153, Intel UHD 630 vía Metal), de pie a la
 2. **Aprobado:** `presentador.js` bloquea `fetch`/XHR/`sendBeacon` hacia `odml.pa.googleapis.com` (se instala en T11, antes de cargar MediaPipe); criterio "0 peticiones externas con MediaPipe activo" en T14. Corrige D6: los *frames* no salen, pero MediaPipe intenta enviar telemetría de uso; el bloqueo lo evita.
 3. **Ronda 2 del spike** a 640×480 guardando los **21 landmarks** de cada cuadro, para comparar offline dos formas de detectar mano abierta (categoría `Open_Palm` vs. dedos extendidos por geometría) y elegir la de mejor tasa por lado sin falsos positivos en gesticulación. Regla de continuidad: si el resultado es igual o mejor que el prototipo de §9 (derecha ~85 %, izquierda ~65 %, 0–1 falsos positivos) se sigue con T09–T12 y se para antes de T13; si es peor, se detiene y se presentan las cifras antes de T09.
 4. La decisión de plan B (voz + teclado) sigue siendo de Luigui al mediodía del domingo.
+
+## 11. Resultados de la ronda 2 del spike (640×480, con 21 landmarks) — Luigui frente a la cámara, 2026-09-26
+
+49 trazas nuevas (`tests/traces/r2-*.json`, con los 21 landmarks por cuadro y lateralidad) + `r2-resumen.json` + `r2-cpu.json`. 30 fps sostenidos a 640×480 con GPU; durante la grabación Chrome ≈0.44 núcleos, equipo 13 %, Jarvis 3.6 % de un núcleo. Sigue habiendo 2 intentos de telemetría a `odml.pa.googleapis.com` (bloqueados por la CSP del spike).
+
+**Comparación offline de "mano abierta"** (mismo detector; solo cambia el predicado de armado). Script reproducible: `tests/manual/spike/comparar_metodos.py`.
+- **A · categoría `Open_Palm`** del clasificador.
+- **B · geometría con landmarks** (dedos extendidos, y variantes con palma hacia la cámara [signo del producto vectorial según lateralidad] y mano erguida).
+
+Hallazgos:
+1. **La resolución NO mejoró el reconocimiento de `Open_Palm`** (durante swipes: derecha 51 %→28 %, izquierda 45 %→43 %, retorno 30 %→31 %; 320×240→640×480). La hipótesis de la ronda 1 queda **refutada**.
+2. **La geometría sola no sirve como armado:** "dedos extendidos" está activa en 76–83 % de los cuadros de gesticulación (la gente gesticula con la mano abierta). Añadiendo palma-a-cámara baja a 4 % y con erguida a 0 %, pero **no supera** a la categoría en swipes detectados y da más falsos positivos. **Método elegido: A (categoría `Open_Palm`)**, que es además el más simple.
+3. **Qué hace fallar al detector v1 (armado por 3 cuadros de palma):** el **retorno de la mano** es a veces más amplio que el propio swipe corto (izquierda, intentos 1 y 6) y dispara el sentido contrario; y el único falso positivo (en ambos métodos) fue mover la mano abierta ~16 % del ancho al colocarla al inicio de un "reposo".
+4. **Detector v2 (mano abierta quieta justo antes del trazo, ≥3 cuadros y dispersión ≤0.08 en 200 ms):** 0 inversos y 0 falsos positivos en 27/27 configuraciones probadas del método A.
+5. **Asimetría:** usaste una mano distinta para cada dirección (lateralidad de MediaPipe: 90 % `Right` en derecha, 78 % `Left` en izquierda). El swipe hacia adentro del cuerpo es más corto.
+
+| Configuración | Derecha | Izquierda | Ida y vuelta | Inversos | Falsos positivos (106 s de gesticulación, reposo y puño) |
+|---|---|---|---|---|---|
+| *Prototipo de la ronda 1 (320×240, v1, TH .10)* | 17/20 (85 %) | 13/20 (65 %) | 5/8 | 1 | 1 (en 60 s) |
+| Ronda 2 · A · v1 (TH .10) — todos los intentos | 12/13 (92 %) | 8/19 (42 %) | 7/8 | 1 | 1 |
+| Ronda 2 · A · v1 (TH .08, K2) — todos los intentos | 12/13 (92 %) | 11/19 (58 %) | 6/8 | 2 | 1 |
+| Ronda 2 · A · **v2** (TH .08) — todos los intentos | 10/13 (77 %) | 10/19 (53 %) | 7/8 | **0** | **0** |
+| Ronda 2 · A · v1 (TH .10) — solo intentos válidos* | 9/10 (90 %) | 6/10 (60 %) | 2/2 | 1 | 1 |
+| Ronda 2 · A · **v2** (TH .08) — solo intentos válidos* | 8/10 (80 %) | **8/10 (80 %)** | 2/2 | **0** | **0** |
+| Ronda 2 · B (geometría) · v2 — todos los intentos | 8/13 (62 %) | 10/19 (53 %) | 3/8 | 0 | 0 |
+
+\* "Válido" = mano vista en ≥50 % de los cuadros y algún movimiento ≥8 % (swipes realmente hechos). Con validación cruzada (afinar en intentos impares, probar en pares) el método A · v2 da 69 % derecha / 53 % izquierda, 0 inversos, 0 falsos positivos; el B da lo mismo con 1 falso positivo.
+
+**Lectura honesta:** sobre la misma base que el prototipo (todos los intentos), el resultado **no es claramente igual o mejor**: derecha sube, pero izquierda queda por debajo del ~65 % (42–58 % con v1, 53 % con v2). Con solo los intentos válidos, v2 llega a 80 %/80 % sin inversos ni falsos positivos, pero sigue por debajo del 9/10 del SPEC. Por eso se **detuvo el avance a T09** y se presentaron las cifras. Límites: n ≤ 19 por lado, una persona, una sesión, parámetros afinados sobre los mismos datos; 106 s de no-swipe (el SPEC pide 10 min sin cambios no intencionales).
