@@ -1,0 +1,8 @@
+# Dependencias descargadas por setup_vendor.py (~50 MB; se reconstruyen con versiones y hashes fijos)
+vendor/
+
+# Python / macOS
+__pycache__/
+*.pyc
+.DS_Store
+*.log
