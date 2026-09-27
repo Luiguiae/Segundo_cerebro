@@ -2,6 +2,44 @@
 
 ---
 
+### 2026-09-26 21:00 — paquete de mejoras, 5/5: minador-decisiones.py (Mejora B)
+
+**Instrucción:** "5. minador-decisiones.py — Script bajo demanda que recibe la ruta a un export (Claude o ChatGPT) y devuelve candidatos de decisión en formato Backlog/ideas/ (estado: borrador). Confirma el formato real del export con una muestra pequeña antes de escribir el parser final." Luigui pegó la muestra en el chat (una conversación de un mensaje, renderizada como árbol de un visor JSON, no el archivo crudo).
+
+**1) Formato — qué se confirmó y qué NO (está en el docstring del script):**
+- Confirmado con la muestra (reconstruida como JSON y usada como fixture): conversación = `uuid, name, summary, created_at, updated_at, account{uuid}, chat_messages[]`; mensaje = `uuid, text, content[], sender, created_at, updated_at, attachments[], files[], parent_message_uuid` (el del primer mensaje es el centinela `00000000-0000-4000-8000-000000000000`); bloque = `start_timestamp, stop_timestamp, flags, type, text, citations[]`. En la muestra `text` del mensaje == `text` del bloque
+- NO confirmado (no aparece en una conversación de un mensaje humano): el `sender` del asistente, bloques de tipo distinto de `text`, forma de `citations`/`attachments`/`files`, si el archivo raíz es la lista o un objeto que la contiene (el visor mostraba `[100…199]` sin la raíz), y todo el formato de ChatGPT. Por eso el cargador acepta SOLO lo visto (raíz lista, o un objeto con UNA lista de elementos con forma de conversación), valida la forma y falla con un mensaje concreto ante cualquier otra cosa; los `sender` y tipos de bloque desconocidos se cuentan y se reportan, no se descartan en silencio. **ChatGPT no soportado en v1**: sin muestra no se asume su estructura (se detecta por `mapping` y se rechaza diciéndolo). `.zip` tampoco (no se conoce su estructura interna): se pide el `.json` descomprimido
+
+**2) Diseño:** `Prompts/Meta/minador-decisiones.py`. Por defecto SOLO LECTURA (imprime candidatos); `--escribir` crea un `.md` por candidato en `Backlog/ideas/` con las claves exactas de la plantilla del Backlog (`id, titulo, fecha_captura, estado: borrador, raiz_proyecto, tags`) y cuerpo Decisión/Contexto/Alternativas/Evidencia/Origen; solo escribe ahí, con modo `x` (jamás sobrescribe); nunca toca `Conocimiento/`. Flags: `--desde`, `--max-conversaciones` (40, más recientes primero), `--paralelo` (4), `--modelo`, `--reprocesar`. Motor: `claude --print` local (mismo proveedor que generó los chats; no se manda el historial a Groq/DeepSeek/nadie nuevo — decisión mía, es contenido privado y laboral)
+- **Anti-ruido/alucinación:** cada candidato lleva una `cita` que se verifica LITERAL (normalizando espacios/mayúsculas, mínimo 12 caracteres) contra los mensajes o el resumen; si no aparece se descarta. Solo se conservan decisiones que el modelo atribuye a Luigui (`quien_decide == "luigui"`); las recomendaciones del asistente se descartan. La evidencia sale marcada (`humano`/`asistente`/`resumen`); la del resumen avisa que es paráfrasis de Claude
+- **Idempotencia:** las conversaciones que ya dieron candidatos se omiten ANTES de llamar al modelo (un export mensual trae todo el historial otra vez); `--reprocesar` las vuelve a minar y el id sale de `sha1(uuid | cita literal)`
+- Un fallo del modelo en una conversación no tumba el resto y se reporta
+
+**3) Seguridad de la entrada (el historial es texto no confiable) — 3 hallazgos por prueba, no por suposición:**
+- `claude --tools ""` NO desactiva las herramientas (verificado con un archivo canario: lo leyó). Se usa `--disallowedTools` + `--permission-mode dontAsk` + `--strict-mcp-config` + `--disable-slash-commands` + `--setting-sources ""` + cwd vacío + env sin `CLAUDE*`/`CURSOR*`. **Verificado de forma objetiva** con el evento `init` del stream-json (no con lo que el modelo dice de sí mismo, que se contradijo entre pruebas): la sesión del minador tiene 4 herramientas (solo lista de tareas) y 0 servidores MCP
+- El delimitador `<conversacion>` era fijo y aparecía en las propias instrucciones: un historial con un cierre falso podía escapar del bloque de datos. La prueba lo destapó; ahora el delimitador es aleatorio por llamada (`conversacion-<12 hex>`) y las instrucciones lo dicen
+- La idempotencia por título fallaba con el modelo real (títulos redactados distinto en cada corrida → duplicados). Detectado en la 2ª llamada real; el id ahora sale de la cita literal + omisión previa por conversación
+
+**4) Validación:** suite de 45 pruebas con modelo simulado — TODAS PASS (carga: la muestra real, raíz objeto, ChatGPT, JSON inválido, .zip, lista vacía, elementos sin forma; normalización: sender/bloques desconocidos; minado: cita literal, espaciado, no literal, recomendación, malformados, solo-en-resumen, cita corta, salida con ``` y prosa, sin JSON, truncado, texto hostil con cierres falsos y delimitador no adivinable; CLI: lectura por defecto no crea nada, `--desde`, `--max`, `--escribir`, YAML con comillas/dos puntos/&, Conocimiento intacto, idempotencia con títulos redactados distinto, `--reprocesar`, fallo parcial, export inválido → código 2). Con el modelo REAL sobre la muestra: 16.7 s, 1 candidato con cita verificada literalmente (en el resumen, marcada así); en otra corrida el modelo devolvió además una recomendación del asistente y el filtro la descartó; 2ª corrida sobre lo ya escrito: 0 llamadas; `--reprocesar`: misma cita → mismo id → 1 solo archivo. La escritura real se probó en un vault temporal: no se creó ningún candidato en el Backlog real (la muestra era para confirmar formato, no para sembrar entradas)
+
+**5) NO validado — por transparencia:**
+- Métrica "≥80% de candidatos son decisiones reales": con n=1 conversación no se puede medir. Requiere correrlo sobre un export real y revisar. Pendiente de Luigui
+- Métrica "un export mensual en <5 min": solo se midió UNA llamada (16.7 s, conversación corta con resumen). Con `--paralelo 4` y 40 conversaciones largas está por verse; `--paralelo` sube el techo
+- Todo lo del asistente/otros bloques (ver punto 1). ChatGPT
+- Las pruebas viven en el scratchpad de la sesión, no en el repo (el repo no tiene infraestructura de tests fuera de jarvis-server; igual que poda-por-uso). Se pueden versionar bajo `Prompts/Meta/tests/` si Luigui lo pide
+
+**6) Hallazgo sobre código YA en producción (no se toca aquí, requiere decisión):** con el evento `init` se verificó que `ejecutar_claude()` del daemon (`--permission-mode bypassPermissions`, cwd = vault) arranca con 29 herramientas nativas incluyendo Bash/Edit/Write/RemoteTrigger/SendMessage, y con los conectores configurados (Gmail, Calendar, Figma, Prisma, Docs en estado `pending` al iniciar; NO se verificó si sus herramientas quedan usables durante una corrida larga). Modo taller le pasa a ese `claude` la ruta de la transcripción de una reunión en vivo — habla de OTRAS personas, texto no confiable — con permisos totales. Es la pregunta abierta del 2026-08-25 (bypassPermissions vs. allowlist) con una razón nueva para decidirla. El minador usa una configuración mucho más estricta a propósito
+
+**Resultados:** `Prompts/Meta/minador-decisiones.py`: OK (formato Claude confirmado con muestra; ChatGPT fuera de v1)
+
+**Pendiente:** (1) Luigui corre el minador sobre un export real (`--desde` reciente, primero sin `--escribir`) y revisa la precisión; (2) muestra de export de ChatGPT si se quiere soportar; (3) decisión sobre la invocación de `ejecutar_claude()` en modo taller
+
+**Post-mortem:** pendiente de respuesta de Luigui — ¿esto se vuelve regla permanente? Incidente: la primera invocación de `claude --print` para procesar texto no confiable (`--tools ""`) parecía segura y no lo era; se detectó con un archivo canario. Regla propuesta: "Todo `claude --print` que procese texto no confiable (historiales, transcripciones de reuniones) se invoca sin herramientas ni conectores: cwd vacío, `--strict-mcp-config`, `--disallowedTools`, `--permission-mode dontAsk`; `--tools \"\"` NO desactiva las herramientas. Verificar con el evento `init` del stream-json, no con lo que el modelo dice de sí mismo."
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-26 19:30 — primera regla aprendida, deuda de schema unificada y `.gitignore` de logs rotados
 
 **Instrucción (Luigui):** (1) sí a la regla de post-mortem propuesta → agregarla a "Reglas aprendidas" de CLAUDE.md con fecha e incidente (el desfase entre JARVIS_LOG.md y el código real del daemon, hoy); (2) los 2 conceptos que fallan Gate 0 van en la MISMA entrada de Backlog abierta para `estado`/`rutina-trabajo-enfocada` (misma categoría: deuda de schema); (3) arreglar `.gitignore`: `*.log` no cubre `jarvis.log.N`; (4) no tocar ATLAS.md, los Inbox/*.tmp.md ni los docs de RESOLVER.md — sesión de limpieza aparte; (5) para la Mejora 5, la muestra del export llega en este chat.
