@@ -1,0 +1,316 @@
+{
+ "guion": "gestos",
+ "variante": "",
+ "inicio": "2026-09-27T04:48:30.473Z",
+ "fin": "2026-09-27T04:52:50.633Z",
+ "resumen": {
+  "total": 27,
+  "ok": 18,
+  "fallos": 9
+ },
+ "estadisticas": {
+  "voz": {
+   "acciones": 0,
+   "reinicios": 2,
+   "errores": 0
+  },
+  "gestos": {
+   "acciones": 17
+  }
+ },
+ "motores": {
+  "voz": {
+   "estado": "activo",
+   "detalle": "escuchando"
+  },
+  "gestos": {
+   "estado": "activo",
+   "detalle": "activa · 30 fps"
+  }
+ },
+ "bloqueadas": [
+  {
+   "tipo": "fetch",
+   "url": "https://odml.pa.googleapis.com/v1/log",
+   "t": 61672
+  }
+ ],
+ "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "pasos": [
+  {
+   "id": "G00",
+   "titulo": "Colócate en tu posición de presentar",
+   "tipo": "espera",
+   "ok": null,
+   "obs": "ok",
+   "transcripciones": [
+    " así"
+   ]
+  },
+  {
+   "id": "G01",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 7 s",
+   "transcripciones": []
+  },
+  {
+   "id": "G02",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (1750 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1750,
+   "n_acciones": 1
+  },
+  {
+   "id": "G03",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 7 s",
+   "transcripciones": [
+    "canción de fondos el mes pasado"
+   ]
+  },
+  {
+   "id": "G04",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 7 s",
+   "transcripciones": [
+    " a la oficina para presentar una solicitud"
+   ]
+  },
+  {
+   "id": "G05",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (1832 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1832,
+   "n_acciones": 1
+  },
+  {
+   "id": "G06",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (2507 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 2507,
+   "n_acciones": 1
+  },
+  {
+   "id": "G07",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (2296 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 2296,
+   "n_acciones": 1
+  },
+  {
+   "id": "G08",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (1883 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1883,
+   "n_acciones": 1
+  },
+  {
+   "id": "G09",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 7 s",
+   "transcripciones": []
+  },
+  {
+   "id": "G10",
+   "titulo": "Swipe a tu DERECHA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (1955 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1955,
+   "n_acciones": 1
+  },
+  {
+   "id": "G11",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (2427 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 2427,
+   "n_acciones": 1
+  },
+  {
+   "id": "G12",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (1646 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1646,
+   "n_acciones": 1
+  },
+  {
+   "id": "G13",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "resultado inesperado: {\"h\":6,\"f\":-1} → {\"h\":7,\"f\":-1}",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 5782,
+   "n_acciones": 1
+  },
+  {
+   "id": "G14",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (2409 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 2409,
+   "n_acciones": 1
+  },
+  {
+   "id": "G15",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (1804 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1804,
+   "n_acciones": 1
+  },
+  {
+   "id": "G16",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (5341 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 5341,
+   "n_acciones": 1
+  },
+  {
+   "id": "G17",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (1640 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1640,
+   "n_acciones": 1
+  },
+  {
+   "id": "G18",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 7 s",
+   "transcripciones": []
+  },
+  {
+   "id": "G19",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (4599 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 4599,
+   "n_acciones": 1
+  },
+  {
+   "id": "G20",
+   "titulo": "Swipe a tu IZQUIERDA",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "resultado inesperado: {\"h\":6,\"f\":-1} → {\"h\":7,\"f\":-1}",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 2377,
+   "n_acciones": 1
+  },
+  {
+   "id": "G21",
+   "titulo": "Swipe a la DERECHA e IDA Y VUELTA rápido",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (2129 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 2129,
+   "n_acciones": 1
+  },
+  {
+   "id": "G22",
+   "titulo": "Swipe a la DERECHA e IDA Y VUELTA rápido",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (1978 ms tras el aviso)",
+   "transcripciones": [],
+   "latencia_desde_aviso_ms": 1978,
+   "n_acciones": 1
+  },
+  {
+   "id": "G23",
+   "titulo": "Swipe a la DERECHA e IDA Y VUELTA rápido",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 7 s",
+   "transcripciones": []
+  },
+  {
+   "id": "G24",
+   "titulo": "Habla y gesticula 20 s",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": []
+  },
+  {
+   "id": "G25",
+   "titulo": "Mano abierta QUIETA 8 s, hablando",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": []
+  },
+  {
+   "id": "G26",
+   "titulo": "Puño o dedo, rápido de lado a lado (6 s)",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": []
+  },
+  {
+   "id": "G27",
+   "titulo": "Saluda / vaivén con la palma abierta (6 s)",
+   "tipo": "info",
+   "ok": null,
+   "obs": "informativo: 0 cambios",
+   "transcripciones": [],
+   "cambios": []
+  },
+  {
+   "id": "G28",
+   "titulo": "Di “LeIA, siguiente” y AL INSTANTE haz un swipe a la derecha",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 9 s",
+   "transcripciones": [
+    " bella siguiente"
+   ]
+  }
+ ]
+}

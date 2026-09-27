@@ -20,7 +20,9 @@
 | T10 tests del detector (49) | ✅ | `aa8b2b6` |
 | T11 `presentador.js` (arranque, navegación, cooldown, bloqueo de telemetría) | ✅ | `04aa3b9` |
 | T12 teclas M/E/I e indicador | ✅ | `5a298dc` |
-| T13–T18 | pendientes (**parada aquí a la espera de revisión**) | — |
+| T13 voz en el navegador | ✅ 14/16 en vivo + 4/4 tras calibrar "de ella" | `72e78ae` |
+| T14 gestos en el navegador | 🟡 **código listo y probado; criterio en vivo NO cumplido** (2/10 inversos a la izquierda, 13/20 aciertos a un intento) — a la espera de decisión | (ver git log) |
+| T15–T18 | pendientes | — |
 
 Verificación previa de D1 (tecla `V` = pausa) resuelta el 2026-09-26: `V` → `E` (commit `4d4c1dd`).
 

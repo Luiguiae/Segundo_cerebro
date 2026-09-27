@@ -1,5 +1,6 @@
 // presentador.js — presentador por gestos y voz para decks Reveal.js (se inyecta al servir; ver presentar.py).
 // T11: bloqueo de telemetría, espera a Reveal, navegación con la semántica del SPEC y cooldown compartido.
+// T14: gestos (MediaPipe GestureRecognizer + detector v2 de swipe.js).
 // T13: voz (Web Speech API + parser de comandos.js).
 // T12: teclas M (gestos) / E (voz) / I (indicador) e indicador en pantalla. `V` es la pausa de Reveal y `G`/`H` también
 //      chocan con atajos suyos (ver SPEC, revisión 2026-09-26), por eso M/E/I.
@@ -26,6 +27,7 @@
     bloqueadas: [],                 // peticiones de telemetría bloqueadas
     control: { gestos: true, voz: true, indicador: true }, // lo que Luigui quiere (M, E, I); los motores (T13/T14) reportan lo que pasa
     debugTexto: '',                 // última transcripción cruda (solo con --debug)
+    debugGestos: '',                // estado de la mano (solo con --debug)
   };
   const motores = {};               // { gestos, voz } → { iniciar(), detener(), estado() → { estado, detalle } }
   let reveal = null;
@@ -117,6 +119,7 @@
       partes.push(`<div>${linea('gestos', 'Cámara', 'M')}</div>`, `<div>${linea('voz', 'Micrófono', 'E')}</div>`);
       if (estado.ultimoComando) partes.push(`<div class="ult">${esc(estado.ultimoComando.texto)} <span class="k">${esc(estado.ultimoComando.canal)}</span></div>`);
       if (CONFIG.debug && estado.debugTexto) partes.push(`<div class="dbg">oyó: “${esc(estado.debugTexto)}”</div>`);
+      if (CONFIG.debug && estado.debugGestos) partes.push(`<div class="dbg">${esc(estado.debugGestos)}</div>`);
       caja.innerHTML = partes.join('');
     } catch (e) { /* sin UI no pasa nada: la presentación sigue */ }
   }
@@ -344,8 +347,129 @@
     };
   })();
 
+  // ── 7. Gestos (T14) ──────────────────────────────────────────────────────────────────────────────
+  // MediaPipe Tasks Vision GestureRecognizer (JS/WASM, desde /vendor/, sin CDN) → centro de palma + categoría →
+  // detector v2 de swipe.js. Cámara 640×480. El swipe es un canal SECUNDARIO en v1 (plan.md §12): voz y teclado cubren
+  // los fallos, y ante conflicto gana 0 falsos positivos. La telemetría de MediaPipe ya está bloqueada (sección 1).
+  const motorGestos = (function () {
+    const CENTRO_PALMA = [0, 5, 9, 13, 17];   // muñeca + base de los 4 dedos
+    let activo = false, cargando = null, recognizer = null, delegado = '';
+    let stream = null, video = null, vfc = null, ultimoTs = 0, det = null;
+    let st = { estado: 'inactivo', detalle: '' };
+    let cuadros = 0, t0Cuadros = 0, fps = 0, fallosInferencia = 0, ultimoDebug = 0;
+    const fijar = (e, d) => { st = { estado: e, detalle: d }; dibujar(); };
+
+    async function cargarModelo() {
+      if (recognizer) return recognizer;
+      if (!cargando) {
+        cargando = (async () => {
+          const mod = await import('/vendor/tasks-vision/vision_bundle.mjs');
+          const vision = await mod.FilesetResolver.forVisionTasks('/vendor/tasks-vision/wasm');
+          let ultimo = null;
+          for (const d of ['GPU', 'CPU']) {
+            try {
+              recognizer = await mod.GestureRecognizer.createFromOptions(vision, {
+                baseOptions: { modelAssetPath: '/vendor/models/gesture_recognizer.task', delegate: d }, runningMode: 'VIDEO', numHands: 1 });
+              delegado = d; return recognizer;
+            } catch (e) { ultimo = e; }
+          }
+          throw ultimo;
+        })().catch((e) => { cargando = null; throw e; });
+      }
+      return cargando;
+    }
+
+    // Una muestra por cuadro: { t, x, y, categoria } (x, y = centro de palma normalizado, cuadro SIN espejar).
+    function alMuestra(m) {
+      if (!det) return null;
+      const dir = det.procesar(m);
+      if (dir) {
+        contadores.gestos.acciones++;
+        emitir({ tipo: 'gesto', dir });
+        navegar({ accion: 'paso', delta: dir === 'derecha' ? 1 : -1 }, 'gesto');
+      }
+      return dir;
+    }
+
+    function paso(now) {
+      if (!activo || !recognizer || !video) return;
+      vfc = video.requestVideoFrameCallback(paso);
+      ultimoTs = Math.max(ultimoTs + 1, Math.round(now));
+      let res = null;
+      try { res = recognizer.recognizeForVideo(video, ultimoTs); fallosInferencia = 0; }
+      catch (e) { if (++fallosInferencia > 30) { fijar('error', 'error del modelo: ' + (e && e.message || e)); } return; }
+      const m = { t: now, x: null, y: null, categoria: null };
+      const lm = res && res.landmarks && res.landmarks[0];
+      if (lm) {
+        m.x = CENTRO_PALMA.reduce((a, i) => a + lm[i].x, 0) / CENTRO_PALMA.length;
+        m.y = CENTRO_PALMA.reduce((a, i) => a + lm[i].y, 0) / CENTRO_PALMA.length;
+        const g = res.gestures && res.gestures[0] && res.gestures[0][0];
+        m.categoria = g ? g.categoryName : null;
+      }
+      cuadros++;
+      if (now - t0Cuadros >= 2000) { fps = Math.round(cuadros * 1000 / (now - t0Cuadros)); cuadros = 0; t0Cuadros = now; if (st.estado === 'activo') fijar('activo', `activa · ${fps} fps`); }
+      alMuestra(m);
+      if (CONFIG.debug && now - ultimoDebug > 200) {
+        ultimoDebug = now;
+        estado.debugGestos = m.x === null ? 'mano: —' : `mano: ${m.categoria || 'ninguna'} · x=${m.x.toFixed(2)}`;
+        dibujar();
+      }
+    }
+
+    function liberar() {
+      try { if (video && vfc !== null && video.cancelVideoFrameCallback) video.cancelVideoFrameCallback(vfc); } catch (e) { /* nada */ }
+      vfc = null;
+      if (stream) { stream.getTracks().forEach((tr) => { tr.onended = null; tr.stop(); }); stream = null; }
+      if (video) { video.srcObject = null; video.remove(); video = null; }
+      estado.debugGestos = '';
+    }
+
+    return {
+      async iniciar() {
+        if (activo) return;
+        if (!window.Swipe) { fijar('error', 'falta swipe.js'); return; }
+        activo = true; fijar('iniciando', 'cargando modelo…');
+        try {
+          await cargarModelo();
+          if (!activo) return;
+          fijar('iniciando', 'abriendo cámara…');
+          stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 30 } }, audio: false });
+          if (!activo) { liberar(); return; }
+          video = document.createElement('video');
+          video.muted = true; video.playsInline = true; video.srcObject = stream;
+          video.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:0;top:0';
+          sombra().appendChild(video);
+          await video.play();
+          if (!activo) { liberar(); return; }
+          stream.getVideoTracks()[0].onended = () => { if (activo) fijar('error', 'cámara desconectada'); };
+          det = window.Swipe.crearDetector();
+          cuadros = 0; t0Cuadros = performance.now(); fps = 0;
+          fijar('activo', 'activa');
+          vfc = video.requestVideoFrameCallback(paso);
+        } catch (e) {
+          const n = e && e.name;
+          if (n === 'NotAllowedError' || n === 'SecurityError') fijar('error', 'sin permiso de cámara');
+          else if (n === 'NotFoundError' || n === 'OverconstrainedError') fijar('error', 'sin cámara');
+          else if (n === 'NotReadableError') fijar('error', 'cámara en uso por otra app');
+          else fijar('error', 'gestos no disponibles: ' + (e && e.message || e));
+          liberar(); activo = false;    // los errores de permiso no se reintentan solos: M vuelve a intentarlo
+        }
+      },
+      detener() { activo = false; liberar(); if (det) det.reiniciar(); fijar('inactivo', 'apagado'); },
+      estado: () => st,
+      // interno (pruebas): inyectar una muestra sin cámara
+      _alMuestra: (m) => alMuestra(m),
+      _detector: () => det,
+      _crearDetectorDePrueba: () => { det = window.Swipe.crearDetector(); return det; },
+      info: () => ({ activo, delegado, fps }),
+    };
+  })();
+  // Un cambio de slide que NO viene del propio gesto (voz, teclado, clicker) inicia el cooldown del detector y exige
+  // nueva quietud; los cambios propios no, porque borrarían su bloqueo del sentido contrario.
+  suscriptores.push((t, origen) => { const d = motorGestos._detector(); if (d && origen !== 'gesto') d.notificarCambio(t); });
+
   window.Presentador = {
-    version: '0.3-T13',
+    version: '0.4-T14',
     config: CONFIG,
     COOLDOWN_MS,
     navegar,
@@ -361,7 +485,8 @@
     registrarMotor,
     debug: (texto) => { estado.debugTexto = String(texto); if (CONFIG.debug) dibujar(); },
     actualizarIndicador: dibujar,
-    _interno: { sombra },
+    _interno: { sombra, gestos: motorGestos },
   };
   window.Presentador.registrarMotor('voz', motorVoz);
+  window.Presentador.registrarMotor('gestos', motorGestos);
 })();

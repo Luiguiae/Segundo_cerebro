@@ -2,6 +2,22 @@
 
 ---
 
+### 2026-09-27 00:10 — presentador: T13 voz completada; T14 gestos probada en vivo y NO cumple el criterio de 0 inversos — detenido
+
+**Instrucción (Luigui):** T13–T16 en una sola sesión conmigo presente, guiándome en las pruebas en vivo; un commit por tarea; si un criterio de done falla y no lo puedo resolver, detenerme y avisar.
+
+**Acciones:** T13: motor de voz (Web Speech + `comandos.js`, dedupe por índice, espera D5, reinicio con espera creciente, error permanente) + arnés de pruebas en vivo con guía en pantalla (`tests/manual/vivo/`: `servir_vivo.py`, `guia.js`, guiones; ensayado antes con un reconocedor simulado, 16/16) → commit `72e78ae`. T14: motor de gestos (MediaPipe desde `vendor/`, 640×480, detector v2, notificación de cambios de otros canales); pruebas automáticas con cámara falsa en Chrome (carga, `M` libera la cámara, cooldown compartido con voz y teclado, 70 s con MediaPipe activo: telemetría bloqueada y 0 peticiones a Google) y prueba en vivo de 27 pasos.
+
+**Resultados:** T13 14/16 y 4/4 tras calibrar "de ella"; T14 en vivo 18/27: derecha 6/10, izquierda 7/10 con **2 inversos**, ida y vuelta 2/3 con un solo cambio, 0 falsos positivos en gesticulación/reposo/puño/vaivén. **No se cumple** "0 disparos inversos" ni el 8/10 a un intento (13/20). Detalle en `plan.md` §13.
+
+**Límites:** micrófono integrado (no había Bluetooth); una sola persona y sesión; la sesión de gestos no guardó trayectorias, así que no puedo diagnosticar los 2 inversos con datos; los "sin reacción" mezclan fallos del detector y de la colocación de la mano.
+
+**Pendiente (a decisión de Luigui):** diagnosticar los inversos con una ronda corta que grabe trayectorias reales, o aceptar gestos como experimentales (apagados por defecto), o plan B sin gestos; T15 y T16 no iniciadas; T17–T18 después. Sin tocar `jarvis.py`, `jarvis_daemon.py`, `.zshrc`, `RESOLVER.md`, `ATLAS.md` ni conceptos.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 23:59 — presentador: T09–T12 ejecutadas con el detector v2 aprobado; parada antes de T13
 
 **Instrucción (Luigui):** aprobado (a): detector v2 (categoría `Open_Palm` + mano abierta y quieta antes del trazo); swipe como canal secundario con meta 8/10 por lado en intentos válidos; 0 cambios no intencionales y 0 disparos inversos, y ante conflicto gana 0 falsos positivos; en T17 re-afinar solo si mejora la tasa sin falsos positivos y antes del congelamiento; ejecutar T09–T12 sin detenerse (un commit por tarea) y parar antes de T13 con resumen.
