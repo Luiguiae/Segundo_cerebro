@@ -824,19 +824,69 @@ def cargar_contenido_para_razonamiento(archivos_relevantes: list[str]) -> str:
 
 # ── Acciones — Claude Code ─────────────────────────────────────────────────────
 
-def ejecutar_claude(instruccion: str) -> str:
+# ── Perfiles de permisos de `claude --print` ─────────────────────────────────
+# Decisión de seguridad 2026-09-26 (Luigui), sustentada con pruebas de los 6
+# llamadores con sus prompts reales — ver JARVIS_LOG.md (entradas 23:00, 23:45 y
+# la de aplicación) y CONTEXTO_SEGUNDO_CEREBRO.md ("Riesgos aceptados").
+#
+# Todo llamador declara su perfil; no hay valor por defecto a propósito, para que
+# un llamador nuevo no herede `bypassPermissions` en silencio.
+#
+#  - "accion_directa": el input es la voz de Luigui (no texto de terceros) y el
+#    comando es abierto → sigue en bypass, pero sin conectores MCP (Gmail,
+#    Calendar, Drive, Figma, Prisma…: ningún intent del código los usa).
+#  - "taller": procesa transcripciones de reuniones (texto de terceros). Solo
+#    escribe en Inbox/. Sin Bash, sin web.
+#  - "watcher": evalúa un concepto del vault. Hoy `evaluar_concepto` es código
+#    inalcanzable (dca06ba, 2026-07-06, quitó lo único que lo disparaba); si se
+#    revive, su disparador (archivo .md nuevo en Conceptos/) también salta con
+#    conceptos que llegan por git pull, rutinas cloud o profundización externa
+#    del VPS, así que se trata como texto no confiable: Edit en Conocimiento/,
+#    Inbox/ y JARVIS_LOG.md, SIN Bash. El ATLAS lo regenera el auto-index del
+#    daemon (VaultEventHandler._ejecutar_auto_index), no claude.
+#  - "pantalla": profundizar/capturar reciben texto de pantalla (de terceros) y
+#    "no guardan": web sí, cero Edit/Write. Lectura y Bash de solo lectura (find,
+#    grep, cat) las permite dontAsk por defecto y las necesitan (leer Plantillas/,
+#    verificar slugs con find).
+#
+# Flags de los perfiles restringidos (todos probados; ver el log):
+#  - `--setting-sources ""`: sin él, las reglas `allow` de settings.local.json
+#    (git add/commit/push:*, etc.) se heredan bajo dontAsk — confirmado en el
+#    vault real con `code --list-extensions`.
+#  - `--strict-mcp-config`: cero conectores MCP (bypass carga 9).
+#  - `dontAsk`: deniega en silencio lo que no está en --allowedTools.
+#
+# RIESGO ACEPTADO (Luigui, 2026-09-26): en el perfil "pantalla", WebFetch +
+# lectura del vault permiten que un texto de pantalla malicioso intente exfiltrar
+# contenido del vault a una URL externa; el permiso no lo impide. No se resuelve
+# ahora. Registrado en CONTEXTO_SEGUNDO_CEREBRO.md.
+_CLAUDE_MODO_RESTRINGIDO = ["--permission-mode", "dontAsk", "--setting-sources", "",
+                            "--strict-mcp-config"]
+_CLAUDE_PERFILES = {
+    "accion_directa": ["--permission-mode", "bypassPermissions", "--strict-mcp-config"],
+    "taller":  _CLAUDE_MODO_RESTRINGIDO + ["--allowedTools", "Edit(Inbox/**)"],
+    "watcher": _CLAUDE_MODO_RESTRINGIDO + ["--allowedTools", "Edit(Conocimiento/**)",
+                                           "Edit(Inbox/**)", "Edit(JARVIS_LOG.md)"],
+    "pantalla": _CLAUDE_MODO_RESTRINGIDO + ["--allowedTools", "WebFetch", "WebSearch"],
+}
+
+
+def ejecutar_claude(instruccion: str, perfil: str) -> str:
     """Ejecuta claude CLI con la instrucción y devuelve el output.
 
-    --permission-mode bypassPermissions: sin esto, `claude --print` en modo
-    headless (sin TTY) deniega en SILENCIO cualquier Write/Edit que no esté
-    en la allowlist de .claude/settings.json — no hay allowlist de Write/Edit
-    en este proyecto, así que TODA escritura al vault vía esta función fallaba
-    (con returncode 0 y un texto de "permiso denegado" en vez de un error).
-    Confirmado en vivo el 2026-08-19 (ver JARVIS_LOG.md): reproducido con y sin
-    este flag, con el mismo env_limpia — solo el flag resuelve la escritura.
-    El límite de qué puede escribir Jarvis sigue viviendo en CLAUDE.md/AGENTS.md
-    (Gate 0, rúbrica, zonas de acceso) — eso no cambia con este flag, son reglas
-    que Claude sigue como instrucciones, no permisos de sistema operativo."""
+    `perfil` (obligatorio): clave de _CLAUDE_PERFILES — ver el bloque de arriba.
+
+    `bypassPermissions` existe porque, sin ningún permiso, `claude --print` en
+    modo headless (sin TTY) deniega en SILENCIO cualquier Write/Edit que no esté
+    en la allowlist de settings — hasta el 2026-08-19 TODA escritura al vault vía
+    esta función fallaba (returncode 0 y un texto de "permiso denegado" en vez de
+    un error). Los perfiles restringidos resuelven eso con una allowlist mínima
+    por llamador en vez de bypass.
+
+    La instrucción va por stdin, no como argumento: `--allowedTools` es variádico
+    y se tragaría el prompt posicional."""
+    if perfil not in _CLAUDE_PERFILES:
+        raise ValueError(f"perfil de claude desconocido: {perfil!r}")
     if not _claude_disponible():
         # Nunca sys.exit aquí: esta función corre dentro de threads del daemon,
         # no en un proceso standalone — un exit mataría el proceso completo.
@@ -845,7 +895,8 @@ def ejecutar_claude(instruccion: str) -> str:
     env_limpia = {k: v for k, v in os.environ.items()
                   if not k.startswith(("CLAUDE", "CURSOR_SPAWN"))}
     resultado = subprocess.run(
-        ["claude", "--print", "--permission-mode", "bypassPermissions", instruccion],
+        ["claude", "--print", *_CLAUDE_PERFILES[perfil]],
+        input=instruccion,
         cwd=str(CEREBRO_PATH),
         capture_output=True,
         text=True,
@@ -905,8 +956,25 @@ def _resumir_auditoria(output: str) -> str:
     return " ".join(partes)
 
 
+# Con los perfiles restringidos, claude comenta en su respuesta las escrituras que
+# dontAsk le denegó (p. ej. JARVIS_LOG.md en los flujos de pantalla). Eso es ruido
+# de infraestructura, no contenido para leerle a Luigui en voz alta.
+_RUIDO_PERMISOS_RE = re.compile(
+    r"don'?t ?ask|dontask|modo de permisos|permission mode|permission denied|"
+    r"permiso[s]?\b.*(denegad|bloquead|rechazad)|(denegad|bloquead|rechazad)\w*.*\bpermiso|"
+    r"(escritura|edit|write|herramienta)\w*.*(denegad|bloquead)\w*|(denegad|bloquead)\w*.*(escritura|\bedit\b|\bwrite\b)|"
+    r"no voy a (intentar )?(sortear|rodear|esquivar)",
+    re.IGNORECASE,
+)
+
+
+def _quitar_ruido_permisos(output: str) -> str:
+    return "\n".join(l for l in output.splitlines() if not _RUIDO_PERMISOS_RE.search(l))
+
+
 def resumir_output_para_voz(output: str, max_chars: int = 600) -> str:
     """Extrae una respuesta apta para TTS del output de Claude Code."""
+    output = _quitar_ruido_permisos(output)
     if any(k in output.lower() for k in _AUDIT_MARKERS):
         return _resumir_auditoria(output)
 
@@ -1346,7 +1414,7 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         hablar("Profundizando lo que estás leyendo. Revisa Claude Code en un momento.")
         emitir_evento("ejecutando", instruccion[:60])
         try:
-            output = ejecutar_claude(prompt)
+            output = ejecutar_claude(prompt, perfil="pantalla")
             resumen = resumir_output_para_voz(output)
         except subprocess.TimeoutExpired:
             hablar("Claude tardó demasiado al profundizar.")
@@ -1382,7 +1450,7 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         hablar("Generando el concepto. Revisa Claude Code para aprobarlo.")
         emitir_evento("ejecutando", instruccion[:60])
         try:
-            output = ejecutar_claude(prompt)
+            output = ejecutar_claude(prompt, perfil="pantalla")
             resumen = resumir_output_para_voz(output)
         except subprocess.TimeoutExpired:
             hablar("Claude tardó demasiado al generar el concepto.")
@@ -1654,7 +1722,7 @@ def _despachar_intent_impl(intent: str, params: dict, texto_transcrito: str, vis
         f"Instrucción de voz de Luigui: \"{texto_transcrito}\""
     )
     try:
-        output = ejecutar_claude(f"Jarvis, {cmd}")
+        output = ejecutar_claude(f"Jarvis, {cmd}", perfil="accion_directa")
         resumen = resumir_output_para_voz(output)
     except subprocess.TimeoutExpired:
         hablar("Claude tardó demasiado. Revisa la terminal, Luigui.")

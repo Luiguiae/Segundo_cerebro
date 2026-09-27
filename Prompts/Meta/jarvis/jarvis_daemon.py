@@ -606,10 +606,11 @@ def _ejecutar_accion_pendiente(tipo: str, param: str) -> None:
     elif tipo == "evaluar_concepto":
         instruccion = (
             f"Evalúa el concepto {param} contra la rúbrica en Plantillas/rubrica.md, "
-            f"actualiza su campo estado en el frontmatter, regenera INDEX.md con "
-            f"generar_index.py, y propón 2 correlaciones con conceptos existentes del vault."
+            f"actualiza su campo estado en el frontmatter, y propón 2 correlaciones con "
+            f"conceptos existentes del vault. No regeneres el ATLAS: el daemon lo hace solo "
+            f"al detectar el cambio."
         )
-        output = ejecutar_claude(instruccion)
+        output = ejecutar_claude(instruccion, perfil="watcher")
         hablar(resumir_output_para_voz(output))
         registrar_en_jarvis_log("WATCHER", f"Nuevo concepto: {param}", "Evaluado y correlacionado")
     elif tipo == "leer_correlacion":
@@ -1327,7 +1328,7 @@ def _extraer_candidatos_taller(transcript_path: Path) -> "tuple[str, int]":
         f"cuando Luigui decida qué candidatos vale la pena profundizar."
     )
     try:
-        salida = ejecutar_claude(instruccion)
+        salida = ejecutar_claude(instruccion, perfil="taller")
     except Exception as e:
         log(f"[Taller] Error en extracción de candidatos: {e}")
         return ("Tuve un problema extrayendo los candidatos. El transcript quedó guardado en la bandeja de entrada.", 0)
@@ -1412,7 +1413,7 @@ def _analizar_sesion_taller(transcript_path: Path) -> bool:
         f"análisis de la sesión como reunión, no una evaluación de conceptos."
     )
     try:
-        ejecutar_claude(instruccion)
+        ejecutar_claude(instruccion, perfil="taller")
     except Exception as e:
         log(f"[Taller] Error en análisis de sesión: {e}")
         return False

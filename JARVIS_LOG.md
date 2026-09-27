@@ -2,6 +2,29 @@
 
 ---
 
+### 2026-09-26 20:55 — perfiles de permisos aplicados en `ejecutar_claude()` + filtro de voz; daemon reiniciado
+
+**Instrucción (Luigui):** aplicar la opción 2 con ajustes — watcher según el resultado de confirmar en el código si `evaluar_concepto` puede dispararse sobre contenido que Luigui no redactó (sí → Opción B, no → C); taller solo `Edit(Inbox/**)`; todos los restringidos con `--setting-sources ""` y `--strict-mcp-config`; `accion_directa` bypass + `--strict-mcp-config` previa confirmación en el código de que ningún intent usa Gmail/Calendar/Drive/Figma/Prisma; registrar el riesgo residual de exfiltración por WebFetch como aceptado; filtrar el ruido de permisos denegados antes de la voz.
+
+**Confirmaciones en el código:**
+- `evaluar_concepto`: **hoy es código inalcanzable.** Lo único que fijaba `("evaluar_concepto", slug)` en `_accion_pendiente_watcher` se eliminó en `dca06ba` (2026-07-06, "auto-regenera el ATLAS…"); las únicas asignaciones vivas son `("leer_correlacion", path)`. Si se revive, su disparador natural (`VaultEventHandler.on_created` sobre cualquier `.md` en Conceptos/, recursivo) también dispara con conceptos que llegan por git pull, rutinas cloud o `_guardar_profundizacion` (contenido de la investigación externa del VPS fusionado en un concepto) — no hay garantía de que Luigui lo redactó → **Opción B**.
+- Conectores: 0 referencias a gmail/calendar/drive/figma/prisma/atlassian/`mcp__`/second-brain-starter en `Prompts/**/*.py`, `CLAUDE.md`, `AGENTS.md` ni `.claude/settings.json`. `mejora_009_mcp.py` (huérfanos/tag) es filesystem puro, no un servidor MCP. Los 7 intents documentados no los necesitan. Límite: no hay bitácora histórica de qué herramientas usó claude, así que no se puede descartar que algún comando libre pasado los usara.
+
+**Acciones (`jarvis.py`, `jarvis_daemon.py`):**
+- `ejecutar_claude(instruccion, perfil)`: `perfil` obligatorio (sin default: un llamador nuevo no hereda bypass) → `_CLAUDE_PERFILES`: `accion_directa` = bypass + `--strict-mcp-config`; `taller` = dontAsk + `--setting-sources ""` + `--strict-mcp-config` + `Edit(Inbox/**)`; `watcher` = idem + `Edit(Conocimiento/**)`, `Edit(Inbox/**)`, `Edit(JARVIS_LOG.md)`, sin Bash; `pantalla` = idem + `WebFetch`, `WebSearch`. Prompt por stdin (`--allowedTools` es variádico y se tragaba el argumento posicional).
+- 6 llamadores actualizados con su perfil (daemon: watcher, taller×2; jarvis.py: profundizar, capturar → pantalla, accion_directa).
+- Prompt de `evaluar_concepto`: se quitó "regenera INDEX.md con generar_index.py" (nombre obsoleto y sin Bash no puede; el auto-index del daemon ya lo hace) y se añadió "no regeneres el ATLAS".
+- `_quitar_ruido_permisos()` aplicado al inicio de `resumir_output_para_voz()`: descarta líneas que comentan permisos denegados/modo dontAsk antes de la voz (probado con 4 líneas de ruido reales y 4 legítimas).
+- Riesgo residual de exfiltración (profundizar/capturar): **aceptado**, registrado en `CONTEXTO_SEGUNDO_CEREBRO.md` ("Riesgos aceptados") y en el comentario de `_CLAUDE_PERFILES`.
+
+**Verificación:** compila; función real importada como la importa el daemon: sin perfil → TypeError, perfil inválido → ValueError, perfil `pantalla` intentando Write en el vault real → DENEGADO y sin archivo; watcher nuevo (prompt nuevo + perfil B) 3/3 en vault de prueba con ruta real (evalúa, actualiza `estado`, escribe JARVIS_LOG, propone correlaciones; 1-2 denegaciones de Bash exploratorio compuesto sin impacto). Vault real intacto. **Daemon reiniciado 20:51 (`launchctl kickstart -k`), PID 56187, escuchando.** Los perfiles de taller y de pantalla no se probaron de extremo a extremo por voz tras el reinicio (las pruebas fueron con los mismos flags y prompts reales).
+
+**Post-mortem:** pendiente — ¿regla permanente? incidente: 2 hipótesis mías erradas durante la prueba (vault de prueba bajo symlink daba falsos "denegado"; prueba de fuga con un comando no cubierto por las reglas). Regla propuesta: "Toda llamada a `ejecutar_claude()` declara un perfil explícito; solo `accion_directa` usa `bypassPermissions`, y todo perfil restringido lleva `--setting-sources \"\"` y `--strict-mcp-config`."
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 23:45 — prueba de los 6 llamadores de `ejecutar_claude()` con prompts reales (SIN cambios en `jarvis.py`; a la espera de confirmación de Luigui)
 
 **Instrucción (Luigui):** opción 2 aprobada con ajuste — watcher y modo taller (`Edit` de Conocimiento/Inbox/Backlog/JARVIS_LOG + `Bash(python3 Prompts/Meta/generar_index.py)`, sin web); profundizar/capturar (`WebFetch`, `WebSearch`, cero `Edit`); `accion_directa` sigue en bypass. Probar los 6 llamadores con sus prompts reales y confirmar resultados ANTES de tocar `jarvis.py`.
