@@ -1,5 +1,6 @@
 // presentador.js — presentador por gestos y voz para decks Reveal.js (se inyecta al servir; ver presentar.py).
 // T11: bloqueo de telemetría, espera a Reveal, navegación con la semántica del SPEC y cooldown compartido.
+// T13: voz (Web Speech API + parser de comandos.js).
 // T12: teclas M (gestos) / E (voz) / I (indicador) e indicador en pantalla. `V` es la pausa de Reveal y `G`/`H` también
 //      chocan con atajos suyos (ver SPEC, revisión 2026-09-26), por eso M/E/I.
 //
@@ -28,7 +29,11 @@
   };
   const motores = {};               // { gestos, voz } → { iniciar(), detener(), estado() → { estado, detalle } }
   let reveal = null;
-  const suscriptores = [];          // callbacks para "cambió el slide" (p. ej. swipe.notificarCambio en T14)
+  const suscriptores = [];          // callbacks para "cambió el slide": f(t, origen) (p. ej. swipe.notificarCambio en T14)
+  const oyentes = [];               // bus de eventos (comandos, transcripciones…): f(evento) — lo usan las guías de prueba y T17
+  let origenActual = null;          // canal que está moviendo Reveal en este instante ('voz' | 'gesto' | 'consola'), null si es teclado/clicker/otro
+  const contadores = { voz: { acciones: 0, reinicios: 0, errores: 0 }, gestos: { acciones: 0 } };
+  function emitir(ev) { ev.t = Math.round(performance.now()); for (const f of oyentes) { try { f(ev); } catch (e) { console.warn('[presentador] oyente:', e); } } }
 
   // ── 1. Bloqueo de telemetría ────────────────────────────────────────────────────────────────────
   // MediaPipe Tasks Vision 1.0.1 crea SIEMPRE un registrador de uso que envía métricas a Google cada 60 s
@@ -193,27 +198,33 @@
     if (!R) return { cambio: false, motivo: 'sin-reveal' };
     if (!cmd || !['paso', 'salto', 'inicio'].includes(cmd.accion)) return { cambio: false, motivo: 'accion-desconocida' };
     const ahora = performance.now();
-    if (ahora - estado.ultimoCambioMs < COOLDOWN_MS) return { cambio: false, motivo: 'cooldown' };
+    const base = { tipo: 'comando', canal: canal || 'consola', accion: cmd.accion, delta: cmd.delta };
+    if (ahora - estado.ultimoCambioMs < COOLDOWN_MS) { emitir({ ...base, ejecutado: false, motivo: 'cooldown' }); return { cambio: false, motivo: 'cooldown' }; }
 
     const antes = firma(R);
-    if (cmd.accion === 'paso') { if (cmd.delta > 0) R.next(); else R.prev(); }
-    else if (cmd.accion === 'salto') {
-      const n = R.getHorizontalSlides().length;
-      R.slide(tope(R.getIndices().h + cmd.delta, 0, n - 1), 0);
-    } else R.slide(0, 0);
+    origenActual = canal || 'consola';
+    try {
+      if (cmd.accion === 'paso') { if (cmd.delta > 0) R.next(); else R.prev(); }
+      else if (cmd.accion === 'salto') {
+        const n = R.getHorizontalSlides().length;
+        R.slide(tope(R.getIndices().h + cmd.delta, 0, n - 1), 0);
+      } else R.slide(0, 0);
+    } finally { origenActual = null; }
 
-    if (firma(R) === antes) return { cambio: false, motivo: 'sin-cambio' }; // p. ej. "siguiente" en el último slide
+    if (firma(R) === antes) { emitir({ ...base, ejecutado: false, motivo: 'sin-cambio' }); return { cambio: false, motivo: 'sin-cambio' }; } // p. ej. "siguiente" en el último slide
     const total = R.getHorizontalSlides().length, h = R.getIndices().h;
     const texto = textoComando(cmd, h + 1, total);
     estado.ultimoComando = { texto, canal: canal || 'consola', h: h + 1, total };
-    marcarCambio(); // por si el evento de Reveal llega después
+    marcarCambio(canal || 'consola'); // por si el evento de Reveal llega después
     dibujar();
+    emitir({ ...base, ejecutado: true, texto, h: h + 1, total });
     return { cambio: true, texto, h: h + 1, total };
   }
 
-  function marcarCambio() {
+  function marcarCambio(origen) {
     estado.ultimoCambioMs = performance.now();
-    for (const f of suscriptores) { try { f(estado.ultimoCambioMs); } catch (e) { console.warn('[presentador] suscriptor:', e); } }
+    const o = typeof origen === 'string' ? origen : (origenActual || 'otro'); // 'otro' = teclado, clicker…
+    for (const f of suscriptores) { try { f(estado.ultimoCambioMs, o); } catch (e) { console.warn('[presentador] suscriptor:', e); } }
   }
 
   // ── 5. Arranque ──────────────────────────────────────────────────────────────────────────────────
@@ -227,21 +238,123 @@
     reveal = R;
     estado.reveal = 'listo';
     // Cooldown compartido con cualquier canal (teclado y clicker incluidos); sus teclas NUNCA se bloquean.
-    for (const ev of ['slidechanged', 'fragmentshown', 'fragmenthidden']) R.on(ev, marcarCambio);
+    for (const ev of ['slidechanged', 'fragmentshown', 'fragmenthidden']) R.on(ev, () => marcarCambio());
     estado.ultimoCambioMs = -Infinity; // el cambio inicial de Reveal al arrancar no cuenta
     if (CONFIG.debug) console.info('[presentador] Reveal listo');
     for (const [nombre, m] of Object.entries(motores)) if (estado.control[nombre] && typeof m.iniciar === 'function') Promise.resolve(m.iniciar()).catch((e) => console.warn('[presentador]', nombre, e));
     dibujar();
   }).catch((e) => { estado.reveal = 'error'; aviso('Presentador: error al iniciar (' + (e && e.message || e) + ')'); });
 
+  // ── 6. Voz (T13) ─────────────────────────────────────────────────────────────────────────────────
+  // Web Speech API de Chrome (continuous + interimResults) + parser de comandos.js (probado en tests/comandos.test.js).
+  //  · Un mismo enunciado dispara UNA acción: cada resultado se identifica por su índice y, al dispararse, ese índice
+  //    queda consumido (sus siguientes actualizaciones, incluido el resultado final, se ignoran).
+  //  · D5: "avanza" puede ser el inicio de "avanza 3": esos interinos esperan ~500 ms de texto estable (o el final).
+  //  · Chrome corta el reconocimiento continuo tras silencios: se reinicia solo en onend/onerror, con espera creciente
+  //    si el error persiste (red); 'not-allowed' y 'service-not-allowed' son permanentes (no se reintenta).
+  const motorVoz = (function () {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const LANG = CONFIG.lang || 'es-PE';
+    const ESTABLE_MS = 500;
+    let rec = null, activo = false, permanente = false, reinicio = null;
+    let fallos = 0, inicioSesion = 0, huboError = false, ultimoError = '';
+    let consumidos = new Set(), pendientes = new Map(); // índice → { texto, timer }
+    let st = { estado: 'inactivo', detalle: '' };
+    const fijar = (e, d) => { st = { estado: e, detalle: d }; dibujar(); };
+
+    function limpiarPendientes() { for (const p of pendientes.values()) clearTimeout(p.timer); pendientes.clear(); }
+
+    function ejecutar(r, texto, indice) {
+      consumidos.add(indice);
+      const p = pendientes.get(indice); if (p) { clearTimeout(p.timer); pendientes.delete(indice); }
+      contadores.voz.acciones++;
+      emitir({ tipo: 'voz-comando', texto, indice, accion: r.accion, delta: r.delta, conPrefijo: r.conPrefijo });
+      navegar({ accion: r.accion, delta: r.delta }, 'voz');
+    }
+
+    function alResultado(e) {
+      fallos = 0;
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const res = e.results[i];
+        const texto = (res[0] && res[0].transcript) || '';
+        const esFinal = !!res.isFinal;
+        estado.debugTexto = texto + (esFinal ? '' : ' …');
+        emitir({ tipo: 'transcripcion', texto, final: esFinal, indice: i });
+        if (consumidos.has(i)) continue;
+        const r = window.Comandos.interpretar(texto, esFinal);
+        if (!r) { const p = pendientes.get(i); if (p) { clearTimeout(p.timer); pendientes.delete(i); } continue; }
+        if (r.definitivo) { ejecutar(r, texto, i); continue; }
+        // interino ambiguo (D5): esperar a que el texto se estabilice; el resultado final lo resuelve antes
+        const previo = pendientes.get(i); if (previo) clearTimeout(previo.timer);
+        pendientes.set(i, { texto, timer: setTimeout(() => {
+          if (consumidos.has(i)) return;
+          const r2 = window.Comandos.interpretar(texto, false);
+          if (r2) ejecutar(r2, texto, i);
+        }, ESTABLE_MS) });
+      }
+      dibujar();
+    }
+
+    function programar(ms) {
+      clearTimeout(reinicio);
+      reinicio = setTimeout(arrancar, ms);
+    }
+
+    function arrancar() {
+      if (!activo || permanente) return;
+      try {
+        rec = new SR();
+        rec.lang = LANG; rec.continuous = true; rec.interimResults = true; rec.maxAlternatives = 1;
+        rec.onstart = () => { consumidos.clear(); limpiarPendientes(); inicioSesion = Date.now(); huboError = false; fijar('iniciando', 'conectando…'); };
+        rec.onaudiostart = () => fijar('activo', 'escuchando');
+        rec.onresult = alResultado;
+        rec.onerror = (e) => {
+          huboError = true; ultimoError = e.error; contadores.voz.errores++;
+          emitir({ tipo: 'voz-error', error: e.error });
+          if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { permanente = true; fijar('error', 'sin permiso de micrófono'); }
+          else if (e.error === 'network') { fallos++; fijar('error', 'sin internet — reintentando'); }
+          else if (e.error === 'audio-capture') { fallos++; fijar('error', 'sin micrófono'); }
+          else if (e.error !== 'no-speech' && e.error !== 'aborted') { fallos++; fijar('error', 'error: ' + e.error); }
+        };
+        rec.onend = () => {
+          limpiarPendientes();
+          if (!activo || permanente) return;
+          contadores.voz.reinicios++;
+          const benigno = !huboError || ultimoError === 'no-speech' || ultimoError === 'aborted';
+          if (benigno && Date.now() - inicioSesion > 3000) fallos = 0;
+          programar(benigno ? 200 : Math.min(5000, 300 * 2 ** Math.min(fallos, 5)));
+        };
+        rec.start();
+      } catch (e) { fallos++; fijar('error', 'no arranca: ' + (e && e.message || e)); programar(Math.min(5000, 300 * 2 ** Math.min(fallos, 5))); }
+    }
+
+    return {
+      iniciar() {
+        if (activo) return;
+        if (!SR) { fijar('error', 'este Chrome no tiene reconocimiento de voz'); return; }
+        if (!window.Comandos) { fijar('error', 'falta comandos.js'); return; }
+        activo = true; permanente = false; fallos = 0; fijar('iniciando', 'conectando…'); arrancar();
+      },
+      detener() {
+        activo = false; clearTimeout(reinicio); limpiarPendientes();
+        try { if (rec) { rec.onend = null; rec.abort(); } } catch (e) { /* ya estaba parado */ }
+        fijar('inactivo', 'apagado');
+      },
+      estado: () => st,
+    };
+  })();
+
   window.Presentador = {
-    version: '0.2-T12',
+    version: '0.3-T13',
     config: CONFIG,
     COOLDOWN_MS,
     navegar,
     estado: () => ({ reveal: estado.reveal, ultimoCambioMs: estado.ultimoCambioMs, ultimoComando: estado.ultimoComando }),
     bloqueadas: () => estado.bloqueadas.slice(),
     alCambiar: (f) => { suscriptores.push(f); },
+    alEvento: (f) => { oyentes.push(f); },
+    estadisticas: () => JSON.parse(JSON.stringify(contadores)),
+    motores: () => Object.fromEntries(Object.entries(motores).map(([n, m]) => [n, m.estado ? m.estado() : { estado: 'activo' }])),
     aviso,
     control: () => Object.assign({}, estado.control),
     alternar,
@@ -250,4 +363,5 @@
     actualizarIndicador: dibujar,
     _interno: { sombra },
   };
+  window.Presentador.registrarMotor('voz', motorVoz);
 })();

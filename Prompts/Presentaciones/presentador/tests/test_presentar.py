@@ -194,6 +194,20 @@ class InyeccionEnServidor(Base):
         self.assertIn(b'"debug": true', self.pedir("/")[1])
 
 
+class InyeccionExtra(Base):
+    def test_extra_se_anade_tras_los_scripts(self):
+        r = presentar.inyectar(b"<body></body>", extra=b'<script src="/__guia/guia.js"></script>\n')
+        self.assertLess(r.index(b"presentador.js"), r.index(b"/__guia/guia.js"))
+        self.assertLess(r.index(b"/__guia/guia.js"), r.index(b"</body>"))
+
+    def test_servidor_con_extra(self):
+        self.srv.cfg.inyectar = True; self.srv.cfg.extra = b'<script id="guia"></script>\n'
+        self.assertIn(b'id="guia"', self.pedir("/")[1])
+
+    def test_sin_extra_igual_que_antes(self):
+        self.assertEqual(presentar.inyectar(b"<body></body>"), presentar.inyectar(b"<body></body>", extra=b""))
+
+
 class Cli(unittest.TestCase):
     def ejecutar(self, argv, vendor):
         err = io.StringIO()

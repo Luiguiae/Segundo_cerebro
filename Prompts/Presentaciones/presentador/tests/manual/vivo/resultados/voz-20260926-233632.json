@@ -1,0 +1,220 @@
+{
+ "guion": "voz",
+ "variante": "",
+ "inicio": "2026-09-27T04:33:29.404Z",
+ "fin": "2026-09-27T04:36:32.805Z",
+ "resumen": {
+  "total": 16,
+  "ok": 14,
+  "fallos": 2
+ },
+ "estadisticas": {
+  "voz": {
+   "acciones": 12,
+   "reinicios": 1,
+   "errores": 1
+  },
+  "gestos": {
+   "acciones": 0
+  }
+ },
+ "motores": {
+  "voz": {
+   "estado": "activo",
+   "detalle": "escuchando"
+  }
+ },
+ "bloqueadas": [],
+ "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "pasos": [
+  {
+   "id": "V01",
+   "titulo": "Di:  “LeIA, siguiente”",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 12 s",
+   "transcripciones": []
+  },
+  {
+   "id": "V02",
+   "titulo": "Di:  “LeIA, retrocede”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (4077 ms tras el aviso)",
+   "transcripciones": [
+    " leia retrocede"
+   ],
+   "latencia_desde_aviso_ms": 4077,
+   "n_acciones": 1
+  },
+  {
+   "id": "V03",
+   "titulo": "Di:  “Siguiente”   (a secas, y haz una pausa)",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (3730 ms tras el aviso)",
+   "transcripciones": [
+    " siguiente"
+   ],
+   "latencia_desde_aviso_ms": 3730,
+   "n_acciones": 1
+  },
+  {
+   "id": "V04",
+   "titulo": "Di:  “Retrocede”   (a secas, y haz una pausa)",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (3172 ms tras el aviso)",
+   "transcripciones": [
+    " retrocede"
+   ],
+   "latencia_desde_aviso_ms": 3172,
+   "n_acciones": 1
+  },
+  {
+   "id": "V05",
+   "titulo": "Di:  “Avanza tres slides”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "+3 → 8/12 (3910 ms tras el aviso)",
+   "transcripciones": [
+    " avanza tres slides"
+   ],
+   "latencia_desde_aviso_ms": 3910,
+   "n_acciones": 1
+  },
+  {
+   "id": "V06",
+   "titulo": "Di:  “LeIA, retrocede dos slides”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "−2 → 7/12 (4042 ms tras el aviso)",
+   "transcripciones": [
+    " leía retrocede dos slides"
+   ],
+   "latencia_desde_aviso_ms": 4042,
+   "n_acciones": 1
+  },
+  {
+   "id": "V07",
+   "titulo": "Di:  “Vuelve al inicio”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "inicio → 1/12 (3469 ms tras el aviso)",
+   "transcripciones": [
+    " vuelve al inicio"
+   ],
+   "latencia_desde_aviso_ms": 3469,
+   "n_acciones": 1
+  },
+  {
+   "id": "V08",
+   "titulo": "Di:  “LeIA, siguiente”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 3/12 (2538 ms tras el aviso)",
+   "transcripciones": [
+    " leía siguiente"
+   ],
+   "latencia_desde_aviso_ms": 2538,
+   "n_acciones": 1
+  },
+  {
+   "id": "V09",
+   "titulo": "Di:  “LeIA, avanza una diapositiva”",
+   "tipo": "cambio",
+   "ok": false,
+   "obs": "no reaccionó en 12 s",
+   "transcripciones": [
+    " de ella avanza una diapositiva"
+   ]
+  },
+  {
+   "id": "V10",
+   "titulo": "Di la frase:  “veamos el siguiente punto”",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": [
+    " veamos el siguiente punto"
+   ]
+  },
+  {
+   "id": "V11",
+   "titulo": "Habla con normalidad 12 s",
+   "tipo": "nada",
+   "ok": true,
+   "obs": "sin cambios (correcto)",
+   "transcripciones": []
+  },
+  {
+   "id": "V12",
+   "titulo": "No digas nada durante 30 s",
+   "tipo": "espera",
+   "ok": null,
+   "obs": "ok",
+   "transcripciones": []
+  },
+  {
+   "id": "V13",
+   "titulo": "Ahora di:  “LeIA, siguiente”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (2888 ms tras el aviso)",
+   "transcripciones": [
+    " leía siguiente"
+   ],
+   "latencia_desde_aviso_ms": 2888,
+   "n_acciones": 1
+  },
+  {
+   "id": "V14",
+   "titulo": "Di:  “LeIA, siguiente”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (2803 ms tras el aviso)",
+   "transcripciones": [
+    " leía siguiente"
+   ],
+   "latencia_desde_aviso_ms": 2803,
+   "n_acciones": 1
+  },
+  {
+   "id": "V15",
+   "titulo": "Di:  “LeIA, siguiente”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (6635 ms tras el aviso)",
+   "transcripciones": [
+    " ley siguiente",
+    " leía siguiente"
+   ],
+   "latencia_desde_aviso_ms": 6635,
+   "n_acciones": 1
+  },
+  {
+   "id": "V16",
+   "titulo": "Di:  “LeIA, atrás”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (2564 ms tras el aviso)",
+   "transcripciones": [
+    " leia atrás"
+   ],
+   "latencia_desde_aviso_ms": 2564,
+   "n_acciones": 1
+  },
+  {
+   "id": "V17",
+   "titulo": "Di:  “LeIA, siguiente”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (2494 ms tras el aviso)",
+   "transcripciones": [
+    " leía siguiente"
+   ],
+   "latencia_desde_aviso_ms": 2494,
+   "n_acciones": 1
+  }
+ ]
+}

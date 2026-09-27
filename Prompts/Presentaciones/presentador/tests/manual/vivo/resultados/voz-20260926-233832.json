@@ -1,0 +1,80 @@
+{
+ "guion": "voz",
+ "variante": "rapida",
+ "inicio": "2026-09-27T04:37:53.140Z",
+ "fin": "2026-09-27T04:38:32.376Z",
+ "resumen": {
+  "total": 4,
+  "ok": 4,
+  "fallos": 0
+ },
+ "estadisticas": {
+  "voz": {
+   "acciones": 4,
+   "reinicios": 0,
+   "errores": 0
+  },
+  "gestos": {
+   "acciones": 0
+  }
+ },
+ "motores": {
+  "voz": {
+   "estado": "activo",
+   "detalle": "escuchando"
+  }
+ },
+ "bloqueadas": [],
+ "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+ "pasos": [
+  {
+   "id": "V01",
+   "titulo": "Di:  “LeIA, siguiente”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "→ 7/12 (2843 ms tras el aviso)",
+   "transcripciones": [
+    "leía siguiente"
+   ],
+   "latencia_desde_aviso_ms": 2843,
+   "n_acciones": 1
+  },
+  {
+   "id": "V09",
+   "titulo": "Di:  “LeIA, avanza una diapositiva”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "+1 → 4/12 (3959 ms tras el aviso)",
+   "transcripciones": [
+    " leia avanza una diapositiva"
+   ],
+   "latencia_desde_aviso_ms": 3959,
+   "n_acciones": 1
+  },
+  {
+   "id": "V09b",
+   "titulo": "Di:  “LeIA, avanza una diapositiva”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "+1 → 4/12 (3798 ms tras el aviso)",
+   "transcripciones": [
+    " leía avanza una diapositiva"
+   ],
+   "latencia_desde_aviso_ms": 3798,
+   "n_acciones": 1
+  },
+  {
+   "id": "V02b",
+   "titulo": "Di:  “LeIA, retrocede”",
+   "tipo": "cambio",
+   "ok": true,
+   "obs": "← 6/12 (8660 ms tras el aviso)",
+   "transcripciones": [
+    " ley ya retrocede",
+    " leía retrocede"
+   ],
+   "latencia_desde_aviso_ms": 8660,
+   "n_acciones": 1
+  }
+ ]
+}

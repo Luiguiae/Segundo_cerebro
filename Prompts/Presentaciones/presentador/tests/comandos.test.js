@@ -179,3 +179,13 @@ test.describe('sufijo opcional (slide, diapositiva, lámina)', () => {
 test.describe('con prefijo pero sin comando reconocible', () => {
   for (const t of ['leia hola', 'leia gracias por venir', 'leia abre el menú']) caso(t, true, null);
 });
+
+test.describe('calibración en vivo (2026-09-26): así transcribió Chrome "LeIA"', () => {
+  caso('de ella avanza una diapositiva', true, CON('salto', +1));
+  caso('de ella siguiente', false, CON('paso', +1));
+  caso('leía siguiente', true, CON('paso', +1));
+  caso('de ella hablaremos luego', true, null);            // "de ella" sin comando pegado no dispara
+  caso('hablamos de ella y luego veremos el siguiente punto', true, null);
+  caso('según la ley siguiente', true, null);              // 'ley' NO es variante: evita un falso positivo real
+  caso('ley siguiente', true, null);
+});

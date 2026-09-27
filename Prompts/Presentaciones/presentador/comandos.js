@@ -23,7 +23,10 @@
 
   // Variantes de transcripción de "LeIA" (normalizadas). Se ajusta en el ensayo con lo que
   // realmente transcriba Chrome; se lee en cada llamada, así que puede editarse en caliente.
-  const VARIANTES_LEIA = ['leia', 'lea', 'le ia', 'lelia', 'leya'];
+  // Calibrado en la prueba en vivo del 2026-09-26 (Chrome, es-PE, micrófono integrado): Chrome transcribió "LeIA" como
+  // leia, leía, ley y "de ella". 'ley' NO se incluye por defecto: "la ley siguiente…" dispararía un cambio de slide
+  // (prioridad: 0 falsos positivos). Si en tu voz sale siempre 'ley', añádela aquí sabiendo ese riesgo.
+  const VARIANTES_LEIA = ['leia', 'lea', 'le ia', 'lelia', 'leya', 'de ella'];
 
   const UNIDADES = new Set(['slide', 'slides', 'diapositiva', 'diapositivas', 'lamina', 'laminas']);
 
