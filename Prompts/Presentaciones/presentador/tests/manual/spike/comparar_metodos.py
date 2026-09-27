@@ -97,13 +97,14 @@ def pred_geo_ori(tau=1.5, minimo=4, max_ang=45, palma=True):
     return f
 
 # ---- detector v2: mano abierta QUIETA justo antes del trazo ------------------------------------------
-def detector2(ms, abierta, TH=0.10, W=500, AST=300, KST=3, SP=0.04, CD=1500, DY=0.6, FRAC=0.6):
+def detector2(ms, abierta, TH=0.10, W=500, AST=300, KST=3, SP=0.04, CD=1500, DY=0.6, FRAC=0.6, GAP=400):
     """Evento si hay un trazo horizontal ≥TH en ≤W ms precedido por AST ms de mano abierta casi quieta
     (≥KST cuadros, ≥FRAC de ellos 'abierta', dispersión x/y ≤SP). La mano no necesita ser 'abierta' durante el trazo."""
     ev = []; ult = -1e9; hist = []
     for m in ms:
         if m["x"] is None: continue
         t = m["t"]
+        if GAP and hist and t - hist[-1][0] > GAP: hist = []      # hueco de detección largo: empezar de cero (igual que swipe.js)
         hist.append((t, m["x"], m["y"], abierta(m)))
         hist = [h for h in hist if t - h[0] <= W + AST + 50]
         if t - ult < CD: continue
