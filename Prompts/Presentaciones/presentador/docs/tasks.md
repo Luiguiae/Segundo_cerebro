@@ -13,7 +13,7 @@
 | T03 `demo/index.html` | ✅ | `1121998` |
 | T04 `presentar.py` (servidor + comprobación de `vendor/`) | ✅ | `afa63c4` |
 | T05 inyección de scripts | ✅ | `b4ec34a` |
-| T06 spike de gestos (go / no-go) | 🟡 **medido; a la espera de tu decisión** (ver plan.md §9) | (ver git log) |
+| T06 spike de gestos (go / no-go) | ✅ ronda 1 medida (`2c4fb13`); decisión tomada (plan.md §10); **ronda 2 a 640×480 con landmarks en curso** | `2c4fb13` |
 | T07 casos de prueba del parser (147) | ✅ | `b17c891` |
 | T08 `comandos.js` | ✅ 147/147 | `a542334` |
 | T09–T18 | pendientes | — |
@@ -112,7 +112,7 @@ Contrato compartido que usan varias tareas (ver T07/T09):
 ## F4 — Detector de swipe
 
 ### T09 · `swipe.js` — detector puro
-- **Descripción:** `crearDetector(config)` con `procesar(muestra)`. Condición: categoría `Open_Palm`, desplazamiento horizontal neto **>25 % del ancho** en **<400 ms**, desplazamiento vertical bajo (relación configurable), dirección invertida por el espejo. **Re-armado** (mitigación de R1): tras un disparo se ignora todo hasta que pasen los 1500 ms compartidos *y* la mano quede casi quieta o salga del cuadro. Umbrales en un objeto de configuración al inicio del archivo. Módulo dual (navegador / Node).
+- **Descripción:** `crearDetector(config)` con `procesar(muestra)`. Condición (revisión 2026-09-26, ver plan.md §10): **mano abierta como condición de armado** (método —categoría `Open_Palm` o dedos extendidos por landmarks— según la comparación offline de la ronda 2), desplazamiento horizontal neto **≥~10–12 % del ancho** en **≤500 ms**, desplazamiento vertical bajo (relación configurable), dirección invertida por el espejo. **Re-armado** (mitigación de R1): tras un disparo se ignora todo hasta que pasen los 1500 ms compartidos *y* la mano quede casi quieta o salga del cuadro. Umbrales en un objeto de configuración al inicio del archivo. Módulo dual (navegador / Node).
 - **Archivos:** `swipe.js`.
 - **Done:** pasa T10. Ancla: CU1 (todos los puntos), R1.
 
@@ -128,7 +128,8 @@ Contrato compartido que usan varias tareas (ver T07/T09):
 ### T11 · `presentador.js` — arranque, navegación y cooldown
 - **Descripción:** al cargarse, espera a Reveal (sondeo con tiempo límite + `Reveal.isReady()` + evento `ready`); si no aparece, deja un aviso en el indicador y no hace nada más. Expone `navegar(accion)` con la semántica del SPEC (`paso` → `next()/prev()`, `salto` → `slide(h±N)` con tope, `inicio` → `slide(0,0)`) y el **cooldown compartido de 1500 ms** para voz y gestos (usa `performance.now()`).
 - **Archivos:** `presentador.js`.
-- **Done:** en el demo, desde la consola, `navegar` mueve un fragment, N slides, al inicio, y se detiene en los extremos; una segunda llamada dentro de 1500 ms se ignora; con una página sin Reveal no lanza errores y muestra el aviso. Ancla: CA-Nav (todos), CA-Arranque (3.er punto), CA-Errores (sin Reveal), R6.
+- **Además (aprobado tras T06):** instala **antes de cualquier otra cosa** el bloqueo de `fetch`/XHR/`sendBeacon` hacia `odml.pa.googleapis.com` (telemetría de MediaPipe 1.0.1; ver plan.md §9–10), para que esté activo antes de que se cargue MediaPipe. Las peticiones bloqueadas se cuentan (visible en `--debug`).
+- **Done:** en el demo, desde la consola, `navegar` mueve un fragment, N slides, al inicio, y se detiene en los extremos; un `fetch` a `https://odml.pa.googleapis.com/v1/log` queda bloqueado y contado (y `fetch('/')` sigue funcionando); una segunda llamada dentro de 1500 ms se ignora; con una página sin Reveal no lanza errores y muestra el aviso. Ancla: CA-Nav (todos), CA-Arranque (3.er punto), CA-Errores (sin Reveal), R6.
 
 ### T12 · Teclas de control e indicador
 - **Descripción:** *(verificación previa de la condición de D1 ya hecha el 2026-09-26: `V` (keyCode 86) activa la pausa/pantalla negra en Reveal 6.0.2 → reemplazada por `E`; ver plan.md §3 D1).* Teclas **`M`** gestos, **`E`** voz ("escuchar"), **`I`** indicador, ignoradas si el foco está en un campo de texto y sin cancelar ninguna otra tecla; las flechas/espacio/clicker de Reveal no se tocan. Indicador con **Shadow DOM** (no lo afecta el CSS del deck), `position: fixed` en una esquina, `pointer-events: none`, sin alterar el layout: estado de cámara y micrófono y último comando (`+3 → 7/20`). Con `--debug`, una línea extra con la transcripción cruda.
@@ -141,7 +142,7 @@ Contrato compartido que usan varias tareas (ver T07/T09):
 - **Done:** "leia siguiente", "avanza tres slides", "vuelve al inicio" y "avanza 3" con y sin prefijo se comportan como los casos de T07 en vivo; **un enunciado = una acción** (el contador de acciones lo prueba); tras 30 s de silencio la voz sigue viva; "veamos el siguiente punto" no hace nada; en `--debug` se ve cómo transcribe Chrome "LeIA". Ancla: CU2, CU3, CU4, CA-Voz (dedupe, reinicio), R3, R4, R5, M-voz.
 
 ### T14 · Gestos en el navegador
-- **Descripción:** `getUserMedia` (resolución según T06), video oculto, bucle de `GestureRecognizer` con los parámetros que salgan del spike, alimentando `swipe.js`; el evento pasa por `navegar()` con el cooldown compartido. Gestos apagados con `M` **liberan la cámara** (se detienen los tracks: se apaga la luz y baja el CPU).
+- **Descripción:** `getUserMedia` a **640×480** (aprobado tras T06), video oculto, bucle de `GestureRecognizer` con los parámetros que salgan del spike, alimentando `swipe.js`; el evento pasa por `navegar()` con el cooldown compartido. Gestos apagados con `M` **liberan la cámara** (se detienen los tracks: se apaga la luz y baja el CPU).
 - **Archivos:** `presentador.js`.
 - **Done:** swipe a la derecha avanza un paso una sola vez, a la izquierda retrocede, el regreso de la mano no dispara, hablar gesticulando no cambia slides; `M` apaga y enciende la cámara; latencia percibida < 1 s; **0 peticiones externas con MediaPipe activo** (el bloqueo de `odml.pa.googleapis.com` está en `presentador.js`; ver plan.md §9). Ancla: CU1, CU5, R1, R2, M-swipe.
 

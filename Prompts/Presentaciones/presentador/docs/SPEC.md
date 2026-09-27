@@ -2,6 +2,8 @@
 
 > Proyecto: `~/Documents/Segundo_cerebro/Prompts/Presentaciones/presentador/` · Deadline: lunes 2026-09-28 (presentación de trabajo)
 
+> **Revisión 2026-09-26 (2.ª, tras el spike T06; aprobada por Luigui):** el swipe se mide con **~10–12 % del ancho del cuadro en <500 ms** (antes ~25 % en ~400 ms: a la distancia real un swipe recorre 13–21 % del ancho; ver `plan.md` §9), **con la mano abierta como condición de armado** (el método —categoría `Open_Palm` o dedos extendidos por landmarks— se fija con la comparación offline de la ronda 2), y la resolución de cámara por defecto es **640×480**. Además `presentador.js` **bloquea** la telemetría de MediaPipe hacia `odml.pa.googleapis.com` (`fetch`/XHR/`sendBeacon`).
+
 > **Revisión 2026-09-26 (aprobada por Luigui):** las teclas de control pasan de `G`/`V`/`H` a **`M` (gestos) / `E` (voz, "escuchar") / `I` (indicador)**. Verificado en `vendor/reveal/dist/reveal.js` (6.0.2): `H` = slide anterior, `G` = saltar a slide y **`V` (keyCode 86) = pausa / pantalla negra** (no figura en la ayuda de Reveal, solo en el código). `M`, `E` e `I` no las usa Reveal ni sus plugins (notes = `S`, search = Ctrl+Shift+F, zoom = Esc). El SPEC ya preveía reasignar si había choque (CU5).
 
 ## 1. Problema
@@ -26,7 +28,7 @@ Luigui presentando en el trabajo, de pie a menos de 2 m de su MacBook Pro Intel 
 - Si el salto excede los límites, se detiene en el primer o último slide.
 
 **CU1 — Swipe**
-- DADO que la cámara ve mi mano abierta (`Open_Palm`) a ≤2 m, CUANDO la desplazo horizontalmente hacia mi derecha más de ~25% del ancho del cuadro en menos de ~400 ms con poco desplazamiento vertical, ENTONCES avanza un paso exactamente una vez.
+- DADO que la cámara ve mi mano abierta (`Open_Palm`) a ≤2 m, CUANDO la desplazo horizontalmente hacia mi derecha más de ~10–12% del ancho del cuadro en menos de ~500 ms con poco desplazamiento vertical, ENTONCES avanza un paso exactamente una vez.
 - CUANDO hago el mismo movimiento hacia mi izquierda, ENTONCES retrocede un paso exactamente una vez.
 - La dirección se calcula desde la perspectiva del presentador (la imagen de la webcam viene en espejo y se invierte).
 - DADO que acaba de ocurrir un cambio por cualquier canal, CUANDO pasan menos de 1500 ms, ENTONCES se ignora todo movimiento y comando (cooldown compartido). Esto evita que el regreso de la mano después de un swipe dispare el sentido contrario.
@@ -73,7 +75,7 @@ Luigui presentando en el trabajo, de pie a menos de 2 m de su MacBook Pro Intel 
 
 ## 6. Stack / arquitectura
 - **Presentación:** HTML + Reveal.js. El proyecto trae Reveal.js en `vendor/` y `presentar.py` lo sirve en `/vendor/`, para que las presentaciones puedan referenciarlo localmente en vez de depender de un CDN el día de la charla.
-- **Gestos:** MediaPipe Tasks Vision `GestureRecognizer` (JS/WASM). Se usa la categoría `Open_Palm` como condición y los landmarks de la mano (centro de palma) para medir la trayectoria horizontal del swipe. Librería y modelo `gesture_recognizer.task` descargados en `vendor/` durante el setup (sin CDN en runtime).
+- **Gestos:** MediaPipe Tasks Vision `GestureRecognizer` (JS/WASM). La mano abierta es la condición de armado (categoría `Open_Palm` o dedos extendidos por landmarks: se decide con datos, ver la revisión del 2026-09-26) y los landmarks de la mano (centro de palma) miden la trayectoria horizontal del swipe. Cámara a 640×480. Librería y modelo `gesture_recognizer.task` descargados en `vendor/` durante el setup (sin CDN en runtime).
 - **Voz:** Web Speech API de Chrome (`continuous`, `interimResults`, `lang: es-PE`). Parser de comandos en el cliente (normalización de tildes, variantes de "LeIA", números en palabras), sin Groq.
 - **Servidor:** `presentar.py` con librería estándar de Python 3.11 (`http.server`) en `localhost:8765`. `localhost` es contexto seguro, requisito de `getUserMedia`. Sirve la carpeta de la presentación en `/`, el presentador en `/presentador/` y las librerías en `/vendor/`, e inyecta los scripts en `index.html`.
 - **Convivencia con Jarvis:** Jarvis local solo se activa con "Jarvis" y macOS permite que ambos usen el micrófono a la vez, así que no hay que pausarlo.
