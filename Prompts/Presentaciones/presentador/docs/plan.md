@@ -1,6 +1,6 @@
 # Plan — Presentador por gestos y voz (LeIA)
 
-> Estado: **borrador a la espera de aprobación** (2026-09-26). No hay código todavía.
+> Estado: **aprobado por Luigui el 2026-09-26** (D1–D6, con las condiciones de la sección 3). Ejecución en curso; ver `docs/tasks.md` para el avance.
 > Fuente: `docs/SPEC.md` (sin modificar). Deadline: lunes 2026-09-28.
 
 ## 1. Objetivo
@@ -23,12 +23,12 @@ Navegar un deck Reveal.js sin tocar la laptop: swipe de mano abierta y comandos 
 
 ## 3. Decisiones que necesito que apruebes (desvían o interpretan el SPEC)
 
-- **D1 — Teclas.** Las teclas `G`/`H` del SPEC chocan con Reveal, y `H` de la peor manera: al pulsarla para ocultar el indicador **retrocedería un slide**. El SPEC dice "si alguno choca, se reasigna". Propongo **`M` = gestos (mano), `V` = voz, `I` = indicador**, libres en los atajos por defecto de Reveal 6.0.2 (se vuelve a verificar en el spike con el deck real). Se cambian también en el checklist de ensayo. Alternativa descartada: interceptar `G`/`H` en fase de captura — anula atajos nativos de Reveal, contra "las teclas nativas siguen funcionando siempre".
+- **D1 — Teclas.** Las teclas `G`/`H` del SPEC chocan con Reveal, y `H` de la peor manera: al pulsarla para ocultar el indicador **retrocedería un slide**. El SPEC dice "si alguno choca, se reasigna". Propongo **`M` = gestos (mano), `V` = voz, `I` = indicador**, libres en los atajos por defecto de Reveal 6.0.2 (se vuelve a verificar en el spike con el deck real). Se cambian también en el checklist de ensayo. **Condición de la aprobación:** antes de T12, comprobar en `vendor/reveal/dist/reveal.js` si el `keyCode` 86 (`V`) está entre las teclas que activan la pausa / pantalla negra (no solo en la ayuda); si choca, se propone otra tecla libre, se verifica igual y se actualizan SPEC, tasks y checklist. Alternativa descartada: interceptar `G`/`H` en fase de captura — anula atajos nativos de Reveal, contra "las teclas nativas siguen funcionando siempre".
 - **D2 — Archivos extra sobre la estructura del SPEC**: `swipe.js` (detector puro, testeable con trazas reales), `tests/` (`comandos.test.js`, `swipe.test.js`, `test_presentar.py`, `manual/spike-gestos.html`) y `setup_vendor.py`. El SPEC ya pide que `comandos.js` sea testeable por separado; este plan lo extiende a `swipe.js`, el punto de mayor riesgo. No cambian el comportamiento.
 - **D3 — `vendor/` no se versiona en git** (≈ 50 MB, engordaría el repo para siempre). `setup_vendor.py` (solo librería estándar) lo reconstruye con versiones y hashes fijos. **Se corre el sábado, con internet, no el lunes.** Alternativa: versionarlo (más simple de reconstruir, repo más pesado).
 - **D4 — Interpretación de "con prefijo LeIA".** El prefijo debe ir **seguido inmediatamente** del comando ("… bueno, leia siguiente, gracias"), no comando suelto en cualquier parte del enunciado. Razón: "lea" es también el verbo ("que lea el siguiente párrafo"); con adyacencia no dispara.
 - **D5 — Interinos ambiguos.** Con prefijo se evalúan resultados intermedios, pero "avanza" puede ser el inicio de "avanza 3" y "avanza 1" el de "avanza 12". Regla: las palabras sin número posible (`siguiente`, `anterior`, `atrás`, `adelante`, `vuelve al inicio`) disparan al instante; las que admiten número (`avanza`, `adelanta`, `retrocede`, `regresa`) esperan ~500 ms de texto estable o el resultado final. Sigue dentro de "latencia < 1.5 s". Sin esto habría avances de 1 en lugar de 3.
-- **D6 — Audio de la voz sale a Google.** La Web Speech API de Chrome manda el audio al servicio de reconocimiento de Google mientras la voz está activa. El SPEC lo acepta implícitamente (Chrome + internet), pero la charla es de trabajo. Si el contenido es sensible, se usa `V` para apagar la voz (o se presenta solo con gestos + teclado). Los frames de la cámara **no** salen: MediaPipe corre local en WASM (se verifica en el spike: 0 requests salientes en la pestaña Network).
+- **D6 — Audio de la voz sale a Google.** La Web Speech API de Chrome manda el audio al servicio de reconocimiento de Google mientras la voz está activa. El SPEC lo acepta implícitamente (Chrome + internet), pero la charla es de trabajo. Si el contenido es sensible, se usa `V` para apagar la voz (o se presenta solo con gestos + teclado). **Aprobado tal cual:** el aviso va en el README y la decisión de usar voz la toma Luigui el día de la charla. Los frames de la cámara **no** salen: MediaPipe corre local en WASM (se verifica en el spike: 0 requests salientes en la pestaña Network).
 
 ## 4. Fases (en orden) y dependencias
 
@@ -72,3 +72,8 @@ Ordenadas por **riesgo primero**: el spike de gestos va antes de construir sobre
 ## 7. Verificación de la entrega
 
 Cada tarea de `docs/tasks.md` trae su criterio de done ligado al SPEC. El cierre mide las métricas del SPEC §7 en el ensayo y las registra en `docs/ensayo.md`.
+
+## 8. Pendientes v2 (fuera del alcance del lunes)
+
+- **Reconocimiento de voz local en el navegador** (p. ej. Vosk, WASM) para no enviar audio a Google ni depender de internet (ver D6 y R3). Hoy la voz usa Web Speech API de Chrome porque es lo que fija el SPEC; esto es una mejora posterior, no se hace antes del lunes.
+- Que Jarvis/LeIA controlen los slides desde un daemon (ya listado como posible v2 en el SPEC §5).
