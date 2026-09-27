@@ -2,6 +2,19 @@
 
 ---
 
+### 2026-09-26 21:10 — reglas aprendidas: regla 3 (perfiles explícitos) agregada y regla 2 corregida
+
+**Instrucción (Luigui):** sí a la regla de perfiles explícitos (con fecha e incidente de hoy); reemplazar el texto de la regla 2 ("sin herramientas ni conectores"), que quedó falsa, por la versión "cada permiso scopeado al mínimo por perfil…", conservando el historial con nota de fecha; programar la prueba de voz completa de taller y pantalla tras el reinicio (no urgente).
+
+**Acciones:**
+- `CLAUDE.md` → "Reglas aprendidas": regla 2 reescrita con el texto indicado, marcada "texto corregido 2026-09-26", con el texto original entero conservado como historial y una línea de qué sigue vigente (`--tools ""` no desactiva; verificar con `init`) y de que `minador-decisiones.py` conserva cero herramientas (no usa `ejecutar_claude()`); regla 3 nueva (perfil explícito, bypass solo `accion_directa`, `--setting-sources ""` + `--strict-mcp-config` en todo restringido) con el incidente. Post-mortem de la entrada `20:55` cerrado.
+- Prueba de voz pendiente registrada en `context.md` ("Cómo retomar"): necesita la voz de Luigui, así que queda como pendiente para la próxima sesión interactiva, no como tarea automática. Criterio: decir "Jarvis, modo taller" y cerrar → deben aparecer `_candidatos` y `_analisis` en Inbox; y "Jarvis, profundiza lo que estoy leyendo" / "guarda esto como concepto" con una pantalla real → respuesta hablada sin mencionar permisos y sin archivos nuevos.
+- **Corrección de honestidad sobre horas:** las entradas rotuladas `22:00`, `23:00` y `23:45` de esta tarde llevan horas que escribí sin consultar el reloj; el reloj real al cerrarlas estaba entre ≈20:40 y 21:06. El orden es correcto, las horas no. No las reescribo para no fabricar horas exactas que no conozco.
+
+**ATLAS regenerado:** no — sin cambios en `Conocimiento/`
+
+---
+
 ### 2026-09-26 20:55 — perfiles de permisos aplicados en `ejecutar_claude()` + filtro de voz; daemon reiniciado
 
 **Instrucción (Luigui):** aplicar la opción 2 con ajustes — watcher según el resultado de confirmar en el código si `evaluar_concepto` puede dispararse sobre contenido que Luigui no redactó (sí → Opción B, no → C); taller solo `Edit(Inbox/**)`; todos los restringidos con `--setting-sources ""` y `--strict-mcp-config`; `accion_directa` bypass + `--strict-mcp-config` previa confirmación en el código de que ningún intent usa Gmail/Calendar/Drive/Figma/Prisma; registrar el riesgo residual de exfiltración por WebFetch como aceptado; filtrar el ruido de permisos denegados antes de la voz.
@@ -19,7 +32,7 @@
 
 **Verificación:** compila; función real importada como la importa el daemon: sin perfil → TypeError, perfil inválido → ValueError, perfil `pantalla` intentando Write en el vault real → DENEGADO y sin archivo; watcher nuevo (prompt nuevo + perfil B) 3/3 en vault de prueba con ruta real (evalúa, actualiza `estado`, escribe JARVIS_LOG, propone correlaciones; 1-2 denegaciones de Bash exploratorio compuesto sin impacto). Vault real intacto. **Daemon reiniciado 20:51 (`launchctl kickstart -k`), PID 56187, escuchando.** Los perfiles de taller y de pantalla no se probaron de extremo a extremo por voz tras el reinicio (las pruebas fueron con los mismos flags y prompts reales).
 
-**Post-mortem:** pendiente — ¿regla permanente? incidente: 2 hipótesis mías erradas durante la prueba (vault de prueba bajo symlink daba falsos "denegado"; prueba de fuga con un comando no cubierto por las reglas). Regla propuesta: "Toda llamada a `ejecutar_claude()` declara un perfil explícito; solo `accion_directa` usa `bypassPermissions`, y todo perfil restringido lleva `--setting-sources \"\"` y `--strict-mcp-config`."
+**Post-mortem:** regla agregada a CLAUDE.md (2026-09-26, tras el "sí" de Luigui; ver entrada `21:10`).
 
 **ATLAS regenerado:** no — sin cambios en `Conocimiento/`
 
