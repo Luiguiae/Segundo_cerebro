@@ -2,6 +2,48 @@
 
 ---
 
+### 2026-09-28 11:28 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 99 conceptos `estado: activo` en `Conceptos/` (confirmados 2 con `estado: null` y 2 en `estado: borrador`, excluidos correctamente). Mismos 2 sub-conectados de siempre: `capas-de-profundidad-sistemica`, `interdependencia-sistemica`
+- Reconstruido el conjunto de exclusión completo: 29 pares con archivo en `Correlaciones/` + los 4 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes leídos íntegros (2026-08-25, 08-31, 09-07, 09-21) + las 5 entradas previas de este comando en el log (incluida 2026-09-14, sin `.tmp.md` por 0 sobrevivientes) = 114 pares únicos ya evaluados
+- Regenerado desde cero el pool de mención cruzada (slugs entre backticks) sobre ese conjunto de exclusión: 16 pares nunca evaluados antes (el vault siguió madurando desde el 2026-09-21, generando menciones cruzadas nuevas) + 1 candidato adicional por familia+3 tags compartidos entre los 2 sub-conectados (`capas-de-profundidad-sistemica` × `interdependencia-sistemica`, nunca emparejados entre sí antes, priorizado por instrucción explícita). Total: 17 candidatos, bajo el tope de 20 — no fue necesario bajar a señales más débiles
+- Por cada uno: leído el contexto completo de la mención cruzada en ambos conceptos, redactada correlación completa, aplicada autocrítica adversarial (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?)
+
+**Resultados:**
+- 17 candidatos evaluados, 1 sobreviviente, 16 descartados
+- Patrón de descarte dominante (16 de 16, cuarta corrida consecutiva con el mismo patrón): el archivo que menciona al otro concepto ya contiene la síntesis completa de la relación en su propia sección "Tensiones y límites" o "Por qué importa" (12 de 16 bajo subtítulo literal `Tensión con...`/`Tensiona con`/`Relación con`/`Conecta directamente con`)
+- Sobreviviente: **"La profundidad correcta no frena el efecto dominó"** — `capas-de-profundidad-sistemica` × `interdependencia-sistemica`: el diagnóstico vertical de capas (localizar el nudo en la capa correcta) no garantiza contención horizontal (las dependencias de `interdependencia-sistemica` pueden saltar hacia otra capa) — ninguno de los dos textos nombra esta combinación, y ambos son los únicos sub-conectados del vault
+- `Inbox/2026-09-28_1128_correlaciones-propuestas.tmp.md`: creado — 1 propuesta completa (frontmatter + cuerpo listo para copiar) + 16 descartes con razón específica citada de cada archivo fuente
+- Verificados ambos slugs de la propuesta contra archivos existentes en `Conceptos/filosofia/`
+- Siguen pendientes de revisión (sin tocar en esta corrida): `Inbox/2026-08-25_0811_correlaciones-propuestas.tmp.md` (3), `Inbox/2026-08-31_1122_correlaciones-propuestas.tmp.md` (2), `Inbox/2026-08-31_1122_borradores-graduados.tmp.md` (1), `Inbox/2026-09-07_1117_correlaciones-propuestas.tmp.md` (1), `Inbox/2026-09-21_1109_correlaciones-propuestas.tmp.md` (1), `Inbox/2026-09-28_1128_correlaciones-propuestas.tmp.md` (1, nueva)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-09-28 11:24 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Confirmado vía `git log --since=2026-09-21 -- Conocimiento/` que el vault no cambió desde la corrida anterior en los 4 borradores relevantes (el único cambio, commit `2724d3e`, agregó 2 conceptos nuevos con `estado: null`, fuera del alcance de este comando): mismos 4 borradores de siempre — 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`)
+- Los 4 tienen intento de graduación registrado en `JARVIS_LOG.md` hace 7 días (2026-09-21 11:14), dentro de la ventana de 14 días de la regla 3 — saltados los 4 sin leer contenido adicional ni ejecutar profundización dirigida
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento registrado hace 7 días (2026-09-21). `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, sin revisar por Luigui desde hace 28 días.
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo nuevo en `Inbox/`.
+
+**Hallazgo (patrón, no acción tomada):** esta es la 4ª corrida consecutiva (09-07, 09-14, 09-21, 09-28) que salta los mismos 4 borradores citando "intento hace 7 días" — pero ese "intento" es siempre el salto anterior, no un diagnóstico real. El último diagnóstico real (profundización dirigida o veredicto de "fuera de alcance") fue el 2026-08-31, hace 28 días. Con cadencia semanal y ventana de 14 días, cada salto re-registra un "intento" que resetea la ventana para la corrida siguiente antes de que pase — el comando queda en loop indefinido sin volver a intentar diagnóstico real, y la propuesta ya graduada de `rutina-trabajo-enfocada` sigue sin revisión de Luigui. No corregí la regla por iniciativa propia (regla 7 de CLAUDE.md) — solo lo registro aquí.
+
+**Post-mortem:** pendiente — ¿regla permanente? Incidente: la regla 3 de "Graduar borradores" cuenta cualquier entrada de SALTADO como "intento de graduación", lo que resetea la ventana de 14 días en cada corrida semanal y nunca deja pasar suficiente tiempo para reintentar un diagnóstico real (4 saltos consecutivos desde el único diagnóstico real del 2026-08-31). Regla propuesta: "La ventana de 14 días de la regla 3 solo se resetea con un intento que hizo diagnóstico real (profundización dirigida o veredicto de 'fuera de alcance' con motivo nuevo) — nunca con una entrada de SALTADO. Un SALTADO conserva la fecha del último diagnóstico real para el cálculo de los 14 días."
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-27 00:50 — presentador: opción (B) aplicada, T15 (4 pruebas de degradación en vivo) y T16 (README); detenido antes de T17
 
 **Instrucción (Luigui):** opción (B): gestos experimentales y apagados por defecto (SPEC, README y checklist actualizados; ronda de diagnóstico (A) como pendiente opcional en plan.md); T15 conmigo presente (la de cámara denegada activando los gestos con `M`); T16 el README sin mí con las dos reglas de uso de los gestos y que están apagados por defecto; un commit por tarea; resumen y parada antes de T17 (el ensayo lo hace Luigui con el deck real y el micrófono Bluetooth).
