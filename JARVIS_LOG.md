@@ -2,6 +2,30 @@
 
 ---
 
+### 2026-09-30 18:05 — correlaciones desde un concepto específico (pedido puntual)
+
+**Instrucción:** "dame 3 correlaciones a partir de este nuevo concepto" (`sistemas-para-humanos-saturados-por-agentes`)
+
+**Acciones:**
+- Alcance distinto de "busca correlaciones": no barrido de todo el vault, sino los 3 conceptos que `sistemas-para-humanos-saturados-por-agentes` ya declara en `relacionado` (`web-bifurcada`, `legibilidad-de-maquina`, `identidad-criptografica-como-arnes`) — candidatos más fuertes posibles por familia compartida (`agencia-ia`) y tags compartidos
+- Verificado que ninguno de los 3 pares tiene ya archivo en `Correlaciones/` ni aparece en algún `Inbox/*_correlaciones-propuestas.tmp.md` pendiente
+- Leído el cuerpo completo de los 3 conceptos relacionados antes de redactar
+- Redactadas las 3 correlaciones completas (estructura `## La tensión` / `## El insight no obvio` / `## El límite`)
+- Autocrítica adversarial por candidato (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?) — los 3 sobrevivieron
+
+**Resultados:**
+- `Inbox/2026-09-30_1805_correlaciones-propuestas.tmp.md`: creado — 3 de 3 candidatos sobrevivieron, 0 descartados
+  1. "Firmar a tu propio agente no identifica al que toca la puerta" (× `identidad-criptografica-como-arnes`)
+  2. "La saturación es lo que pasa cuando no existe la puerta legible" (× `web-bifurcada`)
+  3. "La legibilidad que atrae también es la que satura" (× `legibilidad-de-maquina`)
+- Ninguna se escribió en `Correlaciones/` — quedan como propuesta, pendientes de aprobación explícita (`Jarvis, revisa propuestas pendientes`)
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+**Post-mortem:** no aplica — tarea resuelta en una sola pasada.
+
+---
+
 ### 2026-09-30 17:52 — agrega concepto desde correo (Profundizador-2)
 
 **Instrucción:** "Busca en mi correo el mail con el asunto: 🧠 Concepto listo: sistemas-para-humanos-saturados-por-agentes... Descárgalo como concepto atómico para el segundo cerebro y guárdalo en la carpeta que corresponda"
