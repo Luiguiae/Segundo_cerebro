@@ -2,6 +2,31 @@
 
 ---
 
+### 2026-09-30 17:52 — agrega concepto desde correo (Profundizador-2)
+
+**Instrucción:** "Busca en mi correo el mail con el asunto: 🧠 Concepto listo: sistemas-para-humanos-saturados-por-agentes... Descárgalo como concepto atómico para el segundo cerebro y guárdalo en la carpeta que corresponda"
+
+**Acciones:**
+- Buscado y leído el correo (hilo `1a0f1276e7bb100f`, 2026-09-30 07:11) — salida de la rutina "Profundizador-2", destino declarado `Conocimiento/Conceptos/ia/sistemas-para-humanos-saturados-por-agentes.md`
+- Verificado que el archivo no existía todavía, y que los 3 slugs de `relacionado` sí existen como archivos (`web-bifurcada`, `legibilidad-de-maquina`, `identidad-criptografica-como-arnes`, los 3 en `Conceptos/ia/`)
+- Leídos `taxonomia.md` y `rubrica.md` antes de escribir (Regla 1). Aplicado Gate 0 — **el bloque del correo traía 3 errores de estructura, corregidos antes de instalar:**
+  - `familia: ia` no es una familia válida de `taxonomia.md` (la lista es `transicion-ia, velocidad-output, sistemas-conocimiento, equipos-impacto, agencia-ia, epistemologia-practica`). Corregido a `familia: agencia-ia` — coincide con los 3 conceptos relacionados, todos en esa familia
+  - `titulo: sistemas-para-humanos-saturados-por-agentes` traía el slug en vez de un título legible. Corregido a `titulo: "Sistemas hechos para humanos, saturados por agentes"` (el H1 del cuerpo), siguiendo la convención de los 3 relacionados
+  - `tags` traía 2 no controlados sin precedente en el vault (`trafico-web`, `diseno-de-servicios` — verificado con grep, cero coincidencias). Sustituidos por los más cercanos de la lista controlada: `web` y `sistemas`. El tercer tag no controlado, `identidad`, sí tiene precedente exacto (`identidad-criptografica-como-arnes.md`, uno de los relacionados) — se mantuvo
+  - Limpiadas las 5 URLs de `fuentes:` — venían envueltas en el redirector de clics de Gmail (`google.com/url?q=...`); se guardó la URL real de destino de cada una
+- Aplicada la rúbrica: Gate 1, 4/4. Gate 2 (concepto), 4/4 (supera el mínimo de 3/4: agrega interpretación propia, sección completa de tensiones y límites, 3 relacionados existentes, se explica sin contexto externo) — sin criterios débiles, así que `estado: activo` en vez del `borrador` que traía el correo (rúbrica: "Aprueba con advertencia" es solo cuando algún criterio queda débil, no es el caso aquí)
+- Escrito el archivo, regenerado el ATLAS
+
+**Resultados:**
+- `Conocimiento/Conceptos/ia/sistemas-para-humanos-saturados-por-agentes.md`: OK — `estado: activo`
+- **[PROPUESTA]** agregar `identidad` a la lista de tags controlados de `taxonomia.md` (dominio) — ya lo usan 2 conceptos de `agencia-ia` (este y `identidad-criptografica-como-arnes`), y no está en la lista. No se tocó `taxonomia.md` — pendiente de que Luigui lo confirme (Regla 7)
+
+**ATLAS regenerado:** sí — 104 conceptos procesados (antes: 99), 76 tags únicos, 25 conceptos con `edges` tipados
+
+**Post-mortem:** ¿esto se vuelve regla permanente? No aplica — los 3 errores de estructura se detectaron y corrigieron en la primera pasada de Gate 0, sin hipótesis descartadas ni mensajes adicionales de Luigui.
+
+---
+
 ### 2026-09-30 17:39 — modo taller: Whisper local para sesiones en inglés/mezcladas
 
 **Instrucción:** Luigui preguntó por qué la última sesión de modo taller (2026-09-24, 11:16-12:01) "no grabó nada"; pedido explícito "resuelve ahora".

@@ -1,7 +1,7 @@
 # ATLAS — Segundo Cerebro
 
-> Generado automáticamente el 2026-08-24 21:17  
-> Total de conceptos: **101**  
+> Generado automáticamente el 2026-09-30 17:59  
+> Total de conceptos: **104**  
 > **Context Layer**: Jarvis lee este archivo al inicio de cada sesión para operar sin abrir los conceptos individuales.
 > Contiene la tabla completa de conceptos, sus resúmenes, tags, relaciones y grafo tipado de edges.
 
@@ -37,6 +37,7 @@
 | [[colonialismo-cultural-digital\|Colonialismo cultural digital]] | El colonialismo cultural digital no es solo extracción de datos ni control de | `colonialismo`, `descolonizacion`, `poder`, `sistemas`, `cultura` | activo | 2026-04-04 |
 | [[colonizar-el-manana-con-hoy\|Colonizar el mañana con la idea de hoy]] | Cuando una organización imagina "el futuro", casi siempre imagina una versión mejorada, más eficiente o más deseable de… | `futuros`, `diseño`, `estrategia`, `epistemologia`, `agencia` | activo | 2026-07-27 |
 | [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]] | El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento … | `productividad`, `trabajo`, `habilidades`, `principio`, `conocimiento` | activo | 2026-05-23 |
+| [[diseno-multiinteligencia\|Diseño multiinteligencia]] | Durante décadas, el diseño de sistemas complejos asumió implícitamente un solo tipo de agente con capacidad de decidir:… | `diseño`, `ia`, `sistemas-complejos`, `inteligencia-distribuida`, `epistemologia`, `agentes`, `organizaciones` | — | 2026-08-28 |
 | [[granularidad-como-decision-de-mapeo\|La granularidad como decisión de mapeo]] | Mapear un sistema requiere decidir explícitamente cuánto nivel de detalle vale la pena capturar. La granularidad no es … | `sistemas`, `criterio`, `marco`, `diseño` | activo | 2026-08-21 |
 | [[infraestructura-visible-cuando-falla\|La infraestructura se vuelve visible cuando falla]] | Las capas de un sistema —servicio, mantenimiento, infraestructura subyacente— permanecen invisibles mientras funcionan … | `sistemas`, `infraestructura`, `tension`, `patron` | activo | 2026-08-21 |
 | [[interdependencia-sistemica\|Interdependencia sistémica]] | Ningún componente de un sistema tiene impacto aislado. Modificar una pieza —un proceso, una política, un servicio— acti… | `sistemas`, `tension`, `patron`, `marco` | activo | 2026-08-21 |
@@ -59,6 +60,7 @@
 | [[capital-de-contexto\|Capital de contexto]] | Los mejores practicantes de IA no tratan los prompts como interacciones desechables — construyen un *hoard*: coleccione… | `ia`, `conocimiento`, `prompts`, `estrategia`, `criterio` | activo | 2026-04-18 |
 | [[comprehension-debt\|Comprehension debt]] | La deuda de comprensión es la brecha creciente entre el volumen de código que existe en | `ia`, `velocidad`, `conocimiento`, `equipo`, `criterio` | activo | 2026-04-22 |
 | [[conocimiento-autoorganizado-por-llm\|Conocimiento autoorganizado por LLM]] | El 4 de abril de 2026, Andrej Karpathy publicó un GitHub Gist proponiendo una | `ia`, `conocimiento`, `sistemas`, `agentes`, `tension` | activo | 2026-04-18 |
+| [[criterio-transferible-vs-respuesta-memorizada\|Criterio transferible vs. respuesta memorizada]] | Cuando un sistema aprende de su propia experiencia y acumula ese aprendizaje en una memoria persistente, hay dos formas… | `ia`, `agentes`, `aprendizaje`, `conocimiento`, `generalizacion`, `feedback`, `diseño` | — | 2026-08-28 |
 | [[cuello-de-botella-del-flujo\|El cuello de botella del flujo, no de la tarea]] | La Teoría de Restricciones de Goldratt (1984) establece un principio contraintuitivo: optimizar cualquier paso que no s… | `ia`, `agentes`, `automatizacion`, `estrategia`, `criterio` | activo | 2026-08-14 |
 | [[design-system-como-api-para-agentes\|El design system como API para agentes]] | El design system no desaparece en la era de las interfaces generativas — cambia de audiencia. Hasta ahora era un catálo… | `agentes`, `ia`, `ux`, `sistemas`, `herramientas` | activo | 2026-05-20 |
 | [[el-agente-que-no-para\|El agente que no para]] | El paradigma dominante de interacción con agentes IA es conversacional: el humano envía un mensaje, el agente responde,… | `agentes`, `ux`, `validacion`, `autonomia`, `checkpoints` | activo | 2026-06-20 |
@@ -83,6 +85,7 @@
 | [[representacion-agente\|Representación agente]] | Cuando un agente actúa en nombre de una persona ante otros agentes — negocia, decide, se compromete — el problema de di… | `agentes`, `ia`, `etica`, `control`, `diseño` | activo | 2026-06-13 |
 | [[riesgo-geopolitico-del-modelo\|Riesgo geopolítico del modelo IA]] | El riesgo geopolítico del modelo IA es la vulnerabilidad estructural que hereda cualquier sistema construido sobre un m… | `ia`, `gobernanza-ia`, `infraestructura`, `etica`, `estrategia` | activo | 2026-06-19 |
 | [[seguridad-asimetrica-de-modelos-abiertos\|La asimetría de seguridad de los modelos abiertos]] | La "seguridad por rechazo" es asimétrica por diseño: los controles de alineación en modelos comerciales bloquean a defe… | `ia`, `gobernanza-ia`, `etica`, `estrategia`, `control` | activo | 2026-08-03 |
+| [[sistemas-para-humanos-saturados-por-agentes\|Sistemas hechos para humanos, saturados por agentes]] | Los sistemas de servicio diseñados para atender a personas —plataformas de reservas, APIs de consumo, servicios de aten… | `agentes`, `infraestructura`, `identidad`, `web`, `sistemas` | activo | 2026-09-30 |
 | [[spec-driven-development\|Spec-Driven Development]] | Spec-Driven Development (SDD) es el principio de que todo lo que un agente de IA va a construir debe estar precedido po… | `codigo`, `construccion`, `ia`, `iteracion`, `estrategia` | activo | 2026-04-07 |
 | [[terminal-como-interfaz-optima-para-agentes\|El terminal como interfaz óptima para agentes]] | La investigación en UX de agentes asume que una interfaz gráfica es el destino natural de la colaboración humano-agente… | `ia`, `agentes`, `ux`, `herramientas`, `criterio` | activo | 2026-08-15 |
 | [[usuarios-sinteticos\|Usuarios sintéticos]] | Los usuarios sintéticos son representaciones simuladas de usuarios reales generadas por IA, capaces de interactuar con … | `research`, `validacion`, `producto`, `usuarios`, `diseño` | activo | 2026-03-04 |
@@ -141,6 +144,8 @@
   → La alineación de un sistema de IA no se puede evaluar mirando solo la relación entre el modelo y el usuario que tiene e…
 - [[arnes-del-agente\|Arnés del agente]]
   → Cuando el producto es un agente, el artefacto central del diseño ya no es la pantalla
+- [[criterio-transferible-vs-respuesta-memorizada\|Criterio transferible vs. respuesta memorizada]]
+  → Cuando un sistema aprende de su propia experiencia y acumula ese aprendizaje en una memoria persistente, hay dos formas…
 - [[cuello-de-botella-del-flujo\|El cuello de botella del flujo, no de la tarea]]
   → La Teoría de Restricciones de Goldratt (1984) establece un principio contraintuitivo: optimizar cualquier paso que no s…
 - [[design-system-como-api-para-agentes\|El design system como API para agentes]]
@@ -179,6 +184,8 @@
   → El riesgo geopolítico del modelo IA es la vulnerabilidad estructural que hereda cualquier sistema construido sobre un m…
 - [[seguridad-asimetrica-de-modelos-abiertos\|La asimetría de seguridad de los modelos abiertos]]
   → La "seguridad por rechazo" es asimétrica por diseño: los controles de alineación en modelos comerciales bloquean a defe…
+- [[sistemas-para-humanos-saturados-por-agentes\|Sistemas hechos para humanos, saturados por agentes]]
+  → Los sistemas de servicio diseñados para atender a personas —plataformas de reservas, APIs de consumo, servicios de aten…
 - [[terminal-como-interfaz-optima-para-agentes\|El terminal como interfaz óptima para agentes]]
   → La investigación en UX de agentes asume que una interfaz gráfica es el destino natural de la colaboración humano-agente…
 - [[web-bifurcada\|Web bifurcada]]
@@ -208,6 +215,8 @@
   → Cuando una organización imagina "el futuro", casi siempre imagina una versión mejorada, más eficiente o más deseable de…
 - [[cuerpo-como-infraestructura-cognitiva\|El cuerpo como infraestructura cognitiva]]
   → El procesamiento cognitivo no ocurre solo en el cerebro — depende de condiciones mecánicas generadas por el movimiento …
+- [[diseno-multiinteligencia\|Diseño multiinteligencia]]
+  → Durante décadas, el diseño de sistemas complejos asumió implícitamente un solo tipo de agente con capacidad de decidir:…
 - [[granularidad-como-decision-de-mapeo\|La granularidad como decisión de mapeo]]
   → Mapear un sistema requiere decidir explícitamente cuánto nivel de detalle vale la pena capturar. La granularidad no es …
 - [[infraestructura-visible-cuando-falla\|La infraestructura se vuelve visible cuando falla]]
@@ -351,12 +360,14 @@
 - [[soberania-epistemica]]
 - [[ux-checkpoints]]
 - [[costo-marginal-cero-como-disruptor]]
+- [[diseno-multiinteligencia]]
 - [[agente-como-carpeta]]
 - [[agente-que-escapa-obedeciendo]]
 - [[agentes-ia]]
 - [[alineacion-de-cuatro-partes]]
 - [[arnes-del-agente]]
 - [[conocimiento-autoorganizado-por-llm]]
+- [[criterio-transferible-vs-respuesta-memorizada]]
 - [[cuello-de-botella-del-flujo]]
 - [[design-system-como-api-para-agentes]]
 - [[el-agente-que-no-para]]
@@ -372,6 +383,7 @@
 - [[orquestacion-de-agentes]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
+- [[sistemas-para-humanos-saturados-por-agentes]]
 - [[terminal-como-interfaz-optima-para-agentes]]
 - [[web-bifurcada]]
 - [[aprendizaje-vicario-mediado-por-agente]]
@@ -386,6 +398,7 @@
 ### `aprendizaje`
 - [[metacognicion-del-disenador]]
 - [[autoautomatizacion-del-disenador]]
+- [[criterio-transferible-vs-respuesta-memorizada]]
 - [[aprendizaje-vicario-mediado-por-agente]]
 - [[deuda-cognitiva-organizacional]]
 - [[mvp-a-prototipo-en-produccion]]
@@ -457,6 +470,7 @@
 - [[capital-de-contexto]]
 - [[comprehension-debt]]
 - [[conocimiento-autoorganizado-por-llm]]
+- [[criterio-transferible-vs-respuesta-memorizada]]
 - [[expertise-de-dominio-en-producto]]
 - [[pit-stop-cognitivo]]
 
@@ -542,6 +556,7 @@
 - [[ux-checkpoints]]
 - [[capas-de-profundidad-sistemica]]
 - [[colonizar-el-manana-con-hoy]]
+- [[diseno-multiinteligencia]]
 - [[granularidad-como-decision-de-mapeo]]
 - [[invisibilizacion-de-actores-naturales]]
 - [[lo-ilegible-como-senal]]
@@ -550,6 +565,7 @@
 - [[sistema-de-mentalidades-futuras]]
 - [[agente-como-carpeta]]
 - [[arnes-del-agente]]
+- [[criterio-transferible-vs-respuesta-memorizada]]
 - [[limite-de-las-jaulas-digitales]]
 - [[poblaciones-sinteticas]]
 - [[representacion-agente]]
@@ -565,6 +581,7 @@
 
 ### `epistemologia`
 - [[colonizar-el-manana-con-hoy]]
+- [[diseno-multiinteligencia]]
 
 ### `equipo`
 - [[agentes-ia]]
@@ -620,6 +637,9 @@
 - [[ingenieria-agentica]]
 - [[metricas-post-pantalla]]
 
+### `feedback`
+- [[criterio-transferible-vs-respuesta-memorizada]]
+
 ### `foresight`
 - [[sistema-de-mentalidades-futuras]]
 
@@ -632,6 +652,9 @@
 ### `futuros`
 - [[colonizar-el-manana-con-hoy]]
 - [[sistema-de-mentalidades-futuras]]
+
+### `generalizacion`
+- [[criterio-transferible-vs-respuesta-memorizada]]
 
 ### `gobernanza-ia`
 - [[supuestos-importados-por-ia]]
@@ -680,6 +703,7 @@
 - [[presupuesto-ia-como-restriccion]]
 - [[senal-anticipada-mercado-laboral]]
 - [[arquitectura-de-inteligencia]]
+- [[diseno-multiinteligencia]]
 - [[llm-como-motor-de-plausibilidad]]
 - [[lo-ilegible-como-senal]]
 - [[presencia-como-condicion-del-valor]]
@@ -693,6 +717,7 @@
 - [[capital-de-contexto]]
 - [[comprehension-debt]]
 - [[conocimiento-autoorganizado-por-llm]]
+- [[criterio-transferible-vs-respuesta-memorizada]]
 - [[cuello-de-botella-del-flujo]]
 - [[design-system-como-api-para-agentes]]
 - [[engano-emergente-en-agentes-autonomos]]
@@ -736,6 +761,7 @@
 
 ### `identidad`
 - [[identidad-criptografica-como-arnes]]
+- [[sistemas-para-humanos-saturados-por-agentes]]
 
 ### `incertidumbre`
 - [[llm-como-motor-de-plausibilidad]]
@@ -749,6 +775,10 @@
 - [[infraestructura-visible-cuando-falla]]
 - [[inteligencia-como-utilidad]]
 - [[riesgo-geopolitico-del-modelo]]
+- [[sistemas-para-humanos-saturados-por-agentes]]
+
+### `inteligencia-distribuida`
+- [[diseno-multiinteligencia]]
 
 ### `iteracion`
 - [[spec-driven-development]]
@@ -800,6 +830,9 @@
 - [[la-competencia-que-oculta-el-juicio]]
 - [[workforce-de-agentes]]
 - [[feedback-que-escala]]
+
+### `organizaciones`
+- [[diseno-multiinteligencia]]
 
 ### `patron`
 - [[senal-anticipada-mercado-laboral]]
@@ -888,10 +921,14 @@
 - [[inteligencia-como-utilidad]]
 - [[legibilidad-de-maquina]]
 - [[orquestacion-de-agentes]]
+- [[sistemas-para-humanos-saturados-por-agentes]]
 - [[web-bifurcada]]
 - [[condicion-redespliegue]]
 - [[ia-sin-ecosistema]]
 - [[feedback-que-escala]]
+
+### `sistemas-complejos`
+- [[diseno-multiinteligencia]]
 
 ### `startups`
 - [[equipos-pequenos-alto-impacto]]
@@ -963,6 +1000,9 @@
 - [[pit-stop-cognitivo]]
 - [[pmf-perecedero]]
 - [[restriccion-de-tiempo-como-ventaja]]
+
+### `web`
+- [[sistemas-para-humanos-saturados-por-agentes]]
 
 ---
 
@@ -1096,6 +1136,12 @@
   - [[ia-sin-ecosistema]]
   - [[presupuesto-ia-como-restriccion]]
 
+**[[criterio-transferible-vs-respuesta-memorizada]]** →
+  - [[agente-como-carpeta]]
+  - [[feedback-que-escala]]
+  - [[limite-de-la-escala-de-modelo]]
+  - [[arnes-del-agente]]
+
 **[[cuello-de-botella-del-flujo]]** →
   - [[automatizacion-vs-ampliacion]]
   - [[las-tres-caras-del-producto-agentico]]
@@ -1135,6 +1181,12 @@
   - [[disenador-a-constructor]]
   - [[mvp-a-prototipo-en-produccion]]
   - [[quien-controla-el-prompt]]
+
+**[[diseno-multiinteligencia]]** →
+  - [[arquitectura-de-inteligencia]]
+  - [[representacion-agente]]
+  - [[las-tres-caras-del-producto-agentico]]
+  - [[colonizar-el-manana-con-hoy]]
 
 **[[diseno-sistemico-como-cambio-de-alcance]]** →
   - [[disenador-a-constructor]]
@@ -1409,6 +1461,11 @@
   - [[colonizar-el-manana-con-hoy]]
   - [[claridad-antes-de-velocidad]]
 
+**[[sistemas-para-humanos-saturados-por-agentes]]** →
+  - [[web-bifurcada]]
+  - [[legibilidad-de-maquina]]
+  - [[identidad-criptografica-como-arnes]]
+
 **[[soberania-epistemica]]** →
   - [[ux-checkpoints]]
   - [[agencia-humana-como-imperativo-ux]]
@@ -1550,6 +1607,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[colonialismo-cultural-digital]]
 - [[colonizar-el-manana-con-hoy]]
 - [[cuerpo-como-infraestructura-cognitiva]]
+- [[diseno-multiinteligencia]]
 - [[granularidad-como-decision-de-mapeo]]
 - [[infraestructura-visible-cuando-falla]]
 - [[interdependencia-sistemica]]
@@ -1566,6 +1624,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[autoautomatizacion-del-disenador]]
 - [[comprehension-debt]]
 - [[conocimiento-autoorganizado-por-llm]]
+- [[criterio-transferible-vs-respuesta-memorizada]]
 - [[design-system-como-api-para-agentes]]
 - [[el-agente-que-no-para]]
 - [[engano-emergente-en-agentes-autonomos]]
@@ -1585,6 +1644,7 @@ _Estos conceptos aún no tienen `edges:` definidos:_
 - [[representacion-agente]]
 - [[riesgo-geopolitico-del-modelo]]
 - [[seguridad-asimetrica-de-modelos-abiertos]]
+- [[sistemas-para-humanos-saturados-por-agentes]]
 - [[terminal-como-interfaz-optima-para-agentes]]
 - [[usuarios-sinteticos]]
 - [[web-bifurcada]]
