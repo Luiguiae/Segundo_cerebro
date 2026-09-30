@@ -2,6 +2,32 @@
 
 ---
 
+### 2026-09-30 17:39 — modo taller: Whisper local para sesiones en inglés/mezcladas
+
+**Instrucción:** Luigui preguntó por qué la última sesión de modo taller (2026-09-24, 11:16-12:01) "no grabó nada"; pedido explícito "resuelve ahora".
+
+**Diagnóstico:** sí grabó — 25 frases en `Inbox/2026-09-24_1116_modo-taller_transcript.tmp.md` — pero `escuchar()` transcribe con `recognize_google(..., language="es-ES")` fijo a español en todo el pipeline de voz (`jarvis.py`, `jarvis_daemon.py`), y esa sesión fue en inglés. Resultado: texto ininteligible (p. ej. "so it a when the market shift is very quickly...") y 0 candidatos extraídos — indistinguible para Luigui de "no grabó nada", aunque el transcript crudo se conservó de respaldo (`jarvis_daemon.py`, no se borra si `n_candidatos == 0`).
+
+**Acciones:**
+- Instalado `faster-whisper` en el intérprete real del daemon (`/usr/local/bin/python3.11`, confirmado vía el launcher de `Jarvis.app`, no el venv de `jarvis-server/`). `openai-whisper` falló al compilar (`llvmlite`/`numba` sin wheel para esta combinación de arquitectura/Python); `faster-whisper` (CTranslate2) no tiene esa dependencia y instaló limpio
+- `jarvis.py`: `escuchar()` ahora acepta `motor: "google" | "whisper"` (default `"google"`, sin cambio de comportamiento para nadie que no lo pase). Nuevas `_cargar_whisper()` (carga perezosa, una vez por proceso, modelo `"small"`) y `_transcribir_whisper()` (AudioData → wav temporal → transcripción con `language=None`, detección automática, `vad_filter=True` para no alucinar texto sobre silencio)
+- `jarvis_daemon.py`: `modo_taller_captura()` ahora llama `escuchar(motor="whisper")` en su loop (única llamada cambiada; `procesar_comando()` y las confirmaciones siguen con Google/es-ES — no tiene sentido cargar un modelo local para comandos cortos en español donde la latencia importa). Se precarga el modelo en un hilo en segundo plano al activar modo taller, para que los ~15-20 s de carga inicial no se coman la primera frase real
+- Probado end-to-end (sin micrófono real — vía `say` + `ffmpeg` generando clips y `sr.AudioFile` → `AudioData`, el mismo camino que usaría un micrófono real): español 100% texto correcto; inglés correcto pero con baja confianza de idioma detectado (41%, con el modelo `"small"`); mezcla de 2 idiomas en un mismo clip favorece uno solo (no aplica en la práctica: cada frase de modo taller ya llega segmentada por separado, por el `pause_threshold` de 1.5 s); silencio → `None` (no alucina)
+- Probado `"medium"`: mejor confianza de idioma (>90%) pero ~15s/frase en CPU vs ~5s con `"small"` — se dejó `"small"` por defecto (constante `_WHISPER_MODELO`, fácil de subir) para no perder demasiada conversación entre captura y captura de una sesión con varias personas hablando
+- Sintaxis verificada (`py_compile`) y daemon reiniciado (`launchctl unload`/`load`) — arrancó limpio, sin trazas de error, micrófono fijado a MacBook Pro integrado
+- `README.md` del proyecto actualizado (instalación, nota de por qué modo taller usa un motor distinto al resto de la voz)
+
+**Resultados:**
+- `jarvis.py`, `jarvis_daemon.py`, `README.md`: OK — modo taller ahora detecta idioma automáticamente en vez de forzar español
+- **Riesgo conocido, no resuelto del todo:** con el modelo `"small"` (elegido por velocidad), la detección de idioma en una frase corta y en un solo idioma puede tener baja confianza (probado 41% en inglés, aunque acertó el texto). Si en el uso real las frases en inglés siguen saliendo mal seguido, subir `_WHISPER_MODELO` a `"medium"` en `jarvis.py` — cuesta ~3× más de latencia por frase
+- No se pudo probar con voz real (solo TTS sintético) — falta la validación real de Luigui en la próxima sesión de modo taller, idealmente ya con alguien hablando inglés
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+**Post-mortem:** ¿esto se vuelve regla permanente? La causa se encontró al primer diagnóstico (un solo mensaje del usuario, sin hipótesis descartadas) — no aplica el criterio de la sección "Post-mortem de tareas".
+
+---
+
 ### 2026-09-28 11:28 — busca correlaciones (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)

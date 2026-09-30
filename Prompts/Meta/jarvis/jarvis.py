@@ -17,6 +17,7 @@ import os
 import requests
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 import re
@@ -142,9 +143,58 @@ _ECO_BUFFER = 0.5  # segundos de margen tras fin del TTS antes de abrir el micr�
 # de la API — Google normalmente responde en 1-3s para audio corto.
 STT_OPERATION_TIMEOUT = 10
 
+# Modo taller graba conversaciones de varias personas, a veces en inglés o mezclando
+# idiomas — recognize_google(..., language="es-ES") es fijo a español y, sobre inglés,
+# produce texto ininteligible (0 candidatos extraídos; ver sesión 2026-09-24 en
+# JARVIS_LOG.md 2026-09-30). Whisper local detecta el idioma solo, por frase (cada
+# frase ya llega separada por el pause_threshold de escuchar(), no es un audio largo
+# mezclado). Se usa SOLO para modo taller (motor='whisper' en escuchar()): comandos
+# interactivos y confirmaciones siguen con Google (más rápido, sin cargar un modelo,
+# y basta con un idioma fijo porque Luigui les habla en español).
+#
+# Tamaño del modelo — probado 2026-09-30 con frases TTS cortas (~5 s) de un solo idioma:
+#   "small"  (~5 s/frase en CPU):  español 100% confianza; inglés detectado con solo
+#            41% de confianza (adivinó bien el texto, pero por poco).
+#   "medium" (~15 s/frase en CPU): español y inglés >90% confianza, texto correcto.
+# Se eligió "small" porque en un taller con varias personas hablando, 15 s de silencio-
+# forzado por frase pierde demasiada conversación entre captura y captura. Si en el uso
+# real las frases en inglés salen mal con frecuencia, subir esta constante a "medium".
+_WHISPER_MODELO = "small"
+_WHISPER_MODEL = None
 
-def escuchar() -> str | None:
-    """Captura audio del micrófono y devuelve el texto transcrito (o None si falla)."""
+
+def _cargar_whisper():
+    """Carga el modelo de Whisper local una sola vez por proceso (perezoso)."""
+    global _WHISPER_MODEL
+    if _WHISPER_MODEL is None:
+        from faster_whisper import WhisperModel
+        _WHISPER_MODEL = WhisperModel(_WHISPER_MODELO, device="cpu", compute_type="int8")
+    return _WHISPER_MODEL
+
+
+def _transcribir_whisper(audio) -> str | None:
+    """Transcribe un AudioData de speech_recognition con Whisper local, idioma
+    automático. Devuelve None si no hay texto (silencio/ruido) — mismo contrato
+    que el UnknownValueError de recognize_google."""
+    modelo = _cargar_whisper()
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
+        tmp.write(audio.get_wav_data())
+        tmp.flush()
+        # vad_filter=True: evita que Whisper "alucine" texto sobre tramos de silencio/ruido,
+        # un problema conocido del modelo en clips cortos sin voz real.
+        segmentos, _info = modelo.transcribe(tmp.name, language=None, vad_filter=True)
+        texto = " ".join(s.text.strip() for s in segmentos).strip().lower()
+    return texto or None
+
+
+def escuchar(motor: str = "google") -> str | None:
+    """Captura audio del micrófono y devuelve el texto transcrito (o None si falla).
+
+    motor='google' (default): recognize_google, es-ES fijo — rápido, para comandos
+    interactivos y confirmaciones donde la latencia importa y el idioma es siempre español.
+    motor='whisper': Whisper local, detección automática de idioma — para modo taller
+    (ver nota arriba). Más lento (~1-3 s por frase en CPU) pero no manda audio a Google.
+    """
     # Esperar a que Jarvis termine de hablar y dejar que el eco físico se disipe
     while _jarvis_hablando:
         time.sleep(0.05)
@@ -189,7 +239,12 @@ def escuchar() -> str | None:
             return None
 
         try:
-            texto = recognizer.recognize_google(audio, language="es-ES").lower()
+            if motor == "whisper":
+                texto = _transcribir_whisper(audio)
+                if texto is None:
+                    raise sr.UnknownValueError()  # mismo trato que "no transcribió nada"
+            else:
+                texto = recognizer.recognize_google(audio, language="es-ES").lower()
             print(f"[Transcripción] {texto}")
             logging.info(f"Transcripción: {texto}")
             return texto
@@ -199,7 +254,8 @@ def escuchar() -> str | None:
                 time.sleep(0.2)
                 continue
             return None
-        except Exception:
+        except Exception as e:
+            print(f"[STT error] motor={motor}: {e}")
             return None
 
     return None

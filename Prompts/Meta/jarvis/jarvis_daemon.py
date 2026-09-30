@@ -1193,6 +1193,11 @@ def modo_taller_captura(lock_interaccion: threading.Lock) -> None:
         return
     _modo_taller_activo.set()
 
+    # Precarga el modelo de Whisper en segundo plano (~15-20 s la primera vez por
+    # proceso) mientras Jarvis termina el saludo y arranca el loop — si no, esos
+    # segundos se comen el inicio de la primera frase real capturada.
+    threading.Thread(target=_mod._cargar_whisper, daemon=True).start()
+
     inicio = time.time()
     ultimo_checkpoint = inicio
     n_frases = 0
@@ -1214,7 +1219,10 @@ def modo_taller_captura(lock_interaccion: threading.Lock) -> None:
                     cerrado_por_tope = True
                     break
 
-                texto = escuchar()
+                # motor='whisper': modo taller graba conversaciones que pueden ser en inglés
+                # o mezclar idiomas — Google (es-ES fijo) las convertía en basura ininteligible
+                # (2026-09-24, ver JARVIS_LOG.md 2026-09-30). Whisper local detecta el idioma solo.
+                texto = escuchar(motor="whisper")
                 if texto is None:
                     continue  # silencio normal — en un taller la gente habla entre sí, no con Jarvis
 

@@ -8,7 +8,7 @@ Escucha un comando, lo interpreta, lo ejecuta vía `claude` CLI, y responde en v
 ## Instalación de dependencias
 
 ```bash
-pip3 install SpeechRecognition pyaudio requests watchdog
+pip3 install SpeechRecognition pyaudio requests watchdog faster-whisper
 ```
 
 > **macOS:** `pyaudio` requiere PortAudio. Si falla, instala primero:
@@ -19,6 +19,14 @@ pip3 install SpeechRecognition pyaudio requests watchdog
 
 El TTS no usa ninguna librería de Python — `hablar()` invoca el comando nativo
 `say -v Mónica` de macOS directamente vía `subprocess`. Nada que instalar para eso.
+
+`faster-whisper` es solo para **modo taller** (`escuchar(motor="whisper")`): el resto
+de la voz (comandos, confirmaciones) sigue con `recognize_google(..., language="es-ES")`
+vía `SpeechRecognition`, más rápido, y le basta con español. Modo taller usa Whisper
+local porque graba conversaciones de varias personas que pueden ser en inglés o
+mezclar idiomas, y Google con idioma fijo las transcribía como basura ininteligible
+(ver JARVIS_LOG.md, 2026-09-30). El modelo (`small`, ~500 MB) se descarga solo la
+primera vez que se activa modo taller, con internet.
 
 ---
 
