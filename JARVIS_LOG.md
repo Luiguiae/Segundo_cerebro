@@ -2,6 +2,51 @@
 
 ---
 
+### 2026-10-05 11:26 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Listados los borradores vigentes: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`) — mismos 4 de las últimas 5 corridas
+- Buscada en `JARVIS_LOG.md` la entrada más reciente que toca cada uno: 2026-09-28 11:24, hace 7 días — dentro de la ventana de 14 días de la regla 3
+- Aplicada la regla 3 tal como está escrita hoy: saltados los 4 sin leer contenido adicional ni ejecutar profundización dirigida. No se corrigió la regla por iniciativa propia (regla 7 de CLAUDE.md)
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento registrado hace 7 días (2026-09-28 11:24)
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo nuevo en `Inbox/`
+- `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, sin revisar por Luigui desde hace 35 días
+
+**Patrón confirmado (sin acción nueva):** 5ª corrida consecutiva (09-07, 09-14, 09-21, 09-28, 10-05) que salta los mismos 4 borradores citando el salto anterior como "intento". El patrón es idéntico al descrito en el post-mortem pendiente de la entrada 2026-09-28 11:24 — no se repite el diagnóstico en detalle aquí, solo se confirma que persiste sin cambios.
+
+**Post-mortem:** sigue pendiente — ya registrado como tal en la entrada 2026-09-28 11:24 (regla propuesta: un SALTADO no debería resetear la ventana de 14 días). Esta corrida es una rutina cloud sin sesión interactiva, así que no hay quién confirme el "¿se vuelve regla permanente?" — no se adivina ni se escribe la regla, queda pendiente para la próxima sesión interactiva.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-10-05 11:20 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 100 conceptos `estado: activo` en `Conceptos/` (2 en `estado: borrador` excluidos correctamente: `gestion-del-tiempo`, `rutina-trabajo-enfocada`). Mismos 2 sub-conectados de siempre: `capas-de-profundidad-sistemica`, `interdependencia-sistemica` — su único par mutuo ya está propuesto en `Inbox/2026-09-28_1128_correlaciones-propuestas.tmp.md`, pendiente de revisión
+- Construido el conjunto de exclusión: 29 pares con archivo en `Correlaciones/` (parseados por nombre de archivo) + 11 pares ya propuestos en los 7 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes, leídos íntegros (2026-08-25: 3, 2026-08-31: 2, 2026-09-07: 1, 2026-09-21: 1, 2026-09-28: 1, 2026-09-30: 3) = 40 pares únicos excluidos
+- Escaneado el cuerpo de los 100 conceptos activos por mención cruzada literal (slug entre backticks) hacia otro concepto activo, fuera del conjunto de exclusión: 64 pares nuevos encontrados — por encima del tope de 20, así que no fue necesario bajar a señales más débiles (tags compartidos o familia+tags)
+- Priorizados los primeros 20 por señal más fuerte dentro de la propia mención cruzada: las 2 menciones bidireccionales (`claridad-antes-de-velocidad`×`confianza-a-traves-de-velocidad`, `limite-de-las-jaulas-digitales`×`llm-como-motor-de-plausibilidad`) primero, resto en orden alfabético del par hasta completar 20
+- Por cada uno de los 20: leído el contexto completo (±300 caracteres) de la mención en ambos conceptos, redactado el juicio de correlación, aplicada autocrítica adversarial (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?)
+
+**Resultados:**
+- 20 candidatos evaluados, 0 sobrevivientes, 20 descartados
+- Patrón de descarte dominante (20 de 20, quinta corrida consecutiva con el mismo patrón que 09-07/09-14/09-21/09-28): 18 de 20 fallan porque el concepto que menciona al otro ya contiene la síntesis completa de la relación en su propia prosa — la mayoría bajo un subtítulo explícito tipo "Tensión con...", "Tensión directa con...", "Relación con..." o "conecta directamente con...", el resto en "Por qué importa" sin subtítulo dedicado pero con la misma síntesis completa. Los otros 2 (`agente-como-carpeta`×`spec-driven-development`, `agente-como-carpeta`×`vibe-coding`) fallan por simple co-ocurrencia ("mismo efecto democratizador") sin tensión real — título reducible a "[A] y [B]"
+- Pares evaluados y descartados: `claridad-antes-de-velocidad`×`confianza-a-traves-de-velocidad`, `limite-de-las-jaulas-digitales`×`llm-como-motor-de-plausibilidad`, `agencia-humana-como-imperativo-ux`×`comprehension-debt`, `agencia-humana-como-imperativo-ux`×`representacion-agente`, `agente-como-carpeta`×`arnes-del-agente`, `agente-como-carpeta`×`limite-de-la-escala-de-modelo`, `agente-como-carpeta`×`spec-driven-development`, `agente-como-carpeta`×`vibe-coding`, `agente-que-escapa-obedeciendo`×`gobernanza-ia-performativa`, `agente-que-escapa-obedeciendo`×`impuesto-de-alineacion`, `ai-evals-como-disciplina`×`fabrica-oscura-de-software`, `arnes-del-agente`×`engano-emergente-en-agentes-autonomos`, `arnes-del-agente`×`espectro-autonomia-agente`, `arnes-del-agente`×`identidad-criptografica-como-arnes`, `arnes-del-agente`×`limite-de-las-jaulas-digitales`, `arnes-del-agente`×`llm-como-motor-de-plausibilidad`, `arnes-del-agente`×`representacion-agente`, `arquitectura-de-confianza`×`gobernanza-ia-performativa`, `arquitectura-de-inteligencia`×`colonizar-el-manana-con-hoy`, `arquitectura-de-inteligencia`×`conocimiento-autoorganizado-por-llm`
+- 0 propuestas sobrevivientes → NO se creó archivo en `Inbox/`
+- Quedan 44 pares de mención cruzada sin evaluar en esta corrida (64 encontrados − 20 evaluados), disponibles para la próxima corrida semanal
+- Siguen pendientes de revisión, sin tocar en esta corrida: los 7 `Inbox/*_correlaciones-propuestas.tmp.md` existentes (2026-08-25, 08-31, 09-07, 09-21, 09-28, 09-30) y `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-09-30 18:05 — correlaciones desde un concepto específico (pedido puntual)
 
 **Instrucción:** "dame 3 correlaciones a partir de este nuevo concepto" (`sistemas-para-humanos-saturados-por-agentes`)
