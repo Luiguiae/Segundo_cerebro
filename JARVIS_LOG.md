@@ -2,6 +2,50 @@
 
 ---
 
+### 2026-10-12 11:18 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Confirmados los 4 borradores vigentes vía grep de `estado: borrador` sobre `Conocimiento/`: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`) — mismos 4 de las últimas 6 corridas. Confirmado también, vía `git log --since=2026-10-05 -- Conocimiento/`, que ninguno de los 4 archivos cambió desde la corrida anterior (sin commits a `Conocimiento/` desde entonces).
+- Buscada en `JARVIS_LOG.md` la entrada más reciente que toca a los 4: `2026-10-05 11:26` (SALTADOS), hace 7 días — dentro de la ventana de 14 días de la regla 3 de "Graduar borradores". Aplicada la regla tal como está escrita hoy (cualquier entrada registrada cuenta como "intento", incluido un SALTADO previo — mismo criterio aplicado en las 5 corridas anteriores desde 2026-09-07). No se corrigió la regla por iniciativa propia (regla 7 de CLAUDE.md), ni se adivinó respuesta al post-mortem pendiente.
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento registrado hace 7 días (`2026-10-05 11:26`)
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo en `Inbox/`
+- `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, sin revisar por Luigui desde hace 42 días
+
+**Patrón confirmado (sin acción nueva):** 6ª corrida consecutiva (09-07, 09-14, 09-21, 09-28, 10-05, 10-12) que salta los mismos 4 borradores. Idéntico al patrón descrito en 2026-09-28 11:24 y reconfirmado en 2026-10-05 11:26 — el último diagnóstico real sigue siendo el del 2026-08-31, hace 42 días.
+
+**Post-mortem:** sigue pendiente — ya registrado en 2026-09-28 11:24 y reconfirmado en 2026-10-05 11:26 (regla propuesta: un SALTADO no debería resetear la ventana de 14 días de la regla 3). Esta corrida es una rutina cloud sin sesión interactiva — no hay quién confirme el "¿se vuelve regla permanente?". No se adivina ni se escribe la regla; queda pendiente para la próxima sesión interactiva con Luigui.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-10-12 11:18 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 100 conceptos `estado: activo` en `Conceptos/` (4 excluidos correctamente: `gestion-del-tiempo` y `rutina-trabajo-enfocada` en `estado: borrador`; `diseno-multiinteligencia` y `criterio-transferible-vs-respuesta-memorizada` sin campo `estado` en el frontmatter — no cuentan como `activo`; normalizarlos es trabajo de "audita el vault", fuera de alcance de esta rutina). Mismos 2 sub-conectados de siempre: `capas-de-profundidad-sistemica`, `interdependencia-sistemica` — su único par mutuo sigue propuesto en `Inbox/2026-09-28_1128_correlaciones-propuestas.tmp.md`, pendiente de revisión.
+- Construido el conjunto de exclusión: 29 pares con archivo en `Correlaciones/` + 11 pares ya propuestos y sobrevivientes en los 7 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes (2026-08-25: 3, 08-31: 2, 09-07: 1, 09-21: 1, 09-28: 1, 09-30: 3), leídos íntegros + los 20 pares evaluados y descartados explícitamente en la corrida inmediatamente anterior (2026-10-05 11:20), para continuar desde el backlog que esa corrida dejó pendiente en vez de repetir el mismo veredicto = 60 pares únicos excluidos.
+- Regenerado el escaneo de mención cruzada (slugs entre backticks) sobre los 100 conceptos activos: 72 pares con mención cruzada en total, de los cuales 44 quedan fuera del conjunto de exclusión — coincide exactamente con el backlog de "44 pares disponibles" que dejó la corrida del 2026-10-05.
+- Los 44 restantes son todos de señal unidireccional (ninguna mención bidireccional nueva). Priorizados los primeros 20 por tags compartidos + familia compartida como desempate dentro del mismo tier de mención cruzada (las 44 ya comparten la señal más fuerte), sin necesidad de bajar a candidatos de solo-tags o solo-familia.
+- Por cada uno de los 20: leído el contexto completo de la mención en ambos conceptos (archivo completo en los 4 casos más ambiguos), redactado el juicio de correlación, aplicada la autocrítica adversarial de las 2 preguntas.
+
+**Resultados:**
+- 20 candidatos evaluados, 0 sobrevivientes, 20 descartados
+- Patrón de descarte: 15 de 20 por el patrón dominante de siempre — el concepto que menciona al otro ya contiene la síntesis completa de la relación en su propia prosa, casi siempre bajo un subtítulo explícito (`Tensión con...`, `Conecta con...`, `Conecta directamente con...`). 3 de 20 (`poblaciones-sinteticas`×`usuarios-sinteticos`, `capital-de-contexto`×`feedback-que-escala`, `capital-de-contexto`×`inteligencia-como-utilidad`) fallan por el criterio 1 de la rúbrica — no hay tensión real, solo complementariedad o distinción de nivel (título reducible a "[A] y [B]"). 2 de 20 (`automatizacion-vs-ampliacion`×`inversion-sesgo-tecnologico`, `inteligencia-como-utilidad`×`riesgo-geopolitico-del-modelo`) muestran una variante más sutil del patrón dominante: la mención es breve, sin subtítulo dedicado, pero la frase suelta ya adelanta la conclusión completa (p. ej. "conecta con X: si la inferencia frontier se comodifica más rápido de lo que avanza la regulación, la ventana de este riesgo puede cerrarse" ya resuelve la tensión sin necesitar sección propia) — se descartan por el mismo criterio 2 de la rúbrica, aunque el formato de la mención sea más informal que en corridas anteriores.
+- Pares evaluados y descartados (20): `automatizacion-vs-ampliacion`×`inversion-sesgo-tecnologico`, `ia-como-filtro-de-entrada`×`juicio-como-trabajo-completo`, `ia-como-filtro-de-entrada`×`marea-creciente-de-automatizacion`, `inteligencia-como-utilidad`×`riesgo-geopolitico-del-modelo`, `cambio-como-estado-permanente`×`cultura-de-tinkering`, `copiloto-de-producto`×`disenador-a-constructor`, `ia-sin-ecosistema`×`inteligencia-como-utilidad`, `poblaciones-sinteticas`×`usuarios-sinteticos`, `automatizacion-vs-ampliacion`×`marea-creciente-de-automatizacion`, `automatizar-mi-propio-trabajo`×`deuda-cognitiva-organizacional`, `costo-marginal-cero-como-disruptor`×`presupuesto-ia-como-restriccion`, `espectro-autonomia-agente`×`representacion-agente`, `identidad-criptografica-como-arnes`×`representacion-agente`, `poblaciones-sinteticas`×`sycophancy-como-riesgo-de-diseno`, `soberania-epistemica`×`sycophancy-como-riesgo-de-diseno`, `capital-de-contexto`×`feedback-que-escala`, `capital-de-contexto`×`inteligencia-como-utilidad`, `capital-de-contexto`×`quien-controla-el-prompt`, `capital-de-contexto`×`riesgo-geopolitico-del-modelo`, `engano-emergente-en-agentes-autonomos`×`impuesto-de-verificacion`
+- 0 propuestas sobrevivientes → NO se creó archivo en `Inbox/`
+- Quedan 24 pares de mención cruzada sin evaluar en esta corrida (44 encontrados − 20 evaluados), disponibles para la próxima corrida semanal
+- Siguen pendientes de revisión, sin tocar en esta corrida: los 7 `Inbox/*_correlaciones-propuestas.tmp.md` existentes (2026-08-25, 08-31, 09-07, 09-21, 09-28, 09-30) y `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-10-05 11:26 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
