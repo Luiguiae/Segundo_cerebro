@@ -2,6 +2,56 @@
 
 ---
 
+### 2026-10-26 11:26 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Confirmados los 4 borradores vigentes vía grep de `estado: borrador` sobre `Conocimiento/`: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`) — mismos 4 de las últimas 8 corridas. Confirmado vía `git log --since=2026-10-19 -- Conocimiento/` que ninguno de los 4 archivos cambió desde la corrida anterior.
+- Buscada en `JARVIS_LOG.md` la entrada más reciente que toca a los 4: `2026-10-19 11:30` (SALTADOS), hace 7 días — dentro de la ventana de 14 días de la regla 3 de "Graduar borradores". Aplicada la regla tal como está escrita hoy, sin corregirla por iniciativa propia (regla 7 de CLAUDE.md) ni adivinar respuesta al post-mortem pendiente.
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento registrado hace 7 días (`2026-10-19 11:30`)
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo en `Inbox/`
+- `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, sin revisar por Luigui desde hace 56 días
+
+**Patrón confirmado (sin acción nueva):** 8ª corrida consecutiva (09-07, 09-14, 09-21, 09-28, 10-05, 10-12, 10-19, 10-26) que salta los mismos 4 borradores. El último diagnóstico real sigue siendo el del 2026-08-31, hace 56 días.
+
+**Post-mortem:** sigue pendiente — registrado por primera vez en 2026-09-28 11:24 y reconfirmado en cada corrida desde entonces (regla propuesta: un SALTADO no debería resetear la ventana de 14 días de la regla 3). Esta corrida es una rutina cloud sin sesión interactiva — no hay quién confirme el "¿se vuelve regla permanente?". No se adivina ni se escribe la regla; queda pendiente para la próxima sesión interactiva con Luigui.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-10-26 11:20 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 100 conceptos `estado: activo` en `Conceptos/` (4 excluidos: `gestion-del-tiempo` y `rutina-trabajo-enfocada` en `estado: borrador`; `diseno-multiinteligencia` y `criterio-transferible-vs-respuesta-memorizada` sin campo `estado`).
+- Reconstruido el conjunto de exclusión parseando **todo** `JARVIS_LOG.md` desde 2026-08-25 (no solo la corrida inmediata anterior) + los 6 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes (leídos íntegros) + los 29 archivos de `Correlaciones/` = **134 pares únicos excluidos**.
+- Escaneado el cuerpo de los 100 conceptos activos por mención cruzada literal (slug entre backticks): los **72 pares con mención cruzada que existen en el vault ya estaban todos dentro del conjunto de exclusión de 134** — 0 candidatos nuevos por la señal primaria. Primera vez en ~9 corridas que esta señal se agota por completo.
+- Bajado a la señal secundaria del procedimiento (≥2 tags compartidos): **1.260 pares candidatos no excluidos**. Priorizados los 20 con más tags compartidos (todos con 3 o 4 tags en común) — ninguno tiene mención cruzada entre sí.
+- Por cada uno de los 20: leído el archivo completo de ambos conceptos (26 archivos únicos involucrados), redactado el juicio de correlación, aplicada la autocrítica adversarial de las 2 preguntas.
+
+**Resultados:**
+- 20 candidatos evaluados, **4 sobrevivientes**, 16 descartados — primera corrida con sobrevivientes desde 2026-09-30 (y la primera corrida de barrido completo del vault, sin sobrevivientes, desde 2026-08-25)
+- Pares descartados (16), razón dominante: síntesis ya resuelta en la prosa de uno de los dos conceptos (criterio 2) o eje complementario/ejemplificación sin tensión real (criterio 1): `arnes-del-agente`×`diseno-uxui-y-ia`, `arnes-del-agente`×`expertise-de-dominio-en-producto`, `comprehension-debt`×`restriccion-de-tiempo-como-ventaja`, `costo-marginal-cero-como-disruptor`×`cuello-de-botella-del-flujo`, `cuello-de-botella-del-flujo`×`fabrica-oscura-de-software`, `design-system-como-api-para-agentes`×`terminal-como-interfaz-optima-para-agentes`, `design-system-como-api-para-agentes`×`web-bifurcada`, `engano-emergente-en-agentes-autonomos`×`impuesto-de-alineacion`, `expertise-de-dominio-en-producto`×`metricas-post-pantalla`, `impuesto-de-alineacion`×`representacion-agente`, `legibilidad-de-maquina`×`orquestacion-de-agentes`, `limite-de-las-jaulas-digitales`×`representacion-agente`, `pit-stop-cognitivo`×`restriccion-de-tiempo-como-ventaja`, `agencia-humana-como-imperativo-ux`×`arquitectura-de-confianza`, `agencia-humana-como-imperativo-ux`×`impuesto-de-alineacion`, `agencia-humana-como-imperativo-ux`×`limite-de-las-jaulas-digitales`
+- `Inbox/2026-10-26_1115_correlaciones-propuestas.tmp.md`: creado — 4 propuestas:
+  1. "La legibilidad no distingue las dos formas en que un agente escapa" (`agente-que-escapa-obedeciendo` × `engano-emergente-en-agentes-autonomos`)
+  2. "El eval en producción asume un sensor de tráfico que ya no existe" (`ai-evals-como-disciplina` × `metricas-post-pantalla`)
+  3. "El agente no puede representar valores que la IA ya erosionó antes de preguntarte" (`representacion-agente` × `soberania-epistemica`)
+  4. "La ilusión de omnipotencia es más fuerte donde menos puedes actuar" (`ilusion-de-omnipotencia-del-disenador` × `invisibilizacion-de-actores-naturales`) — marcada explícitamente como la más especulativa de las 4: pasa la autocrítica adversarial pero es una extrapolación razonable, no un mecanismo demostrado directamente por los datos de las fuentes
+- Verificado antes de escribir que los 8 conceptos involucrados existen y están `activo`, y que ninguno de los 4 pares nuevos coincide con un archivo ya en `Correlaciones/` ni con una propuesta ya existente en los 6 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes
+- Quedan **1.240 pares** candidatos por tags sin evaluar, disponibles para la próxima corrida semanal
+- Siguen pendientes de revisión, sin tocar en esta corrida: los 6 `Inbox/*_correlaciones-propuestas.tmp.md` existentes antes de hoy (2026-08-25, 08-31, 09-07, 09-21, 09-28, 09-30) y `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`
+
+**Nota metodológica:** la señal de mención cruzada literal, que había sido la fuente de todos los candidatos evaluados desde 2026-08-25, se agotó por completo en esta corrida (72 de 72 pares ya excluidos). De aquí en adelante, "busca correlaciones" seguirá usando la señal de tags compartidos (1.260 pares sin evaluar) hasta agotarla también, o hasta que se agreguen conceptos nuevos al vault que generen menciones cruzadas inéditas.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-10-19 11:30 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
