@@ -2,6 +2,30 @@
 
 ---
 
+### 2026-11-02 01:45 — Profundizador-1 (rutina cloud)
+
+**Instrucción:** Rutina automática — profundizar CONCEPTO 1 del Scout de hoy y enviar .md por mail
+
+**Acciones:**
+- Leído Issue #164 (🔍 Scout 2026-11-02 — 5 candidatos)
+- Extraído CONCEPTO 1: `delegacion-como-modo-dominante-del-disenador` (score 22/30, categoria: diseno)
+- Verificados slugs de `relacionado`: `corrupcion-silenciosa-por-delegacion` ✓, `espectro-autonomia-agente` ✓, `metacognicion-del-disenador` ✓
+- Leída taxonomia.md — familia asignada: `transicion-ia`
+- Investigados 3 ejes vía búsqueda web:
+  - Eje 1 (verificación arXiv 2603.02050): confirmado título, 10+12 diseñadores, 255 turnos, ~69.41% delegación hands-off — 2 fuentes
+  - Eje 2 (efectos cognitivos de delegación): ScienceDirect, MDPI 2026, Springer 2026, arXiv supervisión — 4 fuentes
+  - Eje 3 (evidencia empírica patrones de delegación): campo experimental +17%/-62%, CSCW 2025 scoping review, Frontiers Psychology 2026, homogenización — 3 fuentes
+- .md construido: 5 secciones (El concepto, Por qué importa, Datos y evidencia, Tensiones y límites, Ejes investigados), 5 fuentes en frontmatter
+- Mail enviado a luiguiavilae@gmail.com (id: 1a19af77c66017f7)
+
+**Resultados:**
+- `delegacion-como-modo-dominante-del-disenador.md`: OK — mail enviado, listo para instalar en `Conceptos/diseno/`
+- ⚠️ Cifra exacta (69.41% vs 70.1% del Scout): verificar contra PDF completo antes de publicar
+
+**ATLAS regenerado:** no — concepto no instalado aún (pendiente revisión de Luigui)
+
+---
+
 ### 2026-10-26 11:26 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
