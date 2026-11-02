@@ -2,6 +2,54 @@
 
 ---
 
+### 2026-11-02 11:15 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Confirmados los 4 borradores vigentes vía grep de `estado: borrador` sobre `Conocimiento/`: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`) — mismos 4 de las últimas 9 corridas. Confirmado vía `git log --since=2026-10-26 -- Conocimiento/Conceptos/organizaciones/rutina-trabajo-enfocada.md Conocimiento/Conceptos/ia/gestion-del-tiempo.md "Conocimiento/Correlaciones/2026-06-25*"` que ninguno de los 4 archivos cambió desde la corrida anterior.
+- Buscada en `JARVIS_LOG.md` la entrada más reciente que toca a los 4: `2026-10-26 11:26` (SALTADOS), hace 7 días — dentro de la ventana de 14 días de la regla 3 de "Graduar borradores". Aplicada la regla tal como está escrita hoy, sin corregirla por iniciativa propia (regla 7 de CLAUDE.md) ni adivinar respuesta al post-mortem pendiente.
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento registrado hace 7 días (`2026-10-26 11:26`)
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo en `Inbox/`
+- `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, sin revisar por Luigui desde hace 63 días
+
+**Patrón confirmado (sin acción nueva):** 9ª corrida consecutiva (09-07, 09-14, 09-21, 09-28, 10-05, 10-12, 10-19, 10-26, 11-02) que salta los mismos 4 borradores. El último diagnóstico real sigue siendo el del 2026-08-31, hace 63 días.
+
+**Post-mortem:** sigue pendiente — registrado por primera vez en 2026-09-28 11:24 y reconfirmado en cada corrida desde entonces (regla propuesta: un SALTADO no debería resetear la ventana de 14 días de la regla 3). Esta corrida es una rutina cloud sin sesión interactiva — no hay quién confirme el "¿se vuelve regla permanente?". No se adivina ni se escribe la regla; queda pendiente para la próxima sesión interactiva con Luigui.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-11-02 11:09 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Leídos los 100 conceptos `estado: activo` en `Conceptos/` (4 excluidos: `gestion-del-tiempo` y `rutina-trabajo-enfocada` en `estado: borrador`; `diseno-multiinteligencia` y `criterio-transferible-vs-respuesta-memorizada` sin campo `estado`).
+- Reconstruido el conjunto de exclusión: 29 pares con archivo en `Correlaciones/` + 15 pares ya propuestos en los 7 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes (2026-08-25, 08-31, 09-07, 09-21, 09-28, 09-30, 10-26 — leídos íntegros) + 82 pares únicos descartados históricamente (extraídos de todo `JARVIS_LOG.md` desde 2026-08-25, vía grep de `` `slug`×`slug` ``) = 123 pares únicos excluidos.
+- Mención cruzada literal sigue agotada desde la corrida del 2026-10-26 (0 candidatos nuevos por esa señal). Continuado con la señal secundaria (≥2 tags compartidos): 1.267 pares no excluidos sobre los 100 conceptos activos. Priorizados los 9 pares con 4 tags compartidos, completando hasta 20 con los siguientes 11 pares de 3 tags compartidos.
+- Por cada uno de los 20: leído el archivo completo de ambos conceptos (25 archivos únicos involucrados), redactado el juicio de correlación, aplicada la autocrítica adversarial de las 2 preguntas (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?).
+
+**Resultados:**
+- 20 candidatos evaluados, **5 sobrevivientes**, 15 descartados
+- Pares descartados (15), razón dominante: 7 de 15 ya conectados en `relacionado` con la síntesis ya resuelta en la prosa de uno de los dos (`agencia-humana-como-imperativo-ux`×`ux-checkpoints`, `arquitectura-de-confianza`×`ux-checkpoints`, `ia-como-filtro-de-entrada`×`automatizacion-vs-ampliacion`, `arnes-del-agente`×`las-tres-caras-del-producto-agentico`, `legibilidad-de-maquina`×`web-bifurcada`, `legibilidad-de-maquina`×`las-tres-caras-del-producto-agentico`, `disenador-a-constructor`×`diseno-dos-velocidades`, `disenador-a-constructor`×`diseno-uxui-y-ia`); 2 de 15 co-ocurrencia/complementariedad sin contradicción real (`diseno-dos-velocidades`×`diseno-uxui-y-ia`, `disenador-a-constructor`×`diseno-uxui-y-ia`); 2 de 15 convergen en la misma conclusión meta vista desde dos dominios sin síntesis nueva (`diseno-sistemico-como-cambio-de-alcance`×`granularidad-como-decision-de-mapeo`, `metacognicion-del-disenador`×`granularidad-como-decision-de-mapeo` — en ambos casos se prefirió la pareja alternativa que sí sobrevivió); `arnes-del-agente`×`metricas-post-pantalla` y `diseno-dos-velocidades`×`el-moat-del-gusto` descartados por tensión real pero obvia o genérica (insuficiente novedad); `diseno-uxui-y-ia`×`el-moat-del-gusto` descartado porque el primero ya adelanta la tesis del segundo en su propia sección de tensión
+- `Inbox/2026-11-02_1109_correlaciones-propuestas.tmp.md`: creado — 5 propuestas:
+  1. "Escapar el riesgo geopolítico del modelo te lleva al terreno sin rieles de seguridad" (`riesgo-geopolitico-del-modelo` × `seguridad-asimetrica-de-modelos-abiertos`)
+  2. "La transparencia que genera confianza puede ser la misma rendición cognitiva que evita" (`arquitectura-de-confianza` × `soberania-epistemica`)
+  3. "Ampliar el alcance y profundizar las capas compiten por el mismo presupuesto de atención" (`diseno-sistemico-como-cambio-de-alcance` × `capas-de-profundidad-sistemica`)
+  4. "Ver más que los demás en la sala no es ver el sistema completo" (`ilusion-de-omnipotencia-del-disenador` × `visibilidad-relativa-al-observador`)
+  5. "La exigencia de poder explicar por qué crees algo puede matar la señal que todavía no puedes explicar" (`metacognicion-del-disenador` × `lo-ilegible-como-senal`)
+- Verificado antes de escribir que los 10 conceptos involucrados existen y están `activo`, y que ninguno de los 5 pares nuevos coincide con un archivo ya en `Correlaciones/` ni con una propuesta ya existente en los 7 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes
+- Quedan **1.247 pares** candidatos por tags sin evaluar, disponibles para la próxima corrida semanal
+- Siguen pendientes de revisión, sin tocar en esta corrida: los 7 `Inbox/*_correlaciones-propuestas.tmp.md` existentes antes de hoy (2026-08-25, 08-31, 09-07, 09-21, 09-28, 09-30, 10-26) y `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-10-26 11:26 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
