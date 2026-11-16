@@ -2,6 +2,53 @@
 
 ---
 
+### 2026-11-16 11:15 — gradúa los borradores (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Confirmados los mismos 4 borradores vigentes vía grep de `estado: borrador` sobre `Conocimiento/`: 2 conceptos (`gestion-del-tiempo`, `rutina-trabajo-enfocada`) + 2 correlaciones (`2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`). Confirmado vía `git log --since=2026-11-09 -- Conocimiento/` que ninguno de los 4 archivos cambió desde la corrida anterior (sin commits sobre `Conocimiento/` en el período).
+- Buscada en `JARVIS_LOG.md` la entrada más reciente que toca a los 4: `2026-11-09 11:15` (SALTADOS), hace 7 días — dentro de la ventana de 14 días de la regla 3 de "Graduar borradores". Aplicada la regla tal como está escrita hoy, sin corregirla por iniciativa propia (regla 7 de CLAUDE.md) ni adivinar respuesta al post-mortem pendiente.
+
+**Resultados:**
+- `gestion-del-tiempo`, `rutina-trabajo-enfocada`, `2026-06-25_agentes-ia--capital-de-contexto`, `2026-06-25_gestion-del-tiempo--capital-de-contexto`: SALTADOS — intento registrado hace 7 días (`2026-11-09 11:15`).
+- Ningún borrador calificó para revisión en esta corrida → NO se creó archivo en `Inbox/`.
+- `rutina-trabajo-enfocada` sigue con una versión graduada pendiente de aprobación en `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`, sin revisar por Luigui desde hace 77 días.
+
+**Patrón confirmado (sin acción nueva):** 11ª corrida consecutiva (09-07, 09-14, 09-21, 09-28, 10-05, 10-12, 10-19, 10-26, 11-02, 11-09, 11-16) que salta los mismos 4 borradores. El último diagnóstico real sigue siendo el del 2026-08-31, hace 77 días.
+
+**Post-mortem:** sigue pendiente — registrado por primera vez en 2026-09-28 11:24 y reconfirmado en cada corrida desde entonces (regla propuesta: un SALTADO no debería resetear la ventana de 14 días de la regla 3). Esta corrida es una rutina cloud sin sesión interactiva — no hay quién confirme el "¿se vuelve regla permanente?". No se adivina ni se escribe la regla; queda pendiente para la próxima sesión interactiva con Luigui.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
+### 2026-11-16 11:04 — busca correlaciones (rutina cloud semanal)
+
+**Instrucción:** "Jarvis, busca correlaciones" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
+
+**Acciones:**
+- Confirmado que `Conocimiento/` no tuvo cambios desde la corrida anterior (2026-11-09): mismos 100 conceptos `estado: activo`, mismos 4 en `estado: borrador`, mismas 29 correlaciones existentes.
+- Reconstruido el conjunto de exclusión con un script Python ad-hoc (no persistido): 29 pares con archivo en `Correlaciones/` + 132 pares únicos extraídos de los 9 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes (2026-08-25 a 2026-11-09, leídos íntegros vía regex) + 134 pares únicos extraídos de todo `JARVIS_LOG.md` = 183 pares únicos excluidos.
+- Mención cruzada literal: 1 candidato nuevo (`corrupcion-silenciosa-por-delegacion` → `disenador-a-constructor`). Computado el universo completo de pares entre los 100 conceptos activos por tags compartidos: 179 pares con 3+ tags no excluidos (ninguno con 4 o 5 — empate total en 3). Como el empate no distingue orden dentro del tier, se diversificó la selección (máximo 2 apariciones por concepto) para no dejar que `arnes-del-agente` (tags genéricos) dominara los 19 cupos restantes solo por orden alfabético. Completados los 20 candidatos.
+- Por cada uno de los 20: leído el archivo completo de ambos conceptos (25 archivos únicos involucrados), redactado el juicio de correlación, aplicada la autocrítica adversarial de las 2 preguntas (¿título reducible a "[A] y [B]"? ¿síntesis ya obtenible leyendo cada uno por separado?).
+
+**Resultados:**
+- 20 candidatos evaluados, **5 sobrevivientes**, 15 descartados.
+- Pares descartados (15), razón dominante: 4 por síntesis ya resuelta en la propia prosa de uno de los dos (`corrupcion-silenciosa-por-delegacion`×`disenador-a-constructor`, `autoautomatizacion-del-disenador`×`deuda-cognitiva-organizacional`, `conocimiento-autoorganizado-por-llm`×`design-system-como-api-para-agentes`, `conocimiento-autoorganizado-por-llm`×`expertise-de-dominio-en-producto`); 2 por co-ocurrencia/misma tesis sin tensión (`arquitectura-de-confianza`×`de-usuario-a-cliente-servido`, `arquitectura-de-inteligencia`×`ia-sin-ecosistema`); 1 por relación de "ejemplifica" en vez de tensión (`claridad-antes-de-velocidad`×`gobernanza-ia-performativa`); 1 por complementariedad esperada sin síntesis nueva (`claridad-antes-de-velocidad`×`ia-sin-ecosistema`); 1 por convergencia en la misma conclusión meta, mismo patrón que descartes equivalentes del 2026-11-02 (`capas-de-profundidad-sistemica`×`granularidad-como-decision-de-mapeo`); 6 por menor especificidad frente a una sobreviviente que cubre el mismo territorio con mayor precisión (`arnes-del-agente`×`disenador-a-constructor`, `arnes-del-agente`×`diseno-dos-velocidades`, `cambio-como-estado-permanente`×`feedback-que-escala`, `capital-de-contexto`×`cuello-de-botella-del-flujo`, `comprehension-debt`×`diseno-dos-velocidades`, `condicion-redespliegue`×`feedback-que-escala`).
+- `Inbox/2026-11-16_1104_correlaciones-propuestas.tmp.md`: creado — 5 propuestas:
+  1. "La gobernanza de IA se queda performativa porque se diseña como proyecto, no como estado" (`cambio-como-estado-permanente` × `gobernanza-ia-performativa`)
+  2. "La condición del redespliegue asume una escalera que el filtro de entrada ya desmontó" (`condicion-redespliegue` × `ia-como-filtro-de-entrada`)
+  3. "Automatizar el propio criterio apuesta a que ese paso es el cuello de botella — casi nunca lo es" (`autoautomatizacion-del-disenador` × `cuello-de-botella-del-flujo`)
+  4. "El capital de contexto puede ser comprehension debt con mejor empaque" (`capital-de-contexto` × `comprehension-debt`)
+  5. "La arquitectura de inteligencia es el activo que la comoditización no puede tocar" (`arquitectura-de-inteligencia` × `inteligencia-como-utilidad`)
+- Verificado antes de escribir que los 10 conceptos involucrados existen y están `activo`, y que ninguno de los 5 pares nuevos coincide con un archivo ya en `Correlaciones/` ni con una propuesta ya existente en los 9 `Inbox/*_correlaciones-propuestas.tmp.md` pendientes antes de hoy.
+- Siguen pendientes de revisión, sin tocar en esta corrida: los 9 `Inbox/*_correlaciones-propuestas.tmp.md` existentes antes de hoy (2026-08-25, 08-31, 09-07, 09-21, 09-28, 09-30, 10-26, 11-02, 11-09) y `Inbox/2026-08-31_1122_borradores-graduados.tmp.md`.
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+---
+
 ### 2026-11-09 11:15 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)
