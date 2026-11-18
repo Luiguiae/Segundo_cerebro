@@ -2,6 +2,27 @@
 
 ---
 
+### 2026-11-18 12:00 — Jarvis tarda en responder: la escucha no detectaba el fin de la frase
+
+**Instrucción:** "la respuesta de Jarvis local se está demorando mucho en responder cuando le hablo. Analiza y verifica qué sucede" → "aplica"
+
+**Diagnóstico (medido):**
+- 51 turnos del log: clasificar intención (Groq) mediana 1 s; respuesta+voz 7-10 s hoy. El cuello de botella es la escucha (inicio → transcripción): hoy 19/27/25 s para frases de 1-4 s (sept: 7-13 s; oct: 25-40 s). Las frases repetidas en los transcripts ("chao jarvis chao jarvis", "cuándo fue la última vez… ×2") son el síntoma: hablaba, no pasaba nada, repetía
+- Causa: `escuchar()` calibraba con `adjust_for_ambient_noise(duration=0.05)`, que casi no mueve el umbral (~300). Ruido del micrófono del MacBook medido en la sala: RMS mediana 350-600 (solo niveles, sin guardar audio). Racha de silencio más larga en 20 s: 0.17-0.21 s, contra los 1.5 s que exige `pause_threshold` → `listen()` nunca cerraba la frase y corría hasta el tope de 45 s
+- Aparte: `say` colgado 60 s en la despedida de las 11:39 (`[TTS] Timeout`); solo 2 veces en todo el historial. Coincidió con VS Code reiniciándose y carga de sistema ~12. Causa no determinada (hipótesis: contención del sistema)
+
+**Acciones:** `jarvis.py` `escuchar()`: calibración 0.05 s → 0.5 s, `dynamic_energy_ratio` 2.5 (probado contra el ruido real: umbral ~1100, racha de silencio máx 3.95 s, 4 cierres de frase en 20 s; con ratio 2.0 no cerraba), tope de umbral 1500 (si la calibración pesca voz) y línea `[STT] umbral=… captura=…s` en el log por turno para poder verificar. `pause_threshold` se deja en 1.5 s (subido el 2026-09-09 para no cortar instrucciones largas). Daemon reiniciado, arrancó limpio
+
+**Resultados:**
+- `jarvis.py`: aplicado — **pendiente de verificar con voz real** (no pude hablarle; la simulación solo usa ruido). Riesgo: si tu voz queda por debajo de ~1100 de RMS a tu distancia habitual, no la detectaría; revisar `[STT] umbral=` y la latencia en las próximas conversaciones
+- `say` colgado: sin cambio, sin causa confirmada
+
+**ATLAS regenerado:** no aplica — no se tocó `Conocimiento/`
+
+**Post-mortem:** ¿esto se vuelve regla permanente? Aplica (más de un paso de diagnóstico: la primera hipótesis, carga del sistema/TTS, no era la causa). Regla propuesta: "Todo ajuste de `escuchar()` se valida contra el ruido real del micrófono (RMS) y con una frase hablada, no solo contra el código." Pendiente de tu respuesta.
+
+---
+
 ### 2026-11-16 11:15 — gradúa los borradores (rutina cloud semanal)
 
 **Instrucción:** "Jarvis, gradúa los borradores" (disparado por la rutina `vault-correlaciones-y-graduacion-semanal`)

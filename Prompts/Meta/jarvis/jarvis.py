@@ -217,6 +217,15 @@ def escuchar(motor: str = "google") -> str | None:
     # manera abrupta... recibe solicitudes a medias"). 1.5s da margen para pausas
     # normales sin sentirse lento en respuestas cortas.
     recognizer.pause_threshold = 1.5
+    # Calibración al ruido de la sala (2026-11-18). Con duration=0.05 s el umbral casi no se
+    # movía de su valor por defecto (~300) y el ruido de fondo del micrófono del MacBook
+    # (mediana 350-600 de RMS, medida) quedaba SIEMPRE por encima: nunca había 1.5 s seguidos
+    # de "silencio", listen() no detectaba el fin de la frase y corría hasta el tope de 45 s
+    # (escucha de 19-40 s para frases de 2 s; ver JARVIS_LOG.md 2026-11-18). Con 0.5 s y
+    # ratio 2.5 el umbral queda por encima de los picos de ruido y por debajo de la voz.
+    # El tope superior evita que una calibración que pesque voz deje el umbral inalcanzable.
+    recognizer.dynamic_energy_ratio = 2.5
+    ENERGIA_MAX = 1500
     # device_index=None deja que PortAudio use el default del sistema.
     # Cuando el daemon llama escuchar(), ya fijó el dispositivo via seleccionar_dispositivo_entrada().
     # En modo standalone (jarvis.py directo), None es correcto.
@@ -224,11 +233,15 @@ def escuchar(motor: str = "google") -> str | None:
         try:
             with sr.Microphone(device_index=None) as source:
                 print("Escuchando... (habla ahora)")
-                recognizer.adjust_for_ambient_noise(source, duration=0.05)
+                recognizer.adjust_for_ambient_noise(source, duration=0.5)
+                recognizer.energy_threshold = min(recognizer.energy_threshold, ENERGIA_MAX)
+                umbral_inicial = recognizer.energy_threshold
+                t_escucha = time.time()
                 # phrase_time_limit: tope duro de seguridad, no el mecanismo normal de
                 # corte (ese es pause_threshold, arriba). Subido de 15s a 45s — 15s no
                 # alcanzaba para una instrucción con varias cláusulas o ejemplos.
                 audio = recognizer.listen(source, timeout=5, phrase_time_limit=45)
+                logging.info(f"[STT] umbral={umbral_inicial:.0f} captura={time.time() - t_escucha:.1f}s")
         except AttributeError:
             hablar("Micrófono no disponible.")
             return None
