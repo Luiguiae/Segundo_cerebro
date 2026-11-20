@@ -2,6 +2,28 @@
 
 ---
 
+### 2026-11-20 01:35 — Profundizador-3: advertencia-que-no-obliga
+
+**Instrucción:** Rutina cloud `profundizador-3` — CONCEPTO 3 del Issue #181 (Scout 2026-11-20)
+
+**Acciones:**
+- Leído Issue #181 "🔍 Scout 2026-11-20 — 4 candidatos" — CONCEPTO 3: `advertencia-que-no-obliga`
+- Leído `CONTEXTO_SEGUNDO_CEREBRO.md` para validar relacionados existentes
+- Eje 1: Contenido del S-1 de Anthropic (riesgos catastróficos, 93 páginas) — 4 fuentes sólidas (Fortune, CBS News, Axios, Yahoo Finance)
+- Eje 2: Mecanismo legal safe harbor en IPOs (PSLRA Sección 27A no aplica a IPOs; Sección 11 cuasi-estricta) — hallazgo matiza el concepto
+- Eje 3: Gobernanza performativa y transparencia selectiva en AI labs (OpenAI governance, coalición 50+ grupos ante SEC) — 2 fuentes (Fortune, Morningstar)
+- Enviado mail a luiguiavilae@gmail.com: "🧠 Concepto listo: advertencia-que-no-obliga — La advertencia que no obliga"
+
+**Resultados:**
+- Concepto profundizado: `advertencia-que-no-obliga` — ENTREGADO por mail (no instalado — Luigui decide)
+- Ejes investigados: 3 · Fuentes por eje: 4 / 2 / 2 (mínimo cumplido)
+- Gate 0 validado: campos requeridos presentes, sin campos prohibidos, 5 tags, 3 relacionados (slugs verificados), 3 secciones obligatorias presentes
+- Relacionados confirmados en vault: `gobernanza-ia-performativa` ✓ · `impuesto-de-alineacion` ✓ · `arquitectura-de-confianza` ✓
+
+**ATLAS regenerado:** no — concepto no instalado aún
+
+---
+
 ### 2026-11-18 12:00 — Jarvis tarda en responder: la escucha no detectaba el fin de la frase
 
 **Instrucción:** "la respuesta de Jarvis local se está demorando mucho en responder cuando le hablo. Analiza y verifica qué sucede" → "aplica"
